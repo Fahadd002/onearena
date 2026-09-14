@@ -1276,27 +1276,6 @@ export default function OwnerProfilePage() {
                           />
                         )}
                       </div>
-                      {!isApproved && !documents.businessLogo.uploaded && (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="text-red-600 hover:text-red-700"
-                          onClick={() =>
-                            setDocuments((prev) => ({
-                              ...prev,
-                              businessLogo: {
-                                file: null,
-                                preview: null,
-                                uploaded: false,
-                                fileType: null,
-                              },
-                            }))
-                          }
-                        >
-                          Remove
-                        </Button>
-                      )}
                     </div>
                   ) : (
                     <div className="border-2 border-dashed border-border rounded-lg p-6 text-center cursor-pointer hover:border-primary hover:bg-primary/5 transition">
@@ -1465,7 +1444,7 @@ export default function OwnerProfilePage() {
                           Free Trial
                         </h3>
                         <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                          1 month, no credit card
+                          1 month, no fee required.
                         </p>
                       </div>
 

@@ -1,0 +1,9 @@
+import { LoaderCircle } from "lucide-react";
+
+export default function Loader() {
+  return (
+    <div className="flex items-center justify-center" aria-live="polite" aria-busy="true">
+      <LoaderCircle className="h-8 w-8 animate-spin text-primary" aria-hidden="true" />
+    </div>
+  );
+}

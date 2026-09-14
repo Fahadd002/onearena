@@ -31,7 +31,7 @@ import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
 import { toast } from "sonner";
 
-type Status = "DRAFT" | "PENDING_APPROVAL" | "ACTIVE" | "INACTIVE" | "REJECTED";
+type Status = "ACTIVE" | "INACTIVE" | "REJECTED";
 type Turf = {
   id: string;
   name: string;
@@ -47,15 +47,11 @@ type TurfPage = {
   meta: { page: number; limit: number; total: number; totalPages: number };
 };
 const labels: Record<Status, string> = {
-  DRAFT: "Draft",
-  PENDING_APPROVAL: "Awaiting review",
   ACTIVE: "Approved",
   INACTIVE: "Unapproved",
   REJECTED: "Rejected",
 };
 const colors: Record<Status, string> = {
-  DRAFT: "bg-muted text-muted-foreground",
-  PENDING_APPROVAL: "bg-amber-500/10 text-amber-700",
   ACTIVE: "bg-primary/10 text-primary",
   INACTIVE: "bg-secondary text-muted-foreground",
   REJECTED: "bg-destructive/10 text-destructive",
@@ -268,18 +264,6 @@ export default function TurfApprovalsPage() {
                               onClick={() => update.mutate({ id: turf.id, nextStatus: "ACTIVE" })}
                               disabled={update.isPending}
                             >
-                              <Check className="size-4" />
-                              {turf.status === "PENDING_APPROVAL" ? "Approve" : "Set active"}
-                            </Button>
-                          )}
-                          {(turf.status === "DRAFT" || turf.status === "PENDING_APPROVAL") && (
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={() => update.mutate({ id: turf.id, nextStatus: "REJECTED" })}
-                              disabled={update.isPending}
-                            >
-                              Reject
                             </Button>
                           )}
                           {turf.status === "ACTIVE" && (

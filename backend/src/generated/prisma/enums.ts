@@ -49,8 +49,6 @@ export type Gender = (typeof Gender)[keyof typeof Gender]
 
 
 export const TurfStatus = {
-  DRAFT: 'DRAFT',
-  PENDING_APPROVAL: 'PENDING_APPROVAL',
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',
   REJECTED: 'REJECTED'
@@ -74,15 +72,6 @@ export const PaymentEventStatus = {
 } as const
 
 export type PaymentEventStatus = (typeof PaymentEventStatus)[keyof typeof PaymentEventStatus]
-
-
-export const CommissionStatus = {
-  PENDING: 'PENDING',
-  PAID: 'PAID',
-  CANCELLED: 'CANCELLED'
-} as const
-
-export type CommissionStatus = (typeof CommissionStatus)[keyof typeof CommissionStatus]
 
 
 export const ManagerPermission = {

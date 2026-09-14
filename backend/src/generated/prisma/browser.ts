@@ -98,6 +98,16 @@ export type ReviewReply = Prisma.ReviewReplyModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model OwnerGalleryItem
+ * 
+ */
+export type OwnerGalleryItem = Prisma.OwnerGalleryItemModel
+/**
+ * Model OwnerBlog
+ * 
+ */
+export type OwnerBlog = Prisma.OwnerBlogModel
+/**
  * Model Session
  * 
  */

@@ -159,59 +159,6 @@ export default function TurfsPage() {
               <span className="font-semibold text-primary">{turfs.length}</span><span className="ml-1 text-muted-foreground">venues ready to book</span>
             </div>
           </div>
-
-          <div className="surface-panel mt-8 rounded-2xl p-3 shadow-elevated">
-            <div className="grid gap-3 lg:grid-cols-[1.45fr_1fr_1fr_auto]">
-              <div className="relative">
-                <MapPin className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input value={area} onChange={(event) => setArea(event.target.value)} placeholder="Search area or turf name" className="h-12 border-0 bg-secondary/70 pl-10 shadow-none" />
-              </div>
-              <Select value={categoryId || "all"} onValueChange={(value) => setCategoryId(value === "all" ? "" : value)}>
-                <SelectTrigger className="h-12 border-0 bg-secondary/70">
-                  <SelectValue placeholder="Any sport">
-                    {categories.find((c) => c.value === categoryId)?.label}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Any sport</SelectItem>
-                  {categories.map((category) => (
-                    <SelectItem key={category.value} value={category.value}>
-                      {category.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <DatePicker
-                value={date}
-                onChange={setDate}
-                min={today || undefined}
-                placeholder="Pick a date"
-                className="h-12 border-0 bg-secondary/70 shadow-none"
-              />
-              <Button variant="hero" size="lg" className="h-12 px-6" onClick={findNearby}><LocateFixed className="size-4" /> Nearby</Button>
-            </div>
-            {locationMessage && <p className="mt-3 px-1 text-xs text-muted-foreground">{locationMessage}</p>}
-
-            <div className="mt-3 flex flex-wrap items-center gap-2 px-1">
-              <span className="mr-1 text-xs font-medium text-muted-foreground">Popular:</span>
-              {categories.slice(0, 4).map((category) => (
-                <button
-                  key={category.value}
-                  onClick={() => setCategoryId(category.value === categoryId ? "" : category.value)}
-                  className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                    categoryId === category.value ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {category.label}
-                </button>
-              ))}
-              {activeFilters > 0 && (
-                <button onClick={clearFilters} className="ml-auto inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground">
-                  <X className="size-3.5" /> Clear filters
-                </button>
-              )}
-            </div>
-          </div>
         </div>
       </section>
 

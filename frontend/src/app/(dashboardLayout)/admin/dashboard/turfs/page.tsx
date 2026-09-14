@@ -38,7 +38,7 @@ type Turf = {
   name: string;
   address: string;
   area?: string | null;
-  status: "PENDING_APPROVAL" | "ACTIVE" | "REJECTED" | "INACTIVE";
+  status: "ACTIVE" | "REJECTED" | "INACTIVE";
   basePrice: string | number;
   category: { name: string };
 };
@@ -48,13 +48,11 @@ type TurfPage = {
 };
 const labels: Record<Turf["status"], string> = {
   ACTIVE: "Live",
-  PENDING_APPROVAL: "In review",
   REJECTED: "Changes needed",
   INACTIVE: "Paused",
 };
 const colors: Record<Turf["status"], string> = {
   ACTIVE: "text-primary bg-primary/10",
-  PENDING_APPROVAL: "text-amber-700 bg-amber-500/10",
   REJECTED: "text-destructive bg-destructive/10",
   INACTIVE: "text-muted-foreground bg-muted",
 };

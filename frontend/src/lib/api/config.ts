@@ -35,6 +35,7 @@ export const API_ENDPOINTS = {
         refunds: "/refunds",
         payouts: "/payouts",
         adminBookings: "/admin/bookings",
+        ownerContent: "/owner/content",
     },
      subscription: {
         plans: "/subscription-plans",

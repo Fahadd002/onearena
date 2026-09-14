@@ -67,6 +67,8 @@ export const ModelName = {
   Review: 'Review',
   ReviewReply: 'ReviewReply',
   User: 'User',
+  OwnerGalleryItem: 'OwnerGalleryItem',
+  OwnerBlog: 'OwnerBlog',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -337,6 +339,38 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const OwnerGalleryItemScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  title: 'title',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  sortOrder: 'sortOrder',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OwnerGalleryItemScalarFieldEnum = (typeof OwnerGalleryItemScalarFieldEnum)[keyof typeof OwnerGalleryItemScalarFieldEnum]
+
+
+export const OwnerBlogScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  title: 'title',
+  slug: 'slug',
+  excerpt: 'excerpt',
+  content: 'content',
+  coverImage: 'coverImage',
+  published: 'published',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OwnerBlogScalarFieldEnum = (typeof OwnerBlogScalarFieldEnum)[keyof typeof OwnerBlogScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

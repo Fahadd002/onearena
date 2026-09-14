@@ -88,10 +88,17 @@ const navItems: NavItem[] = [
     roles: ["ADMIN"],
   },
   {
+    name: "Content Studio",
+    icon: Settings,
+    path: "/admin/dashboard/content-studio",
+    roles: ["ADMIN"],
+  },
+  {
     name: "Management",
     icon: ClipboardCheck,
     subItems: [
       { name: "Owner Applications", path: "/super-admin/dashboard/owner-applications" },
+      { name: "Owner Subscriptions", path: "/super-admin/dashboard/owner-subscriptions" },
       { name: "Users", path: "/super-admin/dashboard/users" },
       { name: "Turf Approvals", path: "/super-admin/dashboard/turfs" },
     ],

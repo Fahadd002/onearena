@@ -256,6 +256,8 @@ export type UserWhereInput = {
   managedTurfs?: Prisma.TurfManagerListRelationFilter
   ownedTurfs?: Prisma.TurfListRelationFilter
   subscriptions?: Prisma.OwnerSubscriptionListRelationFilter
+  ownerGallery?: Prisma.OwnerGalleryItemListRelationFilter
+  ownerBlogs?: Prisma.OwnerBlogListRelationFilter
   paymentsReceived?: Prisma.PaymentListRelationFilter
 }
 
@@ -283,6 +285,8 @@ export type UserOrderByWithRelationInput = {
   managedTurfs?: Prisma.TurfManagerOrderByRelationAggregateInput
   ownedTurfs?: Prisma.TurfOrderByRelationAggregateInput
   subscriptions?: Prisma.OwnerSubscriptionOrderByRelationAggregateInput
+  ownerGallery?: Prisma.OwnerGalleryItemOrderByRelationAggregateInput
+  ownerBlogs?: Prisma.OwnerBlogOrderByRelationAggregateInput
   paymentsReceived?: Prisma.PaymentOrderByRelationAggregateInput
 }
 
@@ -313,6 +317,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   managedTurfs?: Prisma.TurfManagerListRelationFilter
   ownedTurfs?: Prisma.TurfListRelationFilter
   subscriptions?: Prisma.OwnerSubscriptionListRelationFilter
+  ownerGallery?: Prisma.OwnerGalleryItemListRelationFilter
+  ownerBlogs?: Prisma.OwnerBlogListRelationFilter
   paymentsReceived?: Prisma.PaymentListRelationFilter
 }, "id" | "email">
 
@@ -378,6 +384,8 @@ export type UserCreateInput = {
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -405,6 +413,8 @@ export type UserUncheckedCreateInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -432,6 +442,8 @@ export type UserUpdateInput = {
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -459,6 +471,8 @@ export type UserUncheckedUpdateInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -648,6 +662,34 @@ export type EnumUserStatusFieldUpdateOperationsInput = {
   set?: $Enums.UserStatus
 }
 
+export type UserCreateNestedOneWithoutOwnerGalleryInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerGalleryInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOwnerGalleryNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerGalleryInput
+  upsert?: Prisma.UserUpsertWithoutOwnerGalleryInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnerGalleryInput, Prisma.UserUpdateWithoutOwnerGalleryInput>, Prisma.UserUncheckedUpdateWithoutOwnerGalleryInput>
+}
+
+export type UserCreateNestedOneWithoutOwnerBlogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerBlogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOwnerBlogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerBlogsInput
+  upsert?: Prisma.UserUpsertWithoutOwnerBlogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnerBlogsInput, Prisma.UserUpdateWithoutOwnerBlogsInput>, Prisma.UserUncheckedUpdateWithoutOwnerBlogsInput>
+}
+
 export type UserCreateNestedOneWithoutSessionsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
@@ -755,6 +797,8 @@ export type UserCreateWithoutOwnedTurfsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -781,6 +825,8 @@ export type UserUncheckedCreateWithoutOwnedTurfsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -823,6 +869,8 @@ export type UserUpdateWithoutOwnedTurfsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -849,6 +897,8 @@ export type UserUncheckedUpdateWithoutOwnedTurfsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -875,6 +925,8 @@ export type UserCreateWithoutBookingsInput = {
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -901,6 +953,8 @@ export type UserUncheckedCreateWithoutBookingsInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -943,6 +997,8 @@ export type UserUpdateWithoutBookingsInput = {
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -969,6 +1025,8 @@ export type UserUncheckedUpdateWithoutBookingsInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -996,6 +1054,8 @@ export type UserCreateWithoutPaymentsReceivedInput = {
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsReceivedInput = {
@@ -1022,6 +1082,8 @@ export type UserUncheckedCreateWithoutPaymentsReceivedInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsReceivedInput = {
@@ -1064,6 +1126,8 @@ export type UserUpdateWithoutPaymentsReceivedInput = {
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsReceivedInput = {
@@ -1090,6 +1154,8 @@ export type UserUncheckedUpdateWithoutPaymentsReceivedInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutReviewsInput = {
@@ -1115,6 +1181,8 @@ export type UserCreateWithoutReviewsInput = {
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1141,6 +1209,8 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1183,6 +1253,8 @@ export type UserUpdateWithoutReviewsInput = {
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1209,6 +1281,8 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1235,6 +1309,8 @@ export type UserCreateWithoutReviewRepliesInput = {
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1261,6 +1337,8 @@ export type UserUncheckedCreateWithoutReviewRepliesInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1303,6 +1381,8 @@ export type UserUpdateWithoutReviewRepliesInput = {
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1329,6 +1409,264 @@ export type UserUncheckedUpdateWithoutReviewRepliesInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutOwnerGalleryInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutOwnerGalleryInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutOwnerGalleryInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
+}
+
+export type UserUpsertWithoutOwnerGalleryInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnerGalleryInput, Prisma.UserUncheckedUpdateWithoutOwnerGalleryInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOwnerGalleryInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnerGalleryInput, Prisma.UserUncheckedUpdateWithoutOwnerGalleryInput>
+}
+
+export type UserUpdateWithoutOwnerGalleryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOwnerGalleryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutOwnerBlogsInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutOwnerBlogsInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutOwnerBlogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
+}
+
+export type UserUpsertWithoutOwnerBlogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnerBlogsInput, Prisma.UserUncheckedUpdateWithoutOwnerBlogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOwnerBlogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnerBlogsInput, Prisma.UserUncheckedUpdateWithoutOwnerBlogsInput>
+}
+
+export type UserUpdateWithoutOwnerBlogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOwnerBlogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1355,6 +1693,8 @@ export type UserCreateWithoutSessionsInput = {
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1381,6 +1721,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1423,6 +1765,8 @@ export type UserUpdateWithoutSessionsInput = {
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1449,6 +1793,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1475,6 +1821,8 @@ export type UserCreateWithoutAccountsInput = {
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1501,6 +1849,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1543,6 +1893,8 @@ export type UserUpdateWithoutAccountsInput = {
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1569,6 +1921,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1595,6 +1949,8 @@ export type UserCreateWithoutOwnerProfileInput = {
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1621,6 +1977,8 @@ export type UserUncheckedCreateWithoutOwnerProfileInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1663,6 +2021,8 @@ export type UserUpdateWithoutOwnerProfileInput = {
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1689,6 +2049,8 @@ export type UserUncheckedUpdateWithoutOwnerProfileInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1715,6 +2077,8 @@ export type UserCreateWithoutManagerProfileInput = {
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1741,6 +2105,8 @@ export type UserUncheckedCreateWithoutManagerProfileInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1783,6 +2149,8 @@ export type UserUpdateWithoutManagerProfileInput = {
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1809,6 +2177,8 @@ export type UserUncheckedUpdateWithoutManagerProfileInput = {
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1835,6 +2205,8 @@ export type UserCreateWithoutManagedTurfsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1861,6 +2233,8 @@ export type UserUncheckedCreateWithoutManagedTurfsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1903,6 +2277,8 @@ export type UserUpdateWithoutManagedTurfsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1929,6 +2305,8 @@ export type UserUncheckedUpdateWithoutManagedTurfsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1955,6 +2333,8 @@ export type UserCreateWithoutSubscriptionsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -1981,6 +2361,8 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -2023,6 +2405,8 @@ export type UserUpdateWithoutSubscriptionsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -2049,6 +2433,8 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -2066,6 +2452,8 @@ export type UserCountOutputType = {
   managedTurfs: number
   ownedTurfs: number
   subscriptions: number
+  ownerGallery: number
+  ownerBlogs: number
   paymentsReceived: number
 }
 
@@ -2078,6 +2466,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   managedTurfs?: boolean | UserCountOutputTypeCountManagedTurfsArgs
   ownedTurfs?: boolean | UserCountOutputTypeCountOwnedTurfsArgs
   subscriptions?: boolean | UserCountOutputTypeCountSubscriptionsArgs
+  ownerGallery?: boolean | UserCountOutputTypeCountOwnerGalleryArgs
+  ownerBlogs?: boolean | UserCountOutputTypeCountOwnerBlogsArgs
   paymentsReceived?: boolean | UserCountOutputTypeCountPaymentsReceivedArgs
 }
 
@@ -2150,6 +2540,20 @@ export type UserCountOutputTypeCountSubscriptionsArgs<ExtArgs extends runtime.Ty
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountOwnerGalleryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OwnerGalleryItemWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOwnerBlogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OwnerBlogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountPaymentsReceivedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PaymentWhereInput
 }
@@ -2179,6 +2583,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   managedTurfs?: boolean | Prisma.User$managedTurfsArgs<ExtArgs>
   ownedTurfs?: boolean | Prisma.User$ownedTurfsArgs<ExtArgs>
   subscriptions?: boolean | Prisma.User$subscriptionsArgs<ExtArgs>
+  ownerGallery?: boolean | Prisma.User$ownerGalleryArgs<ExtArgs>
+  ownerBlogs?: boolean | Prisma.User$ownerBlogsArgs<ExtArgs>
   paymentsReceived?: boolean | Prisma.User$paymentsReceivedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -2243,6 +2649,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   managedTurfs?: boolean | Prisma.User$managedTurfsArgs<ExtArgs>
   ownedTurfs?: boolean | Prisma.User$ownedTurfsArgs<ExtArgs>
   subscriptions?: boolean | Prisma.User$subscriptionsArgs<ExtArgs>
+  ownerGallery?: boolean | Prisma.User$ownerGalleryArgs<ExtArgs>
+  ownerBlogs?: boolean | Prisma.User$ownerBlogsArgs<ExtArgs>
   paymentsReceived?: boolean | Prisma.User$paymentsReceivedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -2262,6 +2670,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     managedTurfs: Prisma.$TurfManagerPayload<ExtArgs>[]
     ownedTurfs: Prisma.$TurfPayload<ExtArgs>[]
     subscriptions: Prisma.$OwnerSubscriptionPayload<ExtArgs>[]
+    ownerGallery: Prisma.$OwnerGalleryItemPayload<ExtArgs>[]
+    ownerBlogs: Prisma.$OwnerBlogPayload<ExtArgs>[]
     paymentsReceived: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -2682,6 +3092,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   managedTurfs<T extends Prisma.User$managedTurfsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$managedTurfsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TurfManagerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownedTurfs<T extends Prisma.User$ownedTurfsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedTurfsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TurfPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscriptions<T extends Prisma.User$subscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ownerGallery<T extends Prisma.User$ownerGalleryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownerGalleryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerGalleryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ownerBlogs<T extends Prisma.User$ownerBlogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownerBlogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerBlogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentsReceived<T extends Prisma.User$paymentsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3345,6 +3757,54 @@ export type User$subscriptionsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.OwnerSubscriptionScalarFieldEnum | Prisma.OwnerSubscriptionScalarFieldEnum[]
+}
+
+/**
+ * User.ownerGallery
+ */
+export type User$ownerGalleryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnerGalleryItem
+   */
+  select?: Prisma.OwnerGalleryItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnerGalleryItem
+   */
+  omit?: Prisma.OwnerGalleryItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnerGalleryItemInclude<ExtArgs> | null
+  where?: Prisma.OwnerGalleryItemWhereInput
+  orderBy?: Prisma.OwnerGalleryItemOrderByWithRelationInput | Prisma.OwnerGalleryItemOrderByWithRelationInput[]
+  cursor?: Prisma.OwnerGalleryItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OwnerGalleryItemScalarFieldEnum | Prisma.OwnerGalleryItemScalarFieldEnum[]
+}
+
+/**
+ * User.ownerBlogs
+ */
+export type User$ownerBlogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnerBlog
+   */
+  select?: Prisma.OwnerBlogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnerBlog
+   */
+  omit?: Prisma.OwnerBlogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnerBlogInclude<ExtArgs> | null
+  where?: Prisma.OwnerBlogWhereInput
+  orderBy?: Prisma.OwnerBlogOrderByWithRelationInput | Prisma.OwnerBlogOrderByWithRelationInput[]
+  cursor?: Prisma.OwnerBlogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OwnerBlogScalarFieldEnum | Prisma.OwnerBlogScalarFieldEnum[]
 }
 
 /**

@@ -137,7 +137,7 @@ export class ReviewService {
     }
 
     const skip = (page - 1) * limit;
-    const [data, total] = await prisma.$transaction([
+    const [data, total] = await Promise.all([
       prisma.review.findMany({
         where,
         include: {

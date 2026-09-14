@@ -19,6 +19,7 @@ type ShowcaseTurf = {
   rating: number;
   reviews: number;
   category: { id: string; name: string };
+  owner?: { id: string; name: string };
   distance?: number;
   images?: Array<{ url: string; altText?: string | null }>;
 };
@@ -63,7 +64,7 @@ export function TurfShowcase() {
                 transition={{ duration: 0.55, delay: index * 0.08 }}
                 className="group overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-glow"
               >
-                <Link href={`/turfs/${turf.id}`} className="block">
+                <Link href={turf.owner?.id ? `/owners/${turf.owner.id}` : `/turfs/${turf.id}`} className="block">
                     <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                       {turf.images?.[0]?.url ? <img src={turf.images[0].url} alt={turf.images[0].altText || turf.name} className="size-full object-cover transition-transform duration-500 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><span className="font-display text-4xl text-muted-foreground/30">{turf.name[0]}</span></div>}
                     <Badge className="absolute left-3 top-3 bg-background/80 text-foreground backdrop-blur">

@@ -1,6 +1,8 @@
 import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
 
+export const api = httpClient;
+
 export type Turf = {
   id: string;
   name: string;

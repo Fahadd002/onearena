@@ -413,6 +413,8 @@ export const ModelName = {
   Review: 'Review',
   ReviewReply: 'ReviewReply',
   User: 'User',
+  OwnerGalleryItem: 'OwnerGalleryItem',
+  OwnerBlog: 'OwnerBlog',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -438,7 +440,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "turfCategory" | "facility" | "turfImage" | "package" | "packageFacility" | "turf" | "turfFacility" | "turfPriceRule" | "turfSlot" | "booking" | "bookingInvoice" | "payment" | "refund" | "review" | "reviewReply" | "user" | "session" | "account" | "verification" | "ownerProfile" | "managerProfile" | "turfManager" | "managerPermissionGrant" | "subscriptionPlan" | "subscriptionPrice" | "ownerSubscription"
+    modelProps: "turfCategory" | "facility" | "turfImage" | "package" | "packageFacility" | "turf" | "turfFacility" | "turfPriceRule" | "turfSlot" | "booking" | "bookingInvoice" | "payment" | "refund" | "review" | "reviewReply" | "user" | "ownerGalleryItem" | "ownerBlog" | "session" | "account" | "verification" | "ownerProfile" | "managerProfile" | "turfManager" | "managerPermissionGrant" | "subscriptionPlan" | "subscriptionPrice" | "ownerSubscription"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1626,6 +1628,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OwnerGalleryItem: {
+      payload: Prisma.$OwnerGalleryItemPayload<ExtArgs>
+      fields: Prisma.OwnerGalleryItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OwnerGalleryItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerGalleryItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OwnerGalleryItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerGalleryItemPayload>
+        }
+        findFirst: {
+          args: Prisma.OwnerGalleryItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerGalleryItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OwnerGalleryItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerGalleryItemPayload>
+        }
+        findMany: {
+          args: Prisma.OwnerGalleryItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerGalleryItemPayload>[]
+        }
+        create: {
+          args: Prisma.OwnerGalleryItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerGalleryItemPayload>
+        }
+        createMany: {
+          args: Prisma.OwnerGalleryItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OwnerGalleryItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerGalleryItemPayload>[]
+        }
+        delete: {
+          args: Prisma.OwnerGalleryItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerGalleryItemPayload>
+        }
+        update: {
+          args: Prisma.OwnerGalleryItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerGalleryItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.OwnerGalleryItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OwnerGalleryItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OwnerGalleryItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerGalleryItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.OwnerGalleryItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerGalleryItemPayload>
+        }
+        aggregate: {
+          args: Prisma.OwnerGalleryItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOwnerGalleryItem>
+        }
+        groupBy: {
+          args: Prisma.OwnerGalleryItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OwnerGalleryItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OwnerGalleryItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OwnerGalleryItemCountAggregateOutputType> | number
+        }
+      }
+    }
+    OwnerBlog: {
+      payload: Prisma.$OwnerBlogPayload<ExtArgs>
+      fields: Prisma.OwnerBlogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OwnerBlogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerBlogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OwnerBlogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerBlogPayload>
+        }
+        findFirst: {
+          args: Prisma.OwnerBlogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerBlogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OwnerBlogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerBlogPayload>
+        }
+        findMany: {
+          args: Prisma.OwnerBlogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerBlogPayload>[]
+        }
+        create: {
+          args: Prisma.OwnerBlogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerBlogPayload>
+        }
+        createMany: {
+          args: Prisma.OwnerBlogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OwnerBlogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerBlogPayload>[]
+        }
+        delete: {
+          args: Prisma.OwnerBlogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerBlogPayload>
+        }
+        update: {
+          args: Prisma.OwnerBlogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerBlogPayload>
+        }
+        deleteMany: {
+          args: Prisma.OwnerBlogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OwnerBlogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OwnerBlogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerBlogPayload>[]
+        }
+        upsert: {
+          args: Prisma.OwnerBlogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OwnerBlogPayload>
+        }
+        aggregate: {
+          args: Prisma.OwnerBlogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOwnerBlog>
+        }
+        groupBy: {
+          args: Prisma.OwnerBlogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OwnerBlogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OwnerBlogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OwnerBlogCountAggregateOutputType> | number
+        }
+      }
+    }
     Session: {
       payload: Prisma.$SessionPayload<ExtArgs>
       fields: Prisma.SessionFieldRefs
@@ -2649,6 +2799,38 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const OwnerGalleryItemScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  title: 'title',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  sortOrder: 'sortOrder',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OwnerGalleryItemScalarFieldEnum = (typeof OwnerGalleryItemScalarFieldEnum)[keyof typeof OwnerGalleryItemScalarFieldEnum]
+
+
+export const OwnerBlogScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  title: 'title',
+  slug: 'slug',
+  excerpt: 'excerpt',
+  content: 'content',
+  coverImage: 'coverImage',
+  published: 'published',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OwnerBlogScalarFieldEnum = (typeof OwnerBlogScalarFieldEnum)[keyof typeof OwnerBlogScalarFieldEnum]
+
+
 export const SessionScalarFieldEnum = {
   id: 'id',
   expiresAt: 'expiresAt',
@@ -3253,6 +3435,8 @@ export type GlobalOmitConfig = {
   review?: Prisma.ReviewOmit
   reviewReply?: Prisma.ReviewReplyOmit
   user?: Prisma.UserOmit
+  ownerGalleryItem?: Prisma.OwnerGalleryItemOmit
+  ownerBlog?: Prisma.OwnerBlogOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit

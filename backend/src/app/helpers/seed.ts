@@ -90,7 +90,21 @@ async function seed() {
     await createOrUpdateAccount(demoUser.id, 'Open@1234');
     await createSession(demoUser.id);
     console.log('✓ Demo user (user@gmail.com / Open@1234)');
- 
+
+    // ----- Owner -----
+    const owner = await createOrUpdateUser('owner@gmail.com', {
+      name: 'Demo Owner',
+      role: UserRole.ADMIN,
+      status: UserStatus.ACTIVE,
+      emailVerified: true,
+      needPasswordChange: false,
+    });
+
+    await createOrUpdateAccount(owner.id, 'Open@1234');
+    await createSession(owner.id);
+
+    console.log('✓ Owner (owner@gmail.com / Open@1234)');
+
   } catch (err) {
     console.error('❌ Seed failed:', err);
   } finally {

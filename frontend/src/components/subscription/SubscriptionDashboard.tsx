@@ -34,6 +34,24 @@ interface TurfCount {
   limit: number;
 }
 
+interface SubscriptionApiResponse {
+  id: string;
+  status: string;
+  startDate: string;
+  endDate: string;
+  trialStart: string;
+  trialEnd: string;
+  isTrialUsed: boolean;
+  billingCycle: string;
+  autoRenew: boolean;
+  plan: {
+    name: string;
+    maxTurfs: number;
+    description: string;
+    prices: Array<{ period: string; price: string }>;
+  };
+}
+
 interface SubscriptionDashboardProps {
   onUpgrade?: () => void;
   onCancel?: () => void;
@@ -55,10 +73,11 @@ export const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
 
   const fetchSubscription = async () => {
     try {
-      const response = await api.get('/subscription');
-      if (response.data?.data) {
-        setSubscription(response.data.data);
+      const response = await api.get<SubscriptionApiResponse>('/subscription');
+      if (response.data) {
+        setSubscription(response.data);
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response?.status !== 404) {
         toast.error('Failed to load subscription');
@@ -71,10 +90,10 @@ export const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
 
   const fetchTurfCount = async () => {
     try {
-      const response = await api.get('/turfs?limit=1');
-      if (response.data?.data) {
+      const response = await api.get<Array<{ id: string }>>('/turfs?limit=1');
+      if (response.data) {
         setTurfCount({
-          used: response.data.data.length,
+          used: response.data.length,
           limit: 5, // Will be replaced by actual limit from backend
         });
       }
@@ -90,12 +109,13 @@ export const SubscriptionDashboard: React.FC<SubscriptionDashboardProps> = ({
 
     try {
       setCanceling(true);
-      const response = await api.patch('/subscription/cancel');
-      if (response.data?.success) {
+      const response = await api.patch<{ success: boolean }>('/subscription/cancel', {});
+      if (response.success) {
         toast.success('Subscription cancelled');
         fetchSubscription();
         onCancel?.();
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to cancel subscription');
     } finally {

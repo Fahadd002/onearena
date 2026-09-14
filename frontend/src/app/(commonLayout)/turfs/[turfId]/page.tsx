@@ -7,7 +7,6 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DatePicker } from "@/components/ui/date-picker";
 import { Badge } from "@/components/premium/Badge";
 import { SlotSelector } from "@/components/premium/SlotSelector";
 import { ImageGallery } from "@/components/premium/ImageGallery";
@@ -17,8 +16,8 @@ import { httpClient } from "@/lib/axios/httpClient";
 import { API_BASE_URL, API_ENDPOINTS } from "@/lib/api/config";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
-import { MapPin, Star, Phone, MessageSquare } from "lucide-react";
-import { DAY_NAMES, getDayOfWeekIndex } from "@/lib/time-utils";
+import { ChevronLeft, ChevronRight, MapPin, Star, Phone, MessageSquare } from "lucide-react";
+import { getDayOfWeekIndex } from "@/lib/time-utils";
 import type { Turf, TurfSlot, TurfFacility } from "@/types/turf.type";
 
 const getImageUrl = (url: string): string => {
@@ -36,6 +35,7 @@ export default function TurfDetailsPage() {
     const [turf, setTurf] = useState<Turf | null>(null);
     const [date, setDate] = useState("");
     const [today, setToday] = useState("");
+    const [dateWindowStart, setDateWindowStart] = useState("");
     const [slots, setSlots] = useState<TurfSlot[]>([]);
     const [selectedSlot, setSelectedSlot] = useState<TurfSlot | null>(null);
     const [booking, setBooking] = useState(false);
@@ -43,12 +43,15 @@ export default function TurfDetailsPage() {
     const [turfError, setTurfError] = useState<string | null>(null);
     const [slotError, setSlotError] = useState<string | null>(null);
     const [mobile, setMobile] = useState("");
+    const [phoneError, setPhoneError] = useState<string | null>(null);
+    const [slotsLoading, setSlotsLoading] = useState(false);
     const [dayOfWeek, setDayOfWeek] = useState<number>(0);
 
     useEffect(() => {
         const currentDate = new Date().toISOString().slice(0, 10);
         setToday(currentDate);
         setDate(currentDate);
+        setDateWindowStart(currentDate);
     }, []);
 
     useEffect(() => {
@@ -75,6 +78,8 @@ export default function TurfDetailsPage() {
 
     useEffect(() => {
         if (!turfId || !date) return;
+        setSlotsLoading(true);
+        setSlotError(null);
         httpClient.get<TurfSlot[]>(`${API_ENDPOINTS.marketplace.turfs}/${turfId}/slots?date=${date}`)
             .then((result) => {
                 setSlots(result.data ?? []);
@@ -83,8 +88,23 @@ export default function TurfDetailsPage() {
             .catch(() => {
                 setSlots([]);
                 setSlotError("Availability is temporarily unavailable.");
-            });
+            })
+            .finally(() => setSlotsLoading(false));
     }, [date, turfId]);
+
+    const nextTenDays = useMemo(() => {
+        if (!dateWindowStart) return [];
+        return Array.from({ length: 10 }, (_, index) => {
+            const day = new Date(`${dateWindowStart}T00:00:00.000Z`);
+            day.setUTCDate(day.getUTCDate() + index);
+            return {
+                value: day.toISOString().slice(0, 10),
+                weekday: day.toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" }),
+                day: day.toLocaleDateString("en-US", { day: "2-digit", timeZone: "UTC" }),
+                month: day.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" }),
+            };
+        });
+    }, [dateWindowStart]);
 
     const avgRating = useMemo(() => {
         if (!turf?.reviews?.length) return 0;
@@ -102,6 +122,13 @@ export default function TurfDetailsPage() {
 
         if (!selectedSlot?.id || !turf || !session) return;
 
+        const normalizedMobile = mobile.replace(/[\s-]/g, "");
+        if (!/^(?:\+8801|01)\d{9}$/.test(normalizedMobile)) {
+            setPhoneError("Enter a valid Bangladesh mobile number");
+            return;
+        }
+        setPhoneError(null);
+
         setBooking(true);
         try {
             const result = await httpClient.post<{ id: string }>(
@@ -112,7 +139,7 @@ export default function TurfDetailsPage() {
                     startMinute: selectedSlot.startMinute,
                     endMinute: selectedSlot.endMinute,
                     slotId: selectedSlot.id,
-                    mobile,
+                    mobile: normalizedMobile,
                     idempotencyKey: crypto.randomUUID(),
                 }
             );
@@ -167,6 +194,7 @@ export default function TurfDetailsPage() {
     }
 
     const facilities = turf.facilities ?? [];
+    const selectedDay = nextTenDays.find((day) => day.value === date);
 
     return (
         <main className="mx-auto max-w-7xl px-4 pt-20 pb-10 sm:px-6">
@@ -319,32 +347,68 @@ export default function TurfDetailsPage() {
                             <CardContent className="p-5">
                                 <div className="space-y-4">
                                     <div>
-                                        <div className="flex items-center justify-between">
+                                        <div className="flex items-center justify-between gap-3">
                                             <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                                                Pick a date
+                                                Choose a day
                                             </label>
-                                            {date && (
-                                                <span className="text-xs font-medium text-muted-foreground">
-                                                    {DAY_NAMES[new Date(date).getDay()]}
-                                                </span>
-                                            )}
+                                            <span className="text-xs font-medium text-primary">Next 10 days</span>
                                         </div>
-                                        <DatePicker
-                                            value={date}
-                                            onChange={(d) => {
-                                                setDate(d);
+                                        <div className="mt-3 flex items-center gap-1.5">
+                                            <button type="button" aria-label="Previous 10 days" disabled={!dateWindowStart || dateWindowStart <= today} onClick={() => {
+                                                const previous = new Date(`${dateWindowStart}T00:00:00.000Z`);
+                                                previous.setUTCDate(previous.getUTCDate() - 10);
+                                                const value = previous.toISOString().slice(0, 10);
+                                                const start = value < today ? today : value;
+                                                setDateWindowStart(start);
+                                                setDate(start);
                                                 setSelectedSlot(null);
-                                                setSlotError(null);
-                                            }}
-                                            min={today}
-                                            placeholder="Pick a date"
-                                            className="mt-2 surface-input h-9 pl-9 text-sm"
-                                        />
+                                            }} className="grid size-7 shrink-0 place-items-center rounded-md border border-border text-muted-foreground transition hover:border-primary hover:text-primary disabled:opacity-40">
+                                                <ChevronLeft className="size-4" />
+                                            </button>
+                                            <div className="grid min-w-0 flex-1 grid-cols-5 gap-1.5 sm:grid-cols-10">
+                                                {nextTenDays.map((day) => {
+                                                    const selected = day.value === date;
+                                                    const isToday = day.value === today;
+                                                    return (
+                                                        <button
+                                                            key={day.value}
+                                                            type="button"
+                                                            onClick={() => { setDate(day.value); setSelectedSlot(null); setSlotError(null); }}
+                                                            className={`min-w-0 rounded-lg border px-1 py-2 text-center transition ${selected ? "border-primary bg-primary text-primary-foreground shadow-sm" : "border-border bg-secondary/35 text-muted-foreground hover:border-primary/60 hover:text-foreground"}`}
+                                                        >
+                                                            <span className="block truncate text-[10px] font-semibold uppercase">{isToday ? "Today" : day.weekday}</span>
+                                                            <span className="mt-0.5 block text-base font-bold leading-none">{day.day}</span>
+                                                            <span className="mt-1 block text-[10px]">{day.month}</span>
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                            <button type="button" aria-label="Next 10 days" onClick={() => {
+                                                const next = new Date(`${dateWindowStart}T00:00:00.000Z`);
+                                                next.setUTCDate(next.getUTCDate() + 10);
+                                                const value = next.toISOString().slice(0, 10);
+                                                setDateWindowStart(value);
+                                                setDate(value);
+                                                setSelectedSlot(null);
+                                            }} disabled={!dateWindowStart} className="grid size-7 shrink-0 place-items-center rounded-md border border-border text-muted-foreground transition hover:border-primary hover:text-primary disabled:opacity-40">
+                                                <ChevronRight className="size-4" />
+                                            </button>
+                                        </div>
+                                        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-muted-foreground">
+                                            <span className="flex items-center gap-1"><i className="size-2 rounded-full bg-sky-500" /> Available</span>
+                                            <span className="flex items-center gap-1"><i className="size-2 rounded-full bg-orange-500" /> Held</span>
+                                            <span className="flex items-center gap-1"><i className="size-2 rounded-full bg-rose-500" /> Booked</span>
+                                            {selectedDay && <span className="ml-auto text-primary">{selectedDay.weekday}, {selectedDay.month} {selectedDay.day}</span>}
+                                        </div>
                                     </div>
 
                                     {slotError ? (
                                         <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
                                             {slotError}
+                                        </div>
+                                    ) : slotsLoading ? (
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {Array.from({ length: 6 }).map((_, index) => <div key={index} className="h-16 animate-pulse rounded-lg bg-secondary/60" />)}
                                         </div>
                                     ) : (
                                         <SlotSelector
@@ -384,11 +448,12 @@ export default function TurfDetailsPage() {
                                                 className="pl-9 surface-input"
                                             />
                                         </div>
+                                        {phoneError && <p className="mt-1 text-xs text-destructive">{phoneError}</p>}
                                     </div>
 
                                     <Button
                                         variant="hero"
-                                        size="lg"
+                                        size="default"
                                         className="w-full"
                                         disabled={
                                             !selectedSlot || !mobile.trim() || booking || authLoading

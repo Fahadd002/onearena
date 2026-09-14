@@ -114,6 +114,12 @@ export class TurfController {
     });
   }
 
+  @Get('owners/:ownerId/landing')
+  async getOwnerLanding(@Param('ownerId') ownerId: string, @Res() res: Response) {
+    const data = await this.turfService.getOwnerLanding(ownerId);
+    sendResponse(res, { statusCode: status.OK, success: true, message: 'Owner landing page fetched successfully', data });
+  }
+
   @Post('owner/turfs')
   @AuthRoles(UserRole.ADMIN)
   @UseGuards(CheckAuthGuard)

@@ -26,7 +26,7 @@ type Turf = {
   slotMinutes: number;
   latitude: string | number;
   longitude: string | number;
-  status: "DRAFT" | "PENDING_APPROVAL" | "ACTIVE" | "INACTIVE" | "REJECTED";
+  status:  "ACTIVE" | "INACTIVE" | "REJECTED";
   category: { id: string; name: string };
   owner: { id: string; name: string; email: string };
   facilities: Array<{ facility: { id: string; name: string } }>;
@@ -48,8 +48,6 @@ type Turf = {
   }>;
 };
 const labels = {
-  DRAFT: "Draft",
-  PENDING_APPROVAL: "Awaiting review",
   ACTIVE: "Approved",
   INACTIVE: "Unapproved",
   REJECTED: "Rejected",
@@ -119,7 +117,6 @@ export default function SuperAdminTurfReviewPage() {
               disabled={update.isPending}
             >
               <Check className="size-4" />
-              {turf.status === "PENDING_APPROVAL" ? "Approve turf" : "Set active"}
             </Button>
           )}
           {turf.status === "ACTIVE" && (
@@ -130,15 +127,6 @@ export default function SuperAdminTurfReviewPage() {
             >
               <X className="size-4" />
               Unapprove
-            </Button>
-          )}
-          {turf.status === "PENDING_APPROVAL" && (
-            <Button
-              variant="destructive"
-              onClick={() => update.mutate("REJECTED")}
-              disabled={update.isPending}
-            >
-              Reject
             </Button>
           )}
         </div>

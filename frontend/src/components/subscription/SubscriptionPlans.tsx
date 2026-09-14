@@ -1,4 +1,4 @@
-/* components/subscription/SubscriptionPlans.tsx */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -6,8 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, Zap } from 'lucide-react';
-import { api } from '@/services/api.services';
 import { toast } from 'sonner';
+import { api } from '@/services/api.services';
 import Loader from '../common/Loader';
 
 interface Plan {
@@ -41,11 +41,11 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
   const fetchPlans = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/subscription-plans');
-      if (response.data?.data) {
-        setPlans(response.data.data);
-        if (response.data.data.length > 0) {
-          setSelectedPlan(response.data.data[0].id);
+      const response = await api.get<Plan[]>('/subscription-plans');
+      if (response.data) {
+        setPlans(response.data);
+        if (response.data.length > 0) {
+          setSelectedPlan(response.data[0].id);
         }
       }
     } catch (error) {
@@ -63,15 +63,16 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
     }
 
     try {
-      const response = await api.post('/subscription/subscribe', {
+      const response = await api.post<{ success: boolean }>('/subscription/subscribe', {
         planId: selectedPlan,
         billingCycle,
       });
 
-      if (response.data?.success) {
+      if (response.success) {
         toast.success('Subscription activated! 30-day free trial started.');
         onSelectPlan?.(selectedPlan, billingCycle);
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to subscribe');
       console.error('Subscribe error:', error);
@@ -91,7 +92,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
       <div className="mb-12">
         <h2 className="text-3xl font-bold mb-2 text-center">Choose Your Plan</h2>
         <p className="text-center text-gray-600">
-          All plans include a 30-day free trial. No credit card required to start.
+          All plans include a 30-day free trial. No fee required to start.
         </p>
       </div>
 

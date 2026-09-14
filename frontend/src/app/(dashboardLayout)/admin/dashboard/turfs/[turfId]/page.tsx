@@ -16,14 +16,14 @@ type Turf = {
   slotMinutes: number;
   latitude: string | number;
   longitude: string | number;
-  status: "PENDING_APPROVAL" | "ACTIVE" | "REJECTED" | "INACTIVE";
+  status: "ACTIVE" | "REJECTED" | "INACTIVE";
   category: { name: string };
   facilities: Array<{ facility: { id: string; name: string } }>;
   images: Array<{ id: string; url: string; altText?: string | null }>;
   priceRules: Array<{ dayOfWeek: number; startMinute: number; endMinute: number; price: string | number; active: boolean }>;
 };
 
-const statusLabel: Record<Turf["status"], string> = { ACTIVE: "Live", PENDING_APPROVAL: "In review", REJECTED: "Changes needed", INACTIVE: "Paused" };
+const statusLabel: Record<Turf["status"], string> = { ACTIVE: "Live", REJECTED: "Changes needed", INACTIVE: "Paused" };
 
 export default function AdminTurfDetailPage() {
   const params = useParams<{ turfId: string }>();

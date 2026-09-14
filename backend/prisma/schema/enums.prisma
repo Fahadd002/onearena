@@ -42,12 +42,6 @@ enum PaymentEventStatus {
   FAILED
 }
 
-enum CommissionStatus {
-  PENDING
-  PAID
-  CANCELLED
-}
-
 enum ManagerPermission {
   TURF_VIEW
   TURF_CREATE

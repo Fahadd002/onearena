@@ -18,6 +18,16 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import Loader from '../common/Loader';
 
+type SubscriptionPlan = {
+  id: string;
+  name: string;
+  description?: string;
+  price?: number | string;
+  [key: string]: unknown;
+};
+
+type UploadResponseData = { id?: string };
+
 const profileSchema = z.object({
   // Step 1: Personal Info
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
@@ -56,6 +66,7 @@ type ProfileFormData = z.infer<typeof profileSchema>;
 export const ProfileCompletionForm: React.FC = () => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [subscriptionPlans, setSubscriptionPlans] = useState<any[]>([]);
   const [uploadingDocs, setUploadingDocs] = useState(false);
   const router = useRouter();
@@ -69,9 +80,9 @@ export const ProfileCompletionForm: React.FC = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await api.get('/subscription-plans');
-        if (response.data?.data) {
-          setSubscriptionPlans(response.data.data);
+        const response = await api.get<SubscriptionPlan[]>('/subscription-plans');
+        if (response.data) {
+          setSubscriptionPlans(response.data);
         }
       } catch (error) {
         console.error('Failed to fetch subscription plans:', error);
@@ -90,12 +101,12 @@ export const ProfileCompletionForm: React.FC = () => {
       formData.append('file', file);
       formData.append('folder', 'owner-documents');
 
-      const uploadResponse = await api.post('/upload', formData, {
+      const uploadResponse = await api.post<UploadResponseData>('/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      if (uploadResponse.data?.data?.id) {
-        form.setValue(fieldName, uploadResponse.data.data.id);
+      if (uploadResponse.data?.id) {
+        form.setValue(fieldName, uploadResponse.data.id);
         toast.success('Document uploaded successfully');
       }
     } catch (error) {
@@ -130,9 +141,9 @@ export const ProfileCompletionForm: React.FC = () => {
         verificationStatus: 'SUBMITTED',
       };
 
-      const profileResponse = await api.patch('/owner-profile', profilePayload);
-      
-      if (!profileResponse.data?.success) {
+      const profileResponse = await api.patch<{ success: boolean }>('/owner-profile', profilePayload);
+
+      if (!profileResponse.success) {
         throw new Error('Failed to update profile');
       }
 
@@ -142,9 +153,9 @@ export const ProfileCompletionForm: React.FC = () => {
         billingCycle: data.billingCycle,
       };
 
-      const subscriptionResponse = await api.post('/subscription/subscribe', subscriptionPayload);
-      
-      if (!subscriptionResponse.data?.success) {
+      const subscriptionResponse = await api.post<{ success: boolean }>('/subscription/subscribe', subscriptionPayload);
+
+      if (!subscriptionResponse.success) {
         throw new Error('Failed to create subscription');
       }
 
@@ -154,6 +165,7 @@ export const ProfileCompletionForm: React.FC = () => {
       setTimeout(() => {
         router.push('/admin/dashboard');
       }, 2000);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to complete profile');
       console.error('Profile submission error:', error);

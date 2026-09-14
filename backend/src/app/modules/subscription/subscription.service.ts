@@ -315,4 +315,53 @@ export class SubscriptionService {
       orderBy: { createdAt: 'desc' },
     });
   }
+
+  async getAdminSubscriptions(options: { status?: SubscriptionStatus; search?: string }) {
+    return prisma.ownerSubscription.findMany({
+      where: {
+        ...(options.status ? { status: options.status } : {}),
+        ...(options.search
+          ? {
+            user: {
+              OR: [
+                { name: { contains: options.search, mode: 'insensitive' } },
+                { email: { contains: options.search, mode: 'insensitive' } },
+              ],
+            },
+          }
+          : {}),
+      },
+      include: {
+        user: { select: { id: true, name: true, email: true, role: true } },
+        plan: { include: { prices: true } },
+      },
+      orderBy: { updatedAt: 'desc' },
+    });
+  }
+
+  async updateAdminSubscription(
+    subscriptionId: string,
+    data: { status?: SubscriptionStatus; endDate?: string; autoRenew?: boolean; planId?: string },
+  ) {
+    const existing = await prisma.ownerSubscription.findUnique({ where: { id: subscriptionId } });
+    if (!existing) throw new AppError(httpStatus.NOT_FOUND, 'Subscription not found');
+
+    if (data.planId) {
+      await this.getPlan(data.planId);
+    }
+
+    return prisma.ownerSubscription.update({
+      where: { id: subscriptionId },
+      data: {
+        status: data.status,
+        endDate: data.endDate ? new Date(data.endDate) : undefined,
+        autoRenew: data.autoRenew,
+        planId: data.planId,
+      },
+      include: {
+        user: { select: { id: true, name: true, email: true, role: true } },
+        plan: { include: { prices: true } },
+      },
+    });
+  }
 }

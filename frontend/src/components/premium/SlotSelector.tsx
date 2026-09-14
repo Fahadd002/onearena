@@ -97,7 +97,7 @@ export function SlotSelector({
         const price = getSlotPrice(slot, priceRules, dayOfWeek, basePrice);
         const isAvailable = slot.status === "AVAILABLE";
         const isBooked = slot.status === "BOOKED";
-        const isPrebooked = slot.status === "PREBOOKED";
+        const isPrebooked = slot.status === "PREBOOKED" || slot.status === "RESERVED";
 
         let stateClass = "";
         let borderColor = "border-border";
@@ -110,8 +110,8 @@ export function SlotSelector({
             stateClass = "slot-available text-foreground";
             hoverClass = "hover:slot-available-hover hover:border-primary/60";
             if (peak) {
-                stateClass = "slot-available bg-transparent text-foreground slot-peak";
-                borderColor = "border-accent";
+                stateClass = "slot-available bg-violet-500/10 text-foreground";
+                borderColor = "border-violet-500/70";
             }
         } else if (isPrebooked) {
             stateClass = "slot-prebooked text-slot-prebooked-foreground";
@@ -152,10 +152,10 @@ export function SlotSelector({
                     <Badge variant="secondary" size="sm">Booked</Badge>
                 )}
                 {isPrebooked && (
-                    <Badge variant="warning" size="sm">Pre-booked</Badge>
+                    <Badge variant="secondary" size="sm">Held</Badge>
                 )}
                 {peak && isAvailable && !selected && (
-                    <Badge variant="peak" size="sm">Peak</Badge>
+                    <Badge variant="secondary" size="sm">Peak</Badge>
                 )}
                 {selected && (
                     <svg

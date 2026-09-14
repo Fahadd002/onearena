@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Res } from '@nestjs/common';
 import { Response } from 'express';
 import httpStatus from 'http-status';
-import { FixedPeriod } from '../../../generated/prisma/enums';
+import { FixedPeriod, SubscriptionStatus } from '../../../generated/prisma/enums';
 import { SubscriptionService } from './subscription.service';
 import { CurrentUser } from '../../../common/decorators/current-user.decorator';
 import { AuthRoles } from '../../../common/decorators/auth-roles.decorator';
@@ -51,6 +51,30 @@ export class SubscriptionController {
   ) {
     const result = await this.subscriptionService.getAdminPlans({ search, sortBy, sortOrder, page: Number(page), limit: Number(limit) });
     sendResponse(res, { statusCode: httpStatus.OK, success: true, message: 'Subscription plans retrieved', data: result });
+  }
+
+  @Get('subscriptions/admin')
+  @AuthRoles(UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async getAdminSubscriptions(
+    @Query('status') statusFilter: SubscriptionStatus,
+    @Query('search') search: string,
+    @Res() res: Response,
+  ) {
+    const subscriptions = await this.subscriptionService.getAdminSubscriptions({ status: statusFilter, search });
+    sendResponse(res, { statusCode: httpStatus.OK, success: true, message: 'Owner subscriptions retrieved', data: subscriptions });
+  }
+
+  @Patch('subscriptions/admin/:subscriptionId')
+  @AuthRoles(UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async updateAdminSubscription(
+    @Param('subscriptionId') subscriptionId: string,
+    @Body() body: { status?: SubscriptionStatus; endDate?: string; autoRenew?: boolean; planId?: string },
+    @Res() res: Response,
+  ) {
+    const subscription = await this.subscriptionService.updateAdminSubscription(subscriptionId, body);
+    sendResponse(res, { statusCode: httpStatus.OK, success: true, message: 'Owner subscription updated', data: subscription });
   }
 
   @Post('subscription-plans')

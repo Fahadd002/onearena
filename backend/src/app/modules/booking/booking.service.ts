@@ -31,18 +31,29 @@ export class BookingService implements OnModuleInit {
       throw new AppError(status.BAD_REQUEST, 'Slot ID is required');
     }
 
-    if (!payload.idempotencyKey) {
+    const idempotencyKey = payload.idempotencyKey?.trim();
+    if (!idempotencyKey) {
       throw new AppError(status.BAD_REQUEST, 'Idempotency key is required');
     }
 
     // Check for duplicate booking using idempotency key
     const duplicate = await prisma.booking.findUnique({
-      where: { idempotencyKey: payload.idempotencyKey },
+      where: { idempotencyKey },
+      include: { slot: { select: { turfId: true, slotDate: true, startMinute: true, endMinute: true } } },
     });
 
     if (duplicate) {
       if (duplicate.userId !== user.userId) {
         throw new AppError(status.CONFLICT, 'Idempotency key is already in use');
+      }
+      if (
+        duplicate.slot.turfId !== payload.turfId ||
+        duplicate.slot.startMinute !== payload.startMinute ||
+        duplicate.slot.endMinute !== payload.endMinute ||
+        duplicate.slot.slotDate.toISOString().slice(0, 10) !== payload.bookingDate ||
+        (duplicate.mobile ?? null) !== (payload.mobile?.trim() || null)
+      ) {
+        throw new AppError(status.CONFLICT, 'Idempotency key was already used for a different booking request');
       }
       return duplicate;
     }
@@ -85,7 +96,7 @@ export class BookingService implements OnModuleInit {
         if (payload.slotId) {
           const existingSlot = await tx.turfSlot.findUnique({
             where: { id: payload.slotId },
-            select: { slotStatus: true, active: true },
+            select: { turfId: true, slotDate: true, startMinute: true, endMinute: true, slotStatus: true, active: true },
           });
 
           if (!existingSlot) {
@@ -94,6 +105,14 @@ export class BookingService implements OnModuleInit {
 
           if (!existingSlot.active) {
             throw new AppError(status.BAD_REQUEST, 'This slot is not available for booking');
+          }
+          if (
+            existingSlot.turfId !== turf.id ||
+            existingSlot.slotDate.toISOString().slice(0, 10) !== payload.bookingDate ||
+            existingSlot.startMinute !== payload.startMinute ||
+            existingSlot.endMinute !== payload.endMinute
+          ) {
+            throw new AppError(status.BAD_REQUEST, 'Slot does not match the requested turf, date, or time');
           }
           if (existingSlot.slotStatus === SlotSatus.BOOKED) {
             throw new AppError(status.CONFLICT, 'This turf slot is already booked');
@@ -131,13 +150,13 @@ export class BookingService implements OnModuleInit {
             discountAmount: 0,
             subtotal: total,
             totalAmount: total,
-            mobile: payload.mobile ?? null,
+            mobile: payload.mobile?.trim() || null,
             status: BookingStatus.PREBOOKED,
             bookingExpiresAt: new Date(
               Date.now() +
                 Number(config.bookingPaymentTimeout ?? 15) * 60000
             ),
-            idempotencyKey: payload.idempotencyKey,
+            idempotencyKey,
           },
         });
 
@@ -161,6 +180,25 @@ export class BookingService implements OnModuleInit {
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002'
       ) {
+        const concurrentDuplicate = await prisma.booking.findUnique({
+          where: { idempotencyKey },
+          include: { slot: { select: { turfId: true, slotDate: true, startMinute: true, endMinute: true } } },
+        });
+        if (concurrentDuplicate) {
+          if (concurrentDuplicate.userId !== user.userId) {
+            throw new AppError(status.CONFLICT, 'Idempotency key is already in use');
+          }
+          if (
+            concurrentDuplicate.slot.turfId !== payload.turfId ||
+            concurrentDuplicate.slot.startMinute !== payload.startMinute ||
+            concurrentDuplicate.slot.endMinute !== payload.endMinute ||
+            concurrentDuplicate.slot.slotDate.toISOString().slice(0, 10) !== payload.bookingDate ||
+            (concurrentDuplicate.mobile ?? null) !== (payload.mobile?.trim() || null)
+          ) {
+            throw new AppError(status.CONFLICT, 'Idempotency key was already used for a different booking request');
+          }
+          return concurrentDuplicate;
+        }
         throw new AppError(status.CONFLICT, 'This turf slot is already booked');
       }
       throw error;

@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import cron from 'node-cron';
 import status from 'http-status';
 import { Prisma } from '../../../generated/prisma/client';
-import { TurfStatus, UserRole } from '../../../generated/prisma/enums';
+import { SubscriptionStatus, TurfStatus, UserRole } from '../../../generated/prisma/enums';
 
 import AppError from '../../../config/errorHelpers/AppError';
 import prisma from '../../../shared/prisma';
@@ -20,7 +21,42 @@ export interface TurfPayload {
 }
 
 @Injectable()
-export class TurfService {
+export class TurfService implements OnModuleInit {
+
+  onModuleInit() {
+    this.deactivateTurfsForInactiveSubscriptions().catch(() => undefined);
+    cron.schedule('0 * * * *', () => {
+      this.deactivateTurfsForInactiveSubscriptions().catch(() => undefined);
+    });
+  }
+
+  async deactivateTurfsForInactiveSubscriptions() {
+    const now = new Date();
+    const result = await prisma.turf.updateMany({
+      where: {
+        status: TurfStatus.ACTIVE,
+        owner: {
+          OR: [
+            { subscriptions: { none: {} } },
+            {
+              subscriptions: {
+                some: {
+                  OR: [
+                    { status: SubscriptionStatus.EXPIRED },
+                    { status: SubscriptionStatus.CANCELLED },
+                    { endDate: { lte: now } },
+                  ],
+                },
+              },
+            },
+          ],
+        },
+      },
+      data: { status: TurfStatus.INACTIVE },
+    });
+
+    return { count: result.count };
+  }
 
   private validateCoordinates(payload: TurfPayload) {
     if (
@@ -140,6 +176,7 @@ export class TurfService {
       where,
       include: {
         category: true,
+        owner: { select: { id: true, name: true, image: true } },
         images: { orderBy: { sortOrder: 'asc' }, take: 1 },
         facilities: {
           include: { facility: true },
@@ -182,6 +219,40 @@ export class TurfService {
       .sort((a, b) => a.distance - b.distance);
 
     return withDistance;
+  }
+
+  async getOwnerLanding(ownerId: string) {
+    const owner = await prisma.user.findFirst({
+      where: { id: ownerId, role: UserRole.ADMIN, status: 'ACTIVE' },
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        ownerProfile: {
+          select: { companyName: true, address: true, businessLogo: true, bussinessEmail: true, contactNumber: true },
+        },
+        ownedTurfs: {
+          where: { status: TurfStatus.ACTIVE },
+          include: {
+            category: true,
+            images: { orderBy: { sortOrder: 'asc' } },
+            facilities: { include: { facility: true } },
+            reviews: {
+              where: { isHidden: false },
+              include: { user: { select: { id: true, name: true, image: true } } },
+              orderBy: { createdAt: 'desc' },
+              take: 8,
+            },
+          },
+          orderBy: { createdAt: 'desc' },
+        },
+        ownerGallery: { where: { active: true }, orderBy: { sortOrder: 'asc' } },
+        ownerBlogs: { where: { published: true }, orderBy: { publishedAt: 'desc' } },
+      },
+    });
+
+    if (!owner) throw new AppError(status.NOT_FOUND, 'Owner page not found');
+    return owner;
   }
 
   private toRad(value: number): number {
@@ -286,6 +357,34 @@ export class TurfService {
     if (owner.role !== UserRole.ADMIN) {
       throw new AppError(status.FORBIDDEN, 'Only approved owners can create turfs');
     }
+
+    const subscription = await prisma.ownerSubscription.findUnique({
+      where: { userId: owner.userId },
+      include: { plan: true },
+    });
+    if (!subscription) {
+      throw new AppError(status.FORBIDDEN, 'An active subscription is required before creating a turf');
+    }
+    if (
+      (subscription.status !== SubscriptionStatus.TRIAL &&
+        subscription.status !== SubscriptionStatus.ACTIVE &&
+        subscription.status !== SubscriptionStatus.EXPIRING) ||
+      subscription.endDate <= new Date()
+    ) {
+      throw new AppError(status.FORBIDDEN, 'Your subscription is expired or cancelled. Renew it before creating a turf');
+    }
+    if (!subscription.plan.active) {
+      throw new AppError(status.FORBIDDEN, 'Your subscription plan is no longer available');
+    }
+
+    const turfCount = await prisma.turf.count({ where: { ownerId: owner.userId } });
+    if (turfCount >= subscription.plan.maxTurfs) {
+      throw new AppError(
+        status.FORBIDDEN,
+        `Your subscription allows ${subscription.plan.maxTurfs} turf(s). Upgrade your plan to create another turf`,
+      );
+    }
+
     this.validateCoordinates(payload);
 
     const data = await prisma.turf.create({
@@ -298,8 +397,7 @@ export class TurfService {
         latitude: new Prisma.Decimal(payload.latitude),
         longitude: new Prisma.Decimal(payload.longitude),
         basePrice: new Prisma.Decimal(payload.basePrice),
-        slotMinutes: payload.slotMinutes ?? 60,
-        status: TurfStatus.PENDING_APPROVAL,
+        slotMinutes: payload.slotMinutes ?? 60
       },
     });
 
@@ -318,8 +416,7 @@ export class TurfService {
         latitude: new Prisma.Decimal(payload.latitude),
         longitude: new Prisma.Decimal(payload.longitude),
         basePrice: new Prisma.Decimal(payload.basePrice),
-        slotMinutes: payload.slotMinutes ?? 60,
-        status: TurfStatus.PENDING_APPROVAL,
+        slotMinutes: payload.slotMinutes ?? 60
       },
     });
     return data;
@@ -342,7 +439,6 @@ export class TurfService {
         description: payload.description,
         address: payload.address,
         slotMinutes: payload.slotMinutes,
-        status: TurfStatus.PENDING_APPROVAL,
         basePrice: payload.basePrice !== undefined ? new Prisma.Decimal(payload.basePrice) : undefined,
         ...(payload.latitude === undefined ? {} : { latitude: new Prisma.Decimal(payload.latitude) }),
         ...(payload.longitude === undefined ? {} : { longitude: new Prisma.Decimal(payload.longitude) }),

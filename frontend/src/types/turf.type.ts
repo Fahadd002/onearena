@@ -59,6 +59,7 @@ export interface Turf {
     latitude?: string;
     longitude?: string;
     category: { id: string; name: string };
+    owner?: { id: string; name: string; image?: string | null };
     facilities?: TurfFacility[];
     images?: TurfImage[];
     priceRules?: TurfPriceRule[];
@@ -72,7 +73,7 @@ export interface TurfSlot {
     startMinute: number;
     endMinute: number;
     available: boolean;
-    status?: "AVAILABLE" | "PREBOOKED" | "BOOKED";
+    status?: "AVAILABLE" | "RESERVED" | "PREBOOKED" | "BOOKED";
     price?: number;
 }
 

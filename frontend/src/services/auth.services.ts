@@ -81,7 +81,8 @@ export async function getUserInfo(): Promise<IAuthUser | null> {
             .map((cookie) => `${cookie.name}=${cookie.value}`)
             .join("; ");
 
-        if (!authCookieHeader) {
+        const accessToken = cookieStore.get("accessToken")?.value;
+        if (!authCookieHeader || !accessToken) {
             return null;
         }
 

@@ -17,6 +17,7 @@ import { OwnerProfileModule } from './app/modules/owner-profile/owner-profile.mo
 import { TurfSlotModule } from './app/modules/turf-slots/turf-slot.module';
 import { TurfPricingModule } from './app/modules/turf-pricing/turf-pricing.module';
 import { SubscriptionModule } from './app/modules/subscription/subscription.module';
+import { OwnerContentModule } from './app/modules/owner-content/owner-content.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { SubscriptionModule } from './app/modules/subscription/subscription.modu
     RefundModule,
     OwnerProfileModule,
     SubscriptionModule,
+    OwnerContentModule,
   ]
 })
 export class AppModule { }
