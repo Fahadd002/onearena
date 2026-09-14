@@ -1,0 +1,150 @@
+enum UserRole {
+  USER
+  ADMIN
+  MANAGER
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  BLOCKED
+}
+
+enum OwnerVerificationStatus {
+  CREATED
+  PENDING
+  SUBMITTED
+  APPROVED
+  REJECTED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum TurfStatus {
+  ACTIVE
+  INACTIVE
+  REJECTED
+}
+
+enum PaymentProvider {
+  STRIPE
+  MANUAL
+}
+
+enum PaymentEventStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+}
+
+enum CommissionStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+enum ManagerPermission {
+  TURF_VIEW
+  TURF_CREATE
+  TURF_UPDATE
+  TURF_DELETE
+  SLOT_VIEW
+  SLOT_MANAGE
+  BOOKING_VIEW
+  BOOKING_MANAGE
+  FACILITY_VIEW
+  FACILITY_MANAGE
+  PACKAGE_VIEW
+  PACKAGE_MANAGE
+  REVIEW_VIEW
+  REVIEW_MANAGE
+}
+
+enum RefundStatus {
+  REQUESTED
+  APPROVED
+  REJECTED
+  PROCESSED
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  PAID
+  FAILED
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+enum CommissionType {
+  PERCENTAGE
+  FLAT_PER_BOOKING
+  FIXED
+}
+
+enum FixedPeriod {
+  MONTHLY
+  QUARTERLY
+  HALF_YEARLY
+  YEARLY
+}
+
+enum SlotSatus {
+  AVAILABLE
+  RESERVED
+  BOOKED
+}
+
+enum BookingStatus {
+  PREBOOKED
+  CONFIRMED
+  KICKED_OFF
+  COMPLETED
+  CANCELLED
+  EXPIRED
+}
+
+enum PaymentMethod {
+  BKASH
+  ROKET
+  NAGAD
+  CASH
+  OTHERS
+}
+
+enum PaymentType {
+  ADVANCE
+  REMAINING
+  FULL
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+  UNPAID
+  PARTIALLY_PAID
+  PAID
+}
+
+enum SubscriptionStatus {
+  TRIAL
+  ACTIVE
+  EXPIRING
+  EXPIRED
+  CANCELLED
+}

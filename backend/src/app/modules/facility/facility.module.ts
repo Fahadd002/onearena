@@ -1,0 +1,1 @@
+import { Module } from '@nestjs/common'; import { CheckAuthGuard } from '../../../common/guards/check-auth.guard'; import { FacilityController } from './facility.controller'; import { FacilityService } from './facility.service'; @Module({ controllers: [FacilityController], providers: [FacilityService, CheckAuthGuard] }) export class FacilityModule {}

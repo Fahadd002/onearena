@@ -1,0 +1,38 @@
+@import "../../styles.css";
+
+@layer components {
+  .dashboard-shell {
+    @apply min-h-[calc(100vh-4rem)] bg-background;
+  }
+
+  .dashboard-panel {
+    @apply rounded-lg border border-border bg-card p-5;
+    transition: border-color var(--transition-smooth);
+  }
+
+  .dashboard-panel-hover:hover {
+    @apply border-primary/60;
+  }
+
+  .dashboard-title {
+    font-family: var(--font-display);
+    font-size: var(--dashboard-header-font-size);
+    line-height: var(--dashboard-header-line-height);
+    color: var(--color-foreground);
+  }
+
+  .dashboard-meta {
+    font-size: var(--dashboard-meta-font-size);
+    letter-spacing: var(--dashboard-meta-letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .dashboard-section {
+    @apply mx-auto w-full max-w-7xl px-4 py-2 sm:px-6;
+  }
+
+  .dashboard-empty {
+    @apply text-muted-foreground;
+  }
+}

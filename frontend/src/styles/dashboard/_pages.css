@@ -1,0 +1,46 @@
+@import "../../styles.css";
+
+@layer components {
+  .dashboard-grid {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .dashboard-card {
+    @apply dashboard-panel dashboard-panel-hover;
+  }
+
+  .dashboard-stat-value {
+    @apply text-2xl font-bold;
+    color: var(--color-foreground);
+  }
+
+  .dashboard-stat-label {
+    @apply text-sm font-medium;
+    color: var(--color-muted-foreground);
+  }
+
+  .dashboard-table-wrapper {
+    @apply overflow-x-auto;
+  }
+
+  .dashboard-table {
+    @apply w-full text-left text-sm;
+  }
+
+  .dashboard-table th {
+    @apply pb-3 font-medium;
+    color: var(--color-muted-foreground);
+  }
+
+  .dashboard-table td {
+    @apply py-3;
+    color: var(--color-foreground);
+  }
+
+  .dashboard-badge {
+    @apply rounded-full px-2 py-1 text-xs font-medium uppercase tracking-wider;
+    background-color: var(--color-muted);
+    color: var(--color-muted-foreground);
+  }
+}
