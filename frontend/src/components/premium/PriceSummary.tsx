@@ -58,7 +58,7 @@ export function PriceSummary({ turf, selectedSlotPrice = 0, selectedBookingDate,
         </div>
       </div>
 
-      <div className="rounded-xl bg-primary/10 p-3.5">
+      {/* <div className="rounded-xl bg-primary/10 p-3.5">
         <div className="flex items-center justify-between">
           <div>
             <p className="font-semibold text-foreground">Pay now</p>
@@ -69,7 +69,7 @@ export function PriceSummary({ turf, selectedSlotPrice = 0, selectedBookingDate,
         <p className="mt-2 border-t border-primary/15 pt-2 text-xs text-muted-foreground">
           ৳ {balance.toLocaleString()} remaining at venue
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -25,7 +25,7 @@ type Booking = {
         turf: { id: string; name: string };
     };
     totalAmount: string | number;
-    paymentStatus: string;
+    paymentStatus?: string | null;
     invoice?: { invoiceNumber: string; status: string };
 };
 
@@ -52,6 +52,10 @@ const statusColors: Record<string, "success" | "warning" | "destructive" | "outl
     UNPAID: "warning",
     REFUNDED: "destructive",
 };
+
+function getPaymentStatus(booking: Booking): string {
+    return booking.paymentStatus ?? booking.invoice?.status ?? "UNPAID";
+}
 
 export default function UserBookingsPage() {
     const queryClient = useQueryClient();
@@ -179,21 +183,25 @@ export default function UserBookingsPage() {
                                     key: "paymentStatus",
                                     header: "Payment",
                                     sortable: true,
-                                    render: (row) => (
-                                        <Badge
-                                            variant={statusColors[row.paymentStatus] || "outline"}
-                                            size="sm"
-                                        >
-                                            {row.paymentStatus.replace(/_/g, " ")}
-                                        </Badge>
-                                    ),
+                                    render: (row) => {
+                                        const paymentStatus = getPaymentStatus(row);
+
+                                        return (
+                                            <Badge
+                                                variant={statusColors[paymentStatus] || "outline"}
+                                                size="sm"
+                                            >
+                                                {paymentStatus.replace(/_/g, " ")}
+                                            </Badge>
+                                        );
+                                    },
                                 },
                                 {
                                     key: "actions",
                                     header: "Actions",
                                     sortable: false,
                                     render: (row) =>
-                                        row.paymentStatus === "UNPAID" ? (
+                                        getPaymentStatus(row) === "UNPAID" ? (
                                             <Button
                                                 size="sm"
                                                 variant="ghost"

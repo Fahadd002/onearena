@@ -1,20 +1,9 @@
 "use server";
 
 import { httpClient } from "@/lib/axios/httpClient";
+import { API_ENDPOINTS } from "@/lib/api/config";
 import { ApiErrorResponse, ApiResponse } from "@/types/api.type";
-import { z } from "zod";
-
-const planSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  maxTurfs: z.coerce.number().min(1, "Max turfs is required"),
-  active: z.boolean().optional(),
-  prices: z.array(z.object({
-    period: z.enum(["MONTHLY", "QUARTERLY", "HALF_YEARLY", "YEARLY"]),
-    price: z.coerce.number().min(0),
-  })),
-});
-
-type SubscriptionPlanPayload = z.infer<typeof planSchema>;
+import { planSchema, updatePlanSchema, type SubscriptionPlanPayload, type UpdatePlanPayload } from "./schema";
 
 function getErrorMessage(error: unknown, fallback: string) {
   if (error instanceof Error) return error.message;
@@ -26,25 +15,29 @@ export async function createSubscriptionPlanAction(
 ): Promise<ApiResponse<unknown> | ApiErrorResponse> {
   const parsed = planSchema.safeParse(payload);
   if (!parsed.success) {
-    return { success: false, message: parsed.error.issues[0]?.message || "Invalid input" };
+    return { success: false, message: parsed.error.issues[0]?.message || "Invalid input parameters" };
   }
   try {
-    const response = await httpClient.post<unknown>("/subscription-plans", parsed.data);
+    const response = await httpClient.post<unknown>(API_ENDPOINTS.subscription.plans, parsed.data);
     return response;
   } catch (error: unknown) {
-    return { success: false, message: getErrorMessage(error, "Failed to create plan") };
+    return { success: false, message: getErrorMessage(error, "Failed to create subscription plan") };
   }
 }
 
 export async function updateSubscriptionPlanAction(
   id: string,
-  payload: Partial<SubscriptionPlanPayload>
+  payload: UpdatePlanPayload
 ): Promise<ApiResponse<unknown> | ApiErrorResponse> {
+  const parsed = updatePlanSchema.safeParse(payload);
+  if (!parsed.success) {
+    return { success: false, message: parsed.error.issues[0]?.message || "Invalid update payload" };
+  }
   try {
-    const response = await httpClient.patch<unknown>(`/subscription-plans/${id}`, payload);
+    const response = await httpClient.patch<unknown>(`${API_ENDPOINTS.subscription.plans}/${id}`, parsed.data);
     return response;
   } catch (error: unknown) {
-    return { success: false, message: getErrorMessage(error, "Failed to update plan") };
+    return { success: false, message: getErrorMessage(error, "Failed to update subscription plan") };
   }
 }
 
@@ -52,9 +45,9 @@ export async function deleteSubscriptionPlanAction(
   id: string
 ): Promise<ApiResponse<void> | ApiErrorResponse> {
   try {
-    const response = await httpClient.delete<void>(`/subscription-plans/${id}`);
+    const response = await httpClient.delete<void>(`${API_ENDPOINTS.subscription.plans}/${id}`);
     return response;
   } catch (error: unknown) {
-    return { success: false, message: getErrorMessage(error, "Failed to delete plan") };
+    return { success: false, message: getErrorMessage(error, "Failed to delete subscription plan") };
   }
 }

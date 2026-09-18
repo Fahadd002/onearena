@@ -18,7 +18,7 @@ type Booking = {
         turf: { id: string; name: string };
     };
     totalAmount: string | number;
-    paymentStatus: string;
+    status: "PREBOOKED" | "CONFIRMED" | "KICKED_OFF" | "COMPLETED" | "CANCELLED" | "EXPIRED";
 };
 
 type UserOverview = {
@@ -43,11 +43,13 @@ function formatDate(dateStr: string): string {
     });
 }
 
-const statusColors: Record<string, "success" | "warning" | "destructive" | "outline"> = {
-  PAID: "success",
-  PARTIALLY_PAID: "warning",
-  UNPAID: "warning",
-  REFUNDED: "destructive",
+const bookingStatusColors: Record<Booking["status"], "success" | "warning" | "destructive" | "outline"> = {
+    PREBOOKED: "warning",
+    CONFIRMED: "success",
+    KICKED_OFF: "success",
+    COMPLETED: "success",
+    CANCELLED: "destructive",
+    EXPIRED: "outline",
 };
 
 export default function UserDashboardPage() {
@@ -136,16 +138,10 @@ export default function UserDashboardPage() {
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <Badge
-                                                variant={
-                                                    statusColors[booking.paymentStatus] ??
-                                                    "outline"
-                                                }
+                                                variant={bookingStatusColors[booking.status]}
                                                 size="sm"
                                             >
-                                                {booking.paymentStatus.replace(
-                                                    /_/g,
-                                                    " "
-                                                )}
+                                                {booking.status.replace(/_/g, " ")}
                                             </Badge>
                                         </div>
                                     </div>

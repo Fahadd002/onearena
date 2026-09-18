@@ -6,7 +6,7 @@ import { API_ENDPOINTS } from "@/lib/api/config";
 import { ApiErrorResponse, ApiResponse, paginationParams } from "@/types/api.type";
 import { z } from "zod";
 
-const bookingStatusSchema = z.enum(["PREBOOKED", "CONFIRMED", "COMPLETED", "CANCELLED", "EXPIRED"]);
+const bookingStatusSchema = z.enum(["PREBOOKED", "CONFIRMED", "COMPLETED", "CANCELLED", "EXPIRED", "KICKED_OFF"]);
 
 const paymentStatusSchema = z.enum([
   "PENDING",
@@ -18,6 +18,7 @@ const paymentStatusSchema = z.enum([
   "PARTIALLY_REFUNDED",
   "UNPAID",
   "PARTIALLY_PAID",
+  "PAID",
 ]);
 
 const paymentMethodSchema = z.enum(["CASH"]);
@@ -78,9 +79,10 @@ export type StoredBooking = {
   status: BookingStatusValue | null;
   paymentStatus: PaymentStatusValue;
   totalAmount: string;
-  mobile?: string | null;
+  mobile: string;
   createdAt: string;
   updatedAt: string;
+  user: { id: string; name: string; email: string; phoneNumber?: string | null };
   slot: {
     id: string;
     slotDate: string;
@@ -103,9 +105,11 @@ export async function listBookingsAction(params?: {
   limit?: string;
   sortBy?: string;
   sortOrder?: string;
+  bookingStatus?: string;
   paymentStatus?: string;
   startDate?: string;
   endDate?: string;
+  search?: string;
 }): Promise<ApiResponse<BookingsListResponse> | ApiErrorResponse> {
   try {
     const clean: Record<string, string> = {};
@@ -183,6 +187,21 @@ export async function addManualPaymentAction(
   }
 }
 
+export async function confirmBookingWithPaymentAction(
+  bookingId: string,
+  payload: { paymentAmount: number; paymentMethod: 'CASH'; reference?: string; note?: string },
+): Promise<ApiResponse<unknown> | ApiErrorResponse> {
+  try {
+    const response = await httpClient.post<unknown>(
+      `${API_ENDPOINTS.marketplace.adminBookings}/${bookingId}/confirm-with-payment`,
+      payload,
+    );
+    return response;
+  } catch (error: any) {
+    return { success: false, message: errorMessage(error, "Failed to confirm booking with payment") };
+  }
+}
+
 export async function fetchBookingInvoiceAction(
   bookingId: string,
 ): Promise<ApiResponse<StoredInvoice> | ApiErrorResponse> {
@@ -193,5 +212,33 @@ export async function fetchBookingInvoiceAction(
     return response;
   } catch (error: any) {
     return { success: false, message: errorMessage(error, "Failed to fetch invoice") };
+  }
+}
+
+export async function fetchInvoicePaymentsAction(
+  invoiceId: string,
+): Promise<ApiResponse<StoredPayment[]> | ApiErrorResponse> {
+  try {
+    const response = await httpClient.get<StoredPayment[]>(
+      `${API_ENDPOINTS.payments.invoicePayments.replace(':invoiceId', invoiceId)}`,
+    );
+    return response;
+  } catch (error: any) {
+    return { success: false, message: errorMessage(error, "Failed to fetch payments") };
+  }
+}
+
+export async function updatePaymentStatusAction(
+  paymentId: string,
+  payload: { status: PaymentStatusValue; note?: string },
+): Promise<ApiResponse<StoredPayment> | ApiErrorResponse> {
+  try {
+    const response = await httpClient.patch<StoredPayment>(
+      `${API_ENDPOINTS.payments.paymentStatus.replace(':paymentId', paymentId)}`,
+      payload,
+    );
+    return response;
+  } catch (error: any) {
+    return { success: false, message: errorMessage(error, "Failed to update payment status") };
   }
 }

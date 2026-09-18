@@ -37,11 +37,83 @@ export async function activateSubscriptionClient(
   }
 }
 
-export async function activateFreeTrialClient(): Promise<ApiResponse<unknown> | ApiErrorResponse> {
+export interface InitiatePaymentRequest {
+  planId: string;
+  billingPeriod: "MONTHLY" | "QUARTERLY" | "HALF_YEARLY" | "YEARLY";
+  paymentMethod: "BKASH" | "ROKET" | "NAGAD" | "CASH" | "OTHERS";
+  providerTransactionId?: string;
+}
+
+export interface InitiatePaymentResponse {
+  invoice: {
+    id: string;
+    invoiceNumber: string;
+    totalAmount: number;
+    status: string;
+  };
+  payment: {
+    id: string;
+    paymentNumber: string;
+    amount: number;
+    status: string;
+    providerTransactionId: string | null;
+  };
+  subscription: {
+    id: string;
+    planId: string;
+    status: string;
+  };
+}
+
+export async function initiateSubscriptionPaymentClient(
+  data: InitiatePaymentRequest
+): Promise<ApiResponse<InitiatePaymentResponse> | ApiErrorResponse> {
   try {
-    return await httpClient.post("/subscriptions/free-trial", {});
-  } catch (error: unknown) {
-    return { success: false, message: error instanceof Error ? error.message : "Failed to activate free trial" };
+    const response = await httpClient.post("/subscription/payment/initiate", data);
+    return response;
+  } catch (error: any) {
+    const axiosError = error as any;
+    const message =
+      axiosError?.response?.data?.message || axiosError?.message || "Failed to initiate payment";
+    return { success: false, message };
+  }
+}
+
+export interface VerifyPaymentRequest {
+  invoiceId: string;
+  providerTransactionId: string;
+  paymentMethod: "BKASH" | "ROKET" | "NAGAD" | "CASH" | "OTHERS";
+}
+
+export interface VerifyPaymentResponse {
+  payment: {
+    id: string;
+    paymentNumber: string;
+    amount: number;
+    status: string;
+    paidAt: string | null;
+  };
+  invoice: {
+    id: string;
+    invoiceNumber: string;
+    totalAmount: number;
+    paidAmount: number;
+    status: string;
+    isFullPaid: boolean;
+  };
+}
+
+export async function verifySubscriptionPaymentClient(
+  data: VerifyPaymentRequest
+): Promise<ApiResponse<VerifyPaymentResponse> | ApiErrorResponse> {
+  try {
+    const response = await httpClient.post("/subscription/payment/verify", data);
+    return response;
+  } catch (error: any) {
+    const axiosError = error as any;
+    const message =
+      axiosError?.response?.data?.message || axiosError?.message || "Failed to verify payment";
+    return { success: false, message };
   }
 }
 
@@ -55,7 +127,7 @@ export async function getCurrentSubscriptionClient(): Promise<ApiResponse<unknow
 
 export async function getSubscriptionPlansClient(): Promise<ApiResponse<any> | ApiErrorResponse> {
   try {
-    const response = await httpClient.get("/subscriptions/plans");
+    const response = await httpClient.get("/subscription-plans");
     return response;
   } catch (error: any) {
     const axiosError = error as any;

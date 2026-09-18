@@ -22,7 +22,6 @@ import NotificationDropdown from "@/components/header/NotificationDropdown";
 const navItems = [
   { label: "Home", to: "/" },
   { label: "Turfs", to: "/turfs" },
-  { label: "Pricing", to: "/pricing" },
   { label: "Contact", to: "/contact" },
 ];
 

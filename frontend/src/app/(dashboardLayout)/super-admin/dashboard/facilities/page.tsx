@@ -22,6 +22,7 @@ import { usePagination } from "@/hooks/usePagination";
 import { TablePagination } from "@/components/common/TablePagination";
 import { DeleteConfirmDialog } from "@/components/common/DeleteConfirmDialog";
 import { TableLoadingState, TableEmptyState } from "@/components/common/TableStates";
+import { deleteFacilityAction, updateFacilityAction } from "./_actions";
 
 type Facility = { id: string; name: string };
 
@@ -91,8 +92,8 @@ export default function FacilitiesPage() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, value }: { id: string; value: string }) => {
-      const res = await httpClient.patch<Facility>(`${API_ENDPOINTS.marketplace.facilities}/${id}`, { name: value });
-      return res.data;
+      const res = await updateFacilityAction(id, { name: value });
+      return res;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["facilities-admin"] });
@@ -106,7 +107,8 @@ export default function FacilitiesPage() {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      await httpClient.delete(`${API_ENDPOINTS.marketplace.facilities}/${id}`);
+     const res = await deleteFacilityAction(id);
+     return res;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["facilities-admin"] });

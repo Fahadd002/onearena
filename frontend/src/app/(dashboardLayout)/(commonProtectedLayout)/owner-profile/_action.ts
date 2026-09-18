@@ -66,16 +66,7 @@ export async function uploadDocuments(
   }
 }
 
-export async function getSubscriptionPlans(): Promise<ApiResponse<any> | ApiErrorResponse> {
-  try {
-    return await httpClient.get("/subscriptions/plans");
-  } catch (error: any) {
-    const axiosError = error as any;
-    const message =
-      axiosError?.response?.data?.message || axiosError?.message || "Failed to fetch subscription plans";
-    return { success: false, message };
-  }
-}
+
 
 export async function activateSubscription(
   planId: string,

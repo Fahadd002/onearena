@@ -158,7 +158,7 @@ export async function proxy(request: NextRequest) {
                     return NextResponse.redirect(new URL(getDefaultDashboardRoute(userRole as UserRole), request.url));
                 }
 
-                if (userRole === "ADMIN" && !userInfo.profileVerified && pathname !== "/owner-profile") {
+                if (userRole === "ADMIN" && !userInfo.profileVerified && !pathname.startsWith("/owner-profile")) {
                     return NextResponse.redirect(new URL("/owner-profile", request.url));
                 }
             } else {

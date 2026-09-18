@@ -17,7 +17,7 @@ export const commonProtectedRoutes : RouteConfig = {
 }
 
 export const adminProtectedRoutes : RouteConfig = {
-    pattern: [/^\/admin\/dashboard/ ],
+    pattern: [/^\/admin\/dashboard/, /^\/owner-profile/ ],
     exact : ["/owner-profile"]
 }
 

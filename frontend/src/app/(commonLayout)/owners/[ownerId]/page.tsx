@@ -53,26 +53,24 @@ export default function OwnerLandingPage() {
   const reviewCount = data.ownedTurfs.reduce((count, turf) => count + turf.reviews.length, 0);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background mt-24">
       <section className="relative overflow-hidden border-b border-border/60">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,hsl(var(--primary)/.18),transparent_36%),linear-gradient(120deg,hsl(var(--background)),hsl(var(--secondary)/.7))]" />
-        <div className="relative mx-auto max-w-7xl px-5 pb-14 pt-8 sm:px-8 lg:px-10 lg:pt-12">
-          <Link href="/" className="mb-14 inline-flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground"><ArrowLeft className="size-4" /> Back to OneArena</Link>
+        <div className="relative mx-auto max-w-7xl px-5 pb-14 sm:px-8 lg:px-10 ">
           <div className="grid items-end gap-10 lg:grid-cols-[1.1fr_.9fr]">
             <div>
-              <div className="mb-5 flex items-center gap-4">
+              {/* <div className="mb-5 flex items-center gap-4">
                 <div className="grid size-16 place-items-center overflow-hidden rounded-2xl border border-primary/30 bg-primary/10 text-2xl font-bold text-primary">
                   {(profile?.businessLogo || data.image) ? <img src={profile?.businessLogo || data.image || ""} alt={data.name} className="size-full object-cover" /> : data.name.slice(0, 1)}
                 </div>
                 <div><p className="text-xs font-semibold uppercase tracking-[.22em] text-primary">Verified venue partner</p><p className="mt-1 text-sm text-muted-foreground">{data.ownedTurfs.length} active venues across the city</p></div>
-              </div>
+              </div> */}
               <h1 className="max-w-3xl text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">{profile?.companyName || data.name}</h1>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">A complete sports experience by {data.name}. Discover well-kept pitches, flexible slots, and a team that cares about your game.</p>
               <div className="mt-7 flex flex-wrap gap-3">
                 <Button variant="hero" size="lg" asChild><a href="#venues">Explore venues <ArrowUpRight className="size-4" /></a></Button>
                 <Button variant="outline" size="lg" asChild><a href="#contact">Contact owner</a></Button>
               </div>
-              <div className="mt-9 flex flex-wrap gap-7 text-sm"><span><strong className="text-2xl text-foreground">{rating ? rating.toFixed(1) : "New"}</strong> <span className="text-accent">★</span><span className="ml-2 text-muted-foreground">{reviewCount} reviews</span></span><span><strong className="text-2xl text-foreground">{data.ownedTurfs.length}</strong><span className="ml-2 text-muted-foreground">active turfs</span></span></div>
             </div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-white/10 bg-muted shadow-2xl">
               {heroImage ? <img src={heroImage} alt={`${profile?.companyName || data.name} venue`} className="size-full object-cover" /> : <div className="grid size-full place-items-center text-6xl font-bold text-primary/40">{data.name[0]}</div>}

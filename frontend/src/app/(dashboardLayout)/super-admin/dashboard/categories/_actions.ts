@@ -1,9 +1,10 @@
 "use server";
 
+import { API_ENDPOINTS } from "@/lib/api/config";
 import { httpClient } from "@/lib/axios/httpClient";
 import { ApiErrorResponse, ApiResponse } from "@/types/api.type";
 import { z } from "zod";
-
+export type Category = { id: string; name: string };
 const categorySchema = z.object({
   name: z.string().min(1, "Name is required"),
 });
@@ -23,7 +24,7 @@ export async function createCategoryAction(
     return { success: false, message: parsed.error.issues[0]?.message || "Invalid input" };
   }
   try {
-    const response = await httpClient.post<unknown>("/categories", parsed.data);
+    const response = await httpClient.post<Category>(API_ENDPOINTS.marketplace.categories, parsed.data);
     return response;
   } catch (error: unknown) {
     return { success: false, message: getErrorMessage(error, "Failed to create category") };
@@ -39,7 +40,7 @@ export async function updateCategoryAction(
     return { success: false, message: parsed.error.issues[0]?.message || "Invalid input" };
   }
   try {
-    const response = await httpClient.patch<unknown>(`/categories/${id}`, parsed.data);
+    const response = await httpClient.patch<unknown>(`${API_ENDPOINTS.marketplace.categories}/${id}`, parsed.data);
     return response;
   } catch (error: unknown) {
     return { success: false, message: getErrorMessage(error, "Failed to update category") };
@@ -50,7 +51,7 @@ export async function deleteCategoryAction(
   id: string
 ): Promise<ApiResponse<void> | ApiErrorResponse> {
   try {
-    const response = await httpClient.delete<void>(`/categories/${id}`);
+    const response = await httpClient.delete<void>(`${API_ENDPOINTS.marketplace.categories}/${id}`);
     return response;
   } catch (error: unknown) {
     return { success: false, message: getErrorMessage(error, "Failed to delete category") };

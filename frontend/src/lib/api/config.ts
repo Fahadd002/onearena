@@ -56,4 +56,10 @@ export const API_ENDPOINTS = {
         ownerProfileSubmit: "/owner-profile/submit",
         ownerApplications: "/owner-applications",
     },
+    payments: {
+        invoices: "/invoices",
+        invoiceByBooking: "/bookings/:bookingId/invoice",
+        invoicePayments: "/invoices/:invoiceId/payments",
+        paymentStatus: "/payments/:paymentId/status",
+    },
 } as const;

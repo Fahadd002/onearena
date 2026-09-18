@@ -59,7 +59,7 @@ export interface Turf {
     latitude?: string;
     longitude?: string;
     category: { id: string; name: string };
-    owner?: { id: string; name: string; image?: string | null };
+    owner: { id: string; name: string; image?: string | null };
     facilities?: TurfFacility[];
     images?: TurfImage[];
     priceRules?: TurfPriceRule[];

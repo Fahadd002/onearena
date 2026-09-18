@@ -22,8 +22,9 @@ import { usePagination } from "@/hooks/usePagination";
 import { TablePagination } from "@/components/common/TablePagination";
 import { DeleteConfirmDialog } from "@/components/common/DeleteConfirmDialog";
 import { TableLoadingState, TableEmptyState } from "@/components/common/TableStates";
+import { Category, createCategoryAction, updateCategoryAction, deleteCategoryAction } from "./_actions";
 
-type Category = { id: string; name: string };
+
 
 export default function CategoriesPage() {
   const queryClient = useQueryClient();
@@ -76,8 +77,8 @@ export default function CategoriesPage() {
 
   const createMutation = useMutation({
     mutationFn: async () => {
-      const res = await httpClient.post<Category>(API_ENDPOINTS.marketplace.categories, { name });
-      return res.data;
+      const res = await createCategoryAction({ name });
+      return res;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories-admin"] });
@@ -91,8 +92,8 @@ export default function CategoriesPage() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, value }: { id: string; value: string }) => {
-      const res = await httpClient.patch<Category>(`${API_ENDPOINTS.marketplace.categories}/${id}`, { name: value });
-      return res.data;
+      const res = await updateCategoryAction(id, { name: value });
+      return res;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories-admin"] });
@@ -106,7 +107,8 @@ export default function CategoriesPage() {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      await httpClient.delete(`${API_ENDPOINTS.marketplace.categories}/${id}`);
+      const res = await deleteCategoryAction(id);
+      return res;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories-admin"] });

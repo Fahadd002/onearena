@@ -61,9 +61,5 @@ export default function TurfLocationPicker({ value, onChange }: TurfLocationPick
       </Button>
     </div>
     {error && <p className="flex items-center gap-2 text-sm text-destructive"><CircleAlert className="size-4" />{error}</p>}
-    {value && <dl className="grid gap-3 border-t pt-3 text-sm sm:grid-cols-2">
-      <div><dt className="font-medium text-muted-foreground">Latitude</dt><dd>{value.latitude.toFixed(7)}</dd></div>
-      <div><dt className="font-medium text-muted-foreground">Longitude</dt><dd>{value.longitude.toFixed(7)}</dd></div>
-    </dl>}
   </div>;
 }
