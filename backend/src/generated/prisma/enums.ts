@@ -185,7 +185,7 @@ export type PaymentType = (typeof PaymentType)[keyof typeof PaymentType]
 
 
 export const PaymentStatus = {
-  PENDING: 'PENDING',
+  VERIFIED: 'VERIFIED',
   PROCESSING: 'PROCESSING',
   SUCCEEDED: 'SUCCEEDED',
   FAILED: 'FAILED',
@@ -209,3 +209,23 @@ export const SubscriptionStatus = {
 } as const
 
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+
+
+export const InvoiceFor = {
+  O: 'O',
+  U: 'U'
+} as const
+
+export type InvoiceFor = (typeof InvoiceFor)[keyof typeof InvoiceFor]
+
+
+export const SubscriptionAction = {
+  TRIAL_STARTED: 'TRIAL_STARTED',
+  SUBSCRIBED: 'SUBSCRIBED',
+  RENEWED: 'RENEWED',
+  UPGRADED: 'UPGRADED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type SubscriptionAction = (typeof SubscriptionAction)[keyof typeof SubscriptionAction]

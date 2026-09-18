@@ -404,16 +404,6 @@ export type ReviewUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ReviewListRelationFilter = {
-  every?: Prisma.ReviewWhereInput
-  some?: Prisma.ReviewWhereInput
-  none?: Prisma.ReviewWhereInput
-}
-
-export type ReviewOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type ReviewCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   bookingId?: Prisma.SortOrder
@@ -463,6 +453,30 @@ export type ReviewScalarRelationFilter = {
   isNot?: Prisma.ReviewWhereInput
 }
 
+export type ReviewListRelationFilter = {
+  every?: Prisma.ReviewWhereInput
+  some?: Prisma.ReviewWhereInput
+  none?: Prisma.ReviewWhereInput
+}
+
+export type ReviewOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type ReviewCreateNestedOneWithoutRepliesInput = {
+  create?: Prisma.XOR<Prisma.ReviewCreateWithoutRepliesInput, Prisma.ReviewUncheckedCreateWithoutRepliesInput>
+  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutRepliesInput
+  connect?: Prisma.ReviewWhereUniqueInput
+}
+
+export type ReviewUpdateOneRequiredWithoutRepliesNestedInput = {
+  create?: Prisma.XOR<Prisma.ReviewCreateWithoutRepliesInput, Prisma.ReviewUncheckedCreateWithoutRepliesInput>
+  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutRepliesInput
+  upsert?: Prisma.ReviewUpsertWithoutRepliesInput
+  connect?: Prisma.ReviewWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ReviewUpdateToOneWithWhereWithoutRepliesInput, Prisma.ReviewUpdateWithoutRepliesInput>, Prisma.ReviewUncheckedUpdateWithoutRepliesInput>
+}
+
 export type ReviewCreateNestedManyWithoutTurfInput = {
   create?: Prisma.XOR<Prisma.ReviewCreateWithoutTurfInput, Prisma.ReviewUncheckedCreateWithoutTurfInput> | Prisma.ReviewCreateWithoutTurfInput[] | Prisma.ReviewUncheckedCreateWithoutTurfInput[]
   connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutTurfInput | Prisma.ReviewCreateOrConnectWithoutTurfInput[]
@@ -505,20 +519,6 @@ export type ReviewUncheckedUpdateManyWithoutTurfNestedInput = {
   deleteMany?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[]
 }
 
-export type ReviewCreateNestedOneWithoutRepliesInput = {
-  create?: Prisma.XOR<Prisma.ReviewCreateWithoutRepliesInput, Prisma.ReviewUncheckedCreateWithoutRepliesInput>
-  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutRepliesInput
-  connect?: Prisma.ReviewWhereUniqueInput
-}
-
-export type ReviewUpdateOneRequiredWithoutRepliesNestedInput = {
-  create?: Prisma.XOR<Prisma.ReviewCreateWithoutRepliesInput, Prisma.ReviewUncheckedCreateWithoutRepliesInput>
-  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutRepliesInput
-  upsert?: Prisma.ReviewUpsertWithoutRepliesInput
-  connect?: Prisma.ReviewWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ReviewUpdateToOneWithWhereWithoutRepliesInput, Prisma.ReviewUpdateWithoutRepliesInput>, Prisma.ReviewUncheckedUpdateWithoutRepliesInput>
-}
-
 export type ReviewCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.ReviewCreateWithoutUserInput, Prisma.ReviewUncheckedCreateWithoutUserInput> | Prisma.ReviewCreateWithoutUserInput[] | Prisma.ReviewUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutUserInput | Prisma.ReviewCreateOrConnectWithoutUserInput[]
@@ -559,6 +559,70 @@ export type ReviewUncheckedUpdateManyWithoutUserNestedInput = {
   update?: Prisma.ReviewUpdateWithWhereUniqueWithoutUserInput | Prisma.ReviewUpdateWithWhereUniqueWithoutUserInput[]
   updateMany?: Prisma.ReviewUpdateManyWithWhereWithoutUserInput | Prisma.ReviewUpdateManyWithWhereWithoutUserInput[]
   deleteMany?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[]
+}
+
+export type ReviewCreateWithoutRepliesInput = {
+  id?: string
+  bookingId: string
+  rating: number
+  comment?: string | null
+  isHidden?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  turf: Prisma.TurfCreateNestedOneWithoutReviewsInput
+  user: Prisma.UserCreateNestedOneWithoutReviewsInput
+}
+
+export type ReviewUncheckedCreateWithoutRepliesInput = {
+  id?: string
+  bookingId: string
+  userId: string
+  turfId: string
+  rating: number
+  comment?: string | null
+  isHidden?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ReviewCreateOrConnectWithoutRepliesInput = {
+  where: Prisma.ReviewWhereUniqueInput
+  create: Prisma.XOR<Prisma.ReviewCreateWithoutRepliesInput, Prisma.ReviewUncheckedCreateWithoutRepliesInput>
+}
+
+export type ReviewUpsertWithoutRepliesInput = {
+  update: Prisma.XOR<Prisma.ReviewUpdateWithoutRepliesInput, Prisma.ReviewUncheckedUpdateWithoutRepliesInput>
+  create: Prisma.XOR<Prisma.ReviewCreateWithoutRepliesInput, Prisma.ReviewUncheckedCreateWithoutRepliesInput>
+  where?: Prisma.ReviewWhereInput
+}
+
+export type ReviewUpdateToOneWithWhereWithoutRepliesInput = {
+  where?: Prisma.ReviewWhereInput
+  data: Prisma.XOR<Prisma.ReviewUpdateWithoutRepliesInput, Prisma.ReviewUncheckedUpdateWithoutRepliesInput>
+}
+
+export type ReviewUpdateWithoutRepliesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingId?: Prisma.StringFieldUpdateOperationsInput | string
+  rating?: Prisma.IntFieldUpdateOperationsInput | number
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  turf?: Prisma.TurfUpdateOneRequiredWithoutReviewsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
+}
+
+export type ReviewUncheckedUpdateWithoutRepliesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookingId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  turfId?: Prisma.StringFieldUpdateOperationsInput | string
+  rating?: Prisma.IntFieldUpdateOperationsInput | number
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ReviewCreateWithoutTurfInput = {
@@ -624,70 +688,6 @@ export type ReviewScalarWhereInput = {
   isHidden?: Prisma.BoolFilter<"Review"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Review"> | Date | string
-}
-
-export type ReviewCreateWithoutRepliesInput = {
-  id?: string
-  bookingId: string
-  rating: number
-  comment?: string | null
-  isHidden?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  turf: Prisma.TurfCreateNestedOneWithoutReviewsInput
-  user: Prisma.UserCreateNestedOneWithoutReviewsInput
-}
-
-export type ReviewUncheckedCreateWithoutRepliesInput = {
-  id?: string
-  bookingId: string
-  userId: string
-  turfId: string
-  rating: number
-  comment?: string | null
-  isHidden?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type ReviewCreateOrConnectWithoutRepliesInput = {
-  where: Prisma.ReviewWhereUniqueInput
-  create: Prisma.XOR<Prisma.ReviewCreateWithoutRepliesInput, Prisma.ReviewUncheckedCreateWithoutRepliesInput>
-}
-
-export type ReviewUpsertWithoutRepliesInput = {
-  update: Prisma.XOR<Prisma.ReviewUpdateWithoutRepliesInput, Prisma.ReviewUncheckedUpdateWithoutRepliesInput>
-  create: Prisma.XOR<Prisma.ReviewCreateWithoutRepliesInput, Prisma.ReviewUncheckedCreateWithoutRepliesInput>
-  where?: Prisma.ReviewWhereInput
-}
-
-export type ReviewUpdateToOneWithWhereWithoutRepliesInput = {
-  where?: Prisma.ReviewWhereInput
-  data: Prisma.XOR<Prisma.ReviewUpdateWithoutRepliesInput, Prisma.ReviewUncheckedUpdateWithoutRepliesInput>
-}
-
-export type ReviewUpdateWithoutRepliesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  bookingId?: Prisma.StringFieldUpdateOperationsInput | string
-  rating?: Prisma.IntFieldUpdateOperationsInput | number
-  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  turf?: Prisma.TurfUpdateOneRequiredWithoutReviewsNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
-}
-
-export type ReviewUncheckedUpdateWithoutRepliesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  bookingId?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  turfId?: Prisma.StringFieldUpdateOperationsInput | string
-  rating?: Prisma.IntFieldUpdateOperationsInput | number
-  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ReviewCreateWithoutUserInput = {

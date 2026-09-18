@@ -37,10 +37,9 @@ export class TurfService implements OnModuleInit {
         status: TurfStatus.ACTIVE,
         owner: {
           OR: [
-            { subscriptions: { none: {} } },
             {
               subscriptions: {
-                some: {
+                is: {
                   OR: [
                     { status: SubscriptionStatus.EXPIRED },
                     { status: SubscriptionStatus.CANCELLED },
@@ -60,12 +59,8 @@ export class TurfService implements OnModuleInit {
 
   private validateCoordinates(payload: TurfPayload) {
     if (
-      !Number.isFinite(payload.latitude) ||
-      payload.latitude < -90 ||
-      payload.latitude > 90 ||
-      !Number.isFinite(payload.longitude) ||
-      payload.longitude < -180 ||
-      payload.longitude > 180
+      !Number.isFinite(payload.latitude) ||  payload.latitude < -90 || payload.latitude > 90 ||
+      !Number.isFinite(payload.longitude) ||payload.longitude < -180 || payload.longitude > 180
     ) {
       throw new AppError(status.BAD_REQUEST, 'Valid latitude and longitude are required');
     }
@@ -177,7 +172,7 @@ export class TurfService implements OnModuleInit {
       include: {
         category: true,
         owner: { select: { id: true, name: true, image: true } },
-        images: { orderBy: { sortOrder: 'asc' }, take: 1 },
+        images: { orderBy: { sortOrder: 'asc' } },
         facilities: {
           include: { facility: true },
         },
@@ -358,7 +353,7 @@ export class TurfService implements OnModuleInit {
       throw new AppError(status.FORBIDDEN, 'Only approved owners can create turfs');
     }
 
-    const subscription = await prisma.ownerSubscription.findUnique({
+    const subscription = await prisma.subscription.findUnique({
       where: { userId: owner.userId },
       include: { plan: true },
     });

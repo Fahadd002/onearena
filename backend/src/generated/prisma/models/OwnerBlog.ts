@@ -398,16 +398,6 @@ export type OwnerBlogUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type OwnerBlogListRelationFilter = {
-  every?: Prisma.OwnerBlogWhereInput
-  some?: Prisma.OwnerBlogWhereInput
-  none?: Prisma.OwnerBlogWhereInput
-}
-
-export type OwnerBlogOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type OwnerBlogOwnerIdSlugCompoundUniqueInput = {
   ownerId: string
   slug: string
@@ -453,6 +443,16 @@ export type OwnerBlogMinOrderByAggregateInput = {
   publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type OwnerBlogListRelationFilter = {
+  every?: Prisma.OwnerBlogWhereInput
+  some?: Prisma.OwnerBlogWhereInput
+  none?: Prisma.OwnerBlogWhereInput
+}
+
+export type OwnerBlogOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type OwnerBlogCreateNestedManyWithoutOwnerInput = {

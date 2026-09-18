@@ -51,34 +51,35 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Booking: 'Booking',
   TurfCategory: 'TurfCategory',
   Facility: 'Facility',
-  TurfImage: 'TurfImage',
-  Package: 'Package',
   PackageFacility: 'PackageFacility',
-  Turf: 'Turf',
   TurfFacility: 'TurfFacility',
-  TurfPriceRule: 'TurfPriceRule',
-  TurfSlot: 'TurfSlot',
-  Booking: 'Booking',
-  BookingInvoice: 'BookingInvoice',
+  Invoice: 'Invoice',
   Payment: 'Payment',
   Refund: 'Refund',
-  Review: 'Review',
-  ReviewReply: 'ReviewReply',
-  User: 'User',
-  OwnerGalleryItem: 'OwnerGalleryItem',
-  OwnerBlog: 'OwnerBlog',
-  Session: 'Session',
-  Account: 'Account',
-  Verification: 'Verification',
-  OwnerProfile: 'OwnerProfile',
   ManagerProfile: 'ManagerProfile',
   TurfManager: 'TurfManager',
   ManagerPermissionGrant: 'ManagerPermissionGrant',
+  OwnerProfile: 'OwnerProfile',
+  OwnerGalleryItem: 'OwnerGalleryItem',
+  OwnerBlog: 'OwnerBlog',
+  Review: 'Review',
+  ReviewReply: 'ReviewReply',
   SubscriptionPlan: 'SubscriptionPlan',
   SubscriptionPrice: 'SubscriptionPrice',
-  OwnerSubscription: 'OwnerSubscription'
+  Subscription: 'Subscription',
+  SubscriptionLog: 'SubscriptionLog',
+  Turf: 'Turf',
+  TurfPriceRule: 'TurfPriceRule',
+  TurfSlot: 'TurfSlot',
+  TurfImage: 'TurfImage',
+  Package: 'Package',
+  User: 'User',
+  Session: 'Session',
+  Account: 'Account',
+  Verification: 'Verification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -95,6 +96,27 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const BookingScalarFieldEnum = {
+  id: 'id',
+  bookingNumber: 'bookingNumber',
+  mobile: 'mobile',
+  status: 'status',
+  baseAmount: 'baseAmount',
+  packageAmount: 'packageAmount',
+  discountAmount: 'discountAmount',
+  subtotal: 'subtotal',
+  totalAmount: 'totalAmount',
+  bookingExpiresAt: 'bookingExpiresAt',
+  idempotencyKey: 'idempotencyKey',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  slotId: 'slotId'
+} as const
+
+export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
 
 
 export const TurfCategoryScalarFieldEnum = {
@@ -117,58 +139,12 @@ export const FacilityScalarFieldEnum = {
 export type FacilityScalarFieldEnum = (typeof FacilityScalarFieldEnum)[keyof typeof FacilityScalarFieldEnum]
 
 
-export const TurfImageScalarFieldEnum = {
-  id: 'id',
-  turfId: 'turfId',
-  url: 'url',
-  altText: 'altText',
-  sortOrder: 'sortOrder',
-  createdAt: 'createdAt'
-} as const
-
-export type TurfImageScalarFieldEnum = (typeof TurfImageScalarFieldEnum)[keyof typeof TurfImageScalarFieldEnum]
-
-
-export const PackageScalarFieldEnum = {
-  id: 'id',
-  turfId: 'turfId',
-  name: 'name',
-  description: 'description',
-  price: 'price',
-  active: 'active',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PackageScalarFieldEnum = (typeof PackageScalarFieldEnum)[keyof typeof PackageScalarFieldEnum]
-
-
 export const PackageFacilityScalarFieldEnum = {
   packageId: 'packageId',
   facilityId: 'facilityId'
 } as const
 
 export type PackageFacilityScalarFieldEnum = (typeof PackageFacilityScalarFieldEnum)[keyof typeof PackageFacilityScalarFieldEnum]
-
-
-export const TurfScalarFieldEnum = {
-  id: 'id',
-  ownerId: 'ownerId',
-  categoryId: 'categoryId',
-  name: 'name',
-  description: 'description',
-  address: 'address',
-  latitude: 'latitude',
-  longitude: 'longitude',
-  status: 'status',
-  basePrice: 'basePrice',
-  slotMinutes: 'slotMinutes',
-  timezone: 'timezone',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type TurfScalarFieldEnum = (typeof TurfScalarFieldEnum)[keyof typeof TurfScalarFieldEnum]
 
 
 export const TurfFacilityScalarFieldEnum = {
@@ -179,65 +155,11 @@ export const TurfFacilityScalarFieldEnum = {
 export type TurfFacilityScalarFieldEnum = (typeof TurfFacilityScalarFieldEnum)[keyof typeof TurfFacilityScalarFieldEnum]
 
 
-export const TurfPriceRuleScalarFieldEnum = {
+export const InvoiceScalarFieldEnum = {
   id: 'id',
-  turfId: 'turfId',
-  dayOfWeek: 'dayOfWeek',
-  startMinute: 'startMinute',
-  endMinute: 'endMinute',
-  price: 'price',
-  active: 'active',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type TurfPriceRuleScalarFieldEnum = (typeof TurfPriceRuleScalarFieldEnum)[keyof typeof TurfPriceRuleScalarFieldEnum]
-
-
-export const TurfSlotScalarFieldEnum = {
-  id: 'id',
-  turfId: 'turfId',
-  slotDate: 'slotDate',
-  startMinute: 'startMinute',
-  endMinute: 'endMinute',
-  price: 'price',
-  active: 'active',
-  slotStatus: 'slotStatus',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type TurfSlotScalarFieldEnum = (typeof TurfSlotScalarFieldEnum)[keyof typeof TurfSlotScalarFieldEnum]
-
-
-export const BookingScalarFieldEnum = {
-  id: 'id',
-  bookingNumber: 'bookingNumber',
-  userId: 'userId',
-  slotId: 'slotId',
-  mobile: 'mobile',
-  status: 'status',
-  baseAmount: 'baseAmount',
-  packageAmount: 'packageAmount',
-  discountAmount: 'discountAmount',
-  subtotal: 'subtotal',
-  totalAmount: 'totalAmount',
-  bookingExpiresAt: 'bookingExpiresAt',
-  idempotencyKey: 'idempotencyKey',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
-
-
-export const BookingInvoiceScalarFieldEnum = {
-  id: 'id',
-  bookingId: 'bookingId',
   invoiceNumber: 'invoiceNumber',
   invoiceDate: 'invoiceDate',
+  invoiceFor: 'invoiceFor',
   subtotal: 'subtotal',
   discount: 'discount',
   totalAmount: 'totalAmount',
@@ -245,10 +167,13 @@ export const BookingInvoiceScalarFieldEnum = {
   isFullPaid: 'isFullPaid',
   status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  bookingId: 'bookingId',
+  subscriptionLogId: 'subscriptionLogId'
 } as const
 
-export type BookingInvoiceScalarFieldEnum = (typeof BookingInvoiceScalarFieldEnum)[keyof typeof BookingInvoiceScalarFieldEnum]
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
 
 
 export const PaymentScalarFieldEnum = {
@@ -295,50 +220,63 @@ export const RefundScalarFieldEnum = {
 export type RefundScalarFieldEnum = (typeof RefundScalarFieldEnum)[keyof typeof RefundScalarFieldEnum]
 
 
-export const ReviewScalarFieldEnum = {
+export const ManagerProfileScalarFieldEnum = {
   id: 'id',
-  bookingId: 'bookingId',
   userId: 'userId',
+  contactNumber: 'contactNumber',
+  address: 'address',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ManagerProfileScalarFieldEnum = (typeof ManagerProfileScalarFieldEnum)[keyof typeof ManagerProfileScalarFieldEnum]
+
+
+export const TurfManagerScalarFieldEnum = {
+  id: 'id',
   turfId: 'turfId',
-  rating: 'rating',
-  comment: 'comment',
-  isHidden: 'isHidden',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  managerId: 'managerId',
+  createdAt: 'createdAt'
 } as const
 
-export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+export type TurfManagerScalarFieldEnum = (typeof TurfManagerScalarFieldEnum)[keyof typeof TurfManagerScalarFieldEnum]
 
 
-export const ReviewReplyScalarFieldEnum = {
+export const ManagerPermissionGrantScalarFieldEnum = {
   id: 'id',
-  reviewId: 'reviewId',
+  assignmentId: 'assignmentId',
+  permission: 'permission',
+  createdAt: 'createdAt'
+} as const
+
+export type ManagerPermissionGrantScalarFieldEnum = (typeof ManagerPermissionGrantScalarFieldEnum)[keyof typeof ManagerPermissionGrantScalarFieldEnum]
+
+
+export const OwnerProfileScalarFieldEnum = {
+  id: 'id',
   userId: 'userId',
-  comment: 'comment',
+  companyName: 'companyName',
+  bussinessEmail: 'bussinessEmail',
+  contactNumber: 'contactNumber',
+  address: 'address',
+  nidNumber: 'nidNumber',
+  businessRegistrationNumber: 'businessRegistrationNumber',
+  tradeLicenseNumber: 'tradeLicenseNumber',
+  businessLogo: 'businessLogo',
+  nidImageFront: 'nidImageFront',
+  nidImageBack: 'nidImageBack',
+  businessRegistrationDocument: 'businessRegistrationDocument',
+  tradeLicenseDocument: 'tradeLicenseDocument',
+  taxIdentificationDocument: 'taxIdentificationDocument',
+  verificationStatus: 'verificationStatus',
+  verifiedById: 'verifiedById',
+  verifiedAt: 'verifiedAt',
+  rejectionReason: 'rejectionReason',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type ReviewReplyScalarFieldEnum = (typeof ReviewReplyScalarFieldEnum)[keyof typeof ReviewReplyScalarFieldEnum]
-
-
-export const UserScalarFieldEnum = {
-  id: 'id',
-  email: 'email',
-  name: 'name',
-  image: 'image',
-  phoneNumber: 'phoneNumber',
-  role: 'role',
-  status: 'status',
-  emailVerified: 'emailVerified',
-  needPasswordChange: 'needPasswordChange',
-  isDeleted: 'isDeleted',
-  deletedAt: 'deletedAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+export type OwnerProfileScalarFieldEnum = (typeof OwnerProfileScalarFieldEnum)[keyof typeof OwnerProfileScalarFieldEnum]
 
 
 export const OwnerGalleryItemScalarFieldEnum = {
@@ -371,6 +309,188 @@ export const OwnerBlogScalarFieldEnum = {
 } as const
 
 export type OwnerBlogScalarFieldEnum = (typeof OwnerBlogScalarFieldEnum)[keyof typeof OwnerBlogScalarFieldEnum]
+
+
+export const ReviewScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  userId: 'userId',
+  turfId: 'turfId',
+  rating: 'rating',
+  comment: 'comment',
+  isHidden: 'isHidden',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+
+
+export const ReviewReplyScalarFieldEnum = {
+  id: 'id',
+  reviewId: 'reviewId',
+  userId: 'userId',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewReplyScalarFieldEnum = (typeof ReviewReplyScalarFieldEnum)[keyof typeof ReviewReplyScalarFieldEnum]
+
+
+export const SubscriptionPlanScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  tierLevel: 'tierLevel',
+  maxTurfs: 'maxTurfs',
+  features: 'features',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubscriptionPlanScalarFieldEnum = (typeof SubscriptionPlanScalarFieldEnum)[keyof typeof SubscriptionPlanScalarFieldEnum]
+
+
+export const SubscriptionPriceScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  period: 'period',
+  price: 'price',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubscriptionPriceScalarFieldEnum = (typeof SubscriptionPriceScalarFieldEnum)[keyof typeof SubscriptionPriceScalarFieldEnum]
+
+
+export const SubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  planId: 'planId',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  trialStart: 'trialStart',
+  trialEnd: 'trialEnd',
+  isTrialUsed: 'isTrialUsed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
+
+
+export const SubscriptionLogScalarFieldEnum = {
+  id: 'id',
+  subscriptionId: 'subscriptionId',
+  action: 'action',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubscriptionLogScalarFieldEnum = (typeof SubscriptionLogScalarFieldEnum)[keyof typeof SubscriptionLogScalarFieldEnum]
+
+
+export const TurfScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  categoryId: 'categoryId',
+  name: 'name',
+  description: 'description',
+  address: 'address',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  status: 'status',
+  basePrice: 'basePrice',
+  slotMinutes: 'slotMinutes',
+  timezone: 'timezone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TurfScalarFieldEnum = (typeof TurfScalarFieldEnum)[keyof typeof TurfScalarFieldEnum]
+
+
+export const TurfPriceRuleScalarFieldEnum = {
+  id: 'id',
+  turfId: 'turfId',
+  dayOfWeek: 'dayOfWeek',
+  startMinute: 'startMinute',
+  endMinute: 'endMinute',
+  price: 'price',
+  active: 'active',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TurfPriceRuleScalarFieldEnum = (typeof TurfPriceRuleScalarFieldEnum)[keyof typeof TurfPriceRuleScalarFieldEnum]
+
+
+export const TurfSlotScalarFieldEnum = {
+  id: 'id',
+  turfId: 'turfId',
+  slotDate: 'slotDate',
+  startMinute: 'startMinute',
+  endMinute: 'endMinute',
+  price: 'price',
+  active: 'active',
+  slotStatus: 'slotStatus',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TurfSlotScalarFieldEnum = (typeof TurfSlotScalarFieldEnum)[keyof typeof TurfSlotScalarFieldEnum]
+
+
+export const TurfImageScalarFieldEnum = {
+  id: 'id',
+  turfId: 'turfId',
+  url: 'url',
+  altText: 'altText',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type TurfImageScalarFieldEnum = (typeof TurfImageScalarFieldEnum)[keyof typeof TurfImageScalarFieldEnum]
+
+
+export const PackageScalarFieldEnum = {
+  id: 'id',
+  turfId: 'turfId',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PackageScalarFieldEnum = (typeof PackageScalarFieldEnum)[keyof typeof PackageScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  name: 'name',
+  image: 'image',
+  phoneNumber: 'phoneNumber',
+  role: 'role',
+  status: 'status',
+  emailVerified: 'emailVerified',
+  needPasswordChange: 'needPasswordChange',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -417,109 +537,6 @@ export const VerificationScalarFieldEnum = {
 } as const
 
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
-
-
-export const OwnerProfileScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  companyName: 'companyName',
-  bussinessEmail: 'bussinessEmail',
-  contactNumber: 'contactNumber',
-  address: 'address',
-  nidNumber: 'nidNumber',
-  businessRegistrationNumber: 'businessRegistrationNumber',
-  tradeLicenseNumber: 'tradeLicenseNumber',
-  businessLogo: 'businessLogo',
-  nidImageFront: 'nidImageFront',
-  nidImageBack: 'nidImageBack',
-  businessRegistrationDocument: 'businessRegistrationDocument',
-  tradeLicenseDocument: 'tradeLicenseDocument',
-  taxIdentificationDocument: 'taxIdentificationDocument',
-  verificationStatus: 'verificationStatus',
-  verifiedById: 'verifiedById',
-  verifiedAt: 'verifiedAt',
-  rejectionReason: 'rejectionReason',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type OwnerProfileScalarFieldEnum = (typeof OwnerProfileScalarFieldEnum)[keyof typeof OwnerProfileScalarFieldEnum]
-
-
-export const ManagerProfileScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  contactNumber: 'contactNumber',
-  address: 'address',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type ManagerProfileScalarFieldEnum = (typeof ManagerProfileScalarFieldEnum)[keyof typeof ManagerProfileScalarFieldEnum]
-
-
-export const TurfManagerScalarFieldEnum = {
-  id: 'id',
-  turfId: 'turfId',
-  managerId: 'managerId',
-  createdAt: 'createdAt'
-} as const
-
-export type TurfManagerScalarFieldEnum = (typeof TurfManagerScalarFieldEnum)[keyof typeof TurfManagerScalarFieldEnum]
-
-
-export const ManagerPermissionGrantScalarFieldEnum = {
-  id: 'id',
-  assignmentId: 'assignmentId',
-  permission: 'permission',
-  createdAt: 'createdAt'
-} as const
-
-export type ManagerPermissionGrantScalarFieldEnum = (typeof ManagerPermissionGrantScalarFieldEnum)[keyof typeof ManagerPermissionGrantScalarFieldEnum]
-
-
-export const SubscriptionPlanScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  maxTurfs: 'maxTurfs',
-  active: 'active',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type SubscriptionPlanScalarFieldEnum = (typeof SubscriptionPlanScalarFieldEnum)[keyof typeof SubscriptionPlanScalarFieldEnum]
-
-
-export const SubscriptionPriceScalarFieldEnum = {
-  id: 'id',
-  planId: 'planId',
-  period: 'period',
-  price: 'price',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type SubscriptionPriceScalarFieldEnum = (typeof SubscriptionPriceScalarFieldEnum)[keyof typeof SubscriptionPriceScalarFieldEnum]
-
-
-export const OwnerSubscriptionScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  planId: 'planId',
-  status: 'status',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  renewalDate: 'renewalDate',
-  trialStart: 'trialStart',
-  trialEnd: 'trialEnd',
-  isTrialUsed: 'isTrialUsed',
-  billingCycle: 'billingCycle',
-  autoRenew: 'autoRenew',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type OwnerSubscriptionScalarFieldEnum = (typeof OwnerSubscriptionScalarFieldEnum)[keyof typeof OwnerSubscriptionScalarFieldEnum]
 
 
 export const SortOrder = {

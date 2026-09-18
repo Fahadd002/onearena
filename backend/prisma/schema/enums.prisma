@@ -123,7 +123,7 @@ enum PaymentType {
 }
 
 enum PaymentStatus {
-  PENDING
+  VERIFIED
   PROCESSING
   SUCCEEDED
   FAILED
@@ -141,4 +141,8 @@ enum SubscriptionStatus {
   EXPIRING
   EXPIRED
   CANCELLED
+}
+enum InvoiceFor {
+  O
+  U
 }

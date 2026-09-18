@@ -1,42 +1,36 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Res,
+} from '@nestjs/common';
 import { Response } from 'express';
 import httpStatus from 'http-status';
-import { FixedPeriod, SubscriptionStatus } from '../../../generated/prisma/enums';
+import { FixedPeriod, SubscriptionStatus, UserRole, PaymentMethod } from '../../../generated/prisma/enums';
 import { SubscriptionService } from './subscription.service';
+import { PaymentService } from '../payment/payment.service';
 import { CurrentUser } from '../../../common/decorators/current-user.decorator';
 import { AuthRoles } from '../../../common/decorators/auth-roles.decorator';
 import { CheckAuthGuard } from '../../../common/guards/check-auth.guard';
 import sendResponse from '../../../shared/sendResponse';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
-import { UserRole } from '../../../generated/prisma/enums';
 
 @Controller('/api/v1')
 export class SubscriptionController {
-  constructor(private subscriptionService: SubscriptionService) {}
+  constructor(
+    private subscriptionService: SubscriptionService,
+    private paymentService: PaymentService
+  ) {}
 
-  // Get all active subscription plans (public) - New endpoint for frontend
-  @Get('subscriptions/plans')
-  async getSubscriptionPlans(@Res() res: Response) {
-    const plans = await this.subscriptionService.getPlans();
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Subscription plans retrieved',
-      data: plans,
-    });
-  }
-
-  // Get all active subscription plans (legacy endpoint)
-  @Get('subscription-plans')
-  async getPlans(@Res() res: Response) {
-    const plans = await this.subscriptionService.getPlans();
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Subscription plans retrieved',
-      data: plans,
-    });
-  }
+  // -------------------------------------------------------------
+  // Super Admin Endpoints (Plan & Subscription Management)
+  // -------------------------------------------------------------
 
   @Get('subscription-plans/admin')
   @AuthRoles(UserRole.SUPER_ADMIN)
@@ -49,8 +43,101 @@ export class SubscriptionController {
     @Query('limit') limit: string,
     @Res() res: Response,
   ) {
-    const result = await this.subscriptionService.getAdminPlans({ search, sortBy, sortOrder, page: Number(page), limit: Number(limit) });
-    sendResponse(res, { statusCode: httpStatus.OK, success: true, message: 'Subscription plans retrieved', data: result });
+    const result = await this.subscriptionService.getAdminPlans({
+      search,
+      sortBy,
+      sortOrder,
+      page: Number(page) || 1,
+      limit: Number(limit) || 10,
+    });
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'All subscription plans retrieved successfully',
+      data: result,
+    });
+  }
+
+  @Get('subscription-plans')
+  async getPlansLegacy(@Res() res: Response) {
+    const plans = await this.subscriptionService.getPlans();
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Active subscription plans retrieved successfully',
+      data: plans,
+    });
+  }
+
+  @Get('subscription-plans/:planId')
+  async getPlan(@Param('planId') planId: string, @Res() res: Response) {
+    const plan = await this.subscriptionService.getPlanById(planId);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Subscription plan retrieved successfully',
+      data: plan,
+    });
+  }
+
+  @Post('subscription-plans')
+  @AuthRoles(UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async createPlan(
+    @Body()
+    body: {
+      name: string;
+      tierLevel: number;
+      maxTurfs: number;
+      features: string[];
+      prices: { period: FixedPeriod; price: number }[];
+    },
+    @Res() res: Response,
+  ) {
+    const plan = await this.subscriptionService.createPlan(body);
+    sendResponse(res, {
+      statusCode: httpStatus.CREATED,
+      success: true,
+      message: 'Subscription plan created successfully',
+      data: plan,
+    });
+  }
+
+  @Patch('subscription-plans/:planId')
+  @AuthRoles(UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async updatePlan(
+    @Param('planId') planId: string,
+    @Body()
+    body: {
+      name?: string;
+      tierLevel?: number;
+      maxTurfs?: number;
+      features?: string[];
+      active?: boolean;
+    },
+    @Res() res: Response,
+  ) {
+    const plan = await this.subscriptionService.updatePlan(planId, body);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Subscription plan updated successfully',
+      data: plan,
+    });
+  }
+
+  @Delete('subscription-plans/:planId')
+  @AuthRoles(UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async deletePlan(@Param('planId') planId: string, @Res() res: Response) {
+    await this.subscriptionService.deletePlan(planId);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Subscription plan deleted successfully',
+      data: null,
+    });
   }
 
   @Get('subscriptions/admin')
@@ -61,8 +148,16 @@ export class SubscriptionController {
     @Query('search') search: string,
     @Res() res: Response,
   ) {
-    const subscriptions = await this.subscriptionService.getAdminSubscriptions({ status: statusFilter, search });
-    sendResponse(res, { statusCode: httpStatus.OK, success: true, message: 'Owner subscriptions retrieved', data: subscriptions });
+    const subscriptions = await this.subscriptionService.getAdminSubscriptions({
+      status: statusFilter,
+      search,
+    });
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Owner subscriptions retrieved successfully',
+      data: subscriptions,
+    });
   }
 
   @Patch('subscriptions/admin/:subscriptionId')
@@ -70,139 +165,84 @@ export class SubscriptionController {
   @UseGuards(CheckAuthGuard)
   async updateAdminSubscription(
     @Param('subscriptionId') subscriptionId: string,
-    @Body() body: { status?: SubscriptionStatus; endDate?: string; autoRenew?: boolean; planId?: string },
+    @Body() body: { status?: SubscriptionStatus; endDate?: string; planId?: string },
     @Res() res: Response,
   ) {
-    const subscription = await this.subscriptionService.updateAdminSubscription(subscriptionId, body);
-    sendResponse(res, { statusCode: httpStatus.OK, success: true, message: 'Owner subscription updated', data: subscription });
-  }
-
-  @Post('subscription-plans')
-  @AuthRoles(UserRole.SUPER_ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async createPlan(@Body() body: any, @Res() res: Response) {
-    const plan = await this.subscriptionService.createPlan(body);
-    sendResponse(res, { statusCode: httpStatus.CREATED, success: true, message: 'Subscription plan created', data: plan });
-  }
-
-  @Patch('subscription-plans/:planId')
-  @AuthRoles(UserRole.SUPER_ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async updatePlan(@Param('planId') planId: string, @Body() body: any, @Res() res: Response) {
-    const plan = await this.subscriptionService.updatePlan(planId, body);
-    sendResponse(res, { statusCode: httpStatus.OK, success: true, message: 'Subscription plan updated', data: plan });
-  }
-
-  @Delete('subscription-plans/:planId')
-  @AuthRoles(UserRole.SUPER_ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async deletePlan(@Param('planId') planId: string, @Res() res: Response) {
-    await this.subscriptionService.deletePlan(planId);
-    sendResponse(res, { statusCode: httpStatus.OK, success: true, message: 'Subscription plan deleted', data: null });
-  }
-
-  // Get single plan (public)
-  @Get('subscription-plans/:planId')
-  async getPlan(@Res() res: Response) {
-    const plan = await this.subscriptionService.getPlan(res.locals.planId);
+    const subscription = await this.subscriptionService.updateAdminSubscription(
+      subscriptionId,
+      body,
+    );
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Subscription plan retrieved',
-      data: plan,
-    });
-  }
-
-  // Get current subscription (owner only)
-  @Get('subscription')
-  @AuthRoles(UserRole.ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async getCurrentSubscription(@CurrentUser() user: IRequestUser, @Res() res: Response) {
-    const subscription = await this.subscriptionService.getCurrentSubscription(user);
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Current subscription retrieved',
+      message: 'Owner subscription updated successfully',
       data: subscription,
     });
   }
 
-  // Subscribe to plan (owner only)
+  // -------------------------------------------------------------
+  // Owner Endpoints (User Subscription Actions)
+  // -------------------------------------------------------------
+
+  @Get('subscription')
+  @AuthRoles(UserRole.ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async getCurrentSubscription(
+    @CurrentUser() user: IRequestUser,
+    @Res() res: Response,
+  ) {
+    const subscription = await this.subscriptionService.getCurrentSubscription(user);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Current subscription retrieved successfully',
+      data: subscription,
+    });
+  }
+
+
   @Post('subscription/subscribe')
   @AuthRoles(UserRole.ADMIN)
   @UseGuards(CheckAuthGuard)
   async subscribe(
     @CurrentUser() user: IRequestUser,
     @Body() body: { planId: string; billingCycle: FixedPeriod },
-    @Res() res: Response
+    @Res() res: Response,
   ) {
-    const subscription = await this.subscriptionService.subscribe(
+    const subscription = await this.subscriptionService.subscribeOrUpgrade(
       user,
       body.planId,
-      body.billingCycle
+      body.billingCycle,
     );
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
-      message: 'Subscription created with 30-day free trial',
+      message: 'Subscription process executed successfully',
       data: subscription,
     });
   }
 
-  // Activate subscription (owner only) - New endpoint for frontend
   @Post('subscriptions/activate')
   @AuthRoles(UserRole.ADMIN)
   @UseGuards(CheckAuthGuard)
   async activateSubscription(
     @CurrentUser() user: IRequestUser,
     @Body() body: { planId: string; billingPeriod: FixedPeriod },
-    @Res() res: Response
+    @Res() res: Response,
   ) {
-    const subscription = await this.subscriptionService.subscribe(
+    const subscription = await this.subscriptionService.subscribeOrUpgrade(
       user,
       body.planId,
-      body.billingPeriod
+      body.billingPeriod,
     );
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
-      message: 'Subscription activated! Your 1-month free trial begins now.',
+      message: 'Subscription activated successfully',
       data: subscription,
     });
   }
 
-  @Post('subscriptions/free-trial')
-  @AuthRoles(UserRole.ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async activateFreeTrial(@CurrentUser() user: IRequestUser, @Res() res: Response) {
-    const subscription = await this.subscriptionService.activateFreeTrial(user);
-    sendResponse(res, {
-      statusCode: httpStatus.CREATED,
-      success: true,
-      message: 'Free trial activated for one month',
-      data: subscription,
-    });
-  }
-
-  // Renew subscription (owner only)
-  @Post('subscription/renew')
-  @AuthRoles(UserRole.ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async renew(
-    @CurrentUser() user: IRequestUser,
-    @Body() body: { billingCycle: FixedPeriod },
-    @Res() res: Response
-  ) {
-    const subscription = await this.subscriptionService.renew(user, body.billingCycle);
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Subscription renewed',
-      data: subscription,
-    });
-  }
-
-  // Cancel subscription (owner only)
   @Patch('subscription/cancel')
   @AuthRoles(UserRole.ADMIN)
   @UseGuards(CheckAuthGuard)
@@ -211,12 +251,11 @@ export class SubscriptionController {
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Subscription cancelled',
+      message: 'Subscription cancelled successfully',
       data: subscription,
     });
   }
 
-  // Get subscription history (owner only)
   @Get('subscription/history')
   @AuthRoles(UserRole.ADMIN)
   @UseGuards(CheckAuthGuard)
@@ -225,8 +264,57 @@ export class SubscriptionController {
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Subscription history retrieved',
+      message: 'Subscription audit history retrieved successfully',
       data: history,
+    });
+  }
+
+  // -------------------------------------------------------------
+  // Owner Payment Endpoints
+  // -------------------------------------------------------------
+
+  @Post('subscription/payment/initiate')
+  @AuthRoles(UserRole.ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async initiatePayment(
+    @CurrentUser() user: IRequestUser,
+    @Body() body: { planId: string; billingPeriod: FixedPeriod; paymentMethod: PaymentMethod; providerTransactionId?: string },
+    @Res() res: Response,
+  ) {
+    const result = await this.paymentService.initiateSubscriptionPayment(
+      user,
+      body.planId,
+      body.billingPeriod,
+      body.paymentMethod,
+      body.providerTransactionId
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.CREATED,
+      success: true,
+      message: 'Payment initiated successfully',
+      data: result,
+    });
+  }
+
+  @Post('subscription/payment/verify')
+  @AuthRoles(UserRole.ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async verifyPayment(
+    @CurrentUser() user: IRequestUser,
+    @Body() body: { invoiceId: string; providerTransactionId: string; paymentMethod: PaymentMethod },
+    @Res() res: Response,
+  ) {
+    const result = await this.paymentService.verifySubscriptionPayment(
+      user,
+      body.invoiceId,
+      body.providerTransactionId,
+      body.paymentMethod
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Payment verified successfully',
+      data: result,
     });
   }
 }

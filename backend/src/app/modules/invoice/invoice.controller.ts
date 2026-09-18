@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import status from 'http-status';
 import { AuthRoles } from '../../../common/decorators/auth-roles.decorator';
@@ -24,8 +24,22 @@ export class InvoiceController {
   @Get('invoices')
   @AuthRoles(UserRole.USER, UserRole.ADMIN, UserRole.MANAGER, UserRole.SUPER_ADMIN)
   @UseGuards(CheckAuthGuard)
-  async list(@CurrentUser() user: IRequestUser, @Res() res: Response) {
-    const data = await this.service.list(user);
+  async list(
+    @CurrentUser() user: IRequestUser,
+    @Res() res: Response,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+    @Query('status') invoiceStatus?: string,
+    @Query('search') search?: string,
+    @Query('sortBy') sortBy?: string,
+    @Query('sortOrder') sortOrder?: string,
+  ) {
+    const data = await this.service.list(
+      user,
+      Number(page) || 1,
+      Number(limit) || 10,
+      { status: invoiceStatus, search, sortBy, sortOrder },
+    );
     sendResponse(res, { statusCode: status.OK, success: true, message: 'Invoices fetched successfully', data });
   }
 }

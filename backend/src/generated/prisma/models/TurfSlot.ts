@@ -430,6 +430,11 @@ export type TurfSlotUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type TurfSlotScalarRelationFilter = {
+  is?: Prisma.TurfSlotWhereInput
+  isNot?: Prisma.TurfSlotWhereInput
+}
+
 export type TurfSlotListRelationFilter = {
   every?: Prisma.TurfSlotWhereInput
   some?: Prisma.TurfSlotWhereInput
@@ -498,9 +503,18 @@ export type TurfSlotSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
 }
 
-export type TurfSlotScalarRelationFilter = {
-  is?: Prisma.TurfSlotWhereInput
-  isNot?: Prisma.TurfSlotWhereInput
+export type TurfSlotCreateNestedOneWithoutBookingInput = {
+  create?: Prisma.XOR<Prisma.TurfSlotCreateWithoutBookingInput, Prisma.TurfSlotUncheckedCreateWithoutBookingInput>
+  connectOrCreate?: Prisma.TurfSlotCreateOrConnectWithoutBookingInput
+  connect?: Prisma.TurfSlotWhereUniqueInput
+}
+
+export type TurfSlotUpdateOneRequiredWithoutBookingNestedInput = {
+  create?: Prisma.XOR<Prisma.TurfSlotCreateWithoutBookingInput, Prisma.TurfSlotUncheckedCreateWithoutBookingInput>
+  connectOrCreate?: Prisma.TurfSlotCreateOrConnectWithoutBookingInput
+  upsert?: Prisma.TurfSlotUpsertWithoutBookingInput
+  connect?: Prisma.TurfSlotWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfSlotUpdateToOneWithWhereWithoutBookingInput, Prisma.TurfSlotUpdateWithoutBookingInput>, Prisma.TurfSlotUncheckedUpdateWithoutBookingInput>
 }
 
 export type TurfSlotCreateNestedManyWithoutTurfInput = {
@@ -547,88 +561,6 @@ export type TurfSlotUncheckedUpdateManyWithoutTurfNestedInput = {
 
 export type EnumSlotSatusFieldUpdateOperationsInput = {
   set?: $Enums.SlotSatus
-}
-
-export type TurfSlotCreateNestedOneWithoutBookingInput = {
-  create?: Prisma.XOR<Prisma.TurfSlotCreateWithoutBookingInput, Prisma.TurfSlotUncheckedCreateWithoutBookingInput>
-  connectOrCreate?: Prisma.TurfSlotCreateOrConnectWithoutBookingInput
-  connect?: Prisma.TurfSlotWhereUniqueInput
-}
-
-export type TurfSlotUpdateOneRequiredWithoutBookingNestedInput = {
-  create?: Prisma.XOR<Prisma.TurfSlotCreateWithoutBookingInput, Prisma.TurfSlotUncheckedCreateWithoutBookingInput>
-  connectOrCreate?: Prisma.TurfSlotCreateOrConnectWithoutBookingInput
-  upsert?: Prisma.TurfSlotUpsertWithoutBookingInput
-  connect?: Prisma.TurfSlotWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfSlotUpdateToOneWithWhereWithoutBookingInput, Prisma.TurfSlotUpdateWithoutBookingInput>, Prisma.TurfSlotUncheckedUpdateWithoutBookingInput>
-}
-
-export type TurfSlotCreateWithoutTurfInput = {
-  id?: string
-  slotDate: Date | string
-  startMinute: number
-  endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  active?: boolean
-  slotStatus?: $Enums.SlotSatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  booking?: Prisma.BookingCreateNestedOneWithoutSlotInput
-}
-
-export type TurfSlotUncheckedCreateWithoutTurfInput = {
-  id?: string
-  slotDate: Date | string
-  startMinute: number
-  endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  active?: boolean
-  slotStatus?: $Enums.SlotSatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  booking?: Prisma.BookingUncheckedCreateNestedOneWithoutSlotInput
-}
-
-export type TurfSlotCreateOrConnectWithoutTurfInput = {
-  where: Prisma.TurfSlotWhereUniqueInput
-  create: Prisma.XOR<Prisma.TurfSlotCreateWithoutTurfInput, Prisma.TurfSlotUncheckedCreateWithoutTurfInput>
-}
-
-export type TurfSlotCreateManyTurfInputEnvelope = {
-  data: Prisma.TurfSlotCreateManyTurfInput | Prisma.TurfSlotCreateManyTurfInput[]
-  skipDuplicates?: boolean
-}
-
-export type TurfSlotUpsertWithWhereUniqueWithoutTurfInput = {
-  where: Prisma.TurfSlotWhereUniqueInput
-  update: Prisma.XOR<Prisma.TurfSlotUpdateWithoutTurfInput, Prisma.TurfSlotUncheckedUpdateWithoutTurfInput>
-  create: Prisma.XOR<Prisma.TurfSlotCreateWithoutTurfInput, Prisma.TurfSlotUncheckedCreateWithoutTurfInput>
-}
-
-export type TurfSlotUpdateWithWhereUniqueWithoutTurfInput = {
-  where: Prisma.TurfSlotWhereUniqueInput
-  data: Prisma.XOR<Prisma.TurfSlotUpdateWithoutTurfInput, Prisma.TurfSlotUncheckedUpdateWithoutTurfInput>
-}
-
-export type TurfSlotUpdateManyWithWhereWithoutTurfInput = {
-  where: Prisma.TurfSlotScalarWhereInput
-  data: Prisma.XOR<Prisma.TurfSlotUpdateManyMutationInput, Prisma.TurfSlotUncheckedUpdateManyWithoutTurfInput>
-}
-
-export type TurfSlotScalarWhereInput = {
-  AND?: Prisma.TurfSlotScalarWhereInput | Prisma.TurfSlotScalarWhereInput[]
-  OR?: Prisma.TurfSlotScalarWhereInput[]
-  NOT?: Prisma.TurfSlotScalarWhereInput | Prisma.TurfSlotScalarWhereInput[]
-  id?: Prisma.StringFilter<"TurfSlot"> | string
-  turfId?: Prisma.StringFilter<"TurfSlot"> | string
-  slotDate?: Prisma.DateTimeFilter<"TurfSlot"> | Date | string
-  startMinute?: Prisma.IntFilter<"TurfSlot"> | number
-  endMinute?: Prisma.IntFilter<"TurfSlot"> | number
-  price?: Prisma.DecimalFilter<"TurfSlot"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  active?: Prisma.BoolFilter<"TurfSlot"> | boolean
-  slotStatus?: Prisma.EnumSlotSatusFilter<"TurfSlot"> | $Enums.SlotSatus
-  createdAt?: Prisma.DateTimeFilter<"TurfSlot"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"TurfSlot"> | Date | string
 }
 
 export type TurfSlotCreateWithoutBookingInput = {
@@ -697,6 +629,74 @@ export type TurfSlotUncheckedUpdateWithoutBookingInput = {
   slotStatus?: Prisma.EnumSlotSatusFieldUpdateOperationsInput | $Enums.SlotSatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TurfSlotCreateWithoutTurfInput = {
+  id?: string
+  slotDate: Date | string
+  startMinute: number
+  endMinute: number
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  active?: boolean
+  slotStatus?: $Enums.SlotSatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  booking?: Prisma.BookingCreateNestedOneWithoutSlotInput
+}
+
+export type TurfSlotUncheckedCreateWithoutTurfInput = {
+  id?: string
+  slotDate: Date | string
+  startMinute: number
+  endMinute: number
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  active?: boolean
+  slotStatus?: $Enums.SlotSatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  booking?: Prisma.BookingUncheckedCreateNestedOneWithoutSlotInput
+}
+
+export type TurfSlotCreateOrConnectWithoutTurfInput = {
+  where: Prisma.TurfSlotWhereUniqueInput
+  create: Prisma.XOR<Prisma.TurfSlotCreateWithoutTurfInput, Prisma.TurfSlotUncheckedCreateWithoutTurfInput>
+}
+
+export type TurfSlotCreateManyTurfInputEnvelope = {
+  data: Prisma.TurfSlotCreateManyTurfInput | Prisma.TurfSlotCreateManyTurfInput[]
+  skipDuplicates?: boolean
+}
+
+export type TurfSlotUpsertWithWhereUniqueWithoutTurfInput = {
+  where: Prisma.TurfSlotWhereUniqueInput
+  update: Prisma.XOR<Prisma.TurfSlotUpdateWithoutTurfInput, Prisma.TurfSlotUncheckedUpdateWithoutTurfInput>
+  create: Prisma.XOR<Prisma.TurfSlotCreateWithoutTurfInput, Prisma.TurfSlotUncheckedCreateWithoutTurfInput>
+}
+
+export type TurfSlotUpdateWithWhereUniqueWithoutTurfInput = {
+  where: Prisma.TurfSlotWhereUniqueInput
+  data: Prisma.XOR<Prisma.TurfSlotUpdateWithoutTurfInput, Prisma.TurfSlotUncheckedUpdateWithoutTurfInput>
+}
+
+export type TurfSlotUpdateManyWithWhereWithoutTurfInput = {
+  where: Prisma.TurfSlotScalarWhereInput
+  data: Prisma.XOR<Prisma.TurfSlotUpdateManyMutationInput, Prisma.TurfSlotUncheckedUpdateManyWithoutTurfInput>
+}
+
+export type TurfSlotScalarWhereInput = {
+  AND?: Prisma.TurfSlotScalarWhereInput | Prisma.TurfSlotScalarWhereInput[]
+  OR?: Prisma.TurfSlotScalarWhereInput[]
+  NOT?: Prisma.TurfSlotScalarWhereInput | Prisma.TurfSlotScalarWhereInput[]
+  id?: Prisma.StringFilter<"TurfSlot"> | string
+  turfId?: Prisma.StringFilter<"TurfSlot"> | string
+  slotDate?: Prisma.DateTimeFilter<"TurfSlot"> | Date | string
+  startMinute?: Prisma.IntFilter<"TurfSlot"> | number
+  endMinute?: Prisma.IntFilter<"TurfSlot"> | number
+  price?: Prisma.DecimalFilter<"TurfSlot"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  active?: Prisma.BoolFilter<"TurfSlot"> | boolean
+  slotStatus?: Prisma.EnumSlotSatusFilter<"TurfSlot"> | $Enums.SlotSatus
+  createdAt?: Prisma.DateTimeFilter<"TurfSlot"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"TurfSlot"> | Date | string
 }
 
 export type TurfSlotCreateManyTurfInput = {

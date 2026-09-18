@@ -18,6 +18,11 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
+ * Model Booking
+ * 
+ */
+export type Booking = Prisma.BookingModel
+/**
  * Model TurfCategory
  * 
  */
@@ -28,50 +33,20 @@ export type TurfCategory = Prisma.TurfCategoryModel
  */
 export type Facility = Prisma.FacilityModel
 /**
- * Model TurfImage
- * 
- */
-export type TurfImage = Prisma.TurfImageModel
-/**
- * Model Package
- * 
- */
-export type Package = Prisma.PackageModel
-/**
  * Model PackageFacility
  * 
  */
 export type PackageFacility = Prisma.PackageFacilityModel
-/**
- * Model Turf
- * 
- */
-export type Turf = Prisma.TurfModel
 /**
  * Model TurfFacility
  * 
  */
 export type TurfFacility = Prisma.TurfFacilityModel
 /**
- * Model TurfPriceRule
+ * Model Invoice
  * 
  */
-export type TurfPriceRule = Prisma.TurfPriceRuleModel
-/**
- * Model TurfSlot
- * 
- */
-export type TurfSlot = Prisma.TurfSlotModel
-/**
- * Model Booking
- * 
- */
-export type Booking = Prisma.BookingModel
-/**
- * Model BookingInvoice
- * 
- */
-export type BookingInvoice = Prisma.BookingInvoiceModel
+export type Invoice = Prisma.InvoiceModel
 /**
  * Model Payment
  * 
@@ -82,51 +57,6 @@ export type Payment = Prisma.PaymentModel
  * 
  */
 export type Refund = Prisma.RefundModel
-/**
- * Model Review
- * 
- */
-export type Review = Prisma.ReviewModel
-/**
- * Model ReviewReply
- * 
- */
-export type ReviewReply = Prisma.ReviewReplyModel
-/**
- * Model User
- * 
- */
-export type User = Prisma.UserModel
-/**
- * Model OwnerGalleryItem
- * 
- */
-export type OwnerGalleryItem = Prisma.OwnerGalleryItemModel
-/**
- * Model OwnerBlog
- * 
- */
-export type OwnerBlog = Prisma.OwnerBlogModel
-/**
- * Model Session
- * 
- */
-export type Session = Prisma.SessionModel
-/**
- * Model Account
- * 
- */
-export type Account = Prisma.AccountModel
-/**
- * Model Verification
- * 
- */
-export type Verification = Prisma.VerificationModel
-/**
- * Model OwnerProfile
- * 
- */
-export type OwnerProfile = Prisma.OwnerProfileModel
 /**
  * Model ManagerProfile
  * 
@@ -143,6 +73,31 @@ export type TurfManager = Prisma.TurfManagerModel
  */
 export type ManagerPermissionGrant = Prisma.ManagerPermissionGrantModel
 /**
+ * Model OwnerProfile
+ * 
+ */
+export type OwnerProfile = Prisma.OwnerProfileModel
+/**
+ * Model OwnerGalleryItem
+ * 
+ */
+export type OwnerGalleryItem = Prisma.OwnerGalleryItemModel
+/**
+ * Model OwnerBlog
+ * 
+ */
+export type OwnerBlog = Prisma.OwnerBlogModel
+/**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel
+/**
+ * Model ReviewReply
+ * 
+ */
+export type ReviewReply = Prisma.ReviewReplyModel
+/**
  * Model SubscriptionPlan
  * 
  */
@@ -153,7 +108,57 @@ export type SubscriptionPlan = Prisma.SubscriptionPlanModel
  */
 export type SubscriptionPrice = Prisma.SubscriptionPriceModel
 /**
- * Model OwnerSubscription
+ * Model Subscription
  * 
  */
-export type OwnerSubscription = Prisma.OwnerSubscriptionModel
+export type Subscription = Prisma.SubscriptionModel
+/**
+ * Model SubscriptionLog
+ * 
+ */
+export type SubscriptionLog = Prisma.SubscriptionLogModel
+/**
+ * Model Turf
+ * 
+ */
+export type Turf = Prisma.TurfModel
+/**
+ * Model TurfPriceRule
+ * 
+ */
+export type TurfPriceRule = Prisma.TurfPriceRuleModel
+/**
+ * Model TurfSlot
+ * 
+ */
+export type TurfSlot = Prisma.TurfSlotModel
+/**
+ * Model TurfImage
+ * 
+ */
+export type TurfImage = Prisma.TurfImageModel
+/**
+ * Model Package
+ * 
+ */
+export type Package = Prisma.PackageModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model Session
+ * 
+ */
+export type Session = Prisma.SessionModel
+/**
+ * Model Account
+ * 
+ */
+export type Account = Prisma.AccountModel
+/**
+ * Model Verification
+ * 
+ */
+export type Verification = Prisma.VerificationModel

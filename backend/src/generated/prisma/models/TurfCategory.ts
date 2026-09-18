@@ -295,14 +295,6 @@ export type TurfCategoryScalarRelationFilter = {
   isNot?: Prisma.TurfCategoryWhereInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type TurfCategoryCreateNestedOneWithoutTurfsInput = {
   create?: Prisma.XOR<Prisma.TurfCategoryCreateWithoutTurfsInput, Prisma.TurfCategoryUncheckedCreateWithoutTurfsInput>
   connectOrCreate?: Prisma.TurfCategoryCreateOrConnectWithoutTurfsInput

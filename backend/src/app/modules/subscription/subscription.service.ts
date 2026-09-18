@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import httpStatus from 'http-status';
-import { FixedPeriod, SubscriptionStatus } from '../../../generated/prisma/enums';
+import {
+  FixedPeriod,
+  SubscriptionAction,
+  SubscriptionStatus,
+} from '../../../generated/prisma/enums';
 import { Prisma } from '../../../generated/prisma/client';
 import AppError from '../../../config/errorHelpers/AppError';
 import prisma from '../../../shared/prisma';
@@ -8,7 +12,8 @@ import { IRequestUser } from '../../interfaces/requestUser.interface';
 
 @Injectable()
 export class SubscriptionService {
-  // Get all active subscription plans
+  constructor() {}
+  // Get all active subscription plans ordered by tier level
   async getPlans() {
     return prisma.subscriptionPlan.findMany({
       where: { active: true },
@@ -17,28 +22,12 @@ export class SubscriptionService {
           orderBy: { period: 'asc' },
         },
       },
-      orderBy: { maxTurfs: 'asc' },
+      orderBy: { tierLevel: 'asc' },
     });
   }
 
-  async getAdminPlans(options: { search?: string; sortBy?: string; sortOrder?: 'asc' | 'desc'; page?: number; limit?: number }) {
-    const page = options.page && options.page > 0 ? options.page : 1;
-    const limit = options.limit && options.limit > 0 ? Math.min(options.limit, 100) : 10;
-    const where: Prisma.SubscriptionPlanWhereInput = options.search
-      ? { OR: [{ name: { contains: options.search, mode: 'insensitive' } }] }
-      : {};
-    const orderBy: Prisma.SubscriptionPlanOrderByWithRelationInput = options.sortBy === 'maxTurfs'
-      ? { maxTurfs: options.sortOrder === 'desc' ? 'desc' : 'asc' }
-      : { name: options.sortOrder === 'desc' ? 'desc' : 'asc' };
-    const [data, total] = await prisma.$transaction([
-      prisma.subscriptionPlan.findMany({ where, include: { prices: { orderBy: { period: 'asc' } } }, orderBy, skip: (page - 1) * limit, take: limit }),
-      prisma.subscriptionPlan.count({ where }),
-    ]);
-    return { data, meta: { page, limit, total, totalPages: Math.ceil(total / limit) } };
-  }
-
-  // Get single plan with prices
-  async getPlan(planId: string) {
+  // Get single plan by ID (Alias/Utility)
+  async getPlanById(planId: string) {
     const plan = await prisma.subscriptionPlan.findUnique({
       where: { id: planId },
       include: { prices: true },
@@ -51,138 +40,166 @@ export class SubscriptionService {
     return plan;
   }
 
+  // Legacy/Standard single plan retrieval
+  async getPlan(planId: string) {
+    return this.getPlanById(planId);
+  }
+
+  async getAdminPlans(options: {
+    search?: string;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+    page?: number;
+    limit?: number;
+  }) {
+    const page = options.page && options.page > 0 ? options.page : 1;
+    const limit = options.limit && options.limit > 0 ? Math.min(options.limit, 100) : 10;
+    const where: Prisma.SubscriptionPlanWhereInput = options.search
+      ? { OR: [{ name: { contains: options.search, mode: 'insensitive' } }] }
+      : {};
+
+    let orderBy: Prisma.SubscriptionPlanOrderByWithRelationInput = {
+      tierLevel: options.sortOrder === 'desc' ? 'desc' : 'asc',
+    };
+    if (options.sortBy === 'maxTurfs') {
+      orderBy = { maxTurfs: options.sortOrder === 'desc' ? 'desc' : 'asc' };
+    } else if (options.sortBy === 'name') {
+      orderBy = { name: options.sortOrder === 'desc' ? 'desc' : 'asc' };
+    }
+
+    const [data, total] = await prisma.$transaction([
+      prisma.subscriptionPlan.findMany({
+        where,
+        include: { prices: { orderBy: { period: 'asc' } } },
+        orderBy,
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      prisma.subscriptionPlan.count({ where }),
+    ]);
+
+    return { data, meta: { page, limit, total, totalPages: Math.ceil(total / limit) } };
+  }
+
   // Get current subscription for owner
   async getCurrentSubscription(user: IRequestUser) {
-    const subscription = await prisma.ownerSubscription.findUnique({
+    const subscription = await prisma.subscription.findUnique({
       where: { userId: user.userId },
-      include: { plan: { include: { prices: true } } },
+      include: {
+        plan: { include: { prices: true } },
+        subscriptionLogs: {
+          orderBy: { createdAt: 'desc' },
+          take: 10,
+        },
+      },
     });
 
     return subscription;
   }
 
-  // Subscribe owner to plan (with free trial)
-  async subscribe(user: IRequestUser, planId: string, billingCycle: FixedPeriod) {
+  // Explicit handler for Subscribe / Upgrade operations
+  async subscribeOrUpgrade(
+    user: IRequestUser,
+    planId: string,
+    billingPeriod: FixedPeriod = FixedPeriod.MONTHLY
+  ) {
     const ownerProfile = await prisma.ownerProfile.findUnique({
       where: { userId: user.userId },
       select: { verificationStatus: true },
     });
-    if (ownerProfile?.verificationStatus === 'APPROVED') {
-      throw new AppError(httpStatus.FORBIDDEN, 'Approved subscriptions cannot be changed');
-    }
 
-    // Verify plan exists
-    await this.getPlan(planId);
+    const targetPlan = await this.getPlanById(planId);
 
-    const existing = await prisma.ownerSubscription.findUnique({
+    const existingSub = await prisma.subscription.findUnique({
       where: { userId: user.userId },
+      include: { plan: true },
     });
 
+    let action: SubscriptionAction = SubscriptionAction.SUBSCRIBED;
+
+    // Downgrade prevention ONLY applies if owner profile is APPROVED
+    if (ownerProfile?.verificationStatus === 'APPROVED') {
+      if (existingSub && existingSub.status === SubscriptionStatus.ACTIVE) {
+        if (targetPlan.tierLevel < existingSub.plan.tierLevel) {
+          throw new AppError(
+            httpStatus.BAD_REQUEST,
+            "Downgrading to a lower tier plan is not allowed"
+          );
+        }
+        if (targetPlan.tierLevel === existingSub.plan.tierLevel) {
+          action = SubscriptionAction.RENEWED;
+        } else {
+          action = SubscriptionAction.UPGRADED;
+        }
+      }
+    }
+
     const now = new Date();
-    const trialEnd = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
-    const endDate = new Date(trialEnd); // Trial is the initial period
+    const trialEnd = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+    // Compute Subscription Duration based on period
+    const endDate = new Date(now);
+    if (billingPeriod === FixedPeriod.YEARLY) {
+      endDate.setFullYear(now.getFullYear() + 1);
+    } else if (billingPeriod === FixedPeriod.HALF_YEARLY) {
+      endDate.setMonth(now.getMonth() + 6);
+    } else if (billingPeriod === FixedPeriod.QUARTERLY) {
+      endDate.setMonth(now.getMonth() + 3);
+    } else {
+      endDate.setMonth(now.getMonth() + 1);
+    }
 
     return prisma.$transaction(async (tx) => {
-      const subscription = existing
-        ? await tx.ownerSubscription.update({
-        where: { userId: user.userId },
+      const subscription = existingSub
+        ? await tx.subscription.update({
+          where: { userId: user.userId },
+          data: {
+            planId,
+            status: SubscriptionStatus.ACTIVE,
+            startDate: now,
+            endDate,
+            trialStart: existingSub.trialStart ?? now,
+            trialEnd: existingSub.trialEnd ?? trialEnd,
+            isTrialUsed: existingSub.isTrialUsed,
+          },
+          include: { plan: { include: { prices: true } } },
+        })
+        : await tx.subscription.create({
+          data: {
+            userId: user.userId,
+            planId,
+            status: SubscriptionStatus.TRIAL,
+            startDate: now,
+            endDate: trialEnd,
+            trialStart: now,
+            trialEnd,
+            isTrialUsed: true,
+          },
+          include: { plan: { include: { prices: true } } },
+        });
+
+      // Write Audit Log
+      await tx.subscriptionLog.create({
         data: {
-          planId,
-          status: existing.status === SubscriptionStatus.CANCELLED || existing.status === SubscriptionStatus.EXPIRED
-            ? SubscriptionStatus.TRIAL
-            : existing.status,
-          billingCycle,
-          endDate: existing.status === SubscriptionStatus.CANCELLED || existing.status === SubscriptionStatus.EXPIRED ? endDate : existing.endDate,
-          trialStart: existing.trialStart ?? now,
-          trialEnd: existing.trialEnd ?? trialEnd,
-          isTrialUsed: existing.isTrialUsed,
+          subscriptionId: subscription.id,
+          action: existingSub ? action : SubscriptionAction.TRIAL_STARTED,
+          status: subscription.status,
+          startDate: subscription.startDate,
+          endDate: subscription.endDate,
         },
-        include: { plan: { include: { prices: true } } },
-      })
-        : await tx.ownerSubscription.create({
-        data: {
-          userId: user.userId,
-          planId,
-          status: SubscriptionStatus.TRIAL,
-          startDate: now,
-          endDate,
-          trialStart: now,
-          trialEnd,
-          isTrialUsed: true,
-          billingCycle,
-          autoRenew: true,
-        },
-        include: { plan: { include: { prices: true } } },
       });
 
       return subscription;
     });
   }
 
-  async activateFreeTrial(user: IRequestUser) {
-    const freeTrialPlan = await prisma.subscriptionPlan.upsert({
-      where: { name: 'Free Trial' },
-      create: {
-        name: 'Free Trial',
-        maxTurfs: 1,
-        prices: {
-          create: [
-            { period: FixedPeriod.MONTHLY, price: '0' },
-            { period: FixedPeriod.QUARTERLY, price: '0' },
-            { period: FixedPeriod.HALF_YEARLY, price: '0' },
-            { period: FixedPeriod.YEARLY, price: '0' },
-          ],
-        },
-      },
-      update: { active: true },
-    });
-
-    return this.subscribe(user, freeTrialPlan.id, FixedPeriod.MONTHLY);
-  }
-
-  // Renew subscription
-  async renew(user: IRequestUser, billingCycle: FixedPeriod) {
-    const subscription = await this.getCurrentSubscription(user);
-
-    if (!subscription) {
-      throw new AppError(httpStatus.NOT_FOUND, 'No subscription found');
-    }
-
-    const now = new Date();
-    let endDate: Date;
-
-    const monthsToAdd = billingCycle === FixedPeriod.MONTHLY
-      ? 1
-      : billingCycle === FixedPeriod.QUARTERLY
-        ? 3
-        : billingCycle === FixedPeriod.HALF_YEARLY
-          ? 6
-          : 12;
-    endDate = new Date(now.getFullYear(), now.getMonth() + monthsToAdd, now.getDate());
-
-    return prisma.ownerSubscription.update({
-      where: { userId: user.userId },
-      data: {
-        status: SubscriptionStatus.ACTIVE,
-        startDate: now,
-        endDate,
-        renewalDate: endDate,
-        billingCycle,
-        autoRenew: true,
-      },
-      include: { plan: { include: { prices: true } } },
-    });
-  }
-
-  // Check and update subscription status (for cron job)
+  // Cron job status sync
   async checkAndUpdateStatus(userId: string) {
-    const subscription = await prisma.ownerSubscription.findUnique({
+    const subscription = await prisma.subscription.findUnique({
       where: { userId },
     });
 
-    if (!subscription) {
-      return null;
-    }
+    if (!subscription) return null;
 
     const now = new Date();
     const daysUntilExpiry = Math.ceil(
@@ -198,9 +215,25 @@ export class SubscriptionService {
     }
 
     if (newStatus !== subscription.status) {
-      return prisma.ownerSubscription.update({
-        where: { userId },
-        data: { status: newStatus },
+      return prisma.$transaction(async (tx) => {
+        const updated = await tx.subscription.update({
+          where: { userId },
+          data: { status: newStatus },
+        });
+
+        if (newStatus === SubscriptionStatus.EXPIRED) {
+          await tx.subscriptionLog.create({
+            data: {
+              subscriptionId: updated.id,
+              action: SubscriptionAction.EXPIRED,
+              status: newStatus,
+              startDate: updated.startDate,
+              endDate: updated.endDate,
+            },
+          });
+        }
+
+        return updated;
       });
     }
 
@@ -209,24 +242,24 @@ export class SubscriptionService {
 
   // Get turf limit for owner
   async getTurfLimit(userId: string): Promise<number> {
-    const subscription = await prisma.ownerSubscription.findUnique({
+    const subscription = await prisma.subscription.findUnique({
       where: { userId },
       include: { plan: true },
     });
 
-    if (!subscription) {
-      return 0; // No subscription = no turfs allowed
-    }
+    if (!subscription) return 0;
 
-    if (subscription.status === SubscriptionStatus.EXPIRED || 
-        subscription.status === SubscriptionStatus.CANCELLED) {
-      return 0; // Cannot create new turfs if expired/cancelled
+    if (
+      subscription.status === SubscriptionStatus.EXPIRED ||
+      subscription.status === SubscriptionStatus.CANCELLED
+    ) {
+      return 0;
     }
 
     return subscription.plan.maxTurfs;
   }
 
-  // Check turf limit before creating turf
+  // Validate turf creation limit
   async validateTurfCreation(userId: string) {
     const limit = await this.getTurfLimit(userId);
     const currentTurfs = await prisma.turf.count({
@@ -241,7 +274,6 @@ export class SubscriptionService {
     }
   }
 
-  // Cancel subscription
   async cancel(user: IRequestUser) {
     const subscription = await this.getCurrentSubscription(user);
 
@@ -249,26 +281,53 @@ export class SubscriptionService {
       throw new AppError(httpStatus.NOT_FOUND, 'No subscription found');
     }
 
-    return prisma.ownerSubscription.update({
-      where: { userId: user.userId },
-      data: {
-        status: SubscriptionStatus.CANCELLED,
-        autoRenew: false,
-      },
-      include: { plan: { include: { prices: true } } },
+    return prisma.$transaction(async (tx) => {
+      const updatedSub = await tx.subscription.update({
+        where: { userId: user.userId },
+        data: {
+          status: SubscriptionStatus.CANCELLED,
+        },
+        include: { plan: { include: { prices: true } } },
+      });
+
+      await tx.subscriptionLog.create({
+        data: {
+          subscriptionId: updatedSub.id,
+          action: SubscriptionAction.CANCELLED,
+          status: SubscriptionStatus.CANCELLED,
+          startDate: updatedSub.startDate,
+          endDate: updatedSub.endDate,
+        },
+      });
+
+      return updatedSub;
     });
   }
 
-  // Create subscription plan (admin only)
   async createPlan(data: {
     name: string;
+    tierLevel: number;
     maxTurfs: number;
+    features: string[];
     prices: Array<{ period: FixedPeriod; price: number }>;
   }) {
+    const existingLevel = await prisma.subscriptionPlan.findUnique({
+      where: { tierLevel: data.tierLevel },
+    });
+
+    if (existingLevel) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        `Plan tier level ${data.tierLevel} is already assigned to "${existingLevel.name}". Levels must be unique.`
+      );
+    }
+
     return prisma.subscriptionPlan.create({
       data: {
         name: data.name,
+        tierLevel: data.tierLevel,
         maxTurfs: data.maxTurfs,
+        features: data.features || [],
         prices: {
           create: data.prices.map((p) => ({
             period: p.period,
@@ -280,14 +339,44 @@ export class SubscriptionService {
     });
   }
 
-  async updatePlan(planId: string, data: { name?: string; maxTurfs?: number; active?: boolean; prices?: Array<{ period: FixedPeriod; price: number }> }) {
+  async updatePlan(
+    planId: string,
+    data: {
+      name?: string;
+      tierLevel?: number;
+      maxTurfs?: number;
+      features?: string[];
+      active?: boolean;
+      prices?: Array<{ period: FixedPeriod; price: number }>;
+    }
+  ) {
     const existing = await prisma.subscriptionPlan.findUnique({ where: { id: planId } });
     if (!existing) throw new AppError(httpStatus.NOT_FOUND, 'Subscription plan not found');
+
+    if (data.tierLevel) {
+      const existingLevel = await prisma.subscriptionPlan.findFirst({
+        where: { tierLevel: data.tierLevel, NOT: { id: planId } },
+      });
+      if (existingLevel) {
+        throw new AppError(
+          httpStatus.BAD_REQUEST,
+          `Plan tier level ${data.tierLevel} is already used by another plan.`
+        );
+      }
+    }
+
     return prisma.$transaction(async (tx) => {
       const plan = await tx.subscriptionPlan.update({
         where: { id: planId },
-        data: { name: data.name, maxTurfs: data.maxTurfs, active: data.active },
+        data: {
+          name: data.name,
+          tierLevel: data.tierLevel,
+          maxTurfs: data.maxTurfs,
+          features: data.features,
+          active: data.active,
+        },
       });
+
       if (data.prices) {
         for (const price of data.prices) {
           await tx.subscriptionPrice.upsert({
@@ -297,6 +386,7 @@ export class SubscriptionService {
           });
         }
       }
+
       return tx.subscriptionPlan.findUnique({ where: { id: plan.id }, include: { prices: true } });
     });
   }
@@ -307,17 +397,26 @@ export class SubscriptionService {
     return prisma.subscriptionPlan.delete({ where: { id: planId } });
   }
 
-  // Get subscription history for owner
+  // Get Subscription Audit History for Owner
   async getSubscriptionHistory(user: IRequestUser) {
-    return prisma.ownerSubscription.findMany({
+    const subscription = await prisma.subscription.findUnique({
       where: { userId: user.userId },
-      include: { plan: { include: { prices: true } } },
+    });
+
+    if (!subscription) {
+      return [];
+    }
+
+    return prisma.subscriptionLog.findMany({
+      where: { subscriptionId: subscription.id },
+      include: { invoice: true },
       orderBy: { createdAt: 'desc' },
     });
   }
 
+
   async getAdminSubscriptions(options: { status?: SubscriptionStatus; search?: string }) {
-    return prisma.ownerSubscription.findMany({
+    return prisma.subscription.findMany({
       where: {
         ...(options.status ? { status: options.status } : {}),
         ...(options.search
@@ -341,27 +440,41 @@ export class SubscriptionService {
 
   async updateAdminSubscription(
     subscriptionId: string,
-    data: { status?: SubscriptionStatus; endDate?: string; autoRenew?: boolean; planId?: string },
+    data: { status?: SubscriptionStatus; endDate?: string; planId?: string }
   ) {
-    const existing = await prisma.ownerSubscription.findUnique({ where: { id: subscriptionId } });
+    const existing = await prisma.subscription.findUnique({ where: { id: subscriptionId } });
     if (!existing) throw new AppError(httpStatus.NOT_FOUND, 'Subscription not found');
 
     if (data.planId) {
-      await this.getPlan(data.planId);
+      await this.getPlanById(data.planId);
     }
 
-    return prisma.ownerSubscription.update({
-      where: { id: subscriptionId },
-      data: {
-        status: data.status,
-        endDate: data.endDate ? new Date(data.endDate) : undefined,
-        autoRenew: data.autoRenew,
-        planId: data.planId,
-      },
-      include: {
-        user: { select: { id: true, name: true, email: true, role: true } },
-        plan: { include: { prices: true } },
-      },
+    return prisma.$transaction(async (tx) => {
+      const updated = await tx.subscription.update({
+        where: { id: subscriptionId },
+        data: {
+          status: data.status,
+          endDate: data.endDate ? new Date(data.endDate) : undefined,
+          planId: data.planId,
+        },
+        include: {
+          user: { select: { id: true, name: true, email: true, role: true } },
+          plan: { include: { prices: true } },
+        },
+      });
+
+      // Write Admin Audit Log Entry
+      await tx.subscriptionLog.create({
+        data: {
+          subscriptionId: updated.id,
+          action: SubscriptionAction.RENEWED,
+          status: updated.status,
+          startDate: updated.startDate,
+          endDate: updated.endDate,
+        },
+      });
+
+      return updated;
     });
   }
 }

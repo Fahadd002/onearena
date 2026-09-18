@@ -274,16 +274,6 @@ export type TurfManagerUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type TurfManagerListRelationFilter = {
-  every?: Prisma.TurfManagerWhereInput
-  some?: Prisma.TurfManagerWhereInput
-  none?: Prisma.TurfManagerWhereInput
-}
-
-export type TurfManagerOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type TurfManagerTurfIdManagerIdCompoundUniqueInput = {
   turfId: string
   managerId: string
@@ -313,6 +303,30 @@ export type TurfManagerMinOrderByAggregateInput = {
 export type TurfManagerScalarRelationFilter = {
   is?: Prisma.TurfManagerWhereInput
   isNot?: Prisma.TurfManagerWhereInput
+}
+
+export type TurfManagerListRelationFilter = {
+  every?: Prisma.TurfManagerWhereInput
+  some?: Prisma.TurfManagerWhereInput
+  none?: Prisma.TurfManagerWhereInput
+}
+
+export type TurfManagerOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type TurfManagerCreateNestedOneWithoutPermissionsInput = {
+  create?: Prisma.XOR<Prisma.TurfManagerCreateWithoutPermissionsInput, Prisma.TurfManagerUncheckedCreateWithoutPermissionsInput>
+  connectOrCreate?: Prisma.TurfManagerCreateOrConnectWithoutPermissionsInput
+  connect?: Prisma.TurfManagerWhereUniqueInput
+}
+
+export type TurfManagerUpdateOneRequiredWithoutPermissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.TurfManagerCreateWithoutPermissionsInput, Prisma.TurfManagerUncheckedCreateWithoutPermissionsInput>
+  connectOrCreate?: Prisma.TurfManagerCreateOrConnectWithoutPermissionsInput
+  upsert?: Prisma.TurfManagerUpsertWithoutPermissionsInput
+  connect?: Prisma.TurfManagerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfManagerUpdateToOneWithWhereWithoutPermissionsInput, Prisma.TurfManagerUpdateWithoutPermissionsInput>, Prisma.TurfManagerUncheckedUpdateWithoutPermissionsInput>
 }
 
 export type TurfManagerCreateNestedManyWithoutTurfInput = {
@@ -399,18 +413,48 @@ export type TurfManagerUncheckedUpdateManyWithoutManagerNestedInput = {
   deleteMany?: Prisma.TurfManagerScalarWhereInput | Prisma.TurfManagerScalarWhereInput[]
 }
 
-export type TurfManagerCreateNestedOneWithoutPermissionsInput = {
-  create?: Prisma.XOR<Prisma.TurfManagerCreateWithoutPermissionsInput, Prisma.TurfManagerUncheckedCreateWithoutPermissionsInput>
-  connectOrCreate?: Prisma.TurfManagerCreateOrConnectWithoutPermissionsInput
-  connect?: Prisma.TurfManagerWhereUniqueInput
+export type TurfManagerCreateWithoutPermissionsInput = {
+  id?: string
+  createdAt?: Date | string
+  manager: Prisma.UserCreateNestedOneWithoutManagedTurfsInput
+  turf: Prisma.TurfCreateNestedOneWithoutManagersInput
 }
 
-export type TurfManagerUpdateOneRequiredWithoutPermissionsNestedInput = {
-  create?: Prisma.XOR<Prisma.TurfManagerCreateWithoutPermissionsInput, Prisma.TurfManagerUncheckedCreateWithoutPermissionsInput>
-  connectOrCreate?: Prisma.TurfManagerCreateOrConnectWithoutPermissionsInput
-  upsert?: Prisma.TurfManagerUpsertWithoutPermissionsInput
-  connect?: Prisma.TurfManagerWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfManagerUpdateToOneWithWhereWithoutPermissionsInput, Prisma.TurfManagerUpdateWithoutPermissionsInput>, Prisma.TurfManagerUncheckedUpdateWithoutPermissionsInput>
+export type TurfManagerUncheckedCreateWithoutPermissionsInput = {
+  id?: string
+  turfId: string
+  managerId: string
+  createdAt?: Date | string
+}
+
+export type TurfManagerCreateOrConnectWithoutPermissionsInput = {
+  where: Prisma.TurfManagerWhereUniqueInput
+  create: Prisma.XOR<Prisma.TurfManagerCreateWithoutPermissionsInput, Prisma.TurfManagerUncheckedCreateWithoutPermissionsInput>
+}
+
+export type TurfManagerUpsertWithoutPermissionsInput = {
+  update: Prisma.XOR<Prisma.TurfManagerUpdateWithoutPermissionsInput, Prisma.TurfManagerUncheckedUpdateWithoutPermissionsInput>
+  create: Prisma.XOR<Prisma.TurfManagerCreateWithoutPermissionsInput, Prisma.TurfManagerUncheckedCreateWithoutPermissionsInput>
+  where?: Prisma.TurfManagerWhereInput
+}
+
+export type TurfManagerUpdateToOneWithWhereWithoutPermissionsInput = {
+  where?: Prisma.TurfManagerWhereInput
+  data: Prisma.XOR<Prisma.TurfManagerUpdateWithoutPermissionsInput, Prisma.TurfManagerUncheckedUpdateWithoutPermissionsInput>
+}
+
+export type TurfManagerUpdateWithoutPermissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  manager?: Prisma.UserUpdateOneRequiredWithoutManagedTurfsNestedInput
+  turf?: Prisma.TurfUpdateOneRequiredWithoutManagersNestedInput
+}
+
+export type TurfManagerUncheckedUpdateWithoutPermissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  turfId?: Prisma.StringFieldUpdateOperationsInput | string
+  managerId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TurfManagerCreateWithoutTurfInput = {
@@ -501,50 +545,6 @@ export type TurfManagerUpdateWithWhereUniqueWithoutManagerInput = {
 export type TurfManagerUpdateManyWithWhereWithoutManagerInput = {
   where: Prisma.TurfManagerScalarWhereInput
   data: Prisma.XOR<Prisma.TurfManagerUpdateManyMutationInput, Prisma.TurfManagerUncheckedUpdateManyWithoutManagerInput>
-}
-
-export type TurfManagerCreateWithoutPermissionsInput = {
-  id?: string
-  createdAt?: Date | string
-  manager: Prisma.UserCreateNestedOneWithoutManagedTurfsInput
-  turf: Prisma.TurfCreateNestedOneWithoutManagersInput
-}
-
-export type TurfManagerUncheckedCreateWithoutPermissionsInput = {
-  id?: string
-  turfId: string
-  managerId: string
-  createdAt?: Date | string
-}
-
-export type TurfManagerCreateOrConnectWithoutPermissionsInput = {
-  where: Prisma.TurfManagerWhereUniqueInput
-  create: Prisma.XOR<Prisma.TurfManagerCreateWithoutPermissionsInput, Prisma.TurfManagerUncheckedCreateWithoutPermissionsInput>
-}
-
-export type TurfManagerUpsertWithoutPermissionsInput = {
-  update: Prisma.XOR<Prisma.TurfManagerUpdateWithoutPermissionsInput, Prisma.TurfManagerUncheckedUpdateWithoutPermissionsInput>
-  create: Prisma.XOR<Prisma.TurfManagerCreateWithoutPermissionsInput, Prisma.TurfManagerUncheckedCreateWithoutPermissionsInput>
-  where?: Prisma.TurfManagerWhereInput
-}
-
-export type TurfManagerUpdateToOneWithWhereWithoutPermissionsInput = {
-  where?: Prisma.TurfManagerWhereInput
-  data: Prisma.XOR<Prisma.TurfManagerUpdateWithoutPermissionsInput, Prisma.TurfManagerUncheckedUpdateWithoutPermissionsInput>
-}
-
-export type TurfManagerUpdateWithoutPermissionsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  manager?: Prisma.UserUpdateOneRequiredWithoutManagedTurfsNestedInput
-  turf?: Prisma.TurfUpdateOneRequiredWithoutManagersNestedInput
-}
-
-export type TurfManagerUncheckedUpdateWithoutPermissionsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  turfId?: Prisma.StringFieldUpdateOperationsInput | string
-  managerId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TurfManagerCreateManyTurfInput = {

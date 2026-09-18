@@ -384,6 +384,21 @@ export type PackageUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type PackageScalarRelationFilter = {
+  is?: Prisma.PackageWhereInput
+  isNot?: Prisma.PackageWhereInput
+}
+
+export type PackageListRelationFilter = {
+  every?: Prisma.PackageWhereInput
+  some?: Prisma.PackageWhereInput
+  none?: Prisma.PackageWhereInput
+}
+
+export type PackageOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type PackageTurfIdNameCompoundUniqueInput = {
   turfId: string
   name: string
@@ -428,33 +443,6 @@ export type PackageMinOrderByAggregateInput = {
 
 export type PackageSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
-}
-
-export type PackageScalarRelationFilter = {
-  is?: Prisma.PackageWhereInput
-  isNot?: Prisma.PackageWhereInput
-}
-
-export type PackageListRelationFilter = {
-  every?: Prisma.PackageWhereInput
-  some?: Prisma.PackageWhereInput
-  none?: Prisma.PackageWhereInput
-}
-
-export type PackageOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
-export type DecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
 }
 
 export type PackageCreateNestedOneWithoutFacilitiesInput = {

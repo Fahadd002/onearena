@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import cron from 'node-cron';
 import status from 'http-status';
 import { Prisma } from '../../../generated/prisma/client';
-import { PaymentStatus, UserRole, BookingStatus, SlotSatus } from '../../../generated/prisma/enums';
+import { PaymentStatus, UserRole, BookingStatus, SlotSatus, PaymentType, PaymentMethod, InvoiceFor } from '../../../generated/prisma/enums';
 import AppError from '../../../config/errorHelpers/AppError';
 import prisma from '../../../shared/prisma';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
@@ -75,7 +75,9 @@ export class BookingService implements OnModuleInit {
     }
 
     const storedSlot = await prisma.turfSlot.findFirst({
-      where: {turfId: turf.id,  slotDate: date,
+      where: {
+        turfId: turf.id,
+        slotDate: date,
         startMinute: payload.startMinute,
         endMinute: payload.endMinute,
       },
@@ -114,6 +116,7 @@ export class BookingService implements OnModuleInit {
           ) {
             throw new AppError(status.BAD_REQUEST, 'Slot does not match the requested turf, date, or time');
           }
+
           if (existingSlot.slotStatus === SlotSatus.BOOKED) {
             throw new AppError(status.CONFLICT, 'This turf slot is already booked');
           }
@@ -136,7 +139,7 @@ export class BookingService implements OnModuleInit {
             createdAt: { gte: yearStart, lt: yearEnd },
           },
         });
-        
+
         const sequence = String(existingCount + 1).padStart(3, '0');
         const bookingNumber = `${turfPrefix}-${year}-${sequence}`;
 
@@ -154,13 +157,13 @@ export class BookingService implements OnModuleInit {
             status: BookingStatus.PREBOOKED,
             bookingExpiresAt: new Date(
               Date.now() +
-                Number(config.bookingPaymentTimeout ?? 15) * 60000
+              Number(config.bookingPaymentTimeout ?? 15) * 60000
             ),
             idempotencyKey,
           },
         });
 
-        // Update slot to RESERVED (not PREBOOKED - that's only for Booking status)
+        // Update slot to RESERVED 
         if (payload.slotId) {
           await tx.turfSlot.update({
             where: { id: payload.slotId },
@@ -176,10 +179,7 @@ export class BookingService implements OnModuleInit {
 
       return result;
     } catch (error) {
-      if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === 'P2002'
-      ) {
+      if ( error instanceof Prisma.PrismaClientKnownRequestError &&error.code === 'P2002') {
         const concurrentDuplicate = await prisma.booking.findUnique({
           where: { idempotencyKey },
           include: { slot: { select: { turfId: true, slotDate: true, startMinute: true, endMinute: true } } },
@@ -210,16 +210,30 @@ export class BookingService implements OnModuleInit {
     user: IRequestUser,
     page = 1,
     limit = 10,
-    filters?: { paymentStatus?: string; startDate?: string; endDate?: string; turfId?: string; sortBy?: string; sortOrder?: string }
+    filters?: {
+      bookingStatus?: string;
+      paymentStatus?: string;
+      startDate?: string;
+      endDate?: string;
+      turfId?: string;
+      sortBy?: string;
+      sortOrder?: string;
+      search?: string;
+    }
   ) {
     const allowedSortFields = ['createdAt', 'totalAmount', 'status'] as const;
-    const sortBy = filters?.sortBy && allowedSortFields.includes(filters.sortBy as typeof allowedSortFields[number])
-      ? filters.sortBy : 'createdAt';
+    const sortBy =
+      filters?.sortBy && allowedSortFields.includes(filters.sortBy as any)
+        ? filters.sortBy
+        : 'createdAt';
     const sortOrder = filters?.sortOrder === 'asc' ? 'asc' : 'desc';
 
-    const where: Prisma.BookingWhereInput = user.role === UserRole.ADMIN
+    // Base ownership scope
+    const where: Prisma.BookingWhereInput =
+      user.role === UserRole.ADMIN
         ? { slot: { turf: { ownerId: user.userId } } }
-        : user.role === UserRole.MANAGER ? {
+        : user.role === UserRole.MANAGER
+          ? {
             slot: {
               turf: {
                 managers: {
@@ -233,23 +247,52 @@ export class BookingService implements OnModuleInit {
           }
           : { userId: user.userId };
 
-    // NOTE: paymentStatus filter is deprecated. Filtering by booking status instead.
-    // To filter by payment status, use the invoice/payment APIs
-    if (filters?.paymentStatus) {
-      where.status = filters.paymentStatus as BookingStatus;
+    // Booking status filter
+    if (filters?.bookingStatus) {
+      where.status = filters.bookingStatus as BookingStatus;
     }
 
+    // Payment status filter (from invoice)
+    if (filters?.paymentStatus) {
+      if (filters.paymentStatus === PaymentStatus.UNPAID) {
+        where.OR = [
+          { invoice: { is: null } },
+          { invoice: { is: { status: PaymentStatus.UNPAID } } },
+        ];
+      } else {
+        where.invoice = { is: { status: filters.paymentStatus as PaymentStatus } };
+      }
+    }
+
+    // Slot / date / turf filters
     const slotFilter: Prisma.TurfSlotWhereInput = {};
 
     if (filters?.turfId) slotFilter.turfId = filters.turfId;
-
     if (filters?.startDate || filters?.endDate) {
       slotFilter.slotDate = {};
       if (filters.startDate) slotFilter.slotDate.gte = new Date(filters.startDate);
-      if (filters.endDate) slotFilter.slotDate.lte = new Date(filters.endDate);
+      if (filters.endDate) {
+        const end = new Date(filters.endDate);
+        end.setHours(23, 59, 59, 999);
+        slotFilter.slotDate.lte = end;
+      }
     }
+
     if (Object.keys(slotFilter).length > 0) {
-      where.slot = slotFilter;
+      const existingSlot = (where.slot as Prisma.TurfSlotWhereInput) ?? {};
+      where.slot = { ...existingSlot, ...slotFilter };
+    }
+
+    // Search filter - search by booking number, turf name, user email/phone
+    if (filters?.search) {
+      const searchTerm = filters.search.trim();
+      where.OR = [
+        { bookingNumber: { contains: searchTerm, mode: 'insensitive' } },
+        { slot: { turf: { name: { contains: searchTerm, mode: 'insensitive' } } } },
+        { user: { email: { contains: searchTerm, mode: 'insensitive' } } },
+        { user: { phoneNumber: { contains: searchTerm, mode: 'insensitive' } } },
+        { mobile: { contains: searchTerm, mode: 'insensitive' } },
+      ];
     }
 
     const skip = (page - 1) * limit;
@@ -257,8 +300,20 @@ export class BookingService implements OnModuleInit {
       prisma.booking.findMany({
         where,
         include: {
-          slot: { include: { turf: true } },
-          invoice: true,
+          slot: {
+            include: {
+              turf: true
+            }
+          },
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              phoneNumber: true,
+            },
+          },
+          invoice: true
         },
         orderBy: { [sortBy]: sortOrder },
         skip,
@@ -267,14 +322,14 @@ export class BookingService implements OnModuleInit {
       prisma.booking.count({ where }),
     ]);
 
+    const bookings = data.map((booking) => ({
+      ...booking,
+      paymentStatus: booking.invoice?.status ?? PaymentStatus.UNPAID,
+    }));
+
     return {
-      data,
-      meta: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
-      },
+      data: bookings,
+      meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
     };
   }
 
@@ -283,7 +338,8 @@ export class BookingService implements OnModuleInit {
     const where: Prisma.BookingWhereInput = { id: { in: bookingIds } };
     if (user.role === UserRole.ADMIN) {
       where.slot = { turf: { ownerId: user.userId } };
-    } else if (user.role === UserRole.MANAGER) {
+    } 
+    else if (user.role === UserRole.MANAGER) {
       where.slot = {
         turf: {
           managers: {
@@ -294,7 +350,8 @@ export class BookingService implements OnModuleInit {
           },
         },
       };
-    } else {
+    } 
+    else {
       throw new AppError(status.FORBIDDEN, 'Not allowed');
     }
 
@@ -313,7 +370,7 @@ export class BookingService implements OnModuleInit {
     if (!booking) throw new AppError(status.NOT_FOUND, 'Booking not found');
 
     if (user.role === UserRole.ADMIN) {
-      if (booking.slot?.turf?.ownerId !== user.userId) {
+      if (booking.slot.turf.ownerId !== user.userId) {
         throw new AppError(status.FORBIDDEN, 'Not allowed');
       }
     } else if (user.role === UserRole.MANAGER) {
@@ -529,15 +586,19 @@ export class BookingService implements OnModuleInit {
       });
 
       // Create invoice
-      const invoice = await tx.bookingInvoice.create({
+      const invoice = await tx.invoice.create({
         data: {
           bookingId: booking.id,
+          userId: booking.userId,
+          subscriptionLogId: null,
+          invoiceFor: InvoiceFor.O,
           invoiceNumber: `INV-${new Date().getUTCFullYear()}-${Date.now()}-${booking.id.slice(0, 8)}`,
           subtotal: booking.subtotal,
           discount: booking.discountAmount,
           totalAmount: booking.totalAmount,
           paidAmount: 0,
           status: PaymentStatus.UNPAID,
+          
         },
       });
 
@@ -682,4 +743,128 @@ export class BookingService implements OnModuleInit {
     });
   }
 
+  // Confirm a PREBOOKED booking with optional payment
+  // If paymentAmount > 0: creates invoice and records payment (partial or full)
+  // If paymentAmount = 0: just changes status to CONFIRMED and creates invoice without payment
+  async confirmWithPayment(
+    user: IRequestUser,
+    bookingId: string,
+    payload: { paymentAmount: number; paymentMethod: 'CASH'; reference?: string; note?: string },
+  ) {
+    const booking = await prisma.booking.findUnique({
+      where: { id: bookingId },
+      include: { slot: { include: { turf: true } }, invoice: true },
+    });
+
+    if (!booking) {
+      throw new AppError(status.NOT_FOUND, 'Booking not found');
+    }
+
+    if (booking.status !== BookingStatus.PREBOOKED) {
+      throw new AppError(
+        status.BAD_REQUEST,
+        `Cannot confirm booking with status ${booking.status}. Only PREBOOKED bookings can be confirmed.`
+      );
+    }
+
+    // Check authorization
+    if (user.role === UserRole.ADMIN) {
+      if (booking.slot?.turf?.ownerId !== user.userId) {
+        throw new AppError(status.FORBIDDEN, 'Not allowed');
+      }
+    } else if (user.role === UserRole.MANAGER) {
+      const hasPermission = await prisma.turfManager.findFirst({
+        where: {
+          turfId: booking.slot?.turfId,
+          managerId: user.userId,
+          permissions: { some: { permission: 'BOOKING_MANAGE' } },
+        },
+      });
+      if (!hasPermission) throw new AppError(status.FORBIDDEN, 'Not allowed');
+    } else {
+      throw new AppError(status.FORBIDDEN, 'Not allowed');
+    }
+
+    // Verify slot is still RESERVED
+    const slot = await prisma.turfSlot.findUnique({
+      where: { id: booking.slotId },
+    });
+
+    if (!slot || slot.slotStatus !== SlotSatus.RESERVED) {
+      throw new AppError(
+        status.CONFLICT,
+        'Slot is no longer available for this booking'
+      );
+    }
+
+    // If invoice already exists, cannot add payment through this action
+    if (booking.invoice) {
+      throw new AppError(status.BAD_REQUEST, 'Invoice already exists for this booking. Use payment management module.');
+    }
+
+    const paymentAmount = Number(payload.paymentAmount);
+    if (paymentAmount < 0) {
+      throw new AppError(status.BAD_REQUEST, 'Payment amount cannot be negative');
+    }
+
+    const totalAmount = Number(booking.totalAmount);
+    if (paymentAmount > totalAmount) {
+      throw new AppError(status.BAD_REQUEST, `Payment amount exceeds total amount of ${totalAmount}`);
+    }
+
+    return prisma.$transaction(async (tx) => {
+      // Update booking status to CONFIRMED
+      const updatedBooking = await tx.booking.update({
+        where: { id: bookingId },
+        data: { status: BookingStatus.CONFIRMED },
+      });
+
+      // Update slot to BOOKED
+      await tx.turfSlot.update({
+        where: { id: booking.slotId },
+        data: { slotStatus: SlotSatus.BOOKED },
+      });
+
+      // Create invoice
+      const invoice = await tx.invoice.create({
+        data: {
+          bookingId: booking.id,
+          userId: booking.userId,
+          subscriptionLogId: null,
+          invoiceFor: InvoiceFor.O,
+          invoiceNumber: `INV-${new Date().getUTCFullYear()}-${Date.now()}-${booking.id.slice(0, 8)}`,
+          subtotal: booking.subtotal,
+          discount: booking.discountAmount,
+          totalAmount: booking.totalAmount,
+          paidAmount: paymentAmount,
+          status: paymentAmount >= totalAmount ? PaymentStatus.PAID :
+            paymentAmount > 0 ? PaymentStatus.PARTIALLY_PAID : PaymentStatus.UNPAID,
+          isFullPaid: paymentAmount >= totalAmount,
+        },
+      });
+
+      // If payment amount > 0, create payment record
+      if (paymentAmount > 0) {
+        const paymentNumber = `PAY-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        await tx.payment.create({
+          data: {
+            paymentNumber,
+            invoiceId: invoice.id,
+            type: PaymentType.ADVANCE,
+            method: PaymentMethod.CASH,
+            status: PaymentStatus.SUCCEEDED,
+            amount: paymentAmount,
+            receivedById: user.userId,
+            reference: payload.reference,
+            note: payload.note,
+            paidAt: new Date(),
+            idempotencyKey: `manual-${bookingId}-${Date.now()}`,
+          },
+        });
+      }
+
+      return { booking: updatedBooking, invoice };
+    });
+  }
 }
+

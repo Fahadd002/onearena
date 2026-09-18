@@ -248,16 +248,17 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
-  managerProfile?: Prisma.XOR<Prisma.ManagerProfileNullableScalarRelationFilter, Prisma.ManagerProfileWhereInput> | null
-  ownerProfile?: Prisma.XOR<Prisma.OwnerProfileNullableScalarRelationFilter, Prisma.OwnerProfileWhereInput> | null
+  sessions?: Prisma.SessionListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   reviewReplies?: Prisma.ReviewReplyListRelationFilter
-  sessions?: Prisma.SessionListRelationFilter
   managedTurfs?: Prisma.TurfManagerListRelationFilter
   ownedTurfs?: Prisma.TurfListRelationFilter
-  subscriptions?: Prisma.OwnerSubscriptionListRelationFilter
   ownerGallery?: Prisma.OwnerGalleryItemListRelationFilter
   ownerBlogs?: Prisma.OwnerBlogListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
+  subscriptions?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
+  ownerProfile?: Prisma.XOR<Prisma.OwnerProfileNullableScalarRelationFilter, Prisma.OwnerProfileWhereInput> | null
+  managerProfile?: Prisma.XOR<Prisma.ManagerProfileNullableScalarRelationFilter, Prisma.ManagerProfileWhereInput> | null
   paymentsReceived?: Prisma.PaymentListRelationFilter
 }
 
@@ -277,16 +278,17 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   bookings?: Prisma.BookingOrderByRelationAggregateInput
-  managerProfile?: Prisma.ManagerProfileOrderByWithRelationInput
-  ownerProfile?: Prisma.OwnerProfileOrderByWithRelationInput
+  sessions?: Prisma.SessionOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   reviewReplies?: Prisma.ReviewReplyOrderByRelationAggregateInput
-  sessions?: Prisma.SessionOrderByRelationAggregateInput
   managedTurfs?: Prisma.TurfManagerOrderByRelationAggregateInput
   ownedTurfs?: Prisma.TurfOrderByRelationAggregateInput
-  subscriptions?: Prisma.OwnerSubscriptionOrderByRelationAggregateInput
   ownerGallery?: Prisma.OwnerGalleryItemOrderByRelationAggregateInput
   ownerBlogs?: Prisma.OwnerBlogOrderByRelationAggregateInput
+  invoices?: Prisma.InvoiceOrderByRelationAggregateInput
+  subscriptions?: Prisma.SubscriptionOrderByWithRelationInput
+  ownerProfile?: Prisma.OwnerProfileOrderByWithRelationInput
+  managerProfile?: Prisma.ManagerProfileOrderByWithRelationInput
   paymentsReceived?: Prisma.PaymentOrderByRelationAggregateInput
 }
 
@@ -309,16 +311,17 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
-  managerProfile?: Prisma.XOR<Prisma.ManagerProfileNullableScalarRelationFilter, Prisma.ManagerProfileWhereInput> | null
-  ownerProfile?: Prisma.XOR<Prisma.OwnerProfileNullableScalarRelationFilter, Prisma.OwnerProfileWhereInput> | null
+  sessions?: Prisma.SessionListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   reviewReplies?: Prisma.ReviewReplyListRelationFilter
-  sessions?: Prisma.SessionListRelationFilter
   managedTurfs?: Prisma.TurfManagerListRelationFilter
   ownedTurfs?: Prisma.TurfListRelationFilter
-  subscriptions?: Prisma.OwnerSubscriptionListRelationFilter
   ownerGallery?: Prisma.OwnerGalleryItemListRelationFilter
   ownerBlogs?: Prisma.OwnerBlogListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
+  subscriptions?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
+  ownerProfile?: Prisma.XOR<Prisma.OwnerProfileNullableScalarRelationFilter, Prisma.OwnerProfileWhereInput> | null
+  managerProfile?: Prisma.XOR<Prisma.ManagerProfileNullableScalarRelationFilter, Prisma.ManagerProfileWhereInput> | null
   paymentsReceived?: Prisma.PaymentListRelationFilter
 }, "id" | "email">
 
@@ -376,16 +379,17 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
   ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
   ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -405,16 +409,17 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
   ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
   ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -434,16 +439,17 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
   ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
   ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -463,16 +469,17 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
   ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -582,20 +589,6 @@ export type UserMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type UserCreateNestedOneWithoutOwnedTurfsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedTurfsInput, Prisma.UserUncheckedCreateWithoutOwnedTurfsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedTurfsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutOwnedTurfsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedTurfsInput, Prisma.UserUncheckedCreateWithoutOwnedTurfsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedTurfsInput
-  upsert?: Prisma.UserUpsertWithoutOwnedTurfsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnedTurfsInput, Prisma.UserUpdateWithoutOwnedTurfsInput>, Prisma.UserUncheckedUpdateWithoutOwnedTurfsInput>
-}
-
 export type UserCreateNestedOneWithoutBookingsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutBookingsInput, Prisma.UserUncheckedCreateWithoutBookingsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutBookingsInput
@@ -608,6 +601,20 @@ export type UserUpdateOneRequiredWithoutBookingsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutBookingsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBookingsInput, Prisma.UserUpdateWithoutBookingsInput>, Prisma.UserUncheckedUpdateWithoutBookingsInput>
+}
+
+export type UserCreateNestedOneWithoutInvoicesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvoicesInput, Prisma.UserUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvoicesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvoicesInput, Prisma.UserUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvoicesInput
+  upsert?: Prisma.UserUpsertWithoutInvoicesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvoicesInput, Prisma.UserUpdateWithoutInvoicesInput>, Prisma.UserUncheckedUpdateWithoutInvoicesInput>
 }
 
 export type UserCreateNestedOneWithoutPaymentsReceivedInput = {
@@ -624,112 +631,6 @@ export type UserUpdateOneWithoutPaymentsReceivedNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaymentsReceivedInput, Prisma.UserUpdateWithoutPaymentsReceivedInput>, Prisma.UserUncheckedUpdateWithoutPaymentsReceivedInput>
-}
-
-export type UserCreateNestedOneWithoutReviewsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutReviewsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewsInput
-  upsert?: Prisma.UserUpsertWithoutReviewsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewsInput, Prisma.UserUpdateWithoutReviewsInput>, Prisma.UserUncheckedUpdateWithoutReviewsInput>
-}
-
-export type UserCreateNestedOneWithoutReviewRepliesInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewRepliesInput, Prisma.UserUncheckedCreateWithoutReviewRepliesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewRepliesInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutReviewRepliesNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewRepliesInput, Prisma.UserUncheckedCreateWithoutReviewRepliesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewRepliesInput
-  upsert?: Prisma.UserUpsertWithoutReviewRepliesInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewRepliesInput, Prisma.UserUpdateWithoutReviewRepliesInput>, Prisma.UserUncheckedUpdateWithoutReviewRepliesInput>
-}
-
-export type EnumUserRoleFieldUpdateOperationsInput = {
-  set?: $Enums.UserRole
-}
-
-export type EnumUserStatusFieldUpdateOperationsInput = {
-  set?: $Enums.UserStatus
-}
-
-export type UserCreateNestedOneWithoutOwnerGalleryInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerGalleryInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutOwnerGalleryNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerGalleryInput
-  upsert?: Prisma.UserUpsertWithoutOwnerGalleryInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnerGalleryInput, Prisma.UserUpdateWithoutOwnerGalleryInput>, Prisma.UserUncheckedUpdateWithoutOwnerGalleryInput>
-}
-
-export type UserCreateNestedOneWithoutOwnerBlogsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerBlogsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutOwnerBlogsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerBlogsInput
-  upsert?: Prisma.UserUpsertWithoutOwnerBlogsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnerBlogsInput, Prisma.UserUpdateWithoutOwnerBlogsInput>, Prisma.UserUncheckedUpdateWithoutOwnerBlogsInput>
-}
-
-export type UserCreateNestedOneWithoutSessionsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
-  upsert?: Prisma.UserUpsertWithoutSessionsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
-}
-
-export type UserCreateNestedOneWithoutAccountsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
-  upsert?: Prisma.UserUpsertWithoutAccountsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
-}
-
-export type UserCreateNestedOneWithoutOwnerProfileInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerProfileInput, Prisma.UserUncheckedCreateWithoutOwnerProfileInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerProfileInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutOwnerProfileNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerProfileInput, Prisma.UserUncheckedCreateWithoutOwnerProfileInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerProfileInput
-  upsert?: Prisma.UserUpsertWithoutOwnerProfileInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnerProfileInput, Prisma.UserUpdateWithoutOwnerProfileInput>, Prisma.UserUncheckedUpdateWithoutOwnerProfileInput>
 }
 
 export type UserCreateNestedOneWithoutManagerProfileInput = {
@@ -760,6 +661,76 @@ export type UserUpdateOneRequiredWithoutManagedTurfsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutManagedTurfsInput, Prisma.UserUpdateWithoutManagedTurfsInput>, Prisma.UserUncheckedUpdateWithoutManagedTurfsInput>
 }
 
+export type UserCreateNestedOneWithoutOwnerProfileInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerProfileInput, Prisma.UserUncheckedCreateWithoutOwnerProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerProfileInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOwnerProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerProfileInput, Prisma.UserUncheckedCreateWithoutOwnerProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerProfileInput
+  upsert?: Prisma.UserUpsertWithoutOwnerProfileInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnerProfileInput, Prisma.UserUpdateWithoutOwnerProfileInput>, Prisma.UserUncheckedUpdateWithoutOwnerProfileInput>
+}
+
+export type UserCreateNestedOneWithoutOwnerGalleryInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerGalleryInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOwnerGalleryNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerGalleryInput
+  upsert?: Prisma.UserUpsertWithoutOwnerGalleryInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnerGalleryInput, Prisma.UserUpdateWithoutOwnerGalleryInput>, Prisma.UserUncheckedUpdateWithoutOwnerGalleryInput>
+}
+
+export type UserCreateNestedOneWithoutOwnerBlogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerBlogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOwnerBlogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerBlogsInput
+  upsert?: Prisma.UserUpsertWithoutOwnerBlogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnerBlogsInput, Prisma.UserUpdateWithoutOwnerBlogsInput>, Prisma.UserUncheckedUpdateWithoutOwnerBlogsInput>
+}
+
+export type UserCreateNestedOneWithoutReviewsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutReviewsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewsInput
+  upsert?: Prisma.UserUpsertWithoutReviewsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewsInput, Prisma.UserUpdateWithoutReviewsInput>, Prisma.UserUncheckedUpdateWithoutReviewsInput>
+}
+
+export type UserCreateNestedOneWithoutReviewRepliesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewRepliesInput, Prisma.UserUncheckedCreateWithoutReviewRepliesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewRepliesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutReviewRepliesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewRepliesInput, Prisma.UserUncheckedCreateWithoutReviewRepliesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewRepliesInput
+  upsert?: Prisma.UserUpsertWithoutReviewRepliesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewRepliesInput, Prisma.UserUpdateWithoutReviewRepliesInput>, Prisma.UserUncheckedUpdateWithoutReviewRepliesInput>
+}
+
 export type UserCreateNestedOneWithoutSubscriptionsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionsInput, Prisma.UserUncheckedCreateWithoutSubscriptionsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubscriptionsInput
@@ -774,132 +745,54 @@ export type UserUpdateOneRequiredWithoutSubscriptionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSubscriptionsInput, Prisma.UserUpdateWithoutSubscriptionsInput>, Prisma.UserUncheckedUpdateWithoutSubscriptionsInput>
 }
 
-export type UserCreateWithoutOwnedTurfsInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+export type UserCreateNestedOneWithoutOwnedTurfsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedTurfsInput, Prisma.UserUncheckedCreateWithoutOwnedTurfsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedTurfsInput
+  connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUncheckedCreateWithoutOwnedTurfsInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+export type UserUpdateOneRequiredWithoutOwnedTurfsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedTurfsInput, Prisma.UserUncheckedCreateWithoutOwnedTurfsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedTurfsInput
+  upsert?: Prisma.UserUpsertWithoutOwnedTurfsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnedTurfsInput, Prisma.UserUpdateWithoutOwnedTurfsInput>, Prisma.UserUncheckedUpdateWithoutOwnedTurfsInput>
 }
 
-export type UserCreateOrConnectWithoutOwnedTurfsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutOwnedTurfsInput, Prisma.UserUncheckedCreateWithoutOwnedTurfsInput>
+export type EnumUserRoleFieldUpdateOperationsInput = {
+  set?: $Enums.UserRole
 }
 
-export type UserUpsertWithoutOwnedTurfsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnedTurfsInput, Prisma.UserUncheckedUpdateWithoutOwnedTurfsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutOwnedTurfsInput, Prisma.UserUncheckedCreateWithoutOwnedTurfsInput>
-  where?: Prisma.UserWhereInput
+export type EnumUserStatusFieldUpdateOperationsInput = {
+  set?: $Enums.UserStatus
 }
 
-export type UserUpdateToOneWithWhereWithoutOwnedTurfsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnedTurfsInput, Prisma.UserUncheckedUpdateWithoutOwnedTurfsInput>
+export type UserCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateWithoutOwnedTurfsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
+  upsert?: Prisma.UserUpsertWithoutSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
 }
 
-export type UserUncheckedUpdateWithoutOwnedTurfsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+export type UserCreateNestedOneWithoutAccountsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
+  upsert?: Prisma.UserUpsertWithoutAccountsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
 }
 
 export type UserCreateWithoutBookingsInput = {
@@ -917,16 +810,17 @@ export type UserCreateWithoutBookingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
   ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
   ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -945,16 +839,17 @@ export type UserUncheckedCreateWithoutBookingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
   ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
   ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -989,16 +884,17 @@ export type UserUpdateWithoutBookingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
   ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
   ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1017,16 +913,149 @@ export type UserUncheckedUpdateWithoutBookingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
   ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutInvoicesInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutInvoicesInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutInvoicesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvoicesInput, Prisma.UserUncheckedCreateWithoutInvoicesInput>
+}
+
+export type UserUpsertWithoutInvoicesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutInvoicesInput, Prisma.UserUncheckedUpdateWithoutInvoicesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvoicesInput, Prisma.UserUncheckedCreateWithoutInvoicesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutInvoicesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutInvoicesInput, Prisma.UserUncheckedUpdateWithoutInvoicesInput>
+}
+
+export type UserUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -1046,16 +1075,17 @@ export type UserCreateWithoutPaymentsReceivedInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
   ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
   ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsReceivedInput = {
@@ -1074,16 +1104,17 @@ export type UserUncheckedCreateWithoutPaymentsReceivedInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
   ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
   ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsReceivedInput = {
@@ -1118,16 +1149,17 @@ export type UserUpdateWithoutPaymentsReceivedInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
   ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
   ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsReceivedInput = {
@@ -1146,912 +1178,17 @@ export type UserUncheckedUpdateWithoutPaymentsReceivedInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
-}
-
-export type UserCreateWithoutReviewsInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserUncheckedCreateWithoutReviewsInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserCreateOrConnectWithoutReviewsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
-}
-
-export type UserUpsertWithoutReviewsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutReviewsInput, Prisma.UserUncheckedUpdateWithoutReviewsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutReviewsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutReviewsInput, Prisma.UserUncheckedUpdateWithoutReviewsInput>
-}
-
-export type UserUpdateWithoutReviewsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserUncheckedUpdateWithoutReviewsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserCreateWithoutReviewRepliesInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserUncheckedCreateWithoutReviewRepliesInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserCreateOrConnectWithoutReviewRepliesInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutReviewRepliesInput, Prisma.UserUncheckedCreateWithoutReviewRepliesInput>
-}
-
-export type UserUpsertWithoutReviewRepliesInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutReviewRepliesInput, Prisma.UserUncheckedUpdateWithoutReviewRepliesInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutReviewRepliesInput, Prisma.UserUncheckedCreateWithoutReviewRepliesInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutReviewRepliesInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutReviewRepliesInput, Prisma.UserUncheckedUpdateWithoutReviewRepliesInput>
-}
-
-export type UserUpdateWithoutReviewRepliesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserUncheckedUpdateWithoutReviewRepliesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserCreateWithoutOwnerGalleryInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserUncheckedCreateWithoutOwnerGalleryInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserCreateOrConnectWithoutOwnerGalleryInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
-}
-
-export type UserUpsertWithoutOwnerGalleryInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnerGalleryInput, Prisma.UserUncheckedUpdateWithoutOwnerGalleryInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutOwnerGalleryInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnerGalleryInput, Prisma.UserUncheckedUpdateWithoutOwnerGalleryInput>
-}
-
-export type UserUpdateWithoutOwnerGalleryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserUncheckedUpdateWithoutOwnerGalleryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserCreateWithoutOwnerBlogsInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserUncheckedCreateWithoutOwnerBlogsInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserCreateOrConnectWithoutOwnerBlogsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
-}
-
-export type UserUpsertWithoutOwnerBlogsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnerBlogsInput, Prisma.UserUncheckedUpdateWithoutOwnerBlogsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutOwnerBlogsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnerBlogsInput, Prisma.UserUncheckedUpdateWithoutOwnerBlogsInput>
-}
-
-export type UserUpdateWithoutOwnerBlogsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserUncheckedUpdateWithoutOwnerBlogsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserCreateWithoutSessionsInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserUncheckedCreateWithoutSessionsInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserCreateOrConnectWithoutSessionsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
-}
-
-export type UserUpsertWithoutSessionsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutSessionsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
-}
-
-export type UserUpdateWithoutSessionsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserUncheckedUpdateWithoutSessionsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
   ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserCreateWithoutAccountsInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserUncheckedCreateWithoutAccountsInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserCreateOrConnectWithoutAccountsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
-}
-
-export type UserUpsertWithoutAccountsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutAccountsInput, Prisma.UserUncheckedUpdateWithoutAccountsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutAccountsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutAccountsInput, Prisma.UserUncheckedUpdateWithoutAccountsInput>
-}
-
-export type UserUpdateWithoutAccountsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserUncheckedUpdateWithoutAccountsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserCreateWithoutOwnerProfileInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserUncheckedCreateWithoutOwnerProfileInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
-  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserCreateOrConnectWithoutOwnerProfileInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerProfileInput, Prisma.UserUncheckedCreateWithoutOwnerProfileInput>
-}
-
-export type UserUpsertWithoutOwnerProfileInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnerProfileInput, Prisma.UserUncheckedUpdateWithoutOwnerProfileInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerProfileInput, Prisma.UserUncheckedCreateWithoutOwnerProfileInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutOwnerProfileInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnerProfileInput, Prisma.UserUncheckedUpdateWithoutOwnerProfileInput>
-}
-
-export type UserUpdateWithoutOwnerProfileInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserUncheckedUpdateWithoutOwnerProfileInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
-  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
 export type UserCreateWithoutManagerProfileInput = {
@@ -2070,15 +1207,16 @@ export type UserCreateWithoutManagerProfileInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
   ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
   ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -2098,15 +1236,16 @@ export type UserUncheckedCreateWithoutManagerProfileInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
   ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
   ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -2142,15 +1281,16 @@ export type UserUpdateWithoutManagerProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
   ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
   ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -2170,15 +1310,16 @@ export type UserUncheckedUpdateWithoutManagerProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
   ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -2198,15 +1339,16 @@ export type UserCreateWithoutManagedTurfsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionCreateNestedManyWithoutUserInput
   ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
   ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -2226,15 +1368,16 @@ export type UserUncheckedCreateWithoutManagedTurfsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedCreateNestedManyWithoutUserInput
   ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
   ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -2270,15 +1413,16 @@ export type UserUpdateWithoutManagedTurfsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUpdateManyWithoutUserNestedInput
   ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
   ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -2298,15 +1442,676 @@ export type UserUncheckedUpdateWithoutManagedTurfsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  subscriptions?: Prisma.OwnerSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
   ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutOwnerProfileInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutOwnerProfileInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutOwnerProfileInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerProfileInput, Prisma.UserUncheckedCreateWithoutOwnerProfileInput>
+}
+
+export type UserUpsertWithoutOwnerProfileInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnerProfileInput, Prisma.UserUncheckedUpdateWithoutOwnerProfileInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerProfileInput, Prisma.UserUncheckedCreateWithoutOwnerProfileInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOwnerProfileInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnerProfileInput, Prisma.UserUncheckedUpdateWithoutOwnerProfileInput>
+}
+
+export type UserUpdateWithoutOwnerProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOwnerProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutOwnerGalleryInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutOwnerGalleryInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutOwnerGalleryInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
+}
+
+export type UserUpsertWithoutOwnerGalleryInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnerGalleryInput, Prisma.UserUncheckedUpdateWithoutOwnerGalleryInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOwnerGalleryInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnerGalleryInput, Prisma.UserUncheckedUpdateWithoutOwnerGalleryInput>
+}
+
+export type UserUpdateWithoutOwnerGalleryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOwnerGalleryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutOwnerBlogsInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutOwnerBlogsInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutOwnerBlogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
+}
+
+export type UserUpsertWithoutOwnerBlogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnerBlogsInput, Prisma.UserUncheckedUpdateWithoutOwnerBlogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOwnerBlogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnerBlogsInput, Prisma.UserUncheckedUpdateWithoutOwnerBlogsInput>
+}
+
+export type UserUpdateWithoutOwnerBlogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOwnerBlogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutReviewsInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutReviewsInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutReviewsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
+}
+
+export type UserUpsertWithoutReviewsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReviewsInput, Prisma.UserUncheckedUpdateWithoutReviewsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReviewsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReviewsInput, Prisma.UserUncheckedUpdateWithoutReviewsInput>
+}
+
+export type UserUpdateWithoutReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutReviewRepliesInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutReviewRepliesInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutReviewRepliesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewRepliesInput, Prisma.UserUncheckedCreateWithoutReviewRepliesInput>
+}
+
+export type UserUpsertWithoutReviewRepliesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReviewRepliesInput, Prisma.UserUncheckedUpdateWithoutReviewRepliesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewRepliesInput, Prisma.UserUncheckedCreateWithoutReviewRepliesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReviewRepliesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReviewRepliesInput, Prisma.UserUncheckedUpdateWithoutReviewRepliesInput>
+}
+
+export type UserUpdateWithoutReviewRepliesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReviewRepliesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -2326,15 +2131,16 @@ export type UserCreateWithoutSubscriptionsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
   ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
   ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
@@ -2354,15 +2160,16 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
   ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
   ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
 }
 
@@ -2398,15 +2205,16 @@ export type UserUpdateWithoutSubscriptionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
   ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
   ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -2426,15 +2234,412 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
   ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
   ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutOwnedTurfsInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutOwnedTurfsInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutOwnedTurfsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnedTurfsInput, Prisma.UserUncheckedCreateWithoutOwnedTurfsInput>
+}
+
+export type UserUpsertWithoutOwnedTurfsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnedTurfsInput, Prisma.UserUncheckedUpdateWithoutOwnedTurfsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnedTurfsInput, Prisma.UserUncheckedCreateWithoutOwnedTurfsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOwnedTurfsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnedTurfsInput, Prisma.UserUncheckedUpdateWithoutOwnedTurfsInput>
+}
+
+export type UserUpdateWithoutOwnedTurfsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOwnedTurfsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutSessionsInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutSessionsInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+}
+
+export type UserUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
+export type UserUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutAccountsInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutAccountsInput = {
+  id?: string
+  email: string
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutAccountsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+}
+
+export type UserUpsertWithoutAccountsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAccountsInput, Prisma.UserUncheckedUpdateWithoutAccountsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAccountsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAccountsInput, Prisma.UserUncheckedUpdateWithoutAccountsInput>
+}
+
+export type UserUpdateWithoutAccountsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAccountsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
@@ -2446,28 +2651,28 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
 export type UserCountOutputType = {
   accounts: number
   bookings: number
+  sessions: number
   reviews: number
   reviewReplies: number
-  sessions: number
   managedTurfs: number
   ownedTurfs: number
-  subscriptions: number
   ownerGallery: number
   ownerBlogs: number
+  invoices: number
   paymentsReceived: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   bookings?: boolean | UserCountOutputTypeCountBookingsArgs
+  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   reviews?: boolean | UserCountOutputTypeCountReviewsArgs
   reviewReplies?: boolean | UserCountOutputTypeCountReviewRepliesArgs
-  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   managedTurfs?: boolean | UserCountOutputTypeCountManagedTurfsArgs
   ownedTurfs?: boolean | UserCountOutputTypeCountOwnedTurfsArgs
-  subscriptions?: boolean | UserCountOutputTypeCountSubscriptionsArgs
   ownerGallery?: boolean | UserCountOutputTypeCountOwnerGalleryArgs
   ownerBlogs?: boolean | UserCountOutputTypeCountOwnerBlogsArgs
+  invoices?: boolean | UserCountOutputTypeCountInvoicesArgs
   paymentsReceived?: boolean | UserCountOutputTypeCountPaymentsReceivedArgs
 }
 
@@ -2498,6 +2703,13 @@ export type UserCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.E
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ReviewWhereInput
 }
@@ -2507,13 +2719,6 @@ export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Ex
  */
 export type UserCountOutputTypeCountReviewRepliesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ReviewReplyWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.SessionWhereInput
 }
 
 /**
@@ -2533,13 +2738,6 @@ export type UserCountOutputTypeCountOwnedTurfsArgs<ExtArgs extends runtime.Types
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountSubscriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OwnerSubscriptionWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
 export type UserCountOutputTypeCountOwnerGalleryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.OwnerGalleryItemWhereInput
 }
@@ -2549,6 +2747,13 @@ export type UserCountOutputTypeCountOwnerGalleryArgs<ExtArgs extends runtime.Typ
  */
 export type UserCountOutputTypeCountOwnerBlogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.OwnerBlogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceWhereInput
 }
 
 /**
@@ -2575,16 +2780,17 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   bookings?: boolean | Prisma.User$bookingsArgs<ExtArgs>
-  managerProfile?: boolean | Prisma.User$managerProfileArgs<ExtArgs>
-  ownerProfile?: boolean | Prisma.User$ownerProfileArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   reviewReplies?: boolean | Prisma.User$reviewRepliesArgs<ExtArgs>
-  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   managedTurfs?: boolean | Prisma.User$managedTurfsArgs<ExtArgs>
   ownedTurfs?: boolean | Prisma.User$ownedTurfsArgs<ExtArgs>
-  subscriptions?: boolean | Prisma.User$subscriptionsArgs<ExtArgs>
   ownerGallery?: boolean | Prisma.User$ownerGalleryArgs<ExtArgs>
   ownerBlogs?: boolean | Prisma.User$ownerBlogsArgs<ExtArgs>
+  invoices?: boolean | Prisma.User$invoicesArgs<ExtArgs>
+  subscriptions?: boolean | Prisma.User$subscriptionsArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.User$ownerProfileArgs<ExtArgs>
+  managerProfile?: boolean | Prisma.User$managerProfileArgs<ExtArgs>
   paymentsReceived?: boolean | Prisma.User$paymentsReceivedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -2641,16 +2847,17 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   bookings?: boolean | Prisma.User$bookingsArgs<ExtArgs>
-  managerProfile?: boolean | Prisma.User$managerProfileArgs<ExtArgs>
-  ownerProfile?: boolean | Prisma.User$ownerProfileArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   reviewReplies?: boolean | Prisma.User$reviewRepliesArgs<ExtArgs>
-  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   managedTurfs?: boolean | Prisma.User$managedTurfsArgs<ExtArgs>
   ownedTurfs?: boolean | Prisma.User$ownedTurfsArgs<ExtArgs>
-  subscriptions?: boolean | Prisma.User$subscriptionsArgs<ExtArgs>
   ownerGallery?: boolean | Prisma.User$ownerGalleryArgs<ExtArgs>
   ownerBlogs?: boolean | Prisma.User$ownerBlogsArgs<ExtArgs>
+  invoices?: boolean | Prisma.User$invoicesArgs<ExtArgs>
+  subscriptions?: boolean | Prisma.User$subscriptionsArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.User$ownerProfileArgs<ExtArgs>
+  managerProfile?: boolean | Prisma.User$managerProfileArgs<ExtArgs>
   paymentsReceived?: boolean | Prisma.User$paymentsReceivedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -2662,16 +2869,17 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     bookings: Prisma.$BookingPayload<ExtArgs>[]
-    managerProfile: Prisma.$ManagerProfilePayload<ExtArgs> | null
-    ownerProfile: Prisma.$OwnerProfilePayload<ExtArgs> | null
+    sessions: Prisma.$SessionPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     reviewReplies: Prisma.$ReviewReplyPayload<ExtArgs>[]
-    sessions: Prisma.$SessionPayload<ExtArgs>[]
     managedTurfs: Prisma.$TurfManagerPayload<ExtArgs>[]
     ownedTurfs: Prisma.$TurfPayload<ExtArgs>[]
-    subscriptions: Prisma.$OwnerSubscriptionPayload<ExtArgs>[]
     ownerGallery: Prisma.$OwnerGalleryItemPayload<ExtArgs>[]
     ownerBlogs: Prisma.$OwnerBlogPayload<ExtArgs>[]
+    invoices: Prisma.$InvoicePayload<ExtArgs>[]
+    subscriptions: Prisma.$SubscriptionPayload<ExtArgs> | null
+    ownerProfile: Prisma.$OwnerProfilePayload<ExtArgs> | null
+    managerProfile: Prisma.$ManagerProfilePayload<ExtArgs> | null
     paymentsReceived: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -3084,16 +3292,17 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookings<T extends Prisma.User$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  managerProfile<T extends Prisma.User$managerProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$managerProfileArgs<ExtArgs>>): Prisma.Prisma__ManagerProfileClient<runtime.Types.Result.GetResult<Prisma.$ManagerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  ownerProfile<T extends Prisma.User$ownerProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownerProfileArgs<ExtArgs>>): Prisma.Prisma__OwnerProfileClient<runtime.Types.Result.GetResult<Prisma.$OwnerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewReplies<T extends Prisma.User$reviewRepliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewRepliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewReplyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   managedTurfs<T extends Prisma.User$managedTurfsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$managedTurfsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TurfManagerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownedTurfs<T extends Prisma.User$ownedTurfsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedTurfsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TurfPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  subscriptions<T extends Prisma.User$subscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownerGallery<T extends Prisma.User$ownerGalleryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownerGalleryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerGalleryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownerBlogs<T extends Prisma.User$ownerBlogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownerBlogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerBlogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invoices<T extends Prisma.User$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  subscriptions<T extends Prisma.User$subscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subscriptionsArgs<ExtArgs>>): Prisma.Prisma__SubscriptionClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  ownerProfile<T extends Prisma.User$ownerProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownerProfileArgs<ExtArgs>>): Prisma.Prisma__OwnerProfileClient<runtime.Types.Result.GetResult<Prisma.$OwnerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  managerProfile<T extends Prisma.User$managerProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$managerProfileArgs<ExtArgs>>): Prisma.Prisma__ManagerProfileClient<runtime.Types.Result.GetResult<Prisma.$ManagerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   paymentsReceived<T extends Prisma.User$paymentsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3578,41 +3787,27 @@ export type User$bookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 /**
- * User.managerProfile
+ * User.sessions
  */
-export type User$managerProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ManagerProfile
+   * Select specific fields to fetch from the Session
    */
-  select?: Prisma.ManagerProfileSelect<ExtArgs> | null
+  select?: Prisma.SessionSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ManagerProfile
+   * Omit specific fields from the Session
    */
-  omit?: Prisma.ManagerProfileOmit<ExtArgs> | null
+  omit?: Prisma.SessionOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ManagerProfileInclude<ExtArgs> | null
-  where?: Prisma.ManagerProfileWhereInput
-}
-
-/**
- * User.ownerProfile
- */
-export type User$ownerProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the OwnerProfile
-   */
-  select?: Prisma.OwnerProfileSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the OwnerProfile
-   */
-  omit?: Prisma.OwnerProfileOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.OwnerProfileInclude<ExtArgs> | null
-  where?: Prisma.OwnerProfileWhereInput
+  include?: Prisma.SessionInclude<ExtArgs> | null
+  where?: Prisma.SessionWhereInput
+  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
+  cursor?: Prisma.SessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
 }
 
 /**
@@ -3664,30 +3859,6 @@ export type User$reviewRepliesArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * User.sessions
- */
-export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Session
-   */
-  select?: Prisma.SessionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Session
-   */
-  omit?: Prisma.SessionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.SessionInclude<ExtArgs> | null
-  where?: Prisma.SessionWhereInput
-  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
-  cursor?: Prisma.SessionWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
-}
-
-/**
  * User.managedTurfs
  */
 export type User$managedTurfsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3736,30 +3907,6 @@ export type User$ownedTurfsArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * User.subscriptions
- */
-export type User$subscriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the OwnerSubscription
-   */
-  select?: Prisma.OwnerSubscriptionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the OwnerSubscription
-   */
-  omit?: Prisma.OwnerSubscriptionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.OwnerSubscriptionInclude<ExtArgs> | null
-  where?: Prisma.OwnerSubscriptionWhereInput
-  orderBy?: Prisma.OwnerSubscriptionOrderByWithRelationInput | Prisma.OwnerSubscriptionOrderByWithRelationInput[]
-  cursor?: Prisma.OwnerSubscriptionWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.OwnerSubscriptionScalarFieldEnum | Prisma.OwnerSubscriptionScalarFieldEnum[]
-}
-
-/**
  * User.ownerGallery
  */
 export type User$ownerGalleryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3805,6 +3952,87 @@ export type User$ownerBlogsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.OwnerBlogScalarFieldEnum | Prisma.OwnerBlogScalarFieldEnum[]
+}
+
+/**
+ * User.invoices
+ */
+export type User$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invoice
+   */
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invoice
+   */
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
+  orderBy?: Prisma.InvoiceOrderByWithRelationInput | Prisma.InvoiceOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
+}
+
+/**
+ * User.subscriptions
+ */
+export type User$subscriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Subscription
+   */
+  select?: Prisma.SubscriptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Subscription
+   */
+  omit?: Prisma.SubscriptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubscriptionInclude<ExtArgs> | null
+  where?: Prisma.SubscriptionWhereInput
+}
+
+/**
+ * User.ownerProfile
+ */
+export type User$ownerProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnerProfile
+   */
+  select?: Prisma.OwnerProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnerProfile
+   */
+  omit?: Prisma.OwnerProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnerProfileInclude<ExtArgs> | null
+  where?: Prisma.OwnerProfileWhereInput
+}
+
+/**
+ * User.managerProfile
+ */
+export type User$managerProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ManagerProfile
+   */
+  select?: Prisma.ManagerProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ManagerProfile
+   */
+  omit?: Prisma.ManagerProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ManagerProfileInclude<ExtArgs> | null
+  where?: Prisma.ManagerProfileWhereInput
 }
 
 /**

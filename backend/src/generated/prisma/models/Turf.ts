@@ -675,38 +675,6 @@ export type TurfUncheckedUpdateManyWithoutCategoryNestedInput = {
   deleteMany?: Prisma.TurfScalarWhereInput | Prisma.TurfScalarWhereInput[]
 }
 
-export type TurfCreateNestedOneWithoutImagesInput = {
-  create?: Prisma.XOR<Prisma.TurfCreateWithoutImagesInput, Prisma.TurfUncheckedCreateWithoutImagesInput>
-  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutImagesInput
-  connect?: Prisma.TurfWhereUniqueInput
-}
-
-export type TurfUpdateOneRequiredWithoutImagesNestedInput = {
-  create?: Prisma.XOR<Prisma.TurfCreateWithoutImagesInput, Prisma.TurfUncheckedCreateWithoutImagesInput>
-  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutImagesInput
-  upsert?: Prisma.TurfUpsertWithoutImagesInput
-  connect?: Prisma.TurfWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfUpdateToOneWithWhereWithoutImagesInput, Prisma.TurfUpdateWithoutImagesInput>, Prisma.TurfUncheckedUpdateWithoutImagesInput>
-}
-
-export type TurfCreateNestedOneWithoutPackagesInput = {
-  create?: Prisma.XOR<Prisma.TurfCreateWithoutPackagesInput, Prisma.TurfUncheckedCreateWithoutPackagesInput>
-  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutPackagesInput
-  connect?: Prisma.TurfWhereUniqueInput
-}
-
-export type TurfUpdateOneRequiredWithoutPackagesNestedInput = {
-  create?: Prisma.XOR<Prisma.TurfCreateWithoutPackagesInput, Prisma.TurfUncheckedCreateWithoutPackagesInput>
-  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutPackagesInput
-  upsert?: Prisma.TurfUpsertWithoutPackagesInput
-  connect?: Prisma.TurfWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfUpdateToOneWithWhereWithoutPackagesInput, Prisma.TurfUpdateWithoutPackagesInput>, Prisma.TurfUncheckedUpdateWithoutPackagesInput>
-}
-
-export type EnumTurfStatusFieldUpdateOperationsInput = {
-  set?: $Enums.TurfStatus
-}
-
 export type TurfCreateNestedOneWithoutFacilitiesInput = {
   create?: Prisma.XOR<Prisma.TurfCreateWithoutFacilitiesInput, Prisma.TurfUncheckedCreateWithoutFacilitiesInput>
   connectOrCreate?: Prisma.TurfCreateOrConnectWithoutFacilitiesInput
@@ -719,6 +687,38 @@ export type TurfUpdateOneRequiredWithoutFacilitiesNestedInput = {
   upsert?: Prisma.TurfUpsertWithoutFacilitiesInput
   connect?: Prisma.TurfWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.TurfUpdateToOneWithWhereWithoutFacilitiesInput, Prisma.TurfUpdateWithoutFacilitiesInput>, Prisma.TurfUncheckedUpdateWithoutFacilitiesInput>
+}
+
+export type TurfCreateNestedOneWithoutManagersInput = {
+  create?: Prisma.XOR<Prisma.TurfCreateWithoutManagersInput, Prisma.TurfUncheckedCreateWithoutManagersInput>
+  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutManagersInput
+  connect?: Prisma.TurfWhereUniqueInput
+}
+
+export type TurfUpdateOneRequiredWithoutManagersNestedInput = {
+  create?: Prisma.XOR<Prisma.TurfCreateWithoutManagersInput, Prisma.TurfUncheckedCreateWithoutManagersInput>
+  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutManagersInput
+  upsert?: Prisma.TurfUpsertWithoutManagersInput
+  connect?: Prisma.TurfWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfUpdateToOneWithWhereWithoutManagersInput, Prisma.TurfUpdateWithoutManagersInput>, Prisma.TurfUncheckedUpdateWithoutManagersInput>
+}
+
+export type TurfCreateNestedOneWithoutReviewsInput = {
+  create?: Prisma.XOR<Prisma.TurfCreateWithoutReviewsInput, Prisma.TurfUncheckedCreateWithoutReviewsInput>
+  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutReviewsInput
+  connect?: Prisma.TurfWhereUniqueInput
+}
+
+export type TurfUpdateOneRequiredWithoutReviewsNestedInput = {
+  create?: Prisma.XOR<Prisma.TurfCreateWithoutReviewsInput, Prisma.TurfUncheckedCreateWithoutReviewsInput>
+  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutReviewsInput
+  upsert?: Prisma.TurfUpsertWithoutReviewsInput
+  connect?: Prisma.TurfWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfUpdateToOneWithWhereWithoutReviewsInput, Prisma.TurfUpdateWithoutReviewsInput>, Prisma.TurfUncheckedUpdateWithoutReviewsInput>
+}
+
+export type EnumTurfStatusFieldUpdateOperationsInput = {
+  set?: $Enums.TurfStatus
 }
 
 export type TurfCreateNestedOneWithoutPriceRulesInput = {
@@ -749,18 +749,32 @@ export type TurfUpdateOneRequiredWithoutSlotsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TurfUpdateToOneWithWhereWithoutSlotsInput, Prisma.TurfUpdateWithoutSlotsInput>, Prisma.TurfUncheckedUpdateWithoutSlotsInput>
 }
 
-export type TurfCreateNestedOneWithoutReviewsInput = {
-  create?: Prisma.XOR<Prisma.TurfCreateWithoutReviewsInput, Prisma.TurfUncheckedCreateWithoutReviewsInput>
-  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutReviewsInput
+export type TurfCreateNestedOneWithoutImagesInput = {
+  create?: Prisma.XOR<Prisma.TurfCreateWithoutImagesInput, Prisma.TurfUncheckedCreateWithoutImagesInput>
+  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutImagesInput
   connect?: Prisma.TurfWhereUniqueInput
 }
 
-export type TurfUpdateOneRequiredWithoutReviewsNestedInput = {
-  create?: Prisma.XOR<Prisma.TurfCreateWithoutReviewsInput, Prisma.TurfUncheckedCreateWithoutReviewsInput>
-  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutReviewsInput
-  upsert?: Prisma.TurfUpsertWithoutReviewsInput
+export type TurfUpdateOneRequiredWithoutImagesNestedInput = {
+  create?: Prisma.XOR<Prisma.TurfCreateWithoutImagesInput, Prisma.TurfUncheckedCreateWithoutImagesInput>
+  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutImagesInput
+  upsert?: Prisma.TurfUpsertWithoutImagesInput
   connect?: Prisma.TurfWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfUpdateToOneWithWhereWithoutReviewsInput, Prisma.TurfUpdateWithoutReviewsInput>, Prisma.TurfUncheckedUpdateWithoutReviewsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfUpdateToOneWithWhereWithoutImagesInput, Prisma.TurfUpdateWithoutImagesInput>, Prisma.TurfUncheckedUpdateWithoutImagesInput>
+}
+
+export type TurfCreateNestedOneWithoutPackagesInput = {
+  create?: Prisma.XOR<Prisma.TurfCreateWithoutPackagesInput, Prisma.TurfUncheckedCreateWithoutPackagesInput>
+  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutPackagesInput
+  connect?: Prisma.TurfWhereUniqueInput
+}
+
+export type TurfUpdateOneRequiredWithoutPackagesNestedInput = {
+  create?: Prisma.XOR<Prisma.TurfCreateWithoutPackagesInput, Prisma.TurfUncheckedCreateWithoutPackagesInput>
+  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutPackagesInput
+  upsert?: Prisma.TurfUpsertWithoutPackagesInput
+  connect?: Prisma.TurfWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfUpdateToOneWithWhereWithoutPackagesInput, Prisma.TurfUpdateWithoutPackagesInput>, Prisma.TurfUncheckedUpdateWithoutPackagesInput>
 }
 
 export type TurfCreateNestedManyWithoutOwnerInput = {
@@ -803,20 +817,6 @@ export type TurfUncheckedUpdateManyWithoutOwnerNestedInput = {
   update?: Prisma.TurfUpdateWithWhereUniqueWithoutOwnerInput | Prisma.TurfUpdateWithWhereUniqueWithoutOwnerInput[]
   updateMany?: Prisma.TurfUpdateManyWithWhereWithoutOwnerInput | Prisma.TurfUpdateManyWithWhereWithoutOwnerInput[]
   deleteMany?: Prisma.TurfScalarWhereInput | Prisma.TurfScalarWhereInput[]
-}
-
-export type TurfCreateNestedOneWithoutManagersInput = {
-  create?: Prisma.XOR<Prisma.TurfCreateWithoutManagersInput, Prisma.TurfUncheckedCreateWithoutManagersInput>
-  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutManagersInput
-  connect?: Prisma.TurfWhereUniqueInput
-}
-
-export type TurfUpdateOneRequiredWithoutManagersNestedInput = {
-  create?: Prisma.XOR<Prisma.TurfCreateWithoutManagersInput, Prisma.TurfUncheckedCreateWithoutManagersInput>
-  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutManagersInput
-  upsert?: Prisma.TurfUpsertWithoutManagersInput
-  connect?: Prisma.TurfWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfUpdateToOneWithWhereWithoutManagersInput, Prisma.TurfUpdateWithoutManagersInput>, Prisma.TurfUncheckedUpdateWithoutManagersInput>
 }
 
 export type TurfCreateWithoutCategoryInput = {
@@ -909,222 +909,6 @@ export type TurfScalarWhereInput = {
   timezone?: Prisma.StringFilter<"Turf"> | string
   createdAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
-}
-
-export type TurfCreateWithoutImagesInput = {
-  id?: string
-  name: string
-  description?: string | null
-  address: string
-  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
-  timezone?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutTurfInput
-  facilities?: Prisma.TurfFacilityCreateNestedManyWithoutTurfInput
-  managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
-  priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
-  slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
-  category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
-  owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
-}
-
-export type TurfUncheckedCreateWithoutImagesInput = {
-  id?: string
-  ownerId: string
-  categoryId: string
-  name: string
-  description?: string | null
-  address: string
-  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
-  timezone?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutTurfInput
-  facilities?: Prisma.TurfFacilityUncheckedCreateNestedManyWithoutTurfInput
-  managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
-  priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
-  slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
-}
-
-export type TurfCreateOrConnectWithoutImagesInput = {
-  where: Prisma.TurfWhereUniqueInput
-  create: Prisma.XOR<Prisma.TurfCreateWithoutImagesInput, Prisma.TurfUncheckedCreateWithoutImagesInput>
-}
-
-export type TurfUpsertWithoutImagesInput = {
-  update: Prisma.XOR<Prisma.TurfUpdateWithoutImagesInput, Prisma.TurfUncheckedUpdateWithoutImagesInput>
-  create: Prisma.XOR<Prisma.TurfCreateWithoutImagesInput, Prisma.TurfUncheckedCreateWithoutImagesInput>
-  where?: Prisma.TurfWhereInput
-}
-
-export type TurfUpdateToOneWithWhereWithoutImagesInput = {
-  where?: Prisma.TurfWhereInput
-  data: Prisma.XOR<Prisma.TurfUpdateWithoutImagesInput, Prisma.TurfUncheckedUpdateWithoutImagesInput>
-}
-
-export type TurfUpdateWithoutImagesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutTurfNestedInput
-  facilities?: Prisma.TurfFacilityUpdateManyWithoutTurfNestedInput
-  managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
-  priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
-  slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
-  category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
-  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
-}
-
-export type TurfUncheckedUpdateWithoutImagesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTurfNestedInput
-  facilities?: Prisma.TurfFacilityUncheckedUpdateManyWithoutTurfNestedInput
-  managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
-  priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
-  slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
-}
-
-export type TurfCreateWithoutPackagesInput = {
-  id?: string
-  name: string
-  description?: string | null
-  address: string
-  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
-  timezone?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  reviews?: Prisma.ReviewCreateNestedManyWithoutTurfInput
-  facilities?: Prisma.TurfFacilityCreateNestedManyWithoutTurfInput
-  images?: Prisma.TurfImageCreateNestedManyWithoutTurfInput
-  managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
-  priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
-  slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
-  category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
-  owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
-}
-
-export type TurfUncheckedCreateWithoutPackagesInput = {
-  id?: string
-  ownerId: string
-  categoryId: string
-  name: string
-  description?: string | null
-  address: string
-  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
-  timezone?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutTurfInput
-  facilities?: Prisma.TurfFacilityUncheckedCreateNestedManyWithoutTurfInput
-  images?: Prisma.TurfImageUncheckedCreateNestedManyWithoutTurfInput
-  managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
-  priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
-  slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
-}
-
-export type TurfCreateOrConnectWithoutPackagesInput = {
-  where: Prisma.TurfWhereUniqueInput
-  create: Prisma.XOR<Prisma.TurfCreateWithoutPackagesInput, Prisma.TurfUncheckedCreateWithoutPackagesInput>
-}
-
-export type TurfUpsertWithoutPackagesInput = {
-  update: Prisma.XOR<Prisma.TurfUpdateWithoutPackagesInput, Prisma.TurfUncheckedUpdateWithoutPackagesInput>
-  create: Prisma.XOR<Prisma.TurfCreateWithoutPackagesInput, Prisma.TurfUncheckedCreateWithoutPackagesInput>
-  where?: Prisma.TurfWhereInput
-}
-
-export type TurfUpdateToOneWithWhereWithoutPackagesInput = {
-  where?: Prisma.TurfWhereInput
-  data: Prisma.XOR<Prisma.TurfUpdateWithoutPackagesInput, Prisma.TurfUncheckedUpdateWithoutPackagesInput>
-}
-
-export type TurfUpdateWithoutPackagesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  reviews?: Prisma.ReviewUpdateManyWithoutTurfNestedInput
-  facilities?: Prisma.TurfFacilityUpdateManyWithoutTurfNestedInput
-  images?: Prisma.TurfImageUpdateManyWithoutTurfNestedInput
-  managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
-  priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
-  slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
-  category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
-  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
-}
-
-export type TurfUncheckedUpdateWithoutPackagesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTurfNestedInput
-  facilities?: Prisma.TurfFacilityUncheckedUpdateManyWithoutTurfNestedInput
-  images?: Prisma.TurfImageUncheckedUpdateManyWithoutTurfNestedInput
-  managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
-  priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
-  slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
 }
 
 export type TurfCreateWithoutFacilitiesInput = {
@@ -1229,6 +1013,222 @@ export type TurfUncheckedUpdateWithoutFacilitiesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTurfNestedInput
+  images?: Prisma.TurfImageUncheckedUpdateManyWithoutTurfNestedInput
+  managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
+  priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
+  slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
+}
+
+export type TurfCreateWithoutManagersInput = {
+  id?: string
+  name: string
+  description?: string | null
+  address: string
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TurfStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  slotMinutes?: number
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutTurfInput
+  facilities?: Prisma.TurfFacilityCreateNestedManyWithoutTurfInput
+  images?: Prisma.TurfImageCreateNestedManyWithoutTurfInput
+  priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
+  slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
+  owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
+}
+
+export type TurfUncheckedCreateWithoutManagersInput = {
+  id?: string
+  ownerId: string
+  categoryId: string
+  name: string
+  description?: string | null
+  address: string
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TurfStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  slotMinutes?: number
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutTurfInput
+  facilities?: Prisma.TurfFacilityUncheckedCreateNestedManyWithoutTurfInput
+  images?: Prisma.TurfImageUncheckedCreateNestedManyWithoutTurfInput
+  priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
+  slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+}
+
+export type TurfCreateOrConnectWithoutManagersInput = {
+  where: Prisma.TurfWhereUniqueInput
+  create: Prisma.XOR<Prisma.TurfCreateWithoutManagersInput, Prisma.TurfUncheckedCreateWithoutManagersInput>
+}
+
+export type TurfUpsertWithoutManagersInput = {
+  update: Prisma.XOR<Prisma.TurfUpdateWithoutManagersInput, Prisma.TurfUncheckedUpdateWithoutManagersInput>
+  create: Prisma.XOR<Prisma.TurfCreateWithoutManagersInput, Prisma.TurfUncheckedCreateWithoutManagersInput>
+  where?: Prisma.TurfWhereInput
+}
+
+export type TurfUpdateToOneWithWhereWithoutManagersInput = {
+  where?: Prisma.TurfWhereInput
+  data: Prisma.XOR<Prisma.TurfUpdateWithoutManagersInput, Prisma.TurfUncheckedUpdateWithoutManagersInput>
+}
+
+export type TurfUpdateWithoutManagersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutTurfNestedInput
+  facilities?: Prisma.TurfFacilityUpdateManyWithoutTurfNestedInput
+  images?: Prisma.TurfImageUpdateManyWithoutTurfNestedInput
+  priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
+  slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
+}
+
+export type TurfUncheckedUpdateWithoutManagersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTurfNestedInput
+  facilities?: Prisma.TurfFacilityUncheckedUpdateManyWithoutTurfNestedInput
+  images?: Prisma.TurfImageUncheckedUpdateManyWithoutTurfNestedInput
+  priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
+  slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
+}
+
+export type TurfCreateWithoutReviewsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  address: string
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TurfStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  slotMinutes?: number
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
+  facilities?: Prisma.TurfFacilityCreateNestedManyWithoutTurfInput
+  images?: Prisma.TurfImageCreateNestedManyWithoutTurfInput
+  managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
+  priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
+  slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
+  owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
+}
+
+export type TurfUncheckedCreateWithoutReviewsInput = {
+  id?: string
+  ownerId: string
+  categoryId: string
+  name: string
+  description?: string | null
+  address: string
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TurfStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  slotMinutes?: number
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
+  facilities?: Prisma.TurfFacilityUncheckedCreateNestedManyWithoutTurfInput
+  images?: Prisma.TurfImageUncheckedCreateNestedManyWithoutTurfInput
+  managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
+  priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
+  slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+}
+
+export type TurfCreateOrConnectWithoutReviewsInput = {
+  where: Prisma.TurfWhereUniqueInput
+  create: Prisma.XOR<Prisma.TurfCreateWithoutReviewsInput, Prisma.TurfUncheckedCreateWithoutReviewsInput>
+}
+
+export type TurfUpsertWithoutReviewsInput = {
+  update: Prisma.XOR<Prisma.TurfUpdateWithoutReviewsInput, Prisma.TurfUncheckedUpdateWithoutReviewsInput>
+  create: Prisma.XOR<Prisma.TurfCreateWithoutReviewsInput, Prisma.TurfUncheckedCreateWithoutReviewsInput>
+  where?: Prisma.TurfWhereInput
+}
+
+export type TurfUpdateToOneWithWhereWithoutReviewsInput = {
+  where?: Prisma.TurfWhereInput
+  data: Prisma.XOR<Prisma.TurfUpdateWithoutReviewsInput, Prisma.TurfUncheckedUpdateWithoutReviewsInput>
+}
+
+export type TurfUpdateWithoutReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
+  facilities?: Prisma.TurfFacilityUpdateManyWithoutTurfNestedInput
+  images?: Prisma.TurfImageUpdateManyWithoutTurfNestedInput
+  managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
+  priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
+  slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
+}
+
+export type TurfUncheckedUpdateWithoutReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
+  facilities?: Prisma.TurfFacilityUncheckedUpdateManyWithoutTurfNestedInput
   images?: Prisma.TurfImageUncheckedUpdateManyWithoutTurfNestedInput
   managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
@@ -1451,7 +1451,7 @@ export type TurfUncheckedUpdateWithoutSlotsInput = {
   priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
 }
 
-export type TurfCreateWithoutReviewsInput = {
+export type TurfCreateWithoutImagesInput = {
   id?: string
   name: string
   description?: string | null
@@ -1465,8 +1465,8 @@ export type TurfCreateWithoutReviewsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutTurfInput
   facilities?: Prisma.TurfFacilityCreateNestedManyWithoutTurfInput
-  images?: Prisma.TurfImageCreateNestedManyWithoutTurfInput
   managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
@@ -1474,7 +1474,7 @@ export type TurfCreateWithoutReviewsInput = {
   owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
 }
 
-export type TurfUncheckedCreateWithoutReviewsInput = {
+export type TurfUncheckedCreateWithoutImagesInput = {
   id?: string
   ownerId: string
   categoryId: string
@@ -1490,30 +1490,30 @@ export type TurfUncheckedCreateWithoutReviewsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutTurfInput
   facilities?: Prisma.TurfFacilityUncheckedCreateNestedManyWithoutTurfInput
-  images?: Prisma.TurfImageUncheckedCreateNestedManyWithoutTurfInput
   managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
 }
 
-export type TurfCreateOrConnectWithoutReviewsInput = {
+export type TurfCreateOrConnectWithoutImagesInput = {
   where: Prisma.TurfWhereUniqueInput
-  create: Prisma.XOR<Prisma.TurfCreateWithoutReviewsInput, Prisma.TurfUncheckedCreateWithoutReviewsInput>
+  create: Prisma.XOR<Prisma.TurfCreateWithoutImagesInput, Prisma.TurfUncheckedCreateWithoutImagesInput>
 }
 
-export type TurfUpsertWithoutReviewsInput = {
-  update: Prisma.XOR<Prisma.TurfUpdateWithoutReviewsInput, Prisma.TurfUncheckedUpdateWithoutReviewsInput>
-  create: Prisma.XOR<Prisma.TurfCreateWithoutReviewsInput, Prisma.TurfUncheckedCreateWithoutReviewsInput>
+export type TurfUpsertWithoutImagesInput = {
+  update: Prisma.XOR<Prisma.TurfUpdateWithoutImagesInput, Prisma.TurfUncheckedUpdateWithoutImagesInput>
+  create: Prisma.XOR<Prisma.TurfCreateWithoutImagesInput, Prisma.TurfUncheckedCreateWithoutImagesInput>
   where?: Prisma.TurfWhereInput
 }
 
-export type TurfUpdateToOneWithWhereWithoutReviewsInput = {
+export type TurfUpdateToOneWithWhereWithoutImagesInput = {
   where?: Prisma.TurfWhereInput
-  data: Prisma.XOR<Prisma.TurfUpdateWithoutReviewsInput, Prisma.TurfUncheckedUpdateWithoutReviewsInput>
+  data: Prisma.XOR<Prisma.TurfUpdateWithoutImagesInput, Prisma.TurfUncheckedUpdateWithoutImagesInput>
 }
 
-export type TurfUpdateWithoutReviewsInput = {
+export type TurfUpdateWithoutImagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1527,8 +1527,8 @@ export type TurfUpdateWithoutReviewsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutTurfNestedInput
   facilities?: Prisma.TurfFacilityUpdateManyWithoutTurfNestedInput
-  images?: Prisma.TurfImageUpdateManyWithoutTurfNestedInput
   managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
@@ -1536,7 +1536,7 @@ export type TurfUpdateWithoutReviewsInput = {
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
 }
 
-export type TurfUncheckedUpdateWithoutReviewsInput = {
+export type TurfUncheckedUpdateWithoutImagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1552,6 +1552,114 @@ export type TurfUncheckedUpdateWithoutReviewsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTurfNestedInput
+  facilities?: Prisma.TurfFacilityUncheckedUpdateManyWithoutTurfNestedInput
+  managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
+  priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
+  slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
+}
+
+export type TurfCreateWithoutPackagesInput = {
+  id?: string
+  name: string
+  description?: string | null
+  address: string
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TurfStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  slotMinutes?: number
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviews?: Prisma.ReviewCreateNestedManyWithoutTurfInput
+  facilities?: Prisma.TurfFacilityCreateNestedManyWithoutTurfInput
+  images?: Prisma.TurfImageCreateNestedManyWithoutTurfInput
+  managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
+  priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
+  slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
+  owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
+}
+
+export type TurfUncheckedCreateWithoutPackagesInput = {
+  id?: string
+  ownerId: string
+  categoryId: string
+  name: string
+  description?: string | null
+  address: string
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TurfStatus
+  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  slotMinutes?: number
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutTurfInput
+  facilities?: Prisma.TurfFacilityUncheckedCreateNestedManyWithoutTurfInput
+  images?: Prisma.TurfImageUncheckedCreateNestedManyWithoutTurfInput
+  managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
+  priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
+  slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+}
+
+export type TurfCreateOrConnectWithoutPackagesInput = {
+  where: Prisma.TurfWhereUniqueInput
+  create: Prisma.XOR<Prisma.TurfCreateWithoutPackagesInput, Prisma.TurfUncheckedCreateWithoutPackagesInput>
+}
+
+export type TurfUpsertWithoutPackagesInput = {
+  update: Prisma.XOR<Prisma.TurfUpdateWithoutPackagesInput, Prisma.TurfUncheckedUpdateWithoutPackagesInput>
+  create: Prisma.XOR<Prisma.TurfCreateWithoutPackagesInput, Prisma.TurfUncheckedCreateWithoutPackagesInput>
+  where?: Prisma.TurfWhereInput
+}
+
+export type TurfUpdateToOneWithWhereWithoutPackagesInput = {
+  where?: Prisma.TurfWhereInput
+  data: Prisma.XOR<Prisma.TurfUpdateWithoutPackagesInput, Prisma.TurfUncheckedUpdateWithoutPackagesInput>
+}
+
+export type TurfUpdateWithoutPackagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviews?: Prisma.ReviewUpdateManyWithoutTurfNestedInput
+  facilities?: Prisma.TurfFacilityUpdateManyWithoutTurfNestedInput
+  images?: Prisma.TurfImageUpdateManyWithoutTurfNestedInput
+  managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
+  priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
+  slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
+}
+
+export type TurfUncheckedUpdateWithoutPackagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
+  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTurfNestedInput
   facilities?: Prisma.TurfFacilityUncheckedUpdateManyWithoutTurfNestedInput
   images?: Prisma.TurfImageUncheckedUpdateManyWithoutTurfNestedInput
   managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
@@ -1629,114 +1737,6 @@ export type TurfUpdateWithWhereUniqueWithoutOwnerInput = {
 export type TurfUpdateManyWithWhereWithoutOwnerInput = {
   where: Prisma.TurfScalarWhereInput
   data: Prisma.XOR<Prisma.TurfUpdateManyMutationInput, Prisma.TurfUncheckedUpdateManyWithoutOwnerInput>
-}
-
-export type TurfCreateWithoutManagersInput = {
-  id?: string
-  name: string
-  description?: string | null
-  address: string
-  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
-  timezone?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutTurfInput
-  facilities?: Prisma.TurfFacilityCreateNestedManyWithoutTurfInput
-  images?: Prisma.TurfImageCreateNestedManyWithoutTurfInput
-  priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
-  slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
-  category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
-  owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
-}
-
-export type TurfUncheckedCreateWithoutManagersInput = {
-  id?: string
-  ownerId: string
-  categoryId: string
-  name: string
-  description?: string | null
-  address: string
-  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
-  timezone?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutTurfInput
-  facilities?: Prisma.TurfFacilityUncheckedCreateNestedManyWithoutTurfInput
-  images?: Prisma.TurfImageUncheckedCreateNestedManyWithoutTurfInput
-  priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
-  slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
-}
-
-export type TurfCreateOrConnectWithoutManagersInput = {
-  where: Prisma.TurfWhereUniqueInput
-  create: Prisma.XOR<Prisma.TurfCreateWithoutManagersInput, Prisma.TurfUncheckedCreateWithoutManagersInput>
-}
-
-export type TurfUpsertWithoutManagersInput = {
-  update: Prisma.XOR<Prisma.TurfUpdateWithoutManagersInput, Prisma.TurfUncheckedUpdateWithoutManagersInput>
-  create: Prisma.XOR<Prisma.TurfCreateWithoutManagersInput, Prisma.TurfUncheckedCreateWithoutManagersInput>
-  where?: Prisma.TurfWhereInput
-}
-
-export type TurfUpdateToOneWithWhereWithoutManagersInput = {
-  where?: Prisma.TurfWhereInput
-  data: Prisma.XOR<Prisma.TurfUpdateWithoutManagersInput, Prisma.TurfUncheckedUpdateWithoutManagersInput>
-}
-
-export type TurfUpdateWithoutManagersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutTurfNestedInput
-  facilities?: Prisma.TurfFacilityUpdateManyWithoutTurfNestedInput
-  images?: Prisma.TurfImageUpdateManyWithoutTurfNestedInput
-  priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
-  slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
-  category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
-  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
-}
-
-export type TurfUncheckedUpdateWithoutManagersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTurfNestedInput
-  facilities?: Prisma.TurfFacilityUncheckedUpdateManyWithoutTurfNestedInput
-  images?: Prisma.TurfImageUncheckedUpdateManyWithoutTurfNestedInput
-  priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
-  slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
 }
 
 export type TurfCreateManyCategoryInput = {

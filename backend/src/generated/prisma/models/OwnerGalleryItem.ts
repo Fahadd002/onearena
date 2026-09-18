@@ -395,16 +395,6 @@ export type OwnerGalleryItemUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type OwnerGalleryItemListRelationFilter = {
-  every?: Prisma.OwnerGalleryItemWhereInput
-  some?: Prisma.OwnerGalleryItemWhereInput
-  none?: Prisma.OwnerGalleryItemWhereInput
-}
-
-export type OwnerGalleryItemOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type OwnerGalleryItemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -447,6 +437,24 @@ export type OwnerGalleryItemMinOrderByAggregateInput = {
 
 export type OwnerGalleryItemSumOrderByAggregateInput = {
   sortOrder?: Prisma.SortOrder
+}
+
+export type OwnerGalleryItemListRelationFilter = {
+  every?: Prisma.OwnerGalleryItemWhereInput
+  some?: Prisma.OwnerGalleryItemWhereInput
+  none?: Prisma.OwnerGalleryItemWhereInput
+}
+
+export type OwnerGalleryItemOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type OwnerGalleryItemCreateNestedManyWithoutOwnerInput = {

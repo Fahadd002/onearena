@@ -302,11 +302,6 @@ export type ManagerProfileUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ManagerProfileNullableScalarRelationFilter = {
-  is?: Prisma.ManagerProfileWhereInput | null
-  isNot?: Prisma.ManagerProfileWhereInput | null
-}
-
 export type ManagerProfileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -332,6 +327,11 @@ export type ManagerProfileMinOrderByAggregateInput = {
   address?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ManagerProfileNullableScalarRelationFilter = {
+  is?: Prisma.ManagerProfileWhereInput | null
+  isNot?: Prisma.ManagerProfileWhereInput | null
 }
 
 export type ManagerProfileCreateNestedOneWithoutUserInput = {

@@ -1,10 +1,10 @@
-import { Controller, Headers, Param, Post, Req, Res, UseGuards, Body } from '@nestjs/common';
+import { Controller, Get, Headers, Param, Patch, Post, Req, Res, UseGuards, Body } from '@nestjs/common';
 import { Request, Response } from 'express';
 import status from 'http-status';
 import { AuthRoles } from '../../../common/decorators/auth-roles.decorator';
 import { CurrentUser } from '../../../common/decorators/current-user.decorator';
 import { CheckAuthGuard } from '../../../common/guards/check-auth.guard';
-import { UserRole } from '../../../generated/prisma/enums';
+import { UserRole, PaymentStatus } from '../../../generated/prisma/enums';
 import sendResponse from '../../../shared/sendResponse';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
 import { PaymentService } from './payment.service';
@@ -59,6 +59,41 @@ export class PaymentController {
       statusCode: status.OK,
       success: true,
       message: 'Webhook received',
+      data,
+    });
+  }
+
+  @Get('invoices/:invoiceId/payments')
+  @AuthRoles(UserRole.USER, UserRole.ADMIN, UserRole.MANAGER, UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async listPaymentsByInvoice(
+    @CurrentUser() user: IRequestUser,
+    @Param('invoiceId') invoiceId: string,
+    @Res() res: Response,
+  ) {
+    const data = await this.paymentService.listPaymentsByInvoice(user, invoiceId);
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: 'Payments fetched successfully',
+      data,
+    });
+  }
+
+  @Patch('payments/:paymentId/status')
+  @AuthRoles(UserRole.ADMIN, UserRole.MANAGER, UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async updatePaymentStatus(
+    @CurrentUser() user: IRequestUser,
+    @Param('paymentId') paymentId: string,
+    @Body() body: { status: PaymentStatus; note?: string },
+    @Res() res: Response,
+  ) {
+    const data = await this.paymentService.updatePaymentStatus(user, paymentId, body);
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: 'Payment status updated successfully',
       data,
     });
   }

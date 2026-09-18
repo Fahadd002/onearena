@@ -18,7 +18,7 @@ export class ReportingService {
           slot: { turf: { ownerId: user.userId } },
         },
       }),
-      prisma.bookingInvoice.aggregate({
+      prisma.invoice.aggregate({
         where: {
           booking: { slot: { turf: { ownerId: user.userId } } },
           status: {
@@ -62,16 +62,16 @@ export class ReportingService {
           verificationStatus: 'PENDING',
         },
       }),
-      prisma.bookingInvoice.aggregate({
-        where: { payments: { some: { status: PaymentStatus.PENDING } } },
+      prisma.invoice.aggregate({
+        where: { payments: { some: { status: PaymentStatus.UNPAID } } },
         _sum: {
           totalAmount: true,
         },
       }),
     ]);
 
-    const pendingPayments = await prisma.bookingInvoice.count({
-      where: { payments: { some: { status: PaymentStatus.PENDING } } },
+    const pendingPayments = await prisma.invoice.count({
+      where: { payments: { some: { status: PaymentStatus.UNPAID } } },
     });
 
     const totalRevenue = revenue._sum?.totalAmount?.toNumber() ?? 0;

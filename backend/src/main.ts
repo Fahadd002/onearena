@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 // Load env before any module that reads process.env (Prisma pool, better-auth, etc.)
 import config from './config/index';
 import { NestFactory } from '@nestjs/core';

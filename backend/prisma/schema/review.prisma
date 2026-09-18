@@ -1,0 +1,32 @@
+model Review {
+  id        String        @id @default(uuid())
+  bookingId String        @unique
+  userId    String
+  turfId    String
+  rating    Int
+  comment   String?
+  isHidden  Boolean       @default(false)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  turf      Turf          @relation(fields: [turfId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replies   ReviewReply[]
+
+  @@index([turfId, rating])
+  @@index([userId])
+  @@map("review")
+}
+
+model ReviewReply {
+  id        String   @id @default(uuid())
+  reviewId  String
+  userId    String
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([reviewId])
+  @@map("review_reply")
+}

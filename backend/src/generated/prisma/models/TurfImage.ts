@@ -338,6 +338,16 @@ export type TurfImageUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type TurfImageListRelationFilter = {
+  every?: Prisma.TurfImageWhereInput
+  some?: Prisma.TurfImageWhereInput
+  none?: Prisma.TurfImageWhereInput
+}
+
+export type TurfImageOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type TurfImageCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   turfId?: Prisma.SortOrder
@@ -371,28 +381,6 @@ export type TurfImageMinOrderByAggregateInput = {
 
 export type TurfImageSumOrderByAggregateInput = {
   sortOrder?: Prisma.SortOrder
-}
-
-export type TurfImageListRelationFilter = {
-  every?: Prisma.TurfImageWhereInput
-  some?: Prisma.TurfImageWhereInput
-  none?: Prisma.TurfImageWhereInput
-}
-
-export type TurfImageOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type TurfImageCreateNestedManyWithoutTurfInput = {

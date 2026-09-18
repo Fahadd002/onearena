@@ -1,0 +1,28 @@
+model Facility {
+  id                String            @id @default(uuid())
+  name              String            @unique
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  packageFacilities PackageFacility[]
+  turfs             TurfFacility[]
+}
+
+model PackageFacility {
+  packageId  String
+  facilityId String
+  facility   Facility @relation(fields: [facilityId], references: [id], onDelete: Cascade)
+  package    Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@id([packageId, facilityId])
+  @@map("package_facilitie")
+}
+
+model TurfFacility {
+  turfId     String
+  facilityId String
+  facility   Facility @relation(fields: [facilityId], references: [id], onDelete: Cascade)
+  turf       Turf     @relation(fields: [turfId], references: [id], onDelete: Cascade)
+
+  @@id([turfId, facilityId])
+  @@map("turf_facilitie")
+}

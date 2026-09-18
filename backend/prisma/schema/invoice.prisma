@@ -1,0 +1,99 @@
+model Invoice {
+  id            String   @id @default(uuid())
+  invoiceNumber String   @unique
+  invoiceDate   DateTime @default(now())
+  invoiceFor    InvoiceFor
+  subtotal      Decimal  @db.Decimal(12, 2)
+  discount      Decimal  @default(0) @db.Decimal(12, 2)
+  totalAmount   Decimal  @db.Decimal(12, 2)
+  paidAmount    Decimal  @default(0) @db.Decimal(12, 2)
+
+  isFullPaid Boolean       @default(false)
+  status     PaymentStatus @default(UNPAID)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  bookingId     String?   @unique
+  booking       Booking?  @relation(fields: [bookingId], references: [id])
+  subscriptionLogId     String?   @unique
+  subscriptionLog       SubscriptionLog?  @relation(fields: [subscriptionLogId], references: [id])
+
+  payments Payment[]
+
+  @@map("invoice")
+}
+
+model Payment {
+  id            String         @id @default(uuid())
+  paymentNumber String         @unique
+  invoiceId     String
+  invoice       Invoice @relation(fields: [invoiceId], references: [id])
+  paidAmount    Decimal        @default(0) @db.Decimal(12, 2)
+  type          PaymentType
+  method        PaymentMethod
+  amount        Decimal        @db.Decimal(12, 2)
+  status        PaymentStatus  @default(UNPAID)
+
+  // Online payment gateway information
+  providerTransactionId String? @unique
+  paymentIntentId       String? @unique
+  checkoutSessionId     String? @unique
+
+  // Prevent duplicate payment processing
+  idempotencyKey String @unique
+
+  // Gateway webhook/event ID
+  rawEventId String? @unique
+
+  // Manual payment information
+  receivedById String?
+  reference    String?
+  note         String?
+
+  paidAt DateTime?
+
+  failureCode    String?
+  failureMessage String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  receivedBy User? @relation("PaymentReceivedBy", fields: [receivedById], references: [id])
+
+  refunds Refund[]
+
+  @@index([invoiceId, paidAt])
+  @@map("payment")
+}
+
+model Refund {
+  id String @id @default(uuid())
+
+  paymentId String
+  bookingId String
+
+  amount Decimal @db.Decimal(12, 2)
+
+  reason String?
+
+  status RefundStatus @default(REQUESTED)
+
+  requestedBy String
+  processedBy String?
+
+  processedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  payment Payment @relation(fields: [paymentId], references: [id])
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+
+  @@index([paymentId, status])
+  @@index([bookingId, status])
+  @@map("refund")
+}

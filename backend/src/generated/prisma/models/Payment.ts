@@ -348,7 +348,7 @@ export type PaymentWhereInput = {
   failureMessage?: Prisma.StringNullableFilter<"Payment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
-  invoice?: Prisma.XOR<Prisma.BookingInvoiceScalarRelationFilter, Prisma.BookingInvoiceWhereInput>
+  invoice?: Prisma.XOR<Prisma.InvoiceScalarRelationFilter, Prisma.InvoiceWhereInput>
   receivedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   refunds?: Prisma.RefundListRelationFilter
 }
@@ -375,7 +375,7 @@ export type PaymentOrderByWithRelationInput = {
   failureMessage?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  invoice?: Prisma.BookingInvoiceOrderByWithRelationInput
+  invoice?: Prisma.InvoiceOrderByWithRelationInput
   receivedBy?: Prisma.UserOrderByWithRelationInput
   refunds?: Prisma.RefundOrderByRelationAggregateInput
 }
@@ -405,7 +405,7 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
   failureMessage?: Prisma.StringNullableFilter<"Payment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
-  invoice?: Prisma.XOR<Prisma.BookingInvoiceScalarRelationFilter, Prisma.BookingInvoiceWhereInput>
+  invoice?: Prisma.XOR<Prisma.InvoiceScalarRelationFilter, Prisma.InvoiceWhereInput>
   receivedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   refunds?: Prisma.RefundListRelationFilter
 }, "id" | "paymentNumber" | "providerTransactionId" | "paymentIntentId" | "checkoutSessionId" | "idempotencyKey" | "rawEventId">
@@ -486,7 +486,7 @@ export type PaymentCreateInput = {
   failureMessage?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  invoice: Prisma.BookingInvoiceCreateNestedOneWithoutPaymentsInput
+  invoice: Prisma.InvoiceCreateNestedOneWithoutPaymentsInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutPaymentsReceivedInput
   refunds?: Prisma.RefundCreateNestedManyWithoutPaymentInput
 }
@@ -536,7 +536,7 @@ export type PaymentUpdateInput = {
   failureMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  invoice?: Prisma.BookingInvoiceUpdateOneRequiredWithoutPaymentsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneRequiredWithoutPaymentsNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutPaymentsReceivedNestedInput
   refunds?: Prisma.RefundUpdateManyWithoutPaymentNestedInput
 }
@@ -960,7 +960,7 @@ export type PaymentCreateWithoutRefundsInput = {
   failureMessage?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  invoice: Prisma.BookingInvoiceCreateNestedOneWithoutPaymentsInput
+  invoice: Prisma.InvoiceCreateNestedOneWithoutPaymentsInput
   receivedBy?: Prisma.UserCreateNestedOneWithoutPaymentsReceivedInput
 }
 
@@ -1024,7 +1024,7 @@ export type PaymentUpdateWithoutRefundsInput = {
   failureMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  invoice?: Prisma.BookingInvoiceUpdateOneRequiredWithoutPaymentsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneRequiredWithoutPaymentsNestedInput
   receivedBy?: Prisma.UserUpdateOneWithoutPaymentsReceivedNestedInput
 }
 
@@ -1072,7 +1072,7 @@ export type PaymentCreateWithoutReceivedByInput = {
   failureMessage?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  invoice: Prisma.BookingInvoiceCreateNestedOneWithoutPaymentsInput
+  invoice: Prisma.InvoiceCreateNestedOneWithoutPaymentsInput
   refunds?: Prisma.RefundCreateNestedManyWithoutPaymentInput
 }
 
@@ -1263,7 +1263,7 @@ export type PaymentUpdateWithoutReceivedByInput = {
   failureMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  invoice?: Prisma.BookingInvoiceUpdateOneRequiredWithoutPaymentsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneRequiredWithoutPaymentsNestedInput
   refunds?: Prisma.RefundUpdateManyWithoutPaymentNestedInput
 }
 
@@ -1367,7 +1367,7 @@ export type PaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   failureMessage?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  invoice?: boolean | Prisma.BookingInvoiceDefaultArgs<ExtArgs>
+  invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
   receivedBy?: boolean | Prisma.Payment$receivedByArgs<ExtArgs>
   refunds?: boolean | Prisma.Payment$refundsArgs<ExtArgs>
   _count?: boolean | Prisma.PaymentCountOutputTypeDefaultArgs<ExtArgs>
@@ -1395,7 +1395,7 @@ export type PaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   failureMessage?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  invoice?: boolean | Prisma.BookingInvoiceDefaultArgs<ExtArgs>
+  invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
   receivedBy?: boolean | Prisma.Payment$receivedByArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
@@ -1421,7 +1421,7 @@ export type PaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   failureMessage?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  invoice?: boolean | Prisma.BookingInvoiceDefaultArgs<ExtArgs>
+  invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
   receivedBy?: boolean | Prisma.Payment$receivedByArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
@@ -1451,24 +1451,24 @@ export type PaymentSelectScalar = {
 
 export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "paymentNumber" | "invoiceId" | "paidAmount" | "type" | "method" | "amount" | "status" | "providerTransactionId" | "paymentIntentId" | "checkoutSessionId" | "idempotencyKey" | "rawEventId" | "receivedById" | "reference" | "note" | "paidAt" | "failureCode" | "failureMessage" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
 export type PaymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  invoice?: boolean | Prisma.BookingInvoiceDefaultArgs<ExtArgs>
+  invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
   receivedBy?: boolean | Prisma.Payment$receivedByArgs<ExtArgs>
   refunds?: boolean | Prisma.Payment$refundsArgs<ExtArgs>
   _count?: boolean | Prisma.PaymentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PaymentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  invoice?: boolean | Prisma.BookingInvoiceDefaultArgs<ExtArgs>
+  invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
   receivedBy?: boolean | Prisma.Payment$receivedByArgs<ExtArgs>
 }
 export type PaymentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  invoice?: boolean | Prisma.BookingInvoiceDefaultArgs<ExtArgs>
+  invoice?: boolean | Prisma.InvoiceDefaultArgs<ExtArgs>
   receivedBy?: boolean | Prisma.Payment$receivedByArgs<ExtArgs>
 }
 
 export type $PaymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Payment"
   objects: {
-    invoice: Prisma.$BookingInvoicePayload<ExtArgs>
+    invoice: Prisma.$InvoicePayload<ExtArgs>
     receivedBy: Prisma.$UserPayload<ExtArgs> | null
     refunds: Prisma.$RefundPayload<ExtArgs>[]
   }
@@ -1888,7 +1888,7 @@ readonly fields: PaymentFieldRefs;
  */
 export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  invoice<T extends Prisma.BookingInvoiceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BookingInvoiceDefaultArgs<ExtArgs>>): Prisma.Prisma__BookingInvoiceClient<runtime.Types.Result.GetResult<Prisma.$BookingInvoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  invoice<T extends Prisma.InvoiceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InvoiceDefaultArgs<ExtArgs>>): Prisma.Prisma__InvoiceClient<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   receivedBy<T extends Prisma.Payment$receivedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$receivedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   refunds<T extends Prisma.Payment$refundsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$refundsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**

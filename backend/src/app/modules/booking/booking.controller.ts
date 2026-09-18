@@ -21,18 +21,20 @@ export class BookingController {
     @CurrentUser() user: IRequestUser,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
+    @Query('bookingStatus') bookingStatus?: string,
     @Query('paymentStatus') paymentStatus?: string,
     @Query('turfId') turfId?: string,
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
     @Query('sortBy') sortBy?: string,
     @Query('sortOrder') sortOrder?: string,
+    @Query('search') search?: string,
   ) {
     const data = await this.bookingService.list(
       user,
       Number(page) || 1,
       Number(limit) || 10,
-      { paymentStatus, turfId, startDate, endDate, sortBy, sortOrder },
+      { bookingStatus, paymentStatus, turfId, startDate, endDate, sortBy, sortOrder, search },
     );
     sendResponse(res, {
       statusCode: status.OK,
@@ -197,6 +199,24 @@ export class BookingController {
       statusCode: status.OK,
       success: true,
       message: 'Booking completed successfully',
+      data,
+    });
+  }
+
+  @Post('admin/bookings/:bookingId/confirm-with-payment')
+  @AuthRoles(UserRole.ADMIN, UserRole.MANAGER, UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async confirmWithPayment(
+    @CurrentUser() user: IRequestUser,
+    @Param('bookingId') bookingId: string,
+    @Body() body: { paymentAmount: number; paymentMethod: 'CASH'; reference?: string; note?: string },
+    @Res() res: Response,
+  ) {
+    const data = await this.bookingService.confirmWithPayment(user, bookingId, body);
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: 'Booking confirmed successfully',
       data,
     });
   }

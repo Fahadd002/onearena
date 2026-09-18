@@ -1,0 +1,76 @@
+model SubscriptionPlan {
+  id            String              @id @default(uuid())
+  name          String              @unique
+  tierLevel     Int                 @unique // Defines plan rank (e.g., 1 for Basic, 2 for Standard, 3 for Pro)
+  maxTurfs      Int
+  features      String[]            @default([])
+  active        Boolean             @default(true)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime?           @updatedAt
+  prices        SubscriptionPrice[]
+  subscriptions Subscription[]
+
+  @@map("subscription_plan")
+}
+
+model SubscriptionPrice {
+  id        String           @id @default(uuid())
+  planId    String
+  plan      SubscriptionPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  period    FixedPeriod
+  price     Decimal          @db.Decimal(10, 2)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime?        @updatedAt
+
+  @@unique([planId, period])
+  @@index([planId])
+  @@map("subscription_price")
+}
+
+model Subscription {
+  id               String            @id @default(uuid())
+  userId           String            @unique
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId           String
+  plan             SubscriptionPlan  @relation(fields: [planId], references: [id])
+  status           SubscriptionStatus @default(TRIAL)
+  startDate        DateTime
+  endDate          DateTime
+  trialStart       DateTime?
+  trialEnd         DateTime?
+  isTrialUsed      Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime?         @updatedAt
+  subscriptionLogs SubscriptionLog[]
+
+  @@index([status])
+  @@index([userId])
+  @@index([endDate])
+  @@map("subscription")
+}
+
+model SubscriptionLog {
+  id             String             @id @default(uuid())
+  subscriptionId String
+  subscription   Subscription       @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  action         SubscriptionAction
+  status         SubscriptionStatus
+  startDate      DateTime
+  endDate        DateTime
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime?          @updatedAt
+  invoice        Invoice?
+
+  @@index([subscriptionId])
+  @@index([endDate])
+  @@map("subscription_log")
+}
+
+enum SubscriptionAction {
+  TRIAL_STARTED
+  SUBSCRIBED
+  RENEWED
+  UPGRADED
+  CANCELLED
+  EXPIRED
+}

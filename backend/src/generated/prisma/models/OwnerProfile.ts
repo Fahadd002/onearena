@@ -587,11 +587,6 @@ export type OwnerProfileUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type OwnerProfileNullableScalarRelationFilter = {
-  is?: Prisma.OwnerProfileWhereInput | null
-  isNot?: Prisma.OwnerProfileWhereInput | null
-}
-
 export type OwnerProfileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -664,6 +659,15 @@ export type OwnerProfileMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type OwnerProfileNullableScalarRelationFilter = {
+  is?: Prisma.OwnerProfileWhereInput | null
+  isNot?: Prisma.OwnerProfileWhereInput | null
+}
+
+export type EnumOwnerVerificationStatusFieldUpdateOperationsInput = {
+  set?: $Enums.OwnerVerificationStatus
+}
+
 export type OwnerProfileCreateNestedOneWithoutUserInput = {
   create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutUserInput, Prisma.OwnerProfileUncheckedCreateWithoutUserInput>
   connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutUserInput
@@ -694,10 +698,6 @@ export type OwnerProfileUncheckedUpdateOneWithoutUserNestedInput = {
   delete?: Prisma.OwnerProfileWhereInput | boolean
   connect?: Prisma.OwnerProfileWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.OwnerProfileUpdateToOneWithWhereWithoutUserInput, Prisma.OwnerProfileUpdateWithoutUserInput>, Prisma.OwnerProfileUncheckedUpdateWithoutUserInput>
-}
-
-export type EnumOwnerVerificationStatusFieldUpdateOperationsInput = {
-  set?: $Enums.OwnerVerificationStatus
 }
 
 export type OwnerProfileCreateWithoutUserInput = {
