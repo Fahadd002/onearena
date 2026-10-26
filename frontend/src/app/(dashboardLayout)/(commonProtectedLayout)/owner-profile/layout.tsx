@@ -5,13 +5,14 @@ import { getOwnerProfile } from "./_action";
 import { ApiResponse } from "@/types/api.type";
 import { OwnerProfile } from "./_types";
 import { StatusTicker } from "./_components/StatusTicker";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function OwnerProfileLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { data: profileData, isLoading } = useQuery({
+  const { isLoading } = useQuery({
     queryKey: ["owner-profile-layout"],
     queryFn: async () => {
       const res = await getOwnerProfile();
@@ -23,16 +24,16 @@ export default function OwnerProfileLayout({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-      </div>
-    );
-  }
-
-  if (!profileData) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Profile not found. Redirecting...</p>
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto max-w-7xl px-4 pt-6 pb-8 lg:px-8 space-y-6">
+          <Skeleton className="h-10 w-full max-w-xs rounded-xl" />
+          <Skeleton className="h-4 w-64 rounded" />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[...Array(3)].map((_, i) => (
+              <Skeleton key={i} className="h-[26rem] w-full rounded-2xl" />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

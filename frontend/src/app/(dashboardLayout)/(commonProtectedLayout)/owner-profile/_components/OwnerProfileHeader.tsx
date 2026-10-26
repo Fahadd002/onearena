@@ -36,41 +36,48 @@ interface OwnerProfileHeaderProps {
   currentStep?: "profile" | "documents" | "subscription";
 }
 
-export default function OwnerProfileHeader({ profile, currentStep }: OwnerProfileHeaderProps) {
+export default function OwnerProfileHeader({
+  profile,
+  currentStep,
+}: OwnerProfileHeaderProps) {
   const router = useRouter();
   const status = profile?.verificationStatus ?? "PENDING";
 
   return (
-    <div className="sticky top-0 z-10 border-b border-border/70 bg-background/90 backdrop-blur-md">
-      <div className="container mx-auto max-w-6xl px-4 py-4 lg:px-8">
-        <div className="grid grid-cols-3 gap-4 items-center">
-          {/* Left: User Info */}
-          <div className="min-w-0">
-            <h1 className="text-xl font-bold tracking-tight truncate">
+    <header className="sticky top-0 z-20 border-b border-border/70 bg-background/90 backdrop-blur-md">
+      <div className="container mx-auto max-w-6xl px-3 sm:px-4 lg:px-8">
+        <div className="flex items-center justify-between gap-2 sm:gap-4 py-3">
+          {/* Left: Owner Name */}
+          <div className="min-w-0 shrink-0 max-w-[120px] sm:max-w-[180px] lg:max-w-none lg:flex-1">
+            <h1 className="text-sm sm:text-base lg:text-lg font-bold tracking-tight truncate">
               {profile?.user?.name || "Owner"}
             </h1>
           </div>
 
           {/* Center: Step Indicator */}
-          <div className="justify-self-center">
-            <StepIndicator currentStep={currentStep || "profile"} profile={profile} />
+          <div className="flex-1 flex justify-center min-w-0">
+            <StepIndicator
+              currentStep={currentStep || "profile"}
+              profile={profile}
+            />
           </div>
 
-          {/* Right: Status + Home */}
-          <div className="flex items-center justify-end gap-3">
-            {statusBadge[status]}
+          {/* Right: Status Badge + Home */}
+          <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3 shrink-0">
+            <span className="hidden sm:inline-flex">{statusBadge[status]}</span>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => router.push("/")}
-              className="flex items-center gap-2 h-9"
+              className="flex items-center gap-1.5 h-8 px-2 sm:px-3 text-foreground"
+              aria-label="Go to home"
             >
               <Home className="h-4 w-4" />
-              <span className="hidden sm:inline">Home</span>
+              <span className="hidden md:inline">Home</span>
             </Button>
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }

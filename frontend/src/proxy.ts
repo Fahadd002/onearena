@@ -132,7 +132,7 @@ export async function proxy(request: NextRequest) {
                 if (userInfo.emailVerified === false) {
                     if (pathname !== "/verify-email") {
                         const verifyEmailUrl = new URL("/verify-email", request.url);
-                        verifyEmailUrl.searchParams.set("email", userInfo.email);
+                        verifyEmailUrl.searchParams.set("email", userInfo.email ?? "");
                         return NextResponse.redirect(verifyEmailUrl);
                     }
 
@@ -147,7 +147,7 @@ export async function proxy(request: NextRequest) {
                 if (userInfo.needPasswordChange) {
                     if (pathname !== "/reset-password") {
                         const resetPasswordUrl = new URL("/reset-password", request.url);
-                        resetPasswordUrl.searchParams.set("email", userInfo.email);
+                        resetPasswordUrl.searchParams.set("email", userInfo.email ?? "");
                         return NextResponse.redirect(resetPasswordUrl);
                     }
 

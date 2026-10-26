@@ -1,13 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { createContext, createElement, useContext, useEffect, useState } from 'react';
 import { getUserInfo } from '@/services/auth.services';
 import { SESSION_INTERVALS, TOKEN_EXPIRATION } from './tokenConstants';
 
 export interface User {
   id: string;
   name: string;
-  email: string;
+  email?: string | null;
+  image?: string | null;
+  phoneNumber?: string | null;
   role: 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'USER';
   profileVerified?: boolean;
 }
@@ -17,7 +19,15 @@ export interface Session {
   expires: string;
 }
 
-export function useAuth() {
+type AuthState = {
+  session: Session | null;
+  loading: boolean;
+  refetch: () => Promise<void>;
+};
+
+const AuthContext = createContext<AuthState | null>(null);
+
+function useAuthState(enabled = true): AuthState {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -25,9 +35,20 @@ export function useAuth() {
     try {
       const user = await getUserInfo();
       if (user) {
-        setSession({
-          user: user,
-          expires: new Date(Date.now() + TOKEN_EXPIRATION.SESSION_TOKEN * 1000).toISOString(),
+        setSession((current) => {
+          const unchanged = current &&
+            current.user.id === user.id &&
+            current.user.name === user.name &&
+            current.user.email === user.email &&
+            current.user.image === user.image &&
+            current.user.phoneNumber === user.phoneNumber &&
+            current.user.role === user.role &&
+            current.user.profileVerified === user.profileVerified;
+
+          return unchanged ? current : {
+            user,
+            expires: new Date(Date.now() + TOKEN_EXPIRATION.SESSION_TOKEN * 1000).toISOString(),
+          };
         });
       } else {
         setSession(null);
@@ -41,6 +62,8 @@ export function useAuth() {
   };
 
   useEffect(() => {
+    if (!enabled) return;
+
     loadSession();
 
     // Refresh session when page regains focus
@@ -59,9 +82,22 @@ export function useAuth() {
       window.removeEventListener('focus', handleFocus);
       clearInterval(sessionRefreshInterval);
     };
-  }, []);
+  }, [enabled]);
 
   return { session, loading, refetch: loadSession };
+}
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const auth = useAuthState();
+
+  return createElement(AuthContext.Provider, { value: auth }, children);
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  const localAuth = useAuthState(context === null);
+
+  return context ?? localAuth;
 }
 
 

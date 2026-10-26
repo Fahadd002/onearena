@@ -52,9 +52,11 @@ export interface Turf {
     address: string;
     area?: string | null;
     description?: string | null;
-    basePrice: number | string;
-    slotMinutes: number;
-    timezone?: string;
+    defaultSlotPrice: number | string;
+    defaultSlotDuration: number;
+    allowAdvancePayment?: boolean;
+    advancePaymentAmount?: number;
+    paymentPhoneNumbers?: { method: string; number: string }[];
     status: string;
     latitude?: string;
     longitude?: string;
@@ -63,18 +65,42 @@ export interface Turf {
     facilities?: TurfFacility[];
     images?: TurfImage[];
     priceRules?: TurfPriceRule[];
+    slots?: TurfSlot[];
     packages?: TurfPackage[];
     reviews?: TurfReview[];
     _count?: { reviews: number };
+    peakHourPrice?: number;
+    weekendPrice?: number;
+    distance?: number;
+    bookedCount: number;
 }
 
+/**
+ * Slot status contract — mirrors the backend `SlotSatus` enum
+ * (`backend/prisma/schema/enums.prisma`).
+ *   AVAILABLE — bookable
+ *   WAITLIST  — held by an unfinished booking, still not confirmed
+ *   BOOKED    — taken
+ */
+export type SlotStatus = "AVAILABLE" | "BOOKED" | "WAITLIST";
+
 export interface TurfSlot {
-    id?: string;
-    startMinute: number;
-    endMinute: number;
-    available: boolean;
-    status?: "AVAILABLE" | "RESERVED" | "PREBOOKED" | "BOOKED";
-    price?: number;
+  id: string;
+  slotDate?: string;
+  startMinute: number;
+  endMinute: number;
+  price: number;
+  /**
+   * The turf list payload returns `active`, `slotStatus` and `isPeakTime` but no
+   * `available`; the public slots endpoint returns `available` plus a `status`
+   * alias of `slotStatus`. Read them through `isSlotBookable()` in
+
+   */
+  active?: boolean;
+  available?: boolean;
+  slotStatus?: SlotStatus;
+  status?: SlotStatus; // alias for backend compatibility
+  isPeakTime?: boolean;
 }
 
 export interface StoredTurfSlot {
@@ -83,9 +109,22 @@ export interface StoredTurfSlot {
     slotDate: string;
     startMinute: number;
     endMinute: number;
-    price: number;
+    price: string;
     active: boolean;
-    bookingStatus: "AVAILABLE" | "PREBOOKED" | "BOOKED";
+    bookingStatus: SlotStatus;
     createdAt: string;
     updatedAt: string;
 }
+
+export interface TurfFacility {
+    facility: { id: string; name: string };
+}
+
+export interface TurfImage {
+    id: string;
+    turfId: string;
+    url: string;
+    altText?: string | null;
+    sortOrder: number;
+}
+

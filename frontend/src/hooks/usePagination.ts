@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 
 export type PaginationInfo = {
   page: number;
@@ -36,18 +36,21 @@ export function usePagination(initialPageSize = 10) {
     setPage(1);
   }, []);
 
-  return {
-    page,
-    pageSize,
-    total,
-    totalPages,
-    setPage: goToPage,
-    setPageSize,
-    setTotal,
-    nextPage,
-    prevPage,
-    resetPage,
-    hasNext: page < totalPages,
-    hasPrev: page > 1,
-  };
+  return useMemo(
+    () => ({
+      page,
+      pageSize,
+      total,
+      totalPages,
+      setPage: goToPage,
+      setPageSize,
+      setTotal,
+      nextPage,
+      prevPage,
+      resetPage,
+      hasNext: page < totalPages,
+      hasPrev: page > 1,
+    }),
+    [page, pageSize, total, totalPages, goToPage, setPageSize, nextPage, prevPage, resetPage],
+  );
 }

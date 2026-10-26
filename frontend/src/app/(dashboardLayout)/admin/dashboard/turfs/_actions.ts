@@ -11,8 +11,11 @@ const turfActionSchema = z.object({
   categoryId: z.string().min(1, "Please choose a sport"),
   description: z.string().optional(),
   address: z.string().trim().min(5, "Address must be at least 5 characters"),
-  basePrice: z.number().positive("Starting price must be greater than 0"),
-  slotMinutes: z.number().min(30, "Slot duration must be at least 30 minutes"),
+  defaultSlotPrice: z.number().positive("Default slot price must be greater than 0"),
+  defaultSlotDuration: z.number().min(30, "Slot duration must be at least 30 minutes"),
+  allowAdvancePayment: z.boolean().optional(),
+  advancePaymentAmount: z.number().optional(),
+  paymentPhoneNumbers: z.array(z.object({ method: z.string(), number: z.string() })).optional(),
   latitude: z.number().finite().min(-90).max(90, "Enter a valid latitude"),
   longitude: z.number().finite().min(-180).max(180, "Enter a valid longitude"),
 });

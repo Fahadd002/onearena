@@ -7,13 +7,14 @@ import { deleteCookie } from "@/lib/cookie.utils";
 import { cookies } from "next/headers";
 import { IAuthUser, ILoginResponse, IRefreshTokenResponse, IRegisterResponse, IVerifyEmailResponse } from "@/types/auth.type";
 import { ILoginPayload, IRegisterPayload } from "@/zod/auth.validation";
-import { API_BASE_URL, API_ENDPOINTS } from "@/lib/api/config";
+import { API_ENDPOINTS, SERVER_API_BASE_URL } from "@/lib/api/config";
 
 // Login
 export async function login(payload: ILoginPayload): Promise<ApiResponse<ILoginResponse> | ApiErrorResponse> {
     try {
-        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.auth.login}`, {
+        const response = await fetch(`${SERVER_API_BASE_URL}${API_ENDPOINTS.auth.login}`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -41,8 +42,9 @@ export async function login(payload: ILoginPayload): Promise<ApiResponse<ILoginR
 // Register
 export async function register(payload: IRegisterPayload): Promise<ApiResponse<IRegisterResponse> | ApiErrorResponse> {
     try {
-        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.auth.register}`, {
+        const response = await fetch(`${SERVER_API_BASE_URL}${API_ENDPOINTS.auth.register}`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -86,14 +88,14 @@ export async function getUserInfo(): Promise<IAuthUser | null> {
             return null;
         }
 
-        const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.auth.me}`, {
+        const res = await fetch(`${SERVER_API_BASE_URL}${API_ENDPOINTS.auth.me}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Cookie: authCookieHeader,
             }
         });
-
+        
         if (!res.ok) {
             console.error("Failed to fetch user info:", res.status, res.statusText);
             return null;
@@ -118,7 +120,7 @@ export async function refreshTokens(refreshToken: string): Promise<boolean> {
             return false;
         }
 
-        const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.auth.refreshToken}`, {
+        const res = await fetch(`${SERVER_API_BASE_URL}${API_ENDPOINTS.auth.refreshToken}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -167,7 +169,7 @@ export async function changePassword(oldPassword: string, newPassword: string): 
             .map((cookie) => `${cookie.name}=${cookie.value}`)
             .join("; ");
 
-        const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.auth.changePassword}`, {
+        const res = await fetch(`${SERVER_API_BASE_URL}${API_ENDPOINTS.auth.changePassword}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -208,7 +210,7 @@ export async function logout(): Promise<boolean> {
             .map((cookie) => `${cookie.name}=${cookie.value}`)
             .join("; ");
 
-        const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.auth.logout}`, {
+        const res = await fetch(`${SERVER_API_BASE_URL}${API_ENDPOINTS.auth.logout}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -233,7 +235,7 @@ export async function logout(): Promise<boolean> {
 // Verify email
 export async function verifyEmail(email: string, otp: string): Promise<ApiResponse<IVerifyEmailResponse> | ApiErrorResponse> {
     try {
-        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.auth.verifyEmail}`, {
+        const response = await fetch(`${SERVER_API_BASE_URL}${API_ENDPOINTS.auth.verifyEmail}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -262,7 +264,7 @@ export async function verifyEmail(email: string, otp: string): Promise<ApiRespon
 // Forgot password
 export async function forgotPassword(email: string): Promise<ApiResponse<null> | ApiErrorResponse> {
     try {
-        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.auth.forgotPassword}`, {
+        const response = await fetch(`${SERVER_API_BASE_URL}${API_ENDPOINTS.auth.forgotPassword}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -302,7 +304,7 @@ export async function resetPassword(email: string, otp: string, newPassword: str
             .map((cookie) => `${cookie.name}=${cookie.value}`)
             .join("; ");
 
-        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.auth.resetPassword}`, {
+        const response = await fetch(`${SERVER_API_BASE_URL}${API_ENDPOINTS.auth.resetPassword}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -339,7 +341,7 @@ export async function resetPassword(email: string, otp: string, newPassword: str
 // Resend verification OTP
 export async function resendVerificationOtp(email: string): Promise<ApiResponse<null> | ApiErrorResponse> {
     try {
-        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.auth.resendVerificationOtp}`, {
+        const response = await fetch(`${SERVER_API_BASE_URL}${API_ENDPOINTS.auth.resendVerificationOtp}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

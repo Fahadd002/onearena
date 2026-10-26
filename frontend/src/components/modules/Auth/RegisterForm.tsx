@@ -23,7 +23,48 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { registerAction } from "@/app/(authRouteGroup)/signup/_action";
 import { API_BASE_URL, API_ENDPOINTS } from "@/lib/api/config";
 import { formatFieldErrors } from "@/lib/form-errors";
-import { registerBaseSchema, registerZodSchema, IRegisterPayload } from "@/zod/auth.validation";
+import { registerBaseSchema, IRegisterPayload } from "@/zod/auth.validation";
+
+type Role = "owner" | "user";
+
+const roleContent: Record<
+  Role,
+  {
+    badge: string;
+    headline: string;
+    subheading: string;
+    bullets: string[];
+    cardTitle: string;
+    cardSubtitle: string;
+  }
+> = {
+  user: {
+    badge: "Join OneArena",
+    headline: "Start booking the best turf in your city.",
+    subheading:
+      "Create your account and unlock faster bookings, trusted venues, and match-ready scheduling.",
+    bullets: [
+      "Book premium football and cricket turfs in minutes",
+      "Get access to verified venue ratings and pricing",
+      "Manage upcoming matches from one secure profile",
+    ],
+    cardTitle: "Create account",
+    cardSubtitle: "Sign up and start booking your turf in minutes.",
+  },
+  owner: {
+    badge: "List your turf",
+    headline: "Turn your turf into a full-time business.",
+    subheading:
+      "Join as an owner to publish your venues, manage pricing, and receive bookings from players across the city.",
+    bullets: [
+      "Publish unlimited turfs and control live availability",
+      "Set custom slot pricing, peak hours, and off-day rules",
+      "Track bookings, earnings, and reviews from one dashboard",
+    ],
+    cardTitle: "Create owner account",
+    cardSubtitle: "Sign up and start listing your turfs in minutes.",
+  },
+};
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -31,22 +72,19 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Role selection state (for UI highlight)
-  const [selectedRole, setSelectedRole] = useState<"owner" | "user">("user");
+  const [selectedRole, setSelectedRole] = useState<Role>("user");
 
-  // Mutation
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (payload: IRegisterPayload) => registerAction(payload),
   });
 
-  // TanStack Form
   const form = useForm({
     defaultValues: {
       name: "",
       email: "",
       password: "",
       confirmPassword: "",
-      role: "user" as "owner" | "user",
+      role: "user" as Role,
     },
     onSubmit: async ({ value }) => {
       setServerError(null);
@@ -71,7 +109,6 @@ export default function RegisterForm() {
     },
   });
 
-  // Toggle handlers
   const togglePasswordVisibility = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -84,15 +121,17 @@ export default function RegisterForm() {
     setShowConfirmPassword((prev) => !prev);
   };
 
+  const content = roleContent[selectedRole];
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
       <div className="absolute inset-0 bg-flood opacity-70" />
       <div className="auth-glow animate-float-slow absolute left-[-8%] top-[-5%] h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
       <div className="auth-glow animate-float-slow absolute bottom-[-10%] right-[-5%] h-80 w-80 rounded-full bg-accent/15 blur-3xl [animation-delay:1800ms]" />
 
-      <div className="relative mx-auto flex min-h-screen max-w-6xl items-center px-2 py-8 sm:px-4 lg:px-6">
+      <div className="relative mx-auto flex min-h-screen max-w-6xl items-center px-2 py-6 sm:px-4 lg:px-6">
         <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-          {/* Left decorative column – unchanged */}
+          {/* Left decorative column — role aware */}
           <div className="animate-fade-up hidden lg:block" style={{ animationDelay: "100ms" }}>
             <Link
               href="/"
@@ -102,24 +141,23 @@ export default function RegisterForm() {
               Back to home
             </Link>
 
-            <div className="mt-10 max-w-md">
+            <div className="mt-8 max-w-md">
               <span className="inline-flex rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-primary">
-                Join OneArena
+                {content.badge}
               </span>
-              <h1 className="mt-5 font-display text-4xl text-foreground sm:text-5xl">
-                Start booking the best turf in your city.
+              <h1 className="mt-4 font-display text-3xl text-foreground sm:text-4xl">
+                {content.headline}
               </h1>
-              <p className="mt-5 text-lg text-muted-foreground">
-                Create your account and unlock faster bookings, trusted venues, and match-ready scheduling.
+              <p className="mt-4 text-base text-muted-foreground">
+                {content.subheading}
               </p>
 
-              <div className="mt-8 space-y-4">
-                {[
-                  "Book premium football and cricket turfs in minutes",
-                  "Get access to verified venue ratings and pricing",
-                  "Manage upcoming matches from one secure profile",
-                ].map((item) => (
-                  <div key={item} className="flex items-center gap-3 rounded-xl border border-border/70 bg-card/60 p-3">
+              <div className="mt-6 space-y-3">
+                {content.bullets.map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-center gap-3 rounded-xl border border-border/70 bg-card/60 p-3"
+                  >
                     <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 text-primary">
                       <CheckCircle2 className="h-4 w-4" />
                     </span>
@@ -132,57 +170,75 @@ export default function RegisterForm() {
 
           {/* Signup Card */}
           <div className="animate-fade-up mx-auto w-full max-w-md" style={{ animationDelay: "200ms" }}>
-            <Card className="border-border/70 bg-card/80 shadow-elevated backdrop-blur-xl">
-              <CardHeader className="space-y-2 pb-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-3xl font-bold text-foreground">Create account</CardTitle>
-                  <Link href="/login" className="text-sm font-medium text-primary hover:text-primary/80">
-                    Log in
-                  </Link>
+            <Card className="relative border-border/70 bg-card/80 shadow-elevated backdrop-blur-xl">
+              <CardHeader className="space-y-1.5 pb-3 pt-6">
+                {/* Title on the left; Log in | Home on the right (mobile) */}
+                <div className="flex items-center justify-between gap-3">
+                  <CardTitle className="text-2xl font-bold text-foreground">
+                    {content.cardTitle}
+                  </CardTitle>
+
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href="/login"
+                      className="text-sm font-medium text-primary hover:text-primary/80"
+                    >
+                      Log in
+                    </Link>
+                    <span className="text-muted-foreground/40 lg:hidden" aria-hidden="true">
+                      |
+                    </span>
+                    <Link
+                      href="/"
+                      className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground lg:hidden"
+                    >
+                      <ArrowLeft className="h-3 w-3" />
+                      Home
+                    </Link>
+                  </div>
                 </div>
-                <CardDescription className="text-base text-muted-foreground">
-                  Sign up and start booking your turf in minutes.
+
+                <CardDescription className="text-sm text-muted-foreground">
+                  {content.cardSubtitle}
                 </CardDescription>
               </CardHeader>
 
-              <CardContent className="space-y-5">
+              <CardContent className="space-y-4">
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     form.handleSubmit();
                   }}
-                  className="space-y-5"
+                  className="space-y-4"
                 >
-                  {/* Role Selection */}
+                  {/* Role Selection — compact */}
                   <form.Field name="role">
                     {(field) => (
-                      <div className="grid gap-3 sm:grid-cols-2">
+                      <div className="grid grid-cols-2 gap-2">
                         {[
                           {
-                            value: "owner",
-                            label: "Sign up as owner",
-                            description: "List and manage your turfs",
+                            value: "owner" as Role,
+                            label: "Owner",
                             icon: ShieldCheck,
                           },
                           {
-                            value: "user",
-                            label: "Sign up as user",
-                            description: "Book venues and play matches",
+                            value: "user" as Role,
+                            label: "User",
                             icon: UserRound,
                           },
-                        ].map(({ value, label, description, icon: Icon }) => {
+                        ].map(({ value, label, icon: Icon }) => {
                           const isSelected = selectedRole === value;
                           return (
                             <button
                               key={value}
                               type="button"
                               onClick={() => {
-                                setSelectedRole(value as "owner" | "user");
-                                field.handleChange(value as "owner" | "user");
+                                setSelectedRole(value);
+                                field.handleChange(value);
                               }}
                               className={[
-                                "rounded-xl border p-3 text-left transition-all",
+                                "flex items-center gap-2 rounded-lg border p-2 text-left transition-all",
                                 isSelected
                                   ? "border-primary bg-primary/10 shadow-glow"
                                   : "border-border bg-background/40 hover:border-primary/60 hover:bg-primary/5",
@@ -190,14 +246,19 @@ export default function RegisterForm() {
                             >
                               <div
                                 className={[
-                                  "mb-2 flex h-9 w-9 items-center justify-center rounded-lg",
-                                  isSelected ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary",
+                                  "flex h-7 w-7 shrink-0 items-center justify-center rounded-md",
+                                  isSelected
+                                    ? "bg-primary text-primary-foreground"
+                                    : "bg-primary/10 text-primary",
                                 ].join(" ")}
                               >
-                                <Icon className="h-4 w-4" />
+                                <Icon className="h-3.5 w-3.5" />
                               </div>
-                              <div className="text-sm font-semibold text-foreground">{label}</div>
-                              <div className="mt-1 text-xs text-muted-foreground">{description}</div>
+                              <div className="min-w-0">
+                                <div className="text-xs font-semibold text-foreground">
+                                  Sign up as {label}
+                                </div>
+                              </div>
                             </button>
                           );
                         })}
@@ -205,28 +266,26 @@ export default function RegisterForm() {
                     )}
                   </form.Field>
 
-                  {/* Name Field – now using registerBaseSchema.shape */}
+                  {/* Name Field */}
                   <form.Field
                     name="name"
                     validators={{ onChange: registerBaseSchema.shape.name }}
                   >
                     {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>Full name</Label>
-                        <div className="relative">
-                          <Input
-                            id={field.name}
-                            type="text"
-                            placeholder="Enter your full name"
-                            className="h-11"
-                            value={field.state.value}
-                            onChange={(e) => field.handleChange(e.target.value)}
-                            onBlur={field.handleBlur}
-                            aria-invalid={!!field.state.meta.errors.length}
-                          />
-                        </div>
+                      <div className="space-y-1.5">
+                        <Label htmlFor={field.name} className="text-sm">Full name</Label>
+                        <Input
+                          id={field.name}
+                          type="text"
+                          placeholder="Enter your full name"
+                          className="h-10"
+                          value={field.state.value}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                          onBlur={field.handleBlur}
+                          aria-invalid={!!field.state.meta.errors.length}
+                        />
                         {field.state.meta.errors.length > 0 && (
-                          <p className="text-sm text-destructive">
+                          <p className="text-xs text-destructive">
                             {formatFieldErrors(field.state.meta.errors)}
                           </p>
                         )}
@@ -240,15 +299,15 @@ export default function RegisterForm() {
                     validators={{ onChange: registerBaseSchema.shape.email }}
                   >
                     {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>Email address</Label>
+                      <div className="space-y-1.5">
+                        <Label htmlFor={field.name} className="text-sm">Email address</Label>
                         <div className="relative">
                           <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                           <Input
                             id={field.name}
                             type="email"
                             placeholder="you@example.com"
-                            className="h-11 pl-10"
+                            className="h-10 pl-10"
                             value={field.state.value}
                             onChange={(e) => field.handleChange(e.target.value)}
                             onBlur={field.handleBlur}
@@ -256,7 +315,7 @@ export default function RegisterForm() {
                           />
                         </div>
                         {field.state.meta.errors.length > 0 && (
-                          <p className="text-sm text-destructive">
+                          <p className="text-xs text-destructive">
                             {formatFieldErrors(field.state.meta.errors)}
                           </p>
                         )}
@@ -270,15 +329,15 @@ export default function RegisterForm() {
                     validators={{ onChange: registerBaseSchema.shape.password }}
                   >
                     {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>Password</Label>
+                      <div className="space-y-1.5">
+                        <Label htmlFor={field.name} className="text-sm">Password</Label>
                         <div className="relative">
                           <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                           <Input
                             id={field.name}
                             type={showPassword ? "text" : "password"}
                             placeholder="Create a password"
-                            className="h-11 pl-10 pr-10"
+                            className="h-10 pl-10 pr-12"
                             value={field.state.value}
                             onChange={(e) => field.handleChange(e.target.value)}
                             onBlur={field.handleBlur}
@@ -287,14 +346,14 @@ export default function RegisterForm() {
                           <button
                             type="button"
                             onClick={togglePasswordVisibility}
-                            className="absolute right-3 top-1/2 z-10 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+                            className="absolute right-1 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
                             aria-label={showPassword ? "Hide password" : "Show password"}
                           >
                             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                           </button>
                         </div>
                         {field.state.meta.errors.length > 0 && (
-                          <p className="text-sm text-destructive">
+                          <p className="text-xs text-destructive">
                             {formatFieldErrors(field.state.meta.errors)}
                           </p>
                         )}
@@ -308,15 +367,15 @@ export default function RegisterForm() {
                     validators={{ onChange: registerBaseSchema.shape.confirmPassword }}
                   >
                     {(field) => (
-                      <div className="space-y-2">
-                        <Label htmlFor={field.name}>Confirm password</Label>
+                      <div className="space-y-1.5">
+                        <Label htmlFor={field.name} className="text-sm">Confirm password</Label>
                         <div className="relative">
                           <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                           <Input
                             id={field.name}
                             type={showConfirmPassword ? "text" : "password"}
                             placeholder="Repeat your password"
-                            className="h-11 pl-10 pr-10"
+                            className="h-10 pl-10 pr-12"
                             value={field.state.value}
                             onChange={(e) => field.handleChange(e.target.value)}
                             onBlur={field.handleBlur}
@@ -325,14 +384,14 @@ export default function RegisterForm() {
                           <button
                             type="button"
                             onClick={toggleConfirmPasswordVisibility}
-                            className="absolute right-3 top-1/2 z-10 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+                            className="absolute right-1 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
                             aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
                           >
                             {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                           </button>
                         </div>
                         {field.state.meta.errors.length > 0 && (
-                          <p className="text-sm text-destructive">
+                          <p className="text-xs text-destructive">
                             {formatFieldErrors(field.state.meta.errors)}
                           </p>
                         )}
@@ -340,14 +399,12 @@ export default function RegisterForm() {
                     )}
                   </form.Field>
 
-                  {/* Server error */}
                   {serverError && (
                     <Alert variant="destructive">
-                      <AlertDescription>{serverError}</AlertDescription>
+                      <AlertDescription className="text-sm">{serverError}</AlertDescription>
                     </Alert>
                   )}
 
-                  {/* Submit Button */}
                   <form.Subscribe selector={(s) => [s.canSubmit, s.isSubmitting] as const}>
                     {([canSubmit, isSubmitting]) => (
                       <Button
@@ -383,7 +440,7 @@ export default function RegisterForm() {
                     window.location.href = `${API_BASE_URL}${API_ENDPOINTS.auth.googleLogin}`;
                   }}
                 >
-                  <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                  <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
                     <path
                       fill="currentColor"
                       d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"

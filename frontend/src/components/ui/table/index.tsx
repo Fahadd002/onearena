@@ -61,7 +61,7 @@ const TableRow: React.FC<TableRowProps> = ({ children, className }) => {
 
 // TableHead Component
 const TableHead: React.FC<TableHeadProps> = ({ children, className }) => {
-  return <th className={`px-4 py-3 text-left text-xs font-semibold ${className}`}>{children}</th>;
+  return <th className={`px-1 py-1 text-left text-xs font-semibold ${className}`}>{children}</th>;
 };
 
 // TableCell Component
@@ -74,7 +74,7 @@ const TableCell: React.FC<TableCellProps> = ({
 }) => {
   const CellTag = isHeader ? "th" : "td";
   return (
-    <CellTag className={cn("px-4 py-3", className)} colSpan={colSpan} {...rest}>
+    <CellTag className={cn("px-1 py-1", className)} colSpan={colSpan} {...rest}>
       {children}
     </CellTag>
   );

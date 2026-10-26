@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApiResponse } from '@/types/api.type';
 import axios, { AxiosError, AxiosInstance } from 'axios';
-import { API_BASE_URL, API_ENDPOINTS } from '../api/config';
+import { API_BASE_URL, API_ENDPOINTS, SERVER_API_BASE_URL } from '../api/config';
 
 const isBrowser = typeof window !== "undefined";
 
@@ -10,6 +10,25 @@ let failedQueue: Array<{
     resolve: (value?: any) => void;
     reject: (reason?: any) => void;
 }> = [];
+
+const AUTH_ROUTES = [
+    '/login',
+    '/signup',
+    '/forgot-password',
+    '/reset-password',
+    '/verify-email',
+];
+
+const isAuthRoute = (): boolean => {
+    if (typeof window === 'undefined') return false;
+    const { pathname } = window.location;
+    return AUTH_ROUTES.includes(pathname) || pathname.startsWith('/auth');
+};
+
+const redirectToLogin = (): void => {
+    if (typeof window === 'undefined' || isAuthRoute()) return;
+    window.location.href = '/login';
+};
 
 const processQueue = (error: any, token: string | null = null) => {
     failedQueue.forEach(prom => {
@@ -67,6 +86,12 @@ const createAxiosInstance = async (): Promise<AxiosInstance> => {
 
                 if (error.response?.status === 401 && !originalRequest._retry) {
 
+                    // On an auth route there is no session to refresh; retrying would
+                    // just spin. Reject and let the caller surface the auth error.
+                    if (isAuthRoute()) {
+                        return Promise.reject(error);
+                    }
+
                     if (isRefreshing) {
                         return new Promise((resolve, reject) => {
                             failedQueue.push({ resolve, reject });
@@ -86,12 +111,12 @@ const createAxiosInstance = async (): Promise<AxiosInstance> => {
                         } else {
                             processQueue(new Error("Token refresh failed"), null);
                             // Redirect to login
-                            window.location.href = '/login';
+                            redirectToLogin();
                             return Promise.reject(error);
                         }
                     } catch (err) {
                         processQueue(err, null);
-                        window.location.href = '/login';
+                        redirectToLogin();
                         return Promise.reject(error);
                     }
                 }
@@ -107,7 +132,7 @@ const createAxiosInstance = async (): Promise<AxiosInstance> => {
     const cookieHeader = await getServerCookieHeader();
 
     const instance = axios.create({
-        baseURL : API_BASE_URL,
+        baseURL: SERVER_API_BASE_URL,
         timeout : 30000,
         headers:{
             'Cookie' : cookieHeader

@@ -9,7 +9,7 @@ export const ThemeToggleButton: React.FC<{ className?: string }> = ({ className 
       onClick={toggleTheme}
       type="button"
       aria-label="Toggle color theme"
-      className={`relative flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/40 text-slate-700 shadow-lg backdrop-blur-xl transition-all hover:bg-white/60 dark:border-white/10 dark:bg-slate-800/40 dark:text-slate-200 dark:hover:bg-slate-700/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${className ?? ""}`}
+      className={`relative flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-theme-md transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${className ?? ""}`}
     >
       <svg
         className="hidden dark:block"

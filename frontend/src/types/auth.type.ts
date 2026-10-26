@@ -1,15 +1,16 @@
 export interface IAuthUser {
     id: string;
     name: string;
-    email: string;
+    email?: string | null;
     role: "SUPER_ADMIN"|"ADMIN" | "MANAGER" | "USER";
     image?: string | null;
-    profilePhoto?: string | null;
+    phoneNumber?: string | null;
     isDeleted: boolean;
     emailVerified: boolean;
     needPasswordChange: boolean;
     status?: string;
     profileVerified?: boolean;
+    createdAt?: string;
 }
 
 export interface ILoginResponse {

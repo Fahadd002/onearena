@@ -1,7 +1,13 @@
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getOwnerProfile } from "./_action";
 import { ApiResponse } from "@/types/api.type";
 import { OwnerProfile } from "./_types";
+
+export const metadata: Metadata = {
+  title: "Owner Profile",
+  description: "Manage your owner profile and venue settings",
+};
 
 export default async function OwnerProfilePage() {
   let profile: OwnerProfile | null = null;

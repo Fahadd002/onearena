@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getOwnerProfile } from "../_action";
 import { ApiResponse } from "@/types/api.type";
 import { OwnerProfile } from "../_types";
-import { AlertCircle, CheckCircle, XCircle, Loader2, FileText } from "lucide-react";
+import { AlertCircle, CheckCircle, XCircle, FileText } from "lucide-react";
 
 interface TickerMessage {
   type: "pending" | "rejected" | "approved" | "update_required" | "created" | "submitted";
@@ -101,23 +101,40 @@ export function StatusTicker() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex items-center gap-4 px-4 py-2 min-w-max animate-ticker">
-        {messages.map((msg, idx) => (
-          <span key={idx} className={`flex items-center gap-2 ${msg.className} whitespace-nowrap`}>
-            {msg.icon}
-            <span>{msg.text}</span>
-          </span>
-        ))}
+      <div className="flex items-center gap-6 px-4 py-2 overflow-hidden">
+        <div className="flex items-center gap-8 shrink-0 animate-ticker">
+          {messages.map((msg, idx) => (
+            <span
+              key={`a-${idx}`}
+              className={`flex items-center gap-2 ${msg.className} whitespace-nowrap text-xs sm:text-sm`}
+            >
+              {msg.icon}
+              <span>{msg.text}</span>
+            </span>
+          ))}
+          {/* duplicate for seamless loop */}
+          {messages.map((msg, idx) => (
+            <span
+              key={`b-${idx}`}
+              className={`flex items-center gap-2 ${msg.className} whitespace-nowrap text-xs sm:text-sm`}
+              aria-hidden="true"
+            >
+              {msg.icon}
+              <span>{msg.text}</span>
+            </span>
+          ))}
+        </div>
       </div>
       <style>{`
-        @keyframes ticker {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-ticker {
-          animation: ticker 30s linear infinite;
-        }
-      `}</style>
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-ticker {
+      animation: ticker 30s linear infinite;
+      width: max-content;
+    }
+  `}</style>
     </div>
   );
 }

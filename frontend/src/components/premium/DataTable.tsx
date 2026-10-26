@@ -3,6 +3,7 @@
 import type { ComponentType } from "react";
 import { ChevronLeft, ChevronRight, ArrowUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export type ColumnDef<T> = {
     key: string;
@@ -11,6 +12,8 @@ export type ColumnDef<T> = {
     render?: (row: T) => React.ReactNode;
     className?: string;
 };
+
+const PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
 
 interface DataTableProps<T> {
     columns: ColumnDef<T>[];
@@ -23,9 +26,12 @@ interface DataTableProps<T> {
     pageSize?: number;
     totalItems?: number;
     onPageChange?: (page: number) => void;
+    onPageSizeChange?: (size: number) => void;
     emptyTitle?: string;
     emptyDescription?: string;
     className?: string;
+    /** Min table width in px. The wrapper scrolls horizontally instead of crushing columns. */
+    minWidth?: number;
 }
 
 export function DataTable<T extends Record<string, unknown>>({
@@ -39,9 +45,11 @@ export function DataTable<T extends Record<string, unknown>>({
     pageSize = 10,
     totalItems,
     onPageChange,
+    onPageSizeChange,
     emptyTitle = "No results",
     emptyDescription = "Try adjusting your search.",
     className,
+    minWidth,
 }: DataTableProps<T>) {
     const getCellValue = (row: T, key: keyof T | string): unknown => {
         const keys = key.toString().split(".");
@@ -56,17 +64,17 @@ export function DataTable<T extends Record<string, unknown>>({
     const startItem = (currentPage - 1) * pageSize + 1;
     const endItem = Math.min(currentPage * pageSize, totalItems ?? data.length);
 
-    return (
+return (
         <div className={cn("space-y-4", className)}>
-            <div className="overflow-x-auto rounded-xl border border-border bg-card">
-                <table className="w-full text-sm">
+            <div className="overflow-x-auto">
+                <table className="w-full text-sm" style={minWidth ? { minWidth } : undefined}>
                     <thead>
-                        <tr className="border-b border-border bg-secondary/30">
+                        <tr className="border-b border-border/70">
                             {columns.map((column) => (
                                 <th
                                     key={column.key}
                                     className={cn(
-                                        "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground",
+                                        "px-1 py-1 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground",
                                         column.className
                                     )}
                                 >
@@ -91,12 +99,12 @@ export function DataTable<T extends Record<string, unknown>>({
                         {data.map((row, i) => (
                             <tr
                                 key={i}
-                                className="border-b border-border/50 last:border-0 transition-colors hover:bg-secondary/30"
+                                className="border-b border-border/40 last:border-0 transition-colors hover:bg-secondary/20"
                             >
                                 {columns.map((column) => (
                                     <td
                                         key={column.key}
-                                        className="px-4 py-3 text-foreground"
+                                        className="px-1 py-1 text-sm text-foreground"
                                     >
                                         {column.render
                                             ? column.render(row)
@@ -109,7 +117,7 @@ export function DataTable<T extends Record<string, unknown>>({
                             <tr>
                                 <td
                                     colSpan={columns.length}
-                                    className="py-12 text-center"
+                                    className="py-6 text-center"
                                 >
                                     <div className="flex flex-col items-center justify-center">
                                         <p className="text-title-md font-semibold">
@@ -131,6 +139,20 @@ export function DataTable<T extends Record<string, unknown>>({
                         Showing {startItem}–{endItem} of {totalItems}
                     </p>
                     <div className="flex items-center gap-2">
+                        {onPageSizeChange && (
+                            <Select value={String(pageSize)} onValueChange={(v) => onPageSizeChange(Number(v))}>
+                                <SelectTrigger className="h-8 w-[70px]">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent side="top">
+                                    {PAGE_SIZE_OPTIONS.map((size) => (
+                                        <SelectItem key={size} value={String(size)}>
+                                            {size}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        )}
                         <button
                             onClick={() => onPageChange?.(currentPage - 1)}
                             disabled={currentPage <= 1}

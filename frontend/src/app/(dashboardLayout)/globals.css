@@ -78,6 +78,27 @@
   --color-gray-950: #0c111d;
   --color-gray-dark: #1a2231;
 
+  /* Semantic colors for shadcn/ui compatibility */
+  --color-background: #ffffff;
+  --color-foreground: #101828;
+  --color-input: #e4e7ec;
+  --color-accent: #f2f4f7;
+  --color-accent-foreground: #101828;
+  --color-border: #e4e7ec;
+  --color-ring: #465fff;
+  --color-muted: #f2f4f7;
+  --color-muted-foreground: #667085;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #101828;
+  --color-card: #ffffff;
+  --color-card-foreground: #101828;
+  --color-primary: #465fff;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f2f4f7;
+  --color-secondary-foreground: #101828;
+  --color-destructive: #f04438;
+  --color-destructive-foreground: #ffffff;
+
   --color-orange-25: #fffaf5;
   --color-orange-50: #fff6ed;
   --color-orange-100: #ffead5;
@@ -167,6 +188,29 @@
   --z-index-999999: 999999;
 }
 
+/* Dark mode semantic colors */
+.dark {
+  --color-background: #101828;
+  --color-foreground: #f9fafb;
+  --color-input: #344054;
+  --color-accent: #1d2939;
+  --color-accent-foreground: #f9fafb;
+  --color-border: #344054;
+  --color-ring: #7592ff;
+  --color-muted: #1d2939;
+  --color-muted-foreground: #98a2b3;
+  --color-popover: #101828;
+  --color-popover-foreground: #f9fafb;
+  --color-card: #101828;
+  --color-card-foreground: #f9fafb;
+  --color-primary: #7592ff;
+  --color-primary-foreground: #101828;
+  --color-secondary: #1d2939;
+  --color-secondary-foreground: #f9fafb;
+  --color-destructive: #f97066;
+  --color-destructive-foreground: #101828;
+}
+
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
@@ -181,7 +225,7 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: var(--color-border, currentColor);
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
@@ -189,6 +233,9 @@
   }
   body {
     @apply relative font-normal font-outfit z-1 bg-gray-50;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 }
 

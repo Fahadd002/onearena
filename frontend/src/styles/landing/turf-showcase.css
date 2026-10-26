@@ -1,0 +1,49 @@
+/* OneArena — landing "Popular" turf showcase
+ *
+ * Dark theme: untouched. TurfCard is a shared component, so these light-mode
+ * corrections are scoped to this page through hooks instead of changing the
+ * card everywhere.
+ *
+ * Light theme problem being fixed: the card is built for dark glass
+ * (bg-card/70 + backdrop-blur + a dark-to-light image overlay). On a white
+ * page that reads as a washed, foggy rectangle, so the card goes fully opaque
+ * with a soft border and shadow, and the image overlay is dropped.
+ */
+
+:is(html.light, html.light-theme, .light, .light-theme) .turf-showcase.pitch-lines {
+  background-image: none;
+}
+
+/* ---- Card: solid, defined, premium ---- */
+:is(html.light, html.light-theme, .light, .light-theme) .turf-showcase-card {
+  background-color: var(--card);
+  backdrop-filter: none;
+  border-color: var(--border);
+  box-shadow: var(--shadow-theme-md);
+}
+
+:is(html.light, html.light-theme, .light, .light-theme) .turf-showcase-card:hover {
+  background-color: var(--card);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-theme-lg);
+}
+
+/* ---- Image: no white/black wash over the photo ---- */
+:is(html.light, html.light-theme, .light, .light-theme)
+  .turf-showcase-card
+  .turf-card-image-overlay {
+  background-image: none;
+}
+
+/* ---- Browse All button: opaque instead of invisible on white ---- */
+:is(html.light, html.light-theme, .light, .light-theme) .turf-showcase-browse {
+  background-color: var(--card);
+  backdrop-filter: none;
+  border-color: color-mix(in oklab, var(--primary) 30%, var(--border));
+  box-shadow: var(--shadow-xs);
+}
+
+:is(html.light, html.light-theme, .light, .light-theme) .turf-showcase-browse:hover {
+  background-color: color-mix(in oklab, var(--primary) 10%, var(--card));
+  border-color: var(--primary);
+}

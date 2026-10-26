@@ -1,4 +1,10 @@
 import LoginForm from "@/components/modules/Auth/LoginForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Login",
+  description: "Login to your OneArena account",
+};
 
 interface LoginParams {
   searchParams: Promise<{ redirect?: string }>;

@@ -25,7 +25,7 @@ export function TablePagination({
   const endItem = Math.min(page * pageSize, total);
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t bg-secondary/10">
+    <div className="flex items-center justify-between px-1 py-1 border-t bg-secondary/10">
       <p className="text-xs text-muted-foreground">
         Showing {total > 0 ? startItem : 0}–{endItem} of {total}
       </p>
@@ -38,7 +38,7 @@ export function TablePagination({
             <SelectContent side="top">
               {PAGE_SIZE_OPTIONS.map((size) => (
                 <SelectItem key={size} value={String(size)}>
-                  {size} / page
+                  {size}
                 </SelectItem>
               ))}
             </SelectContent>

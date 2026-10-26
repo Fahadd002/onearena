@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* File upload utilities - runs on client side to avoid Next.js body size limits */
+import { API_ENDPOINTS } from "@/lib/api/config";
 import { httpClient } from "@/lib/axios/httpClient";
 import { ApiResponse, ApiErrorResponse } from "@/types/api.type";
 
@@ -24,10 +25,7 @@ export async function activateSubscriptionClient(
   billingPeriod: "MONTHLY" | "QUARTERLY" | "HALF_YEARLY" | "YEARLY"
 ): Promise<ApiResponse<any> | ApiErrorResponse> {
   try {
-    const response = await httpClient.post("/subscriptions/activate", {
-      planId,
-      billingPeriod
-    });
+    const response = await httpClient.post("/subscriptions/activate", { planId, billingPeriod});
     return response;
   } catch (error: any) {
     const axiosError = error as any;
@@ -42,6 +40,7 @@ export interface InitiatePaymentRequest {
   billingPeriod: "MONTHLY" | "QUARTERLY" | "HALF_YEARLY" | "YEARLY";
   paymentMethod: "BKASH" | "ROKET" | "NAGAD" | "CASH" | "OTHERS";
   providerTransactionId?: string;
+  payerMobileNumber?: string;
 }
 
 export interface InitiatePaymentResponse {
@@ -65,11 +64,27 @@ export interface InitiatePaymentResponse {
   };
 }
 
+export async function activateFreeTrialClient(): Promise<
+  ApiResponse<any> | ApiErrorResponse
+> {
+  try {
+    const response = await httpClient.post("active-free", {});
+    return response;
+  } catch (error: any) {
+    const axiosError = error as any;
+    const message =
+      axiosError?.response?.data?.message ||
+      axiosError?.message ||"Failed to activate free trial";
+    return { success: false, message };
+  }
+}
+
+
 export async function initiateSubscriptionPaymentClient(
   data: InitiatePaymentRequest
 ): Promise<ApiResponse<InitiatePaymentResponse> | ApiErrorResponse> {
   try {
-    const response = await httpClient.post("/subscription/payment/initiate", data);
+    const response = await httpClient.post(API_ENDPOINTS.subscription.paymentInitiate, data);
     return response;
   } catch (error: any) {
     const axiosError = error as any;
@@ -77,12 +92,6 @@ export async function initiateSubscriptionPaymentClient(
       axiosError?.response?.data?.message || axiosError?.message || "Failed to initiate payment";
     return { success: false, message };
   }
-}
-
-export interface VerifyPaymentRequest {
-  invoiceId: string;
-  providerTransactionId: string;
-  paymentMethod: "BKASH" | "ROKET" | "NAGAD" | "CASH" | "OTHERS";
 }
 
 export interface VerifyPaymentResponse {
@@ -103,31 +112,18 @@ export interface VerifyPaymentResponse {
   };
 }
 
-export async function verifySubscriptionPaymentClient(
-  data: VerifyPaymentRequest
-): Promise<ApiResponse<VerifyPaymentResponse> | ApiErrorResponse> {
-  try {
-    const response = await httpClient.post("/subscription/payment/verify", data);
-    return response;
-  } catch (error: any) {
-    const axiosError = error as any;
-    const message =
-      axiosError?.response?.data?.message || axiosError?.message || "Failed to verify payment";
-    return { success: false, message };
-  }
-}
-
 export async function getCurrentSubscriptionClient(): Promise<ApiResponse<unknown> | ApiErrorResponse> {
   try {
-    return await httpClient.get("/subscription");
+    return await httpClient.get(API_ENDPOINTS.subscription.mySubscription);
   } catch (error: unknown) {
     return { success: false, message: error instanceof Error ? error.message : "Failed to fetch subscription" };
   }
 }
 
+
 export async function getSubscriptionPlansClient(): Promise<ApiResponse<any> | ApiErrorResponse> {
   try {
-    const response = await httpClient.get("/subscription-plans");
+    const response = await httpClient.get(API_ENDPOINTS.subscription.subsCriptionPlans);
     return response;
   } catch (error: any) {
     const axiosError = error as any;

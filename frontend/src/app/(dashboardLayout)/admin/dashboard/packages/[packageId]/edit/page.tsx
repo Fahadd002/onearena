@@ -69,7 +69,7 @@ export default function AdminEditPackagePage() {
 
   useEffect(() => {
     if (!pkg) return;
-    console.log('Hydrating package form with pkg:', pkg);
+    
     setSelectedTurfId(pkg.turfId);
     setName(pkg.name);
     setDescription(pkg.description || "");
@@ -89,8 +89,6 @@ export default function AdminEditPackagePage() {
     }
     return turfs;
   }, [pkg?.turfId, pkg?.turf?.name, currentTurfName, turfs]);
-
-  console.log('Render state:', { selectedTurfId, currentTurfName, selectedTurfName, turfOptions: turfOptions.map(t => ({ id: t.id, name: t.name })) });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,7 +122,7 @@ export default function AdminEditPackagePage() {
   if (packageId && !pkg) return <section className="dashboard-section"><p className="dashboard-empty">Package not found.</p></section>;
 
   return (
-    <section className="dashboard-section max-w-3xl space-y-4">
+    <section className="dashboard-section space-y-4">
       <div className="flex items-center gap-3">
         <Button variant="ghost" size="icon" asChild className="-ml-3 h-8 w-8">
           <Link href="/admin/dashboard/packages" aria-label="Back">

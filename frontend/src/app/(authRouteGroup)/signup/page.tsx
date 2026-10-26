@@ -1,11 +1,12 @@
 import RegisterForm from "@/components/modules/Auth/RegisterForm";
+import { Metadata } from "next";
 
-  interface LoginParams {
-    searchParams: Promise<{ redirect?: string }>;
-  }
+export const metadata: Metadata = {
+  title: "Sign Up",
+  description: "Create your OneArena account",
+};
 
 const SignupPage = () => {
-
   return (
     <RegisterForm/>
   )

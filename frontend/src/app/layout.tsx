@@ -1,10 +1,20 @@
 import "@/styles.css";
-import { Manrope } from "next/font/google";
+import { Inter } from "next/font/google";
 import QueryProviders from "@/providers/QueryProvider";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Toaster } from "@/components/ui/sonner";
+import { Metadata } from "next";
 
-const manrope = Manrope({ weight: ["300", "400", "500", "600", "700", "800"], subsets: ["latin"], display: "swap" });
+const inter = Inter({ weight: ["300", "400", "500", "600", "700", "800", "900"], subsets: ["latin"], display: "swap", variable: "--font-inter" });
+
+export const metadata: Metadata = {
+  title: {
+    default: "OneArena",
+    template: "%s | OneArena",
+  },
+  description: "Football Turf Booking Platform",
+};
+
 
 export default function RootLayout({
   children,
@@ -12,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={manrope.className}>
-      <body>
+    <html lang="en" suppressHydrationWarning className={inter.variable}>
+      <body className={inter.className}>
         <script
           dangerouslySetInnerHTML={{
             __html: `

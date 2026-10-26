@@ -1,4 +1,10 @@
+import { Metadata } from "next";
 import VerifyEmailForm from "../../../components/modules/Auth/VerifyEmailForm";
+
+export const metadata: Metadata = {
+  title: "Verify Email",
+  description: "Verify your email address to continue with OneArena",
+};
 
 interface VerifyEmailParams {
   searchParams: Promise<{ email?: string }>;

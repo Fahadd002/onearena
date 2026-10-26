@@ -63,11 +63,11 @@ export default function DocumentUploadField({
     <div className="border rounded-lg p-6 bg-muted/30 hover:bg-muted/50 transition">
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h3 className="font-semibold flex items-center gap-2">
-            <Icon className="h-5 w-5 text-primary" />
+          <p className="text-sm font-medium flex items-center gap-2">
+            <Icon className="h-4 w-4" />
             {label}
-          </h3>
-          <p className="text-sm text-muted-foreground mt-1">{description}</p>
+          </p>
+          <p className="text-xs text-muted-foreground mt-1">{description}</p>
         </div>
         <div className="flex items-center gap-2">
           {document.uploaded && (
