@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Query,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -27,22 +26,81 @@ import { TurfPricingService } from './turf-pricing.service';
 export class TurfPricingController {
   constructor(private readonly turfService: TurfPricingService) {}
 
+  @Post('owner/slot-time-setups')
+  @AuthRoles(UserRole.ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async createSlotTimeSetup(
+    @CurrentUser() user: IRequestUser,
+    @Body()
+    body: {
+      timeName: string;
+      startMinute: number;
+      endMinute: number;
+    },
+    @Res() res: Response,
+  ) {
+    const data = await this.turfService.createSlotTimeSetup(user, body);
+    sendResponse(res, {
+      statusCode: status.CREATED,
+      success: true,
+      message: 'Slot time setup created successfully',
+      data,
+    });
+  }
+
+  @Patch('owner/slot-time-setups/:id')
+  @AuthRoles(UserRole.ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async updateSlotTimeSetup(
+    @CurrentUser() user: IRequestUser,
+    @Param('id') id: string,
+    @Body()
+    body: {
+      timeName?: string;
+      startMinute?: number;
+      endMinute?: number;
+    },
+    @Res() res: Response,
+  ) {
+    const data = await this.turfService.updateSlotTimeSetup(user, id, body);
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: 'Slot time setup updated successfully',
+      data,
+    });
+  }
+
+  @Delete('owner/slot-time-setups/:id')
+  @AuthRoles(UserRole.ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async deleteSlotTimeSetup(
+    @CurrentUser() user: IRequestUser,
+    @Param('id') id: string,
+    @Res() res: Response,
+  ) {
+    const data = await this.turfService.deleteSlotTimeSetup(user, id);
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: 'Slot time setup deleted successfully',
+      data,
+    });
+  }
+
+  // ==========================
+  // Pricing Rule Endpoints
+  // ==========================
+
   @Get('owner/turfs/:turfId/pricing')
   @AuthRoles(UserRole.ADMIN)
   @UseGuards(CheckAuthGuard)
   async prices(
     @CurrentUser() user: IRequestUser,
     @Param('turfId') turfId: string,
-    @Query('date') date: string,
     @Res() res: Response,
   ) {
-    const data =
-      await this.turfService.listPrices(
-        user,
-        turfId,
-        date ? { date: new Date(date) } : undefined,
-      );
-
+    const data = await this.turfService.listPrices(user, turfId);
     sendResponse(res, {
       statusCode: status.OK,
       success: true,
@@ -56,10 +114,9 @@ export class TurfPricingController {
   @UseGuards(CheckAuthGuard)
   async allPrices(
     @CurrentUser() user: IRequestUser,
-    @Query('date') date: string,
     @Res() res: Response,
   ) {
-    const data = await this.turfService.listAllPrices(user, date ? { date: new Date(date) } : undefined);
+    const data = await this.turfService.listAllPrices(user);
     sendResponse(res, {
       statusCode: status.OK,
       success: true,
@@ -76,23 +133,14 @@ export class TurfPricingController {
     @Param('turfId') turfId: string,
     @Body()
     body: {
+      slotTimeSetupId: string;
       dayOfWeek: number;
-      startMinute: number;
-      endMinute: number;
       price: number;
       active?: boolean;
-      startDate: Date;
-      endDate: Date;
     },
     @Res() res: Response,
   ) {
-    const data =
-      await this.turfService.createPrice(
-        user,
-        turfId,
-        body,
-      );
-
+    const data = await this.turfService.createPrice(user, turfId, body);
     sendResponse(res, {
       statusCode: status.CREATED,
       success: true,
@@ -109,22 +157,13 @@ export class TurfPricingController {
     @Param('turfId') turfId: string,
     @Body()
     body: {
-      startMinute: number;
-      endMinute: number;
+      slotTimeSetupId: string;
       price: number;
       active?: boolean;
-      startDate: Date;
-      endDate: Date;
     },
     @Res() res: Response,
   ) {
-    const data =
-      await this.turfService.createPriceBulk(
-        user,
-        turfId,
-        body,
-      );
-
+    const data = await this.turfService.createPriceBulk(user, turfId, body);
     sendResponse(res, {
       statusCode: status.CREATED,
       success: true,
@@ -141,23 +180,14 @@ export class TurfPricingController {
     @Param('id') id: string,
     @Body()
     body: {
+      slotTimeSetupId?: string;
       dayOfWeek?: number;
-      startMinute?: number;
-      endMinute?: number;
       price?: number;
       active?: boolean;
-      startDate?: Date;
-      endDate?: Date;
     },
     @Res() res: Response,
   ) {
-    const data =
-      await this.turfService.updatePrice(
-        user,
-        id,
-        body,
-      );
-
+    const data = await this.turfService.updatePrice(user, id, body);
     sendResponse(res, {
       statusCode: status.OK,
       success: true,
@@ -174,11 +204,7 @@ export class TurfPricingController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    const data = await this.turfService.deletePrice(
-        user,
-        id,
-      );
-
+    const data = await this.turfService.deletePrice(user, id);
     sendResponse(res, {
       statusCode: status.OK,
       success: true,

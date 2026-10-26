@@ -23,6 +23,11 @@ export * from './enums';
  */
 export type Booking = Prisma.BookingModel
 /**
+ * Model BookingSlot
+ * 
+ */
+export type BookingSlot = Prisma.BookingSlotModel
+/**
  * Model TurfCategory
  * 
  */
@@ -52,6 +57,11 @@ export type Invoice = Prisma.InvoiceModel
  * 
  */
 export type Payment = Prisma.PaymentModel
+/**
+ * Model NumberingCounter
+ * 
+ */
+export type NumberingCounter = Prisma.NumberingCounterModel
 /**
  * Model Refund
  * 
@@ -88,6 +98,36 @@ export type OwnerGalleryItem = Prisma.OwnerGalleryItemModel
  */
 export type OwnerBlog = Prisma.OwnerBlogModel
 /**
+ * Model Announcement
+ * 
+ */
+export type Announcement = Prisma.AnnouncementModel
+/**
+ * Model OwnerSocialLink
+ * 
+ */
+export type OwnerSocialLink = Prisma.OwnerSocialLinkModel
+/**
+ * Model OwnerHeroSection
+ * 
+ */
+export type OwnerHeroSection = Prisma.OwnerHeroSectionModel
+/**
+ * Model OwnerAboutSection
+ * 
+ */
+export type OwnerAboutSection = Prisma.OwnerAboutSectionModel
+/**
+ * Model OwnerContactSection
+ * 
+ */
+export type OwnerContactSection = Prisma.OwnerContactSectionModel
+/**
+ * Model OwnerFaqItem
+ * 
+ */
+export type OwnerFaqItem = Prisma.OwnerFaqItemModel
+/**
  * Model Review
  * 
  */
@@ -97,6 +137,11 @@ export type Review = Prisma.ReviewModel
  * 
  */
 export type ReviewReply = Prisma.ReviewReplyModel
+/**
+ * Model Feature
+ * 
+ */
+export type Feature = Prisma.FeatureModel
 /**
  * Model SubscriptionPlan
  * 
@@ -122,6 +167,16 @@ export type SubscriptionLog = Prisma.SubscriptionLogModel
  * 
  */
 export type Turf = Prisma.TurfModel
+/**
+ * Model SlotTimeSetup
+ * 
+ */
+export type SlotTimeSetup = Prisma.SlotTimeSetupModel
+/**
+ * Model PaymentPhoneNumber
+ * 
+ */
+export type PaymentPhoneNumber = Prisma.PaymentPhoneNumberModel
 /**
  * Model TurfPriceRule
  * 

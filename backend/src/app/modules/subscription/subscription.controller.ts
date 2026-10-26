@@ -12,9 +12,8 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import httpStatus from 'http-status';
-import { FixedPeriod, SubscriptionStatus, UserRole, PaymentMethod } from '../../../generated/prisma/enums';
+import { FixedPeriod, SubscriptionStatus, UserRole, FeatureType } from '../../../generated/prisma/enums';
 import { SubscriptionService } from './subscription.service';
-import { PaymentService } from '../payment/payment.service';
 import { CurrentUser } from '../../../common/decorators/current-user.decorator';
 import { AuthRoles } from '../../../common/decorators/auth-roles.decorator';
 import { CheckAuthGuard } from '../../../common/guards/check-auth.guard';
@@ -24,18 +23,17 @@ import { IRequestUser } from '../../interfaces/requestUser.interface';
 @Controller('/api/v1')
 export class SubscriptionController {
   constructor(
-    private subscriptionService: SubscriptionService,
-    private paymentService: PaymentService
-  ) {}
+    private subscriptionService: SubscriptionService
+  ) { }
 
   // -------------------------------------------------------------
-  // Super Admin Endpoints (Plan & Subscription Management)
+  // Super Admin Endpoints plans-pricing Setup
   // -------------------------------------------------------------
 
-  @Get('subscription-plans/admin')
+  @Get('plans-pricing')
   @AuthRoles(UserRole.SUPER_ADMIN)
   @UseGuards(CheckAuthGuard)
-  async getAdminPlans(
+  async getSetUpPlans(
     @Query('search') search: string,
     @Query('sortBy') sortBy: string,
     @Query('sortOrder') sortOrder: 'asc' | 'desc',
@@ -43,7 +41,7 @@ export class SubscriptionController {
     @Query('limit') limit: string,
     @Res() res: Response,
   ) {
-    const result = await this.subscriptionService.getAdminPlans({
+    const result = await this.subscriptionService.getSetUpPlans({
       search,
       sortBy,
       sortOrder,
@@ -55,6 +53,70 @@ export class SubscriptionController {
       success: true,
       message: 'All subscription plans retrieved successfully',
       data: result,
+    });
+  }
+
+  @Post('plans-pricing')
+  @AuthRoles(UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async createPlan(
+    @Body()
+    body: {
+      name: string;
+      tierLevel: number;
+      maxTurfs: number;
+      isFreeTrialAllowed?: boolean;
+      freeTrialDuration?: number;
+      features: Array<{ name: string; description?: string; type: FeatureType; key?: string }>;
+      prices: { period: FixedPeriod; price: number }[];
+    },
+    @Res() res: Response,
+  ) {
+    const plan = await this.subscriptionService.createPlan(body);
+    sendResponse(res, {
+      statusCode: httpStatus.CREATED,
+      success: true,
+      message: 'Subscription plan created successfully',
+      data: plan,
+    });
+  }
+
+  @Patch('plans-pricing/:planId')
+  @AuthRoles(UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async updatePlan(
+    @Param('planId') planId: string,
+    @Body()
+    body: {
+      name?: string;
+      tierLevel?: number;
+      maxTurfs?: number;
+      isFreeTrialAllowed?: boolean;
+      freeTrialDuration?: number;
+      features?: Array<{ id?: string; name: string; description?: string; type: FeatureType; key?: string }>;
+      active?: boolean;
+    },
+    @Res() res: Response,
+  ) {
+    const plan = await this.subscriptionService.updatePlan(planId, body);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Subscription plan updated successfully',
+      data: plan,
+    });
+  }
+
+  @Delete('plans-pricing/:planId')
+  @AuthRoles(UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async deletePlan(@Param('planId') planId: string, @Res() res: Response) {
+    await this.subscriptionService.deletePlan(planId);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Subscription plan deleted successfully',
+      data: null,
     });
   }
 
@@ -80,95 +142,43 @@ export class SubscriptionController {
     });
   }
 
-  @Post('subscription-plans')
+  @Get('all-subscriptions')
   @AuthRoles(UserRole.SUPER_ADMIN)
   @UseGuards(CheckAuthGuard)
-  async createPlan(
-    @Body()
-    body: {
-      name: string;
-      tierLevel: number;
-      maxTurfs: number;
-      features: string[];
-      prices: { period: FixedPeriod; price: number }[];
-    },
-    @Res() res: Response,
-  ) {
-    const plan = await this.subscriptionService.createPlan(body);
-    sendResponse(res, {
-      statusCode: httpStatus.CREATED,
-      success: true,
-      message: 'Subscription plan created successfully',
-      data: plan,
-    });
-  }
-
-  @Patch('subscription-plans/:planId')
-  @AuthRoles(UserRole.SUPER_ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async updatePlan(
-    @Param('planId') planId: string,
-    @Body()
-    body: {
-      name?: string;
-      tierLevel?: number;
-      maxTurfs?: number;
-      features?: string[];
-      active?: boolean;
-    },
-    @Res() res: Response,
-  ) {
-    const plan = await this.subscriptionService.updatePlan(planId, body);
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Subscription plan updated successfully',
-      data: plan,
-    });
-  }
-
-  @Delete('subscription-plans/:planId')
-  @AuthRoles(UserRole.SUPER_ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async deletePlan(@Param('planId') planId: string, @Res() res: Response) {
-    await this.subscriptionService.deletePlan(planId);
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Subscription plan deleted successfully',
-      data: null,
-    });
-  }
-
-  @Get('subscriptions/admin')
-  @AuthRoles(UserRole.SUPER_ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async getAdminSubscriptions(
+  async getAllOwnerSubscriptions(
     @Query('status') statusFilter: SubscriptionStatus,
     @Query('search') search: string,
+    @Query('sortBy') sortBy: string,
+    @Query('sortOrder') sortOrder: 'asc' | 'desc',
+    @Query('page') page: string,
+    @Query('limit') limit: string,
     @Res() res: Response,
   ) {
-    const subscriptions = await this.subscriptionService.getAdminSubscriptions({
+    const result = await this.subscriptionService.getAllOwnerSubscriptions({
       status: statusFilter,
       search,
+      sortBy,
+      sortOrder,
+      page: Number(page) || 1,
+      limit: Number(limit) || 10,
     });
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Owner subscriptions retrieved successfully',
-      data: subscriptions,
+      data: result,
     });
   }
 
-  @Patch('subscriptions/admin/:subscriptionId')
+  @Patch('subscriptions/super-admin/:subscriptionId')
   @AuthRoles(UserRole.SUPER_ADMIN)
   @UseGuards(CheckAuthGuard)
-  async updateAdminSubscription(
+  async updateSubscriptionBySuperAdmin(
     @Param('subscriptionId') subscriptionId: string,
     @Body() body: { status?: SubscriptionStatus; endDate?: string; planId?: string },
     @Res() res: Response,
   ) {
-    const subscription = await this.subscriptionService.updateAdminSubscription(
+    const subscription = await this.subscriptionService.updateSubscriptionBySuperAdmin(
       subscriptionId,
       body,
     );
@@ -184,7 +194,7 @@ export class SubscriptionController {
   // Owner Endpoints (User Subscription Actions)
   // -------------------------------------------------------------
 
-  @Get('subscription')
+  @Get('my-subscription')
   @AuthRoles(UserRole.ADMIN)
   @UseGuards(CheckAuthGuard)
   async getCurrentSubscription(
@@ -269,52 +279,41 @@ export class SubscriptionController {
     });
   }
 
-  // -------------------------------------------------------------
-  // Owner Payment Endpoints
-  // -------------------------------------------------------------
-
-  @Post('subscription/payment/initiate')
+@Post('active-free')
   @AuthRoles(UserRole.ADMIN)
   @UseGuards(CheckAuthGuard)
-  async initiatePayment(
+  async activateFreeTrialSubscription(
     @CurrentUser() user: IRequestUser,
-    @Body() body: { planId: string; billingPeriod: FixedPeriod; paymentMethod: PaymentMethod; providerTransactionId?: string },
     @Res() res: Response,
   ) {
-    const result = await this.paymentService.initiateSubscriptionPayment(
+    const subscription = await this.subscriptionService.createFreeTrial(
       user,
-      body.planId,
-      body.billingPeriod,
-      body.paymentMethod,
-      body.providerTransactionId
     );
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
-      message: 'Payment initiated successfully',
-      data: result,
+      message: 'Free trial activated successfully',
+      data: subscription,
     });
   }
 
-  @Post('subscription/payment/verify')
+  @Patch('subscriptions/:subscriptionId')
   @AuthRoles(UserRole.ADMIN)
   @UseGuards(CheckAuthGuard)
-  async verifyPayment(
-    @CurrentUser() user: IRequestUser,
-    @Body() body: { invoiceId: string; providerTransactionId: string; paymentMethod: PaymentMethod },
+  async updateSubscription(
+    @Param('subscriptionId') subscriptionId: string,
+    @Body() body: { status?: SubscriptionStatus; endDate?: string; planId?: string },
     @Res() res: Response,
   ) {
-    const result = await this.paymentService.verifySubscriptionPayment(
-      user,
-      body.invoiceId,
-      body.providerTransactionId,
-      body.paymentMethod
+    const subscription = await this.subscriptionService.updateSubscription(
+      subscriptionId,
+      body,
     );
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Payment verified successfully',
-      data: result,
+      message: 'Owner subscription updated successfully',
+      data: subscription,
     });
   }
 }

@@ -4,15 +4,18 @@ import {
   FixedPeriod,
   SubscriptionAction,
   SubscriptionStatus,
+  FeatureType,
+  PaymentStatus,
 } from '../../../generated/prisma/enums';
 import { Prisma } from '../../../generated/prisma/client';
 import AppError from '../../../config/errorHelpers/AppError';
 import prisma from '../../../shared/prisma';
+import { startOfDay } from '../../utils/date';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
 
 @Injectable()
 export class SubscriptionService {
-  constructor() {}
+  constructor() { }
   // Get all active subscription plans ordered by tier level
   async getPlans() {
     return prisma.subscriptionPlan.findMany({
@@ -20,6 +23,9 @@ export class SubscriptionService {
       include: {
         prices: {
           orderBy: { period: 'asc' },
+        },
+        features: {
+          orderBy: { createdAt: 'asc' },
         },
       },
       orderBy: { tierLevel: 'asc' },
@@ -30,7 +36,10 @@ export class SubscriptionService {
   async getPlanById(planId: string) {
     const plan = await prisma.subscriptionPlan.findUnique({
       where: { id: planId },
-      include: { prices: true },
+      include: {
+        prices: true,
+        features: { orderBy: { createdAt: 'asc' } },
+      },
     });
 
     if (!plan) {
@@ -45,7 +54,7 @@ export class SubscriptionService {
     return this.getPlanById(planId);
   }
 
-  async getAdminPlans(options: {
+  async getSetUpPlans(options: {
     search?: string;
     sortBy?: string;
     sortOrder?: 'asc' | 'desc';
@@ -70,7 +79,10 @@ export class SubscriptionService {
     const [data, total] = await prisma.$transaction([
       prisma.subscriptionPlan.findMany({
         where,
-        include: { prices: { orderBy: { period: 'asc' } } },
+        include: {
+          prices: { orderBy: { period: 'asc' } },
+          features: { orderBy: { createdAt: 'asc' } },
+        },
         orderBy,
         skip: (page - 1) * limit,
         take: limit,
@@ -134,7 +146,7 @@ export class SubscriptionService {
       }
     }
 
-    const now = new Date();
+    const now = startOfDay(new Date());
     const trialEnd = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
     // Compute Subscription Duration based on period
@@ -158,9 +170,9 @@ export class SubscriptionService {
             status: SubscriptionStatus.ACTIVE,
             startDate: now,
             endDate,
-            trialStart: existingSub.trialStart ?? now,
-            trialEnd: existingSub.trialEnd ?? trialEnd,
-            isTrialUsed: existingSub.isTrialUsed,
+            freeStart: existingSub.freeStart ?? now,
+            freeEnd: existingSub.freeEnd ?? trialEnd,
+            isFreeUsed: existingSub.isFreeUsed,
           },
           include: { plan: { include: { prices: true } } },
         })
@@ -168,26 +180,39 @@ export class SubscriptionService {
           data: {
             userId: user.userId,
             planId,
-            status: SubscriptionStatus.TRIAL,
+            status: SubscriptionStatus.FREE_TRIAL,
             startDate: now,
             endDate: trialEnd,
-            trialStart: now,
-            trialEnd,
-            isTrialUsed: true,
+            freeStart: now,
+            freeEnd: trialEnd,
+            isFreeUsed: true,
           },
           include: { plan: { include: { prices: true } } },
         });
 
-      // Write Audit Log
-      await tx.subscriptionLog.create({
-        data: {
+      // Write Audit Log (skip if an identical log already exists for this exact period)
+      const duplicateLog = await tx.subscriptionLog.findFirst({
+        where: {
           subscriptionId: subscription.id,
-          action: existingSub ? action : SubscriptionAction.TRIAL_STARTED,
-          status: subscription.status,
+          period: billingPeriod,
           startDate: subscription.startDate,
           endDate: subscription.endDate,
+          action: existingSub ? action : SubscriptionAction.TRIAL_STARTED,
         },
       });
+
+      if (!duplicateLog) {
+        await tx.subscriptionLog.create({
+          data: {
+            subscriptionId: subscription.id,
+            action: existingSub ? action : SubscriptionAction.TRIAL_STARTED,
+            status: subscription.status,
+            period: billingPeriod,
+            startDate: subscription.startDate,
+            endDate: subscription.endDate,
+          },
+        });
+      }
 
       return subscription;
     });
@@ -197,6 +222,7 @@ export class SubscriptionService {
   async checkAndUpdateStatus(userId: string) {
     const subscription = await prisma.subscription.findUnique({
       where: { userId },
+      include: { subscriptionLogs: { orderBy: { createdAt: 'desc' }, take: 1 } },
     });
 
     if (!subscription) return null;
@@ -227,6 +253,7 @@ export class SubscriptionService {
               subscriptionId: updated.id,
               action: SubscriptionAction.EXPIRED,
               status: newStatus,
+              period: subscription.subscriptionLogs[0]?.period ?? FixedPeriod.MONTHLY,
               startDate: updated.startDate,
               endDate: updated.endDate,
             },
@@ -295,6 +322,7 @@ export class SubscriptionService {
           subscriptionId: updatedSub.id,
           action: SubscriptionAction.CANCELLED,
           status: SubscriptionStatus.CANCELLED,
+          period: subscription.subscriptionLogs[0]?.period ?? FixedPeriod.MONTHLY,
           startDate: updatedSub.startDate,
           endDate: updatedSub.endDate,
         },
@@ -308,7 +336,9 @@ export class SubscriptionService {
     name: string;
     tierLevel: number;
     maxTurfs: number;
-    features: string[];
+    isFreeTrialAllowed?: boolean;
+    freeTrialDuration?: number;
+    features: Array<{ name: string; description?: string; type: FeatureType; key?: string }>;
     prices: Array<{ period: FixedPeriod; price: number }>;
   }) {
     const existingLevel = await prisma.subscriptionPlan.findUnique({
@@ -322,20 +352,69 @@ export class SubscriptionService {
       );
     }
 
-    return prisma.subscriptionPlan.create({
-      data: {
-        name: data.name,
-        tierLevel: data.tierLevel,
-        maxTurfs: data.maxTurfs,
-        features: data.features || [],
-        prices: {
-          create: data.prices.map((p) => ({
-            period: p.period,
-            price: p.price.toString(),
-          })),
+    // Validate premium features must have a key
+    const premiumFeatures = data.features.filter(f => f.type === FeatureType.PREMIUM);
+    const generalFeatures = data.features.filter(f => f.type === FeatureType.GENERAL);
+
+    for (const feature of premiumFeatures) {
+      if (!feature.key || feature.key.trim() === '') {
+        throw new AppError(
+          httpStatus.BAD_REQUEST,
+          'Premium features must have a unique key for permission checks.'
+        );
+      }
+    }
+
+    // Check for duplicate keys among premium features
+    const premiumKeys = premiumFeatures.map(f => f.key!.trim()).filter(Boolean);
+    const uniqueKeys = new Set(premiumKeys);
+    if (premiumKeys.length !== uniqueKeys.size) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        'Premium feature keys must be unique.'
+      );
+    }
+
+    return prisma.$transaction(async (tx) => {
+      const plan = await tx.subscriptionPlan.create({
+        data: {
+          name: data.name,
+          tierLevel: data.tierLevel,
+          maxTurfs: data.maxTurfs,
+          isFreeTrialAllowed: data.isFreeTrialAllowed ?? false,
+          freeTrialDuration: data.freeTrialDuration ?? 0,
+          prices: {
+            create: data.prices.map((p) => ({
+              period: p.period,
+              price: p.price.toString(),
+            })),
+          },
         },
-      },
-      include: { prices: true },
+      });
+
+      // Create features - link both general and premium features to this plan
+      await tx.feature.createMany({
+        data: [
+          ...generalFeatures.map(f => ({
+            name: f.name,
+            description: f.description,
+            type: FeatureType.GENERAL,
+            planId: plan.id,
+          })),
+          ...premiumFeatures.map(f => ({
+            name: f.name,
+            description: f.description,
+            type: FeatureType.PREMIUM,
+            key: f.key!.trim(),
+            planId: plan.id,
+          })),
+        ],
+      });
+
+      return tx.subscriptionPlan.findUnique({
+        where: { id: plan.id },
+        include: { prices: true, features: true },
+      });
     });
   }
 
@@ -345,7 +424,9 @@ export class SubscriptionService {
       name?: string;
       tierLevel?: number;
       maxTurfs?: number;
-      features?: string[];
+      isFreeTrialAllowed?: boolean;
+      freeTrialDuration?: number;
+      features?: Array<{ id?: string; name: string; description?: string; type: FeatureType; key?: string }>;
       active?: boolean;
       prices?: Array<{ period: FixedPeriod; price: number }>;
     }
@@ -365,17 +446,104 @@ export class SubscriptionService {
       }
     }
 
+    // Validate premium features if provided
+    if (data.features !== undefined) {
+      const premiumFeatures = data.features.filter(f => f.type === FeatureType.PREMIUM);
+
+      for (const feature of premiumFeatures) {
+        if (!feature.key || feature.key.trim() === '') {
+          throw new AppError(
+            httpStatus.BAD_REQUEST,
+            'Premium features must have a unique key for permission checks.'
+          );
+        }
+      }
+
+      // Check for duplicate keys among premium features
+      const premiumKeys = premiumFeatures.map(f => f.key!.trim()).filter(Boolean);
+      const uniqueKeys = new Set(premiumKeys);
+      if (premiumKeys.length !== uniqueKeys.size) {
+        throw new AppError(
+          httpStatus.BAD_REQUEST,
+          'Premium feature keys must be unique.'
+        );
+      }
+
+      // Check if any key conflicts with existing features in other plans
+      const existingKeys = await prisma.feature.findMany({
+        where: {
+          key: { in: premiumKeys },
+          NOT: { planId: planId },
+        },
+        select: { key: true },
+      });
+      if (existingKeys.length > 0) {
+        throw new AppError(
+          httpStatus.BAD_REQUEST,
+          `Premium feature keys already in use: ${existingKeys.map(k => k.key).join(', ')}`
+        );
+      }
+    }
+
     return prisma.$transaction(async (tx) => {
+      // Update plan basic fields
       const plan = await tx.subscriptionPlan.update({
         where: { id: planId },
         data: {
           name: data.name,
           tierLevel: data.tierLevel,
           maxTurfs: data.maxTurfs,
-          features: data.features,
+          isFreeTrialAllowed: data.isFreeTrialAllowed,
+          freeTrialDuration: data.freeTrialDuration,
           active: data.active,
         },
       });
+
+      // Handle features update if provided
+      if (data.features !== undefined) {
+        const incomingFeatureIds = data.features
+          .filter(f => f.id)
+          .map(f => f.id!);
+
+        // Delete features not in the incoming list (for this plan's premium features + general features)
+        await tx.feature.deleteMany({
+          where: {
+            OR: [
+              { planId: planId, id: { notIn: incomingFeatureIds } }, // Premium features not in update
+              { planId: null, id: { notIn: incomingFeatureIds } }, // General features not in update
+            ],
+          },
+        });
+
+        // Upsert features
+        for (const feature of data.features) {
+          if (feature.id) {
+            // Update existing feature
+            await tx.feature.update({
+              where: { id: feature.id },
+              data: {
+                name: feature.name,
+                description: feature.description,
+                type: feature.type,
+                key: feature.type === FeatureType.PREMIUM ? feature.key?.trim() : null,
+                // Ensure premium features are linked to this plan, general features have null planId
+                planId: feature.type === FeatureType.PREMIUM ? planId : null,
+              },
+            });
+          } else {
+            // Create new feature
+            await tx.feature.create({
+              data: {
+                name: feature.name,
+                description: feature.description,
+                type: feature.type,
+                key: feature.type === FeatureType.PREMIUM ? feature.key?.trim() : null,
+                planId: feature.type === FeatureType.PREMIUM ? planId : null,
+              },
+            });
+          }
+        }
+      }
 
       if (data.prices) {
         for (const price of data.prices) {
@@ -387,7 +555,7 @@ export class SubscriptionService {
         }
       }
 
-      return tx.subscriptionPlan.findUnique({ where: { id: plan.id }, include: { prices: true } });
+      return tx.subscriptionPlan.findUnique({ where: { id: plan.id }, include: { prices: true, features: true } });
     });
   }
 
@@ -407,38 +575,166 @@ export class SubscriptionService {
       return [];
     }
 
-    return prisma.subscriptionLog.findMany({
+    const logs = await prisma.subscriptionLog.findMany({
       where: { subscriptionId: subscription.id },
       include: { invoice: true },
       orderBy: { createdAt: 'desc' },
     });
-  }
 
+    const seen = new Map<string, typeof logs[0]>();
+    for (const log of logs) {
+      const startDate = new Date(log.startDate);
+      const endDate = new Date(log.endDate);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
+      const key = `${startDate.toISOString()}|${endDate.toISOString()}`;
 
-  async getAdminSubscriptions(options: { status?: SubscriptionStatus; search?: string }) {
-    return prisma.subscription.findMany({
-      where: {
-        ...(options.status ? { status: options.status } : {}),
-        ...(options.search
-          ? {
-            user: {
-              OR: [
-                { name: { contains: options.search, mode: 'insensitive' } },
-                { email: { contains: options.search, mode: 'insensitive' } },
-              ],
-            },
-          }
-          : {}),
-      },
-      include: {
-        user: { select: { id: true, name: true, email: true, role: true } },
-        plan: { include: { prices: true } },
-      },
-      orderBy: { updatedAt: 'desc' },
+      const existing = seen.get(key);
+      if (!existing || (log.invoice && !existing.invoice)) {
+        seen.set(key, log);
+      }
+    }
+
+    const result = Array.from(seen.values()).map((log) => {
+      const startDate = new Date(log.startDate);
+      startDate.setHours(0, 0, 0, 0);
+      const endDate = new Date(log.endDate);
+      endDate.setHours(0, 0, 0, 0);
+      return {
+        ...log,
+        startDate,
+        endDate,
+      };
     });
+
+    result.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+    return result;
   }
 
-  async updateAdminSubscription(
+  async getAllOwnerSubscriptions(options: {
+    status?: SubscriptionStatus;
+    search?: string;
+    sortBy?: string;
+    sortOrder?: "asc" | "desc";
+    page?: number;
+    limit?: number;
+  }) {
+    const page = options.page && options.page > 0 ? options.page : 1;
+    const limit =
+      options.limit && options.limit > 0 ? Math.min(options.limit, 100) : 10;
+
+    // ── Where ─────────────────────────────────────────────────────
+    const where: Prisma.SubscriptionWhereInput = {
+      ...(options.status ? { status: options.status } : {}),
+      ...(options.search
+        ? {
+          user: {
+            OR: [
+              { name: { contains: options.search, mode: "insensitive" } },
+              { email: { contains: options.search, mode: "insensitive" } },
+            ],
+          },
+        }
+        : {}),
+    };
+
+    // ── Order By ──────────────────────────────────────────────────
+    const dir = options.sortOrder === "asc" ? "asc" : "desc";
+    let orderBy: Prisma.SubscriptionOrderByWithRelationInput = {
+      updatedAt: "desc",
+    };
+    if (options.sortBy === "endDate") orderBy = { endDate: dir };
+    else if (options.sortBy === "status") orderBy = { status: dir };
+    else if (options.sortBy === "startDate") orderBy = { startDate: dir };
+    else if (options.sortOrder) orderBy = { updatedAt: dir };
+
+    // ── Query ─────────────────────────────────────────────────────
+    const [rows, total] = await prisma.$transaction([
+      prisma.subscription.findMany({
+        where,
+        select: {
+          id: true,
+          userId: true,
+          planId: true,
+          status: true,
+          startDate: true,
+          endDate: true,
+          user: {
+            select: { name: true, email: true, ownerProfile: { select: { companyName: true } } },
+          },
+          plan: {
+            select: { name: true },
+          },
+
+          // Latest log only — will be flattened to `latestLog` below
+          subscriptionLogs: {
+            orderBy: { createdAt: "desc" },
+            take: 1,
+            select: {
+              period: true,
+              
+              invoice: {
+                select: {
+                  invoiceNumber: true,
+                  totalAmount: true,
+                  paidAmount: true,
+                  status: true,
+                  payments: {
+                    select: {
+                      status: true,
+                      method: true,
+                      amount: true,
+                      providerTransactionId: true,
+                      payerMobileNumber: true,
+                      reference: true,
+                      note: true,
+                    },
+                    orderBy: { createdAt: "desc" },
+                  },
+                },
+              },
+            },
+          },
+        },
+        orderBy,
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      prisma.subscription.count({ where }),
+    ]);
+
+    // ── Flatten: subscriptionLogs[0] → latestLog ─────────────────
+    const data = rows.map((sub) => {
+      const { subscriptionLogs, ...rest } = sub;
+      const latestLog = subscriptionLogs[0] ?? null;
+      const invoice = latestLog?.invoice ?? null;
+      const paidTotal = (invoice?.payments ?? []).filter((payment) => payment.status === PaymentStatus.PAID || PaymentStatus.PROCESSING).reduce((sum, payment) => sum + Number(payment.amount), 0);
+      const outstanding = invoice ? Math.max(0, Number(invoice.totalAmount) - paidTotal) : 0;
+
+       const { ownerProfile, ...userRest } = (sub.user ?? {}) as any;
+       return {
+         ...rest,
+         user: { ...userRest, companyName: ownerProfile?.companyName ?? null },
+         latestLog,
+         invoice,
+         outstanding,
+         canAcceptPayment: !!invoice && outstanding > 0,
+       };
+    });
+
+    return {
+      data,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  async updateSubscriptionBySuperAdmin(
     subscriptionId: string,
     data: { status?: SubscriptionStatus; endDate?: string; planId?: string }
   ) {
@@ -463,10 +759,47 @@ export class SubscriptionService {
         },
       });
 
+      return updated;
+    });
+  }
+
+
+  async updateSubscription(
+    subscriptionId: string,
+    data: { status?: SubscriptionStatus; endDate?: string; planId?: string }
+  ) {
+    const existing = await prisma.subscription.findUnique({ where: { id: subscriptionId } });
+    if (!existing) throw new AppError(httpStatus.NOT_FOUND, 'Subscription not found');
+
+    if (data.planId) {
+      await this.getPlanById(data.planId);
+    }
+
+    return prisma.$transaction(async (tx) => {
+      const latestLog = await tx.subscriptionLog.findFirst({
+        where: { subscriptionId },
+        orderBy: { createdAt: 'desc' },
+        select: { period: true },
+      });
+
+      const updated = await tx.subscription.update({
+        where: { id: subscriptionId },
+        data: {
+          status: data.status,
+          endDate: data.endDate ? new Date(data.endDate) : undefined,
+          planId: data.planId,
+        },
+        include: {
+          user: { select: { id: true, name: true, email: true, role: true } },
+          plan: { include: { prices: true } },
+        },
+      });
+
       // Write Admin Audit Log Entry
       await tx.subscriptionLog.create({
         data: {
           subscriptionId: updated.id,
+          period: latestLog?.period ?? FixedPeriod.MONTHLY,
           action: SubscriptionAction.RENEWED,
           status: updated.status,
           startDate: updated.startDate,
@@ -475,6 +808,67 @@ export class SubscriptionService {
       });
 
       return updated;
+    });
+  }
+
+
+  async createFreeTrial(user: IRequestUser) {
+    const freePlan = await prisma.subscriptionPlan.findFirst({
+      where: { active: true, isFreeTrialAllowed: true },
+    });
+
+    if (!freePlan) {
+      throw new AppError(
+        httpStatus.NOT_FOUND,
+        "Free trial is not allowed",
+      );
+    }
+
+    const existingSub = await prisma.subscription.findUnique({
+      where: { userId: user.userId },
+    });
+
+    if (existingSub?.isFreeUsed) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        "Free trial has already been used",
+      );
+    }
+
+    // Use the plan's freeTrialDuration or default to 30 days
+    const trialDurationDays = freePlan.freeTrialDuration > 0 ? freePlan.freeTrialDuration : 30;
+
+    return prisma.$transaction(async (tx) => {
+      const now = startOfDay(new Date());
+      const trialEnd = new Date(now.getTime() + trialDurationDays * 24 * 60 * 60 * 1000);
+
+      const subscription = await tx.subscription.create({
+        data: {
+          userId: user.userId,
+          planId: freePlan.id,
+          status: SubscriptionStatus.FREE_TRIAL,
+          startDate: now,
+          endDate: trialEnd,
+          freeStart: now,
+          freeEnd: trialEnd,
+          isFreeUsed: true,
+          isFreeActive: true,
+        },
+        include: { plan: { include: { prices: true } } },
+      });
+
+      await tx.subscriptionLog.create({
+        data: {
+          subscriptionId: subscription.id,
+          action: SubscriptionAction.SUBSCRIBED,
+          status: SubscriptionStatus.FREE_TRIAL,
+          period: FixedPeriod.MONTHLY,
+          startDate: now,
+          endDate: trialEnd,
+        },
+      });
+
+      return subscription;
     });
   }
 }

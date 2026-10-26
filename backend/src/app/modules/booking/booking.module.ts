@@ -2,8 +2,11 @@ import { Module } from '@nestjs/common';
 import { CheckAuthGuard } from '../../../common/guards/check-auth.guard';
 import { BookingController } from './booking.controller';
 import { BookingService } from './booking.service';
+import { InvoiceModule } from '../invoice/invoice.module';
+import { PaymentModule } from '../payment/payment.module';
 
 @Module({
+  imports: [InvoiceModule, PaymentModule],
   controllers: [BookingController],
   providers: [BookingService, CheckAuthGuard],
   exports: [BookingService],

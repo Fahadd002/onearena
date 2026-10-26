@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import status from 'http-status';
 
 import AppError from '../../../config/errorHelpers/AppError';
-import { uploadFileToCloudinary } from '../../../config/cloudinary.config';
+import { deleteFile } from '../../helpers/file';
 import prisma from '../../../shared/prisma';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
 
@@ -44,14 +44,10 @@ export class TurfImageService {
     await this.assertOwner(user, turfId);
     if (!files?.length) throw new AppError(status.BAD_REQUEST, 'At least one image is required');
 
-    const uploads = await Promise.all(
-      files.map((file) => uploadFileToCloudinary(file.buffer, file.originalname)),
-    );
-
     return prisma.turfImage.createManyAndReturn({
-      data: uploads.map((upload, index) => ({
+      data: files.map((file, index) => ({
         turfId,
-        url: upload.secure_url,
+        url: `/uploads/turfs/${turfId}/${file.filename}`,
         sortOrder: index,
       })),
     });
@@ -107,6 +103,8 @@ export class TurfImageService {
     }
 
     await this.assertOwner(user, image.turfId);
+
+    deleteFile(image.url);
 
     return prisma.turfImage.delete({
       where: {

@@ -197,7 +197,7 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type UserGroupByOutputType = {
   id: string
-  email: string
+  email: string | null
   name: string
   image: string | null
   phoneNumber: string | null
@@ -234,7 +234,7 @@ export type UserWhereInput = {
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.StringFilter<"User"> | string
-  email?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringNullableFilter<"User"> | string | null
   name?: Prisma.StringFilter<"User"> | string
   image?: Prisma.StringNullableFilter<"User"> | string | null
   phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
@@ -248,14 +248,14 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
+  bookedForOthers?: Prisma.BookingListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   reviewReplies?: Prisma.ReviewReplyListRelationFilter
   managedTurfs?: Prisma.TurfManagerListRelationFilter
   ownedTurfs?: Prisma.TurfListRelationFilter
-  ownerGallery?: Prisma.OwnerGalleryItemListRelationFilter
-  ownerBlogs?: Prisma.OwnerBlogListRelationFilter
   invoices?: Prisma.InvoiceListRelationFilter
+  slotTimeSetups?: Prisma.SlotTimeSetupListRelationFilter
   subscriptions?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
   ownerProfile?: Prisma.XOR<Prisma.OwnerProfileNullableScalarRelationFilter, Prisma.OwnerProfileWhereInput> | null
   managerProfile?: Prisma.XOR<Prisma.ManagerProfileNullableScalarRelationFilter, Prisma.ManagerProfileWhereInput> | null
@@ -264,7 +264,7 @@ export type UserWhereInput = {
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  email?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -278,14 +278,14 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   bookings?: Prisma.BookingOrderByRelationAggregateInput
+  bookedForOthers?: Prisma.BookingOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   reviewReplies?: Prisma.ReviewReplyOrderByRelationAggregateInput
   managedTurfs?: Prisma.TurfManagerOrderByRelationAggregateInput
   ownedTurfs?: Prisma.TurfOrderByRelationAggregateInput
-  ownerGallery?: Prisma.OwnerGalleryItemOrderByRelationAggregateInput
-  ownerBlogs?: Prisma.OwnerBlogOrderByRelationAggregateInput
   invoices?: Prisma.InvoiceOrderByRelationAggregateInput
+  slotTimeSetups?: Prisma.SlotTimeSetupOrderByRelationAggregateInput
   subscriptions?: Prisma.SubscriptionOrderByWithRelationInput
   ownerProfile?: Prisma.OwnerProfileOrderByWithRelationInput
   managerProfile?: Prisma.ManagerProfileOrderByWithRelationInput
@@ -295,12 +295,12 @@ export type UserOrderByWithRelationInput = {
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
+  phoneNumber?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringFilter<"User"> | string
   image?: Prisma.StringNullableFilter<"User"> | string | null
-  phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
@@ -311,23 +311,23 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
+  bookedForOthers?: Prisma.BookingListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   reviewReplies?: Prisma.ReviewReplyListRelationFilter
   managedTurfs?: Prisma.TurfManagerListRelationFilter
   ownedTurfs?: Prisma.TurfListRelationFilter
-  ownerGallery?: Prisma.OwnerGalleryItemListRelationFilter
-  ownerBlogs?: Prisma.OwnerBlogListRelationFilter
   invoices?: Prisma.InvoiceListRelationFilter
+  slotTimeSetups?: Prisma.SlotTimeSetupListRelationFilter
   subscriptions?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
   ownerProfile?: Prisma.XOR<Prisma.OwnerProfileNullableScalarRelationFilter, Prisma.OwnerProfileWhereInput> | null
   managerProfile?: Prisma.XOR<Prisma.ManagerProfileNullableScalarRelationFilter, Prisma.ManagerProfileWhereInput> | null
   paymentsReceived?: Prisma.PaymentListRelationFilter
-}, "id" | "email">
+}, "id" | "email" | "phoneNumber">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  email?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -349,7 +349,7 @@ export type UserScalarWhereWithAggregatesInput = {
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
-  email?: Prisma.StringWithAggregatesFilter<"User"> | string
+  email?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"User"> | string
   image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   phoneNumber?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -365,7 +365,7 @@ export type UserScalarWhereWithAggregatesInput = {
 
 export type UserCreateInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -379,14 +379,14 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
@@ -395,7 +395,7 @@ export type UserCreateInput = {
 
 export type UserUncheckedCreateInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -409,14 +409,14 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -425,7 +425,7 @@ export type UserUncheckedCreateInput = {
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -439,14 +439,14 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
@@ -455,7 +455,7 @@ export type UserUpdateInput = {
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -469,14 +469,14 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -485,7 +485,7 @@ export type UserUncheckedUpdateInput = {
 
 export type UserCreateManyInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -501,7 +501,7 @@ export type UserCreateManyInput = {
 
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -517,7 +517,7 @@ export type UserUpdateManyMutationInput = {
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -595,12 +595,28 @@ export type UserCreateNestedOneWithoutBookingsInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutBookedForOthersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBookedForOthersInput, Prisma.UserUncheckedCreateWithoutBookedForOthersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBookedForOthersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserUpdateOneRequiredWithoutBookingsNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutBookingsInput, Prisma.UserUncheckedCreateWithoutBookingsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutBookingsInput
   upsert?: Prisma.UserUpsertWithoutBookingsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBookingsInput, Prisma.UserUpdateWithoutBookingsInput>, Prisma.UserUncheckedUpdateWithoutBookingsInput>
+}
+
+export type UserUpdateOneWithoutBookedForOthersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBookedForOthersInput, Prisma.UserUncheckedCreateWithoutBookedForOthersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBookedForOthersInput
+  upsert?: Prisma.UserUpsertWithoutBookedForOthersInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBookedForOthersInput, Prisma.UserUpdateWithoutBookedForOthersInput>, Prisma.UserUncheckedUpdateWithoutBookedForOthersInput>
 }
 
 export type UserCreateNestedOneWithoutInvoicesInput = {
@@ -675,34 +691,6 @@ export type UserUpdateOneRequiredWithoutOwnerProfileNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnerProfileInput, Prisma.UserUpdateWithoutOwnerProfileInput>, Prisma.UserUncheckedUpdateWithoutOwnerProfileInput>
 }
 
-export type UserCreateNestedOneWithoutOwnerGalleryInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerGalleryInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutOwnerGalleryNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerGalleryInput
-  upsert?: Prisma.UserUpsertWithoutOwnerGalleryInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnerGalleryInput, Prisma.UserUpdateWithoutOwnerGalleryInput>, Prisma.UserUncheckedUpdateWithoutOwnerGalleryInput>
-}
-
-export type UserCreateNestedOneWithoutOwnerBlogsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerBlogsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutOwnerBlogsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnerBlogsInput
-  upsert?: Prisma.UserUpsertWithoutOwnerBlogsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnerBlogsInput, Prisma.UserUpdateWithoutOwnerBlogsInput>, Prisma.UserUncheckedUpdateWithoutOwnerBlogsInput>
-}
-
 export type UserCreateNestedOneWithoutReviewsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewsInput
@@ -759,6 +747,20 @@ export type UserUpdateOneRequiredWithoutOwnedTurfsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnedTurfsInput, Prisma.UserUpdateWithoutOwnedTurfsInput>, Prisma.UserUncheckedUpdateWithoutOwnedTurfsInput>
 }
 
+export type UserCreateNestedOneWithoutSlotTimeSetupsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSlotTimeSetupsInput, Prisma.UserUncheckedCreateWithoutSlotTimeSetupsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSlotTimeSetupsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSlotTimeSetupsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSlotTimeSetupsInput, Prisma.UserUncheckedCreateWithoutSlotTimeSetupsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSlotTimeSetupsInput
+  upsert?: Prisma.UserUpsertWithoutSlotTimeSetupsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSlotTimeSetupsInput, Prisma.UserUpdateWithoutSlotTimeSetupsInput>, Prisma.UserUncheckedUpdateWithoutSlotTimeSetupsInput>
+}
+
 export type EnumUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.UserRole
 }
@@ -797,7 +799,7 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
 
 export type UserCreateWithoutBookingsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -810,14 +812,14 @@ export type UserCreateWithoutBookingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
@@ -826,7 +828,7 @@ export type UserCreateWithoutBookingsInput = {
 
 export type UserUncheckedCreateWithoutBookingsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -839,14 +841,14 @@ export type UserUncheckedCreateWithoutBookingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -858,78 +860,9 @@ export type UserCreateOrConnectWithoutBookingsInput = {
   create: Prisma.XOR<Prisma.UserCreateWithoutBookingsInput, Prisma.UserUncheckedCreateWithoutBookingsInput>
 }
 
-export type UserUpsertWithoutBookingsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutBookingsInput, Prisma.UserUncheckedUpdateWithoutBookingsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutBookingsInput, Prisma.UserUncheckedCreateWithoutBookingsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutBookingsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutBookingsInput, Prisma.UserUncheckedUpdateWithoutBookingsInput>
-}
-
-export type UserUpdateWithoutBookingsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
-  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
-  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserUncheckedUpdateWithoutBookingsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
-  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
-  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserCreateWithoutInvoicesInput = {
+export type UserCreateWithoutBookedForOthersInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -948,17 +881,17 @@ export type UserCreateWithoutInvoicesInput = {
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
-export type UserUncheckedCreateWithoutInvoicesInput = {
+export type UserUncheckedCreateWithoutBookedForOthersInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -977,8 +910,209 @@ export type UserUncheckedCreateWithoutInvoicesInput = {
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutBookedForOthersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBookedForOthersInput, Prisma.UserUncheckedCreateWithoutBookedForOthersInput>
+}
+
+export type UserUpsertWithoutBookingsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBookingsInput, Prisma.UserUncheckedUpdateWithoutBookingsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBookingsInput, Prisma.UserUncheckedCreateWithoutBookingsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBookingsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBookingsInput, Prisma.UserUncheckedUpdateWithoutBookingsInput>
+}
+
+export type UserUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUpsertWithoutBookedForOthersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBookedForOthersInput, Prisma.UserUncheckedUpdateWithoutBookedForOthersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBookedForOthersInput, Prisma.UserUncheckedCreateWithoutBookedForOthersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBookedForOthersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBookedForOthersInput, Prisma.UserUncheckedUpdateWithoutBookedForOthersInput>
+}
+
+export type UserUpdateWithoutBookedForOthersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBookedForOthersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutInvoicesInput = {
+  id?: string
+  email?: string | null
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutInvoicesInput = {
+  id?: string
+  email?: string | null
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1003,7 +1137,7 @@ export type UserUpdateToOneWithWhereWithoutInvoicesInput = {
 
 export type UserUpdateWithoutInvoicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1017,13 +1151,13 @@ export type UserUpdateWithoutInvoicesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
@@ -1032,7 +1166,7 @@ export type UserUpdateWithoutInvoicesInput = {
 
 export type UserUncheckedUpdateWithoutInvoicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1046,13 +1180,13 @@ export type UserUncheckedUpdateWithoutInvoicesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1061,7 +1195,7 @@ export type UserUncheckedUpdateWithoutInvoicesInput = {
 
 export type UserCreateWithoutPaymentsReceivedInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -1075,14 +1209,14 @@ export type UserCreateWithoutPaymentsReceivedInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
@@ -1090,7 +1224,7 @@ export type UserCreateWithoutPaymentsReceivedInput = {
 
 export type UserUncheckedCreateWithoutPaymentsReceivedInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -1104,14 +1238,14 @@ export type UserUncheckedCreateWithoutPaymentsReceivedInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1135,7 +1269,7 @@ export type UserUpdateToOneWithWhereWithoutPaymentsReceivedInput = {
 
 export type UserUpdateWithoutPaymentsReceivedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1149,14 +1283,14 @@ export type UserUpdateWithoutPaymentsReceivedInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
@@ -1164,7 +1298,7 @@ export type UserUpdateWithoutPaymentsReceivedInput = {
 
 export type UserUncheckedUpdateWithoutPaymentsReceivedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1178,14 +1312,14 @@ export type UserUncheckedUpdateWithoutPaymentsReceivedInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1193,7 +1327,7 @@ export type UserUncheckedUpdateWithoutPaymentsReceivedInput = {
 
 export type UserCreateWithoutManagerProfileInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -1207,14 +1341,14 @@ export type UserCreateWithoutManagerProfileInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
@@ -1222,7 +1356,7 @@ export type UserCreateWithoutManagerProfileInput = {
 
 export type UserUncheckedCreateWithoutManagerProfileInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -1236,14 +1370,14 @@ export type UserUncheckedCreateWithoutManagerProfileInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
@@ -1267,7 +1401,7 @@ export type UserUpdateToOneWithWhereWithoutManagerProfileInput = {
 
 export type UserUpdateWithoutManagerProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1281,14 +1415,14 @@ export type UserUpdateWithoutManagerProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
@@ -1296,7 +1430,7 @@ export type UserUpdateWithoutManagerProfileInput = {
 
 export type UserUncheckedUpdateWithoutManagerProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1310,14 +1444,14 @@ export type UserUncheckedUpdateWithoutManagerProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
@@ -1325,7 +1459,7 @@ export type UserUncheckedUpdateWithoutManagerProfileInput = {
 
 export type UserCreateWithoutManagedTurfsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -1339,13 +1473,13 @@ export type UserCreateWithoutManagedTurfsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
@@ -1354,7 +1488,7 @@ export type UserCreateWithoutManagedTurfsInput = {
 
 export type UserUncheckedCreateWithoutManagedTurfsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -1368,13 +1502,13 @@ export type UserUncheckedCreateWithoutManagedTurfsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1399,7 +1533,7 @@ export type UserUpdateToOneWithWhereWithoutManagedTurfsInput = {
 
 export type UserUpdateWithoutManagedTurfsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1413,13 +1547,13 @@ export type UserUpdateWithoutManagedTurfsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
@@ -1428,7 +1562,7 @@ export type UserUpdateWithoutManagedTurfsInput = {
 
 export type UserUncheckedUpdateWithoutManagedTurfsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1442,13 +1576,13 @@ export type UserUncheckedUpdateWithoutManagedTurfsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1457,7 +1591,7 @@ export type UserUncheckedUpdateWithoutManagedTurfsInput = {
 
 export type UserCreateWithoutOwnerProfileInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -1471,14 +1605,14 @@ export type UserCreateWithoutOwnerProfileInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
@@ -1486,7 +1620,7 @@ export type UserCreateWithoutOwnerProfileInput = {
 
 export type UserUncheckedCreateWithoutOwnerProfileInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -1500,14 +1634,14 @@ export type UserUncheckedCreateWithoutOwnerProfileInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
@@ -1531,7 +1665,7 @@ export type UserUpdateToOneWithWhereWithoutOwnerProfileInput = {
 
 export type UserUpdateWithoutOwnerProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1545,14 +1679,14 @@ export type UserUpdateWithoutOwnerProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
@@ -1560,7 +1694,7 @@ export type UserUpdateWithoutOwnerProfileInput = {
 
 export type UserUncheckedUpdateWithoutOwnerProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1574,286 +1708,22 @@ export type UserUncheckedUpdateWithoutOwnerProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserCreateWithoutOwnerGalleryInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
-  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
-  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserUncheckedCreateWithoutOwnerGalleryInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
-  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
-  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserCreateOrConnectWithoutOwnerGalleryInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
-}
-
-export type UserUpsertWithoutOwnerGalleryInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnerGalleryInput, Prisma.UserUncheckedUpdateWithoutOwnerGalleryInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerGalleryInput, Prisma.UserUncheckedCreateWithoutOwnerGalleryInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutOwnerGalleryInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnerGalleryInput, Prisma.UserUncheckedUpdateWithoutOwnerGalleryInput>
-}
-
-export type UserUpdateWithoutOwnerGalleryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
-  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
-  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserUncheckedUpdateWithoutOwnerGalleryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
-  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
-  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
-  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserCreateWithoutOwnerBlogsInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
-  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
-  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserUncheckedCreateWithoutOwnerBlogsInput = {
-  id?: string
-  email: string
-  name: string
-  image?: string | null
-  phoneNumber?: string | null
-  role?: $Enums.UserRole
-  status?: $Enums.UserStatus
-  emailVerified?: boolean
-  needPasswordChange?: boolean
-  isDeleted?: boolean
-  deletedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
-  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
-  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
-  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
-  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
-  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
-}
-
-export type UserCreateOrConnectWithoutOwnerBlogsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
-}
-
-export type UserUpsertWithoutOwnerBlogsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnerBlogsInput, Prisma.UserUncheckedUpdateWithoutOwnerBlogsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutOwnerBlogsInput, Prisma.UserUncheckedCreateWithoutOwnerBlogsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutOwnerBlogsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnerBlogsInput, Prisma.UserUncheckedUpdateWithoutOwnerBlogsInput>
-}
-
-export type UserUpdateWithoutOwnerBlogsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
-  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
-  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
-  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
-}
-
-export type UserUncheckedUpdateWithoutOwnerBlogsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
-  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
-  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
-  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
-  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
 export type UserCreateWithoutReviewsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -1867,13 +1737,13 @@ export type UserCreateWithoutReviewsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
@@ -1882,7 +1752,7 @@ export type UserCreateWithoutReviewsInput = {
 
 export type UserUncheckedCreateWithoutReviewsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -1896,13 +1766,13 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1927,7 +1797,7 @@ export type UserUpdateToOneWithWhereWithoutReviewsInput = {
 
 export type UserUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1941,13 +1811,13 @@ export type UserUpdateWithoutReviewsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
@@ -1956,7 +1826,7 @@ export type UserUpdateWithoutReviewsInput = {
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1970,13 +1840,13 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1985,7 +1855,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
 
 export type UserCreateWithoutReviewRepliesInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -1999,13 +1869,13 @@ export type UserCreateWithoutReviewRepliesInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
@@ -2014,7 +1884,7 @@ export type UserCreateWithoutReviewRepliesInput = {
 
 export type UserUncheckedCreateWithoutReviewRepliesInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -2028,13 +1898,13 @@ export type UserUncheckedCreateWithoutReviewRepliesInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2059,7 +1929,7 @@ export type UserUpdateToOneWithWhereWithoutReviewRepliesInput = {
 
 export type UserUpdateWithoutReviewRepliesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2073,13 +1943,13 @@ export type UserUpdateWithoutReviewRepliesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
@@ -2088,7 +1958,7 @@ export type UserUpdateWithoutReviewRepliesInput = {
 
 export type UserUncheckedUpdateWithoutReviewRepliesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2102,13 +1972,13 @@ export type UserUncheckedUpdateWithoutReviewRepliesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2117,7 +1987,7 @@ export type UserUncheckedUpdateWithoutReviewRepliesInput = {
 
 export type UserCreateWithoutSubscriptionsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -2131,14 +2001,14 @@ export type UserCreateWithoutSubscriptionsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
   ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
@@ -2146,7 +2016,7 @@ export type UserCreateWithoutSubscriptionsInput = {
 
 export type UserUncheckedCreateWithoutSubscriptionsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -2160,14 +2030,14 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
   paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
@@ -2191,7 +2061,7 @@ export type UserUpdateToOneWithWhereWithoutSubscriptionsInput = {
 
 export type UserUpdateWithoutSubscriptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2205,14 +2075,14 @@ export type UserUpdateWithoutSubscriptionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
   ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
@@ -2220,7 +2090,7 @@ export type UserUpdateWithoutSubscriptionsInput = {
 
 export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2234,14 +2104,14 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
   ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
@@ -2249,7 +2119,7 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
 
 export type UserCreateWithoutOwnedTurfsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -2263,13 +2133,13 @@ export type UserCreateWithoutOwnedTurfsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
@@ -2278,7 +2148,7 @@ export type UserCreateWithoutOwnedTurfsInput = {
 
 export type UserUncheckedCreateWithoutOwnedTurfsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -2292,13 +2162,13 @@ export type UserUncheckedCreateWithoutOwnedTurfsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2323,7 +2193,7 @@ export type UserUpdateToOneWithWhereWithoutOwnedTurfsInput = {
 
 export type UserUpdateWithoutOwnedTurfsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2337,13 +2207,13 @@ export type UserUpdateWithoutOwnedTurfsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
@@ -2352,7 +2222,7 @@ export type UserUpdateWithoutOwnedTurfsInput = {
 
 export type UserUncheckedUpdateWithoutOwnedTurfsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2366,22 +2236,22 @@ export type UserUncheckedUpdateWithoutOwnedTurfsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
   paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
 }
 
-export type UserCreateWithoutSessionsInput = {
+export type UserCreateWithoutSlotTimeSetupsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -2395,12 +2265,12 @@ export type UserCreateWithoutSessionsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
   subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
@@ -2408,9 +2278,9 @@ export type UserCreateWithoutSessionsInput = {
   paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
 }
 
-export type UserUncheckedCreateWithoutSessionsInput = {
+export type UserUncheckedCreateWithoutSlotTimeSetupsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -2424,13 +2294,145 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentUncheckedCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserCreateOrConnectWithoutSlotTimeSetupsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSlotTimeSetupsInput, Prisma.UserUncheckedCreateWithoutSlotTimeSetupsInput>
+}
+
+export type UserUpsertWithoutSlotTimeSetupsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSlotTimeSetupsInput, Prisma.UserUncheckedUpdateWithoutSlotTimeSetupsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSlotTimeSetupsInput, Prisma.UserUncheckedCreateWithoutSlotTimeSetupsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSlotTimeSetupsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSlotTimeSetupsInput, Prisma.UserUncheckedUpdateWithoutSlotTimeSetupsInput>
+}
+
+export type UserUpdateWithoutSlotTimeSetupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSlotTimeSetupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
+  managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
+  ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
+  managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
+  paymentsReceived?: Prisma.PaymentUncheckedUpdateManyWithoutReceivedByNestedInput
+}
+
+export type UserCreateWithoutSessionsInput = {
+  id?: string
+  email?: string | null
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
+  subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
+  managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
+  paymentsReceived?: Prisma.PaymentCreateNestedManyWithoutReceivedByInput
+}
+
+export type UserUncheckedCreateWithoutSessionsInput = {
+  id?: string
+  email?: string | null
+  name: string
+  image?: string | null
+  phoneNumber?: string | null
+  role?: $Enums.UserRole
+  status?: $Enums.UserStatus
+  emailVerified?: boolean
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
+  managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
+  ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2455,7 +2457,7 @@ export type UserUpdateToOneWithWhereWithoutSessionsInput = {
 
 export type UserUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2469,13 +2471,13 @@ export type UserUpdateWithoutSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
@@ -2484,7 +2486,7 @@ export type UserUpdateWithoutSessionsInput = {
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2498,13 +2500,13 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2513,7 +2515,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
 
 export type UserCreateWithoutAccountsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -2526,14 +2528,14 @@ export type UserCreateWithoutAccountsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileCreateNestedOneWithoutUserInput
@@ -2542,7 +2544,7 @@ export type UserCreateWithoutAccountsInput = {
 
 export type UserUncheckedCreateWithoutAccountsInput = {
   id?: string
-  email: string
+  email?: string | null
   name: string
   image?: string | null
   phoneNumber?: string | null
@@ -2555,14 +2557,14 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  bookedForOthers?: Prisma.BookingUncheckedCreateNestedManyWithoutBookedByInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewReplies?: Prisma.ReviewReplyUncheckedCreateNestedManyWithoutUserInput
   managedTurfs?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutManagerInput
   ownedTurfs?: Prisma.TurfUncheckedCreateNestedManyWithoutOwnerInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedCreateNestedManyWithoutOwnerInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   ownerProfile?: Prisma.OwnerProfileUncheckedCreateNestedOneWithoutUserInput
   managerProfile?: Prisma.ManagerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2587,7 +2589,7 @@ export type UserUpdateToOneWithWhereWithoutAccountsInput = {
 
 export type UserUpdateWithoutAccountsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2600,14 +2602,14 @@ export type UserUpdateWithoutAccountsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUpdateOneWithoutUserNestedInput
@@ -2616,7 +2618,7 @@ export type UserUpdateWithoutAccountsInput = {
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2629,14 +2631,14 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  bookedForOthers?: Prisma.BookingUncheckedUpdateManyWithoutBookedByNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewReplies?: Prisma.ReviewReplyUncheckedUpdateManyWithoutUserNestedInput
   managedTurfs?: Prisma.TurfManagerUncheckedUpdateManyWithoutManagerNestedInput
   ownedTurfs?: Prisma.TurfUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput
-  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  slotTimeSetups?: Prisma.SlotTimeSetupUncheckedUpdateManyWithoutOwnerNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   ownerProfile?: Prisma.OwnerProfileUncheckedUpdateOneWithoutUserNestedInput
   managerProfile?: Prisma.ManagerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2651,28 +2653,28 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
 export type UserCountOutputType = {
   accounts: number
   bookings: number
+  bookedForOthers: number
   sessions: number
   reviews: number
   reviewReplies: number
   managedTurfs: number
   ownedTurfs: number
-  ownerGallery: number
-  ownerBlogs: number
   invoices: number
+  slotTimeSetups: number
   paymentsReceived: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   bookings?: boolean | UserCountOutputTypeCountBookingsArgs
+  bookedForOthers?: boolean | UserCountOutputTypeCountBookedForOthersArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   reviews?: boolean | UserCountOutputTypeCountReviewsArgs
   reviewReplies?: boolean | UserCountOutputTypeCountReviewRepliesArgs
   managedTurfs?: boolean | UserCountOutputTypeCountManagedTurfsArgs
   ownedTurfs?: boolean | UserCountOutputTypeCountOwnedTurfsArgs
-  ownerGallery?: boolean | UserCountOutputTypeCountOwnerGalleryArgs
-  ownerBlogs?: boolean | UserCountOutputTypeCountOwnerBlogsArgs
   invoices?: boolean | UserCountOutputTypeCountInvoicesArgs
+  slotTimeSetups?: boolean | UserCountOutputTypeCountSlotTimeSetupsArgs
   paymentsReceived?: boolean | UserCountOutputTypeCountPaymentsReceivedArgs
 }
 
@@ -2697,6 +2699,13 @@ export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.E
  * UserCountOutputType without action
  */
 export type UserCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBookedForOthersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.BookingWhereInput
 }
 
@@ -2738,22 +2747,15 @@ export type UserCountOutputTypeCountOwnedTurfsArgs<ExtArgs extends runtime.Types
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountOwnerGalleryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OwnerGalleryItemWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountOwnerBlogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OwnerBlogWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
 export type UserCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.InvoiceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSlotTimeSetupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SlotTimeSetupWhereInput
 }
 
 /**
@@ -2780,14 +2782,14 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   bookings?: boolean | Prisma.User$bookingsArgs<ExtArgs>
+  bookedForOthers?: boolean | Prisma.User$bookedForOthersArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   reviewReplies?: boolean | Prisma.User$reviewRepliesArgs<ExtArgs>
   managedTurfs?: boolean | Prisma.User$managedTurfsArgs<ExtArgs>
   ownedTurfs?: boolean | Prisma.User$ownedTurfsArgs<ExtArgs>
-  ownerGallery?: boolean | Prisma.User$ownerGalleryArgs<ExtArgs>
-  ownerBlogs?: boolean | Prisma.User$ownerBlogsArgs<ExtArgs>
   invoices?: boolean | Prisma.User$invoicesArgs<ExtArgs>
+  slotTimeSetups?: boolean | Prisma.User$slotTimeSetupsArgs<ExtArgs>
   subscriptions?: boolean | Prisma.User$subscriptionsArgs<ExtArgs>
   ownerProfile?: boolean | Prisma.User$ownerProfileArgs<ExtArgs>
   managerProfile?: boolean | Prisma.User$managerProfileArgs<ExtArgs>
@@ -2847,14 +2849,14 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   bookings?: boolean | Prisma.User$bookingsArgs<ExtArgs>
+  bookedForOthers?: boolean | Prisma.User$bookedForOthersArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   reviewReplies?: boolean | Prisma.User$reviewRepliesArgs<ExtArgs>
   managedTurfs?: boolean | Prisma.User$managedTurfsArgs<ExtArgs>
   ownedTurfs?: boolean | Prisma.User$ownedTurfsArgs<ExtArgs>
-  ownerGallery?: boolean | Prisma.User$ownerGalleryArgs<ExtArgs>
-  ownerBlogs?: boolean | Prisma.User$ownerBlogsArgs<ExtArgs>
   invoices?: boolean | Prisma.User$invoicesArgs<ExtArgs>
+  slotTimeSetups?: boolean | Prisma.User$slotTimeSetupsArgs<ExtArgs>
   subscriptions?: boolean | Prisma.User$subscriptionsArgs<ExtArgs>
   ownerProfile?: boolean | Prisma.User$ownerProfileArgs<ExtArgs>
   managerProfile?: boolean | Prisma.User$managerProfileArgs<ExtArgs>
@@ -2869,14 +2871,14 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     bookings: Prisma.$BookingPayload<ExtArgs>[]
+    bookedForOthers: Prisma.$BookingPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     reviewReplies: Prisma.$ReviewReplyPayload<ExtArgs>[]
     managedTurfs: Prisma.$TurfManagerPayload<ExtArgs>[]
     ownedTurfs: Prisma.$TurfPayload<ExtArgs>[]
-    ownerGallery: Prisma.$OwnerGalleryItemPayload<ExtArgs>[]
-    ownerBlogs: Prisma.$OwnerBlogPayload<ExtArgs>[]
     invoices: Prisma.$InvoicePayload<ExtArgs>[]
+    slotTimeSetups: Prisma.$SlotTimeSetupPayload<ExtArgs>[]
     subscriptions: Prisma.$SubscriptionPayload<ExtArgs> | null
     ownerProfile: Prisma.$OwnerProfilePayload<ExtArgs> | null
     managerProfile: Prisma.$ManagerProfilePayload<ExtArgs> | null
@@ -2884,7 +2886,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    email: string
+    email: string | null
     name: string
     image: string | null
     phoneNumber: string | null
@@ -3292,14 +3294,14 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookings<T extends Prisma.User$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bookedForOthers<T extends Prisma.User$bookedForOthersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bookedForOthersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewReplies<T extends Prisma.User$reviewRepliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewRepliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewReplyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   managedTurfs<T extends Prisma.User$managedTurfsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$managedTurfsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TurfManagerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownedTurfs<T extends Prisma.User$ownedTurfsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedTurfsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TurfPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  ownerGallery<T extends Prisma.User$ownerGalleryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownerGalleryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerGalleryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  ownerBlogs<T extends Prisma.User$ownerBlogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownerBlogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerBlogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   invoices<T extends Prisma.User$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  slotTimeSetups<T extends Prisma.User$slotTimeSetupsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$slotTimeSetupsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SlotTimeSetupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscriptions<T extends Prisma.User$subscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subscriptionsArgs<ExtArgs>>): Prisma.Prisma__SubscriptionClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   ownerProfile<T extends Prisma.User$ownerProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownerProfileArgs<ExtArgs>>): Prisma.Prisma__OwnerProfileClient<runtime.Types.Result.GetResult<Prisma.$OwnerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   managerProfile<T extends Prisma.User$managerProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$managerProfileArgs<ExtArgs>>): Prisma.Prisma__ManagerProfileClient<runtime.Types.Result.GetResult<Prisma.$ManagerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -3787,6 +3789,30 @@ export type User$bookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 /**
+ * User.bookedForOthers
+ */
+export type User$bookedForOthersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
+  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
+  cursor?: Prisma.BookingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
+}
+
+/**
  * User.sessions
  */
 export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3907,54 +3933,6 @@ export type User$ownedTurfsArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * User.ownerGallery
- */
-export type User$ownerGalleryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the OwnerGalleryItem
-   */
-  select?: Prisma.OwnerGalleryItemSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the OwnerGalleryItem
-   */
-  omit?: Prisma.OwnerGalleryItemOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.OwnerGalleryItemInclude<ExtArgs> | null
-  where?: Prisma.OwnerGalleryItemWhereInput
-  orderBy?: Prisma.OwnerGalleryItemOrderByWithRelationInput | Prisma.OwnerGalleryItemOrderByWithRelationInput[]
-  cursor?: Prisma.OwnerGalleryItemWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.OwnerGalleryItemScalarFieldEnum | Prisma.OwnerGalleryItemScalarFieldEnum[]
-}
-
-/**
- * User.ownerBlogs
- */
-export type User$ownerBlogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the OwnerBlog
-   */
-  select?: Prisma.OwnerBlogSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the OwnerBlog
-   */
-  omit?: Prisma.OwnerBlogOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.OwnerBlogInclude<ExtArgs> | null
-  where?: Prisma.OwnerBlogWhereInput
-  orderBy?: Prisma.OwnerBlogOrderByWithRelationInput | Prisma.OwnerBlogOrderByWithRelationInput[]
-  cursor?: Prisma.OwnerBlogWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.OwnerBlogScalarFieldEnum | Prisma.OwnerBlogScalarFieldEnum[]
-}
-
-/**
  * User.invoices
  */
 export type User$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3976,6 +3954,30 @@ export type User$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
+}
+
+/**
+ * User.slotTimeSetups
+ */
+export type User$slotTimeSetupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SlotTimeSetup
+   */
+  select?: Prisma.SlotTimeSetupSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SlotTimeSetup
+   */
+  omit?: Prisma.SlotTimeSetupOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SlotTimeSetupInclude<ExtArgs> | null
+  where?: Prisma.SlotTimeSetupWhereInput
+  orderBy?: Prisma.SlotTimeSetupOrderByWithRelationInput | Prisma.SlotTimeSetupOrderByWithRelationInput[]
+  cursor?: Prisma.SlotTimeSetupWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SlotTimeSetupScalarFieldEnum | Prisma.SlotTimeSetupScalarFieldEnum[]
 }
 
 /**

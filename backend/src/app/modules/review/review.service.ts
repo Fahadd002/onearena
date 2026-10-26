@@ -3,6 +3,8 @@ import status from 'http-status';
 
 import {
   UserRole,
+  BookingStatus,
+  SlotSatus,
 } from '../../../generated/prisma/enums';
 
 import AppError from '../../../config/errorHelpers/AppError';
@@ -11,6 +13,33 @@ import { IRequestUser } from '../../interfaces/requestUser.interface';
 
 @Injectable()
 export class ReviewService {
+  private isBookingReviewable(booking: {
+    status: string;
+    bookingSlots: Array<{ slot: { slotDate: Date; slotStatus: string } }>;
+  }): boolean {
+    // A booking is reviewable if it's CONFIRMED and all its slots are PLAYED
+    // or if the slot dates have passed and booking is CONFIRMED
+    if (booking.status !== BookingStatus.CONFIRMED) {
+      return false;
+    }
+
+    // Check if all slots are PLAYED
+    const allPlayed = booking.bookingSlots.every(
+      (bs) => bs.slot?.slotStatus === SlotSatus.PLAYED
+    );
+    if (allPlayed) {
+      return true;
+    }
+
+    // Check if all slot dates have passed (in turf timezone, but we check UTC as fallback)
+    const now = new Date();
+    const allPast = booking.bookingSlots.every(
+      (bs) => bs.slot?.slotDate && new Date(bs.slot.slotDate) < now
+    );
+
+    return allPast;
+  }
+
   async create(
     user: IRequestUser,
     bookingId: string,
@@ -24,11 +53,15 @@ export class ReviewService {
         id: bookingId,
       },
       include: {
-        slot: {
+        bookingSlots: {
           include: {
-            turf: {
-              select: {
-                id: true,
+            slot: {
+              include: {
+                turf: {
+                  select: {
+                    id: true,
+                  },
+                },
               },
             },
           },
@@ -44,6 +77,10 @@ export class ReviewService {
       throw new AppError(status.FORBIDDEN, 'Not allowed to review this booking');
     }
 
+    if (!this.isBookingReviewable(booking)) {
+      throw new AppError(status.BAD_REQUEST, 'Booking is not eligible for review yet');
+    }
+
     const existing = await prisma.review.findFirst({
       where: {
         bookingId,
@@ -54,7 +91,7 @@ export class ReviewService {
       throw new AppError(status.CONFLICT, 'Review already exists for this booking');
     }
 
-    const turfId = booking.slot?.turf?.id;
+    const turfId = booking.bookingSlots[0]?.slot?.turf?.id;
     if (!turfId) {
       throw new AppError(status.BAD_REQUEST, 'Turf not found for this booking');
     }
@@ -220,6 +257,33 @@ export class ReviewService {
         },
       },
     });
+  }
+
+  async checkReviewEligibility(bookingId: string) {
+    const booking = await prisma.booking.findFirst({
+      where: { id: bookingId },
+      include: {
+        bookingSlots: {
+          include: { slot: { select: { slotDate: true, slotStatus: true, turfId: true } } },
+        },
+      },
+    });
+
+    if (!booking) {
+      return { eligible: false, reason: 'Booking not found' };
+    }
+
+    const existing = await prisma.review.findFirst({ where: { bookingId } });
+    if (existing) {
+      return { eligible: false, reason: 'Review already submitted', existingReview: existing };
+    }
+
+    const eligible = this.isBookingReviewable(booking);
+    if (!eligible) {
+      return { eligible: false, reason: 'Booking not yet completed' };
+    }
+
+    return { eligible: true, turfId: booking.bookingSlots[0]?.slot?.turfId };
   }
 
   async hide(reviewId: string) {

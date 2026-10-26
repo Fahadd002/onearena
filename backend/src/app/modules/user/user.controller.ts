@@ -41,12 +41,57 @@ export class UserController {
     });
   }
 
+  /**
+   * Lightweight user search used by the admin/manager booking flow.
+   * Searches by name, phone number, or email.
+   */
+  @Get('users/search')
+  @AuthRoles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER)
+  @UseGuards(CheckAuthGuard)
+  async search(@Res() res: Response, @Query('q') q?: string) {
+    const data = await this.service.findByNameOrPhone(q || '');
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: 'Users fetched successfully',
+      data,
+    });
+  }
+
   @Post('users')
   @AuthRoles(UserRole.SUPER_ADMIN)
   @UseGuards(CheckAuthGuard)
   async create(@Body() body: { name: string; email: string; role: UserRole }, @Res() res: Response) {
     const data = await this.service.create(body);
     sendResponse(res, { statusCode: status.CREATED, success: true, message: 'User created successfully', data });
+  }
+
+  /**
+   * Creates a phone-identified user from the admin/manager dashboard.
+   * Used when an admin books a slot on behalf of a customer that does not
+   * yet have an account. A default password is generated and
+   * `needPasswordChange` is set to `true`.
+   */
+  @Post('users/by-phone')
+  @AuthRoles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async createByPhone(
+    @Body() body: {
+      name: string;
+      phoneNumber: string;
+      email?: string | null;
+      role: UserRole;
+      defaultPassword: string;
+    },
+    @Res() res: Response,
+  ) {
+    const data = await this.service.createByPhone(body);
+    sendResponse(res, {
+      statusCode: status.CREATED,
+      success: true,
+      message: 'User created successfully',
+      data,
+    });
   }
 
   @Patch('users/:id/status')

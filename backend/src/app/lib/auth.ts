@@ -104,7 +104,7 @@ export const auth = betterAuth({
                         sendEmail({
                             to: email,
                             subject: "Password Reset OTP",
-                            templateName: "otp",
+                            templateName: "forgetPassword",
                             templateData: {
                                 name: user.name,
                                 otp,
@@ -113,7 +113,7 @@ export const auth = betterAuth({
                     }
                 }
             },
-            expiresIn: 2 * 60, // 2 minutes in seconds
+            expiresIn: 5 * 60, // 5 minutes in seconds
             otpLength: 6,
         })
     ],
@@ -131,24 +131,23 @@ export const auth = betterAuth({
         signIn: `${config.betterAuthUrl}/api/v1/auth/google/success`,
     },
 
-    trustedOrigins: [config.betterAuthUrl || "http://localhost:5000", config.frontendUrl as string],
+    trustedOrigins: [config.betterAuthUrl, config.frontendUrl as string],
 
     advanced: {
-        // disableCSRFCheck: true,
-        useSecureCookies: false,
+        useSecureCookies: config.cookieSecure,
         cookies: {
             state: {
                 attributes: {
-                    sameSite: "none",
-                    secure: true,
+                    sameSite: config.cookieSameSite,
+                    secure: config.cookieSecure,
                     httpOnly: true,
                     path: "/",
                 }
             },
             sessionToken: {
                 attributes: {
-                    sameSite: "none",
-                    secure: true,
+                    sameSite: config.cookieSameSite,
+                    secure: config.cookieSecure,
                     httpOnly: true,
                     path: "/",
                 }

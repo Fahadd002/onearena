@@ -145,8 +145,12 @@ export type FixedPeriod = (typeof FixedPeriod)[keyof typeof FixedPeriod]
 
 export const SlotSatus = {
   AVAILABLE: 'AVAILABLE',
-  RESERVED: 'RESERVED',
-  BOOKED: 'BOOKED'
+  WAITLIST: 'WAITLIST',
+  BOOKED: 'BOOKED',
+  EXPIRED: 'EXPIRED',
+  PLAYED: 'PLAYED',
+  ABANDONED: 'ABANDONED',
+  ABSENT: 'ABSENT'
 } as const
 
 export type SlotSatus = (typeof SlotSatus)[keyof typeof SlotSatus]
@@ -155,10 +159,7 @@ export type SlotSatus = (typeof SlotSatus)[keyof typeof SlotSatus]
 export const BookingStatus = {
   PREBOOKED: 'PREBOOKED',
   CONFIRMED: 'CONFIRMED',
-  KICKED_OFF: 'KICKED_OFF',
-  COMPLETED: 'COMPLETED',
-  CANCELLED: 'CANCELLED',
-  EXPIRED: 'EXPIRED'
+  CANCELLED: 'CANCELLED'
 } as const
 
 export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
@@ -184,8 +185,17 @@ export const PaymentType = {
 export type PaymentType = (typeof PaymentType)[keyof typeof PaymentType]
 
 
+export const InvoiceStatus = {
+  DRAFT: 'DRAFT',
+  PAID: 'PAID',
+  PARTIALLY_PAID: 'PARTIALLY_PAID',
+  UNPAID: 'UNPAID'
+} as const
+
+export type InvoiceStatus = (typeof InvoiceStatus)[keyof typeof InvoiceStatus]
+
+
 export const PaymentStatus = {
-  VERIFIED: 'VERIFIED',
   PROCESSING: 'PROCESSING',
   SUCCEEDED: 'SUCCEEDED',
   FAILED: 'FAILED',
@@ -201,11 +211,12 @@ export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 
 
 export const SubscriptionStatus = {
-  TRIAL: 'TRIAL',
+  FREE_TRIAL: 'FREE_TRIAL',
   ACTIVE: 'ACTIVE',
   EXPIRING: 'EXPIRING',
   EXPIRED: 'EXPIRED',
-  CANCELLED: 'CANCELLED'
+  CANCELLED: 'CANCELLED',
+  INACTIVE: 'INACTIVE'
 } as const
 
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
@@ -229,3 +240,11 @@ export const SubscriptionAction = {
 } as const
 
 export type SubscriptionAction = (typeof SubscriptionAction)[keyof typeof SubscriptionAction]
+
+
+export const FeatureType = {
+  GENERAL: 'GENERAL',
+  PREMIUM: 'PREMIUM'
+} as const
+
+export type FeatureType = (typeof FeatureType)[keyof typeof FeatureType]

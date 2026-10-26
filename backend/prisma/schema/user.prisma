@@ -1,9 +1,9 @@
 model User {
   id                 String     @id @default(uuid())
-  email              String     @unique
+  email              String?    @unique
   name               String
   image              String?
-  phoneNumber        String?
+  phoneNumber        String?    @unique
   role               UserRole   @default(USER)
   status             UserStatus @default(ACTIVE)
   emailVerified      Boolean    @default(false)
@@ -13,23 +13,25 @@ model User {
   createdAt          DateTime   @default(now())
   updatedAt          DateTime   @updatedAt
 
-  accounts      Account[]
-  bookings      Booking[]
-  sessions      Session[]
-  reviews       Review[]
-  reviewReplies ReviewReply[]
-  managedTurfs  TurfManager[]
-  ownedTurfs    Turf[]
-  ownerGallery   OwnerGalleryItem[]
-  ownerBlogs     OwnerBlog[]
-  invoices       Invoice[]
-  
+  accounts         Account[]
+  bookings         Booking[]
+  bookedForOthers  Booking[]      @relation("BookedBy")
+  sessions         Session[]
+  reviews          Review[]
+  reviewReplies    ReviewReply[]
+  managedTurfs     TurfManager[]
+  ownedTurfs       Turf[]
+
+  invoices         Invoice[]
+  slotTimeSetups   SlotTimeSetup[]
   subscriptions  Subscription?
   ownerProfile   OwnerProfile?
   managerProfile ManagerProfile?
 
+
   // Payments can be manually received/recorded by this user
-  paymentsReceived Payment[] @relation("PaymentReceivedBy")
+  paymentsReceived Payment[]      @relation("PaymentReceivedBy")
+  
 
   @@index([role])
   @@index([status])

@@ -19,19 +19,23 @@ export class RefundService {
       throw new AppError(status.FORBIDDEN, 'Not allowed');
     }
 
-    return prisma.refund.findMany({
+    const refunds = await prisma.refund.findMany({
       where,
       include: {
         booking: {
           select: {
             id: true,
             status: true,
-            slot: {
+            bookingSlots: {
               include: {
-                turf: {
-                  select: {
-                    name: true,
-                    ownerId: true,
+                slot: {
+                  include: {
+                    turf: {
+                      select: {
+                        name: true,
+                        ownerId: true,
+                      },
+                    },
                   },
                 },
               },
@@ -50,6 +54,15 @@ export class RefundService {
       },
       orderBy: { createdAt: 'desc' },
     });
+
+    return refunds.map((refund) => ({
+      ...refund,
+      booking: {
+        ...refund.booking,
+        slot: refund.booking.bookingSlots[0]?.slot ?? null,
+        slots: refund.booking.bookingSlots.map((bookingSlot) => bookingSlot.slot),
+      },
+    }));
   }
 
   async request(user: IRequestUser, bookingId: string, paymentId: string, reason?: string) {
@@ -63,12 +76,16 @@ export class RefundService {
             },
           },
         },
-        slot: {
+        bookingSlots: {
           include: {
-            turf: {
-              select: {
-                id: true,
-                ownerId: true,
+            slot: {
+              include: {
+                turf: {
+                  select: {
+                    id: true,
+                    ownerId: true,
+                  },
+                },
               },
             },
           },
@@ -124,12 +141,16 @@ export class RefundService {
         payment: true,
         booking: {
           include: {
-            slot: {
+            bookingSlots: {
               include: {
-                turf: {
-                  select: {
-                    id: true,
-                    ownerId: true,
+                slot: {
+                  include: {
+                    turf: {
+                      select: {
+                        id: true,
+                        ownerId: true,
+                      },
+                    },
                   },
                 },
               },
@@ -145,7 +166,7 @@ export class RefundService {
 
     if (
       user.role === UserRole.ADMIN &&
-      refund.booking.slot?.turf?.ownerId !== user.userId
+      refund.booking.bookingSlots[0]?.slot?.turf?.ownerId !== user.userId
     ) {
       throw new AppError(status.FORBIDDEN, 'Not allowed');
     }
@@ -178,12 +199,16 @@ export class RefundService {
       include: {
         booking: {
           include: {
-            slot: {
+            bookingSlots: {
               include: {
-                turf: {
-                  select: {
-                    id: true,
-                    ownerId: true,
+                slot: {
+                  include: {
+                    turf: {
+                      select: {
+                        id: true,
+                        ownerId: true,
+                      },
+                    },
                   },
                 },
               },
@@ -199,7 +224,7 @@ export class RefundService {
 
     if (
       user.role === UserRole.ADMIN &&
-      refund.booking.slot?.turf?.ownerId !== user.userId
+      refund.booking.bookingSlots[0]?.slot?.turf?.ownerId !== user.userId
     ) {
       throw new AppError(status.FORBIDDEN, 'Not allowed');
     }
@@ -221,12 +246,16 @@ export class RefundService {
         payment: true,
         booking: {
           include: {
-            slot: {
+            bookingSlots: {
               include: {
-                turf: {
-                  select: {
-                    id: true,
-                    ownerId: true,
+                slot: {
+                  include: {
+                    turf: {
+                      select: {
+                        id: true,
+                        ownerId: true,
+                      },
+                    },
                   },
                 },
               },
@@ -246,7 +275,7 @@ export class RefundService {
 
     if (
       user.role === UserRole.ADMIN &&
-      refund.booking.slot?.turf?.ownerId !== user.userId
+      refund.booking.bookingSlots[0]?.slot?.turf?.ownerId !== user.userId
     ) {
       throw new AppError(status.FORBIDDEN, 'Not allowed');
     }

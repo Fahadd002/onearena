@@ -30,6 +30,9 @@ export class InvoiceController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
     @Query('status') invoiceStatus?: string,
+    @Query('paymentStatus') paymentStatus?: string,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
     @Query('search') search?: string,
     @Query('sortBy') sortBy?: string,
     @Query('sortOrder') sortOrder?: string,
@@ -38,7 +41,7 @@ export class InvoiceController {
       user,
       Number(page) || 1,
       Number(limit) || 10,
-      { status: invoiceStatus, search, sortBy, sortOrder },
+      { status: invoiceStatus, paymentStatus, startDate, endDate, search, sortBy, sortOrder },
     );
     sendResponse(res, { statusCode: status.OK, success: true, message: 'Invoices fetched successfully', data });
   }

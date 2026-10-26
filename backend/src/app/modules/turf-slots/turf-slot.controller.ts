@@ -47,8 +47,7 @@ export class TurfSlotController {
   async generateSlots(
     @CurrentUser() user: IRequestUser,
     @Param('turfId') turfId: string,
-    @Body()
-    body: { days?: number },
+    @Body() body: { days?: number },
     @Res() res: Response,
   ) {
     const data = await this.turfService.generateSlots(user, turfId, body ?? {});
@@ -105,8 +104,7 @@ export class TurfSlotController {
   async updateSlot(
     @CurrentUser() user: IRequestUser,
     @Param('slotId') slotId: string,
-    @Body()
-    body: { active?: boolean; price?: number },
+    @Body() body: { active?: boolean; price?: number },
     @Res() res: Response,
   ) {
     const data = await this.turfService.updateSlot(user, slotId, body);

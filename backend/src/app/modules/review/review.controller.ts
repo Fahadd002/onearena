@@ -51,6 +51,14 @@ export class ReviewController {
     sendResponse(res, { statusCode: status.OK, success: true, message: 'Review fetched successfully', data });
   }
 
+  @Get('bookings/:bookingId/reviews/eligibility')
+  @AuthRoles(UserRole.USER, UserRole.ADMIN, UserRole.MANAGER, UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async checkEligibility(@Param('bookingId') bookingId: string, @Res() res: Response) {
+    const data = await this.service.checkReviewEligibility(bookingId);
+    sendResponse(res, { statusCode: status.OK, success: true, message: 'Eligibility checked', data });
+  }
+
   @Patch('reviews/:reviewId/hide')
   @AuthRoles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
   @UseGuards(CheckAuthGuard)

@@ -1,13 +1,12 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import cron from 'node-cron';
+import { Injectable } from '@nestjs/common';
 import status from 'http-status';
 import { Prisma } from '../../../generated/prisma/client';
-import { SubscriptionStatus, TurfStatus, UserRole } from '../../../generated/prisma/enums';
+import { PaymentMethod, SubscriptionStatus, TurfStatus, UserRole } from '../../../generated/prisma/enums';
 
 import AppError from '../../../config/errorHelpers/AppError';
+import { deleteFiles } from '../../helpers/file';
 import prisma from '../../../shared/prisma';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
-
 
 export interface TurfPayload {
   name: string;
@@ -16,20 +15,66 @@ export interface TurfPayload {
   address: string;
   latitude: number;
   longitude: number;
-  basePrice: number;
-  slotMinutes?: number;
+  defaultSlotPrice: number;
+  defaultSlotDuration?: number;
+  allowAdvancePayment?: boolean;
+  advancePaymentAmount?: number;
+  paymentPhoneNumbers?: { method: AdvancePaymentMethod; number: string }[];
+}
+
+const ADVANCE_PAYMENT_METHODS = [
+  PaymentMethod.BKASH,
+  PaymentMethod.ROKET,
+  PaymentMethod.NAGAD
+] as const;
+type AdvancePaymentMethod = (typeof ADVANCE_PAYMENT_METHODS)[number];
+const MIN_SLOT_DURATION = 30;
+const BD_MOBILE = /^(?:\+8801|01)\d{9}$/;
+
+function normalizePaymentPhoneNumbers(
+  allowAdvancePayment?: boolean,
+  numbers?: { method: string; number: string }[],
+) {
+  if (!allowAdvancePayment) return [] as Array<{ method: AdvancePaymentMethod; number: string }>;
+  const list = (numbers ?? [])
+    .filter((n) => n?.method && (n?.number ?? "").trim())
+    .map((n) => ({ method: n.method, number: n.number.replace(/[\s-]/g, "") }));
+  if (list.length === 0) {
+    throw new AppError(
+      status.BAD_REQUEST,
+      "When advance payment is enabled, at least one payment number is required",
+    );
+  }
+  const methods = new Set<string>();
+  for (const n of list) {
+    if (!ADVANCE_PAYMENT_METHODS.includes(n.method as AdvancePaymentMethod)) {
+      throw new AppError(status.BAD_REQUEST, `Unsupported payment method: ${n.method}`);
+    }
+    if (!BD_MOBILE.test(n.number)) {
+      throw new AppError(status.BAD_REQUEST, `Invalid ${n.method} number. Use a Bangladesh mobile number`);
+    }
+    if (methods.has(n.method)) {
+      throw new AppError(
+        status.BAD_REQUEST,
+        `Each payment method can only be added once: ${n.method}`,
+      );
+    }
+    methods.add(n.method);
+  }
+  return list as Array<{ method: AdvancePaymentMethod; number: string }>;
+}
+
+function validateSlotDefaults(price?: number, duration?: number) {
+  if (price !== undefined && (!Number.isFinite(price) || price <= 0)) {
+    throw new AppError(status.BAD_REQUEST, 'Default slot price must be greater than 0');
+  }
+  if (duration !== undefined && (!Number.isInteger(duration) || duration < MIN_SLOT_DURATION)) {
+    throw new AppError(status.BAD_REQUEST, `Default slot duration must be at least ${MIN_SLOT_DURATION} minutes`);
+  }
 }
 
 @Injectable()
-export class TurfService implements OnModuleInit {
-
-  onModuleInit() {
-    this.deactivateTurfsForInactiveSubscriptions().catch(() => undefined);
-    cron.schedule('0 * * * *', () => {
-      this.deactivateTurfsForInactiveSubscriptions().catch(() => undefined);
-    });
-  }
-
+export class TurfService {
   async deactivateTurfsForInactiveSubscriptions() {
     const now = new Date();
     const result = await prisma.turf.updateMany({
@@ -59,18 +104,19 @@ export class TurfService implements OnModuleInit {
 
   private validateCoordinates(payload: TurfPayload) {
     if (
-      !Number.isFinite(payload.latitude) ||  payload.latitude < -90 || payload.latitude > 90 ||
-      !Number.isFinite(payload.longitude) ||payload.longitude < -180 || payload.longitude > 180
+      !Number.isFinite(payload.latitude) || payload.latitude < -90 || payload.latitude > 90 ||
+      !Number.isFinite(payload.longitude) || payload.longitude < -180 || payload.longitude > 180
     ) {
       throw new AppError(status.BAD_REQUEST, 'Valid latitude and longitude are required');
     }
   }
-  
+
   // Turf List For Admin
   async listForAdmin(query?: {
     search?: string;
     categoryId?: string;
     status?: string;
+    facilityId?: string;
     sortBy?: string;
     sortOrder?: string;
     page?: number;
@@ -84,6 +130,9 @@ export class TurfService implements OnModuleInit {
       ...(query?.status && Object.values(TurfStatus).includes(query.status as TurfStatus)
         ? { status: query.status as TurfStatus }
         : {}),
+      ...(query?.facilityId
+        ? { facilities: { some: { facilityId: query.facilityId } } }
+        : {}),
       ...(query?.search
         ? {
           OR: [
@@ -96,7 +145,7 @@ export class TurfService implements OnModuleInit {
         : {}),
     };
 
-    const sortField = ['name', 'address', 'basePrice', 'createdAt', 'updatedAt', 'status'].includes(query?.sortBy ?? '')
+    const sortField = ['name', 'address', 'defaultSlotPrice', 'createdAt', 'updatedAt', 'status'].includes(query?.sortBy ?? '')
       ? query?.sortBy!
       : 'updatedAt';
     const sortOrder = query?.sortOrder === 'asc' ? 'asc' : 'desc';
@@ -115,7 +164,7 @@ export class TurfService implements OnModuleInit {
       }),
       prisma.turf.count({ where }),
     ]);
-    
+
     return { data, meta: { page, limit, total, totalPages: Math.ceil(total / limit) } };
   }
 
@@ -127,7 +176,8 @@ export class TurfService implements OnModuleInit {
         owner: { select: { id: true, name: true, email: true } },
         facilities: { include: { facility: true } },
         images: { orderBy: { sortOrder: 'asc' } },
-        priceRules: { orderBy: [{ dayOfWeek: 'asc' }, { startMinute: 'asc' }] },
+        priceRules: { orderBy: [{ dayOfWeek: 'asc' }] },
+        paymentPhoneNumbers: true,
         packages: { include: { facilities: { include: { facility: true } } } },
       },
     });
@@ -150,108 +200,112 @@ export class TurfService implements OnModuleInit {
     return data;
   }
 
-  async list(query: {
-    categoryId?: string;
-    minPrice?: number;
-    maxPrice?: number;
-    lat?: number;
-    lng?: number;
-    radius?: number;
-  }) {
+  async list(
+    user: IRequestUser,
+    query: {
+      area?: string;
+      categoryId?: string;
+      minPrice?: number;
+      maxPrice?: number;
+      lat?: number;
+      lng?: number;
+      radius?: number;
+      page?: number;
+      limit?: number;
+      sortBy?: string;
+      sortOrder?: "asc" | "desc";
+      date?: string;
+    }) {
+    const page = Math.max(1, query.page ?? 1);
+    const limit = Math.min(50, Math.max(1, query.limit ?? 10));
+    // console.log('User: ', user)
+    // owners with active subscription
+    const subs = await prisma.subscription.findMany({
+      where: { status: { in: [SubscriptionStatus.ACTIVE, SubscriptionStatus.FREE_TRIAL] } },
+      select: { userId: true },
+    });
+
+    // target date for slots - parse as UTC midnight for Prisma DateTime comparison
+    const targetDate = query.date ? new Date(query.date + 'T00:00:00.000Z') : new Date();
+    targetDate.setUTCHours(0, 0, 0, 0);
+
     const where: Prisma.TurfWhereInput = {
       status: TurfStatus.ACTIVE,
       categoryId: query.categoryId,
-      basePrice: {
+      slots: { some: { slotDate: { equals: targetDate }, active: true } },
+      ...(user?.role === UserRole.ADMIN ? { ownerId: user.userId } : { ownerId: { in: subs.map((s) => s.userId) } }),
+      ...(query.area?.trim()
+        ? {
+          OR: [
+            { name: { contains: query.area.trim(), mode: Prisma.QueryMode.insensitive } },
+            { address: { contains: query.area.trim(), mode: Prisma.QueryMode.insensitive } },
+          ],
+        }
+        : {}),
+      defaultSlotPrice: {
         gte: query.minPrice !== undefined ? new Prisma.Decimal(query.minPrice) : undefined,
         lte: query.maxPrice !== undefined ? new Prisma.Decimal(query.maxPrice) : undefined,
       },
     };
 
-    const turfs = await prisma.turf.findMany({
-      where,
-      include: {
-        category: true,
-        owner: { select: { id: true, name: true, image: true } },
-        images: { orderBy: { sortOrder: 'asc' } },
-        facilities: {
-          include: { facility: true },
-        },
+    const include = {
+      category: { select: { name: true } },
+      paymentPhoneNumbers: { select: { method: true, number: true } },
+      owner: { select: { id: true, name: true, image: true } },
+      images: { orderBy: { sortOrder: "asc" as const } },
+      facilities: { select: { facility: { select: { name: true } } } },
+      slots: {
+        where: { slotDate: { equals: targetDate }, active: true },
+        orderBy: { startMinute: "asc" as const },
       },
-      orderBy: { createdAt: 'desc' },
-    });
+    };
 
-    if (query.lat === undefined || query.lng === undefined) {
-      return turfs;
+
+    /* ---------- GEO ---------- */
+    if (query.lat !== undefined && query.lng !== undefined) {
+      const radius = query.radius ?? 10;
+      const turfs = await prisma.turf.findMany({ where, include });
+
+      const toRad = (d: number) => (d * Math.PI) / 180;
+
+      const nearby = turfs
+        .map((t) => {
+          const lat = Number(t.latitude);
+          const lng = Number(t.longitude);
+          const dLat = toRad(lat - query.lat!);
+          const dLng = toRad(lng - query.lng!);
+          const a =
+            Math.sin(dLat / 2) ** 2 +
+            Math.cos(toRad(query.lat!)) * Math.cos(toRad(lat)) * Math.sin(dLng / 2) ** 2;
+          return { ...t, distance: 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) };
+        })
+        .filter((t) => t.distance <= radius)
+        .sort((a, b) => a.distance - b.distance);
+
+      const total = nearby.length;
+      return {
+        data: nearby.slice((page - 1) * limit, page * limit),
+        meta: { page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) },
+      };
     }
 
-    const radiusKm = query.radius ?? 10;
-    const earthRadius = 6371;
-    const userLatitude = query.lat;
-    const userLongitude = query.lng;
+    /* ---------- NORMAL ---------- */
+    const sortField = ["createdAt", "defaultSlotPrice", "name"].includes(query.sortBy ?? "")
+      ? query.sortBy!
+      : "createdAt";
 
-    const withDistance = turfs
-      .map((turf) => {
-        if (turf.latitude === null || turf.longitude === null) {
-          return null;
-        }
+    const [data, total] = await Promise.all([
+      prisma.turf.findMany({
+        where,
+        include,
+        orderBy: { [sortField]: query.sortOrder === "asc" ? "asc" : "desc" },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      prisma.turf.count({ where }),
+    ]);
 
-        const lat = Number(turf.latitude);
-        const lng = Number(turf.longitude);
-
-        const dLat = this.toRad(lat - userLatitude);
-        const dLng = this.toRad(lng - userLongitude);
-
-        const a =
-          Math.sin(dLat / 2) ** 2 +
-          Math.cos(this.toRad(userLatitude)) * Math.cos(this.toRad(lat)) * Math.sin(dLng / 2) ** 2;
-
-        const distance = earthRadius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return { ...turf, distance };
-      })
-      .filter((turf): turf is NonNullable<typeof turf> => turf !== null)
-      .filter((turf) => turf.distance <= radiusKm)
-      .sort((a, b) => a.distance - b.distance);
-
-    return withDistance;
-  }
-
-  async getOwnerLanding(ownerId: string) {
-    const owner = await prisma.user.findFirst({
-      where: { id: ownerId, role: UserRole.ADMIN, status: 'ACTIVE' },
-      select: {
-        id: true,
-        name: true,
-        image: true,
-        ownerProfile: {
-          select: { companyName: true, address: true, businessLogo: true, bussinessEmail: true, contactNumber: true },
-        },
-        ownedTurfs: {
-          where: { status: TurfStatus.ACTIVE },
-          include: {
-            category: true,
-            images: { orderBy: { sortOrder: 'asc' } },
-            facilities: { include: { facility: true } },
-            reviews: {
-              where: { isHidden: false },
-              include: { user: { select: { id: true, name: true, image: true } } },
-              orderBy: { createdAt: 'desc' },
-              take: 8,
-            },
-          },
-          orderBy: { createdAt: 'desc' },
-        },
-        ownerGallery: { where: { active: true }, orderBy: { sortOrder: 'asc' } },
-        ownerBlogs: { where: { published: true }, orderBy: { publishedAt: 'desc' } },
-      },
-    });
-
-    if (!owner) throw new AppError(status.NOT_FOUND, 'Owner page not found');
-    return owner;
-  }
-
-  private toRad(value: number): number {
-    return (value * Math.PI) / 180;
+    return { data, meta: { page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) } };
   }
 
   async listMine(
@@ -272,7 +326,7 @@ export class TurfService implements OnModuleInit {
         }
         : {}),
     };
-    const sortField = ['name', 'address', 'basePrice', 'createdAt', 'status'].includes(query?.sortBy ?? '')
+    const sortField = ['name', 'address', 'defaultSlotPrice', 'createdAt', 'status'].includes(query?.sortBy ?? '')
       ? query?.sortBy!
       : 'createdAt';
     const sortOrder = query?.sortOrder === 'asc' ? 'asc' : 'desc';
@@ -301,14 +355,15 @@ export class TurfService implements OnModuleInit {
     return prisma.turf.findUnique({ where: { id: turfId }, include: { facilities: { include: { facility: true } } } });
   }
 
-  async findMine(owner: IRequestUser, id: string) {
+  async findMineById(owner: IRequestUser, id: string) {
     const turf = await prisma.turf.findFirst({
       where: { id, ownerId: owner.userId },
       include: {
         category: true,
         facilities: { include: { facility: true } },
         images: { orderBy: { sortOrder: 'asc' } },
-        priceRules: { orderBy: [{ dayOfWeek: 'asc' }, { startMinute: 'asc' }] },
+        priceRules: { orderBy: [{ dayOfWeek: 'asc' }] },
+        paymentPhoneNumbers: true,
         packages: { include: { facilities: { include: { facility: true } } } },
       },
     });
@@ -317,11 +372,10 @@ export class TurfService implements OnModuleInit {
     return turf;
   }
 
-  async findActive(id: string) {
+  async findActiveTurfById(id: string) {
     const turf = await prisma.turf.findFirst({
       where: {
         id,
-        status: TurfStatus.ACTIVE,
       },
       include: {
         category: true,
@@ -331,13 +385,11 @@ export class TurfService implements OnModuleInit {
         images: {
           orderBy: { sortOrder: 'asc' },
         },
+        paymentPhoneNumbers: { select: { method: true, number: true } },
         packages: {
           where: { active: true },
           include: { facilities: { include: { facility: true } } },
-        },
-        priceRules: {
-          where: { active: true },
-        },
+        }
       },
     });
 
@@ -361,7 +413,7 @@ export class TurfService implements OnModuleInit {
       throw new AppError(status.FORBIDDEN, 'An active subscription is required before creating a turf');
     }
     if (
-      (subscription.status !== SubscriptionStatus.TRIAL &&
+      (subscription.status !== SubscriptionStatus.FREE_TRIAL &&
         subscription.status !== SubscriptionStatus.ACTIVE &&
         subscription.status !== SubscriptionStatus.EXPIRING) ||
       subscription.endDate <= new Date()
@@ -381,6 +433,12 @@ export class TurfService implements OnModuleInit {
     }
 
     this.validateCoordinates(payload);
+    validateSlotDefaults(payload.defaultSlotPrice, payload.defaultSlotDuration);
+
+    const phoneNumbers = normalizePaymentPhoneNumbers(
+      payload.allowAdvancePayment,
+      payload.paymentPhoneNumbers,
+    );
 
     const data = await prisma.turf.create({
       data: {
@@ -389,31 +447,16 @@ export class TurfService implements OnModuleInit {
         name: payload.name,
         description: payload.description,
         address: payload.address,
+        allowAdvancePayment: payload.allowAdvancePayment ?? false,
+        advancePaymentAmount: new Prisma.Decimal(payload.advancePaymentAmount ?? 0),
         latitude: new Prisma.Decimal(payload.latitude),
         longitude: new Prisma.Decimal(payload.longitude),
-        basePrice: new Prisma.Decimal(payload.basePrice),
-        slotMinutes: payload.slotMinutes ?? 60
+        defaultSlotDuration: payload.defaultSlotDuration ?? 90,
+        defaultSlotPrice: new Prisma.Decimal(payload.defaultSlotPrice),
+        paymentPhoneNumbers: phoneNumbers.length ? { create: phoneNumbers } : undefined,
       },
     });
 
-    return data;
-  }
-
-  async createForAdmin(payload: TurfPayload) {
-    this.validateCoordinates(payload);
-    const data = await prisma.turf.create({
-      data: {
-        ownerId: (await prisma.user.findFirst({ where: { role: UserRole.ADMIN }, select: { id: true } }))?.id ?? '',
-        categoryId: payload.categoryId,
-        name: payload.name,
-        description: payload.description,
-        address: payload.address,
-        latitude: new Prisma.Decimal(payload.latitude),
-        longitude: new Prisma.Decimal(payload.longitude),
-        basePrice: new Prisma.Decimal(payload.basePrice),
-        slotMinutes: payload.slotMinutes ?? 60
-      },
-    });
     return data;
   }
 
@@ -426,18 +469,34 @@ export class TurfService implements OnModuleInit {
       throw new AppError(status.NOT_FOUND, 'Turf not found');
     }
 
-    return prisma.turf.update({
-      where: { id },
-      data: {
-        name: payload.name,
-        categoryId: payload.categoryId,
-        description: payload.description,
-        address: payload.address,
-        slotMinutes: payload.slotMinutes,
-        basePrice: payload.basePrice !== undefined ? new Prisma.Decimal(payload.basePrice) : undefined,
-        ...(payload.latitude === undefined ? {} : { latitude: new Prisma.Decimal(payload.latitude) }),
-        ...(payload.longitude === undefined ? {} : { longitude: new Prisma.Decimal(payload.longitude) }),
-      },
+    validateSlotDefaults(payload.defaultSlotPrice, payload.defaultSlotDuration);
+
+    return prisma.$transaction(async (tx) => {
+      if (payload.allowAdvancePayment !== undefined || payload.paymentPhoneNumbers !== undefined) {
+        const allow = payload.allowAdvancePayment ?? turf.allowAdvancePayment;
+        const numbers = normalizePaymentPhoneNumbers(allow, payload.paymentPhoneNumbers);
+        await tx.paymentPhoneNumber.deleteMany({ where: { turfId: id } });
+        if (numbers.length) {
+          await tx.paymentPhoneNumber.createMany({ data: numbers.map((n) => ({ ...n, turfId: id })) });
+        }
+      }
+
+      return tx.turf.update({
+        where: { id },
+        data: {
+          name: payload.name,
+          categoryId: payload.categoryId,
+          description: payload.description,
+          address: payload.address,
+          allowAdvancePayment: payload.allowAdvancePayment,
+          advancePaymentAmount: payload.advancePaymentAmount !== undefined ? new Prisma.Decimal(payload.advancePaymentAmount) : undefined,
+          defaultSlotDuration: payload.defaultSlotDuration,
+          defaultSlotPrice: payload.defaultSlotPrice !== undefined ? new Prisma.Decimal(payload.defaultSlotPrice) : undefined,
+          ...(payload.latitude === undefined ? {} : { latitude: new Prisma.Decimal(payload.latitude) }),
+          ...(payload.longitude === undefined ? {} : { longitude: new Prisma.Decimal(payload.longitude) }),
+        },
+        include: { paymentPhoneNumbers: true },
+      });
     });
   }
 
@@ -450,12 +509,26 @@ export class TurfService implements OnModuleInit {
       throw new AppError(status.NOT_FOUND, 'Turf not found');
     }
 
+    await this.deleteTurfImageFiles(id);
+
     return prisma.turf.delete({ where: { id } });
   }
 
   async deleteForAdmin(id: string) {
     const turf = await prisma.turf.findUnique({ where: { id } });
     if (!turf) throw new AppError(status.NOT_FOUND, 'Turf not found');
+
+    await this.deleteTurfImageFiles(id);
+
     return prisma.turf.delete({ where: { id } });
+  }
+
+  private async deleteTurfImageFiles(turfId: string) {
+    const images = await prisma.turfImage.findMany({
+      where: { turfId },
+      select: { url: true },
+    });
+
+    deleteFiles(images.map((image) => image.url));
   }
 }

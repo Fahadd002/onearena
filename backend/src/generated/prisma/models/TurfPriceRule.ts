@@ -28,28 +28,21 @@ export type AggregateTurfPriceRule = {
 
 export type TurfPriceRuleAvgAggregateOutputType = {
   dayOfWeek: number | null
-  startMinute: number | null
-  endMinute: number | null
   price: runtime.Decimal | null
 }
 
 export type TurfPriceRuleSumAggregateOutputType = {
   dayOfWeek: number | null
-  startMinute: number | null
-  endMinute: number | null
   price: runtime.Decimal | null
 }
 
 export type TurfPriceRuleMinAggregateOutputType = {
   id: string | null
   turfId: string | null
+  slotTimeSetupId: string | null
   dayOfWeek: number | null
-  startMinute: number | null
-  endMinute: number | null
   price: runtime.Decimal | null
   active: boolean | null
-  startDate: Date | null
-  endDate: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -57,13 +50,10 @@ export type TurfPriceRuleMinAggregateOutputType = {
 export type TurfPriceRuleMaxAggregateOutputType = {
   id: string | null
   turfId: string | null
+  slotTimeSetupId: string | null
   dayOfWeek: number | null
-  startMinute: number | null
-  endMinute: number | null
   price: runtime.Decimal | null
   active: boolean | null
-  startDate: Date | null
-  endDate: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -71,13 +61,10 @@ export type TurfPriceRuleMaxAggregateOutputType = {
 export type TurfPriceRuleCountAggregateOutputType = {
   id: number
   turfId: number
+  slotTimeSetupId: number
   dayOfWeek: number
-  startMinute: number
-  endMinute: number
   price: number
   active: number
-  startDate: number
-  endDate: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -86,28 +73,21 @@ export type TurfPriceRuleCountAggregateOutputType = {
 
 export type TurfPriceRuleAvgAggregateInputType = {
   dayOfWeek?: true
-  startMinute?: true
-  endMinute?: true
   price?: true
 }
 
 export type TurfPriceRuleSumAggregateInputType = {
   dayOfWeek?: true
-  startMinute?: true
-  endMinute?: true
   price?: true
 }
 
 export type TurfPriceRuleMinAggregateInputType = {
   id?: true
   turfId?: true
+  slotTimeSetupId?: true
   dayOfWeek?: true
-  startMinute?: true
-  endMinute?: true
   price?: true
   active?: true
-  startDate?: true
-  endDate?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -115,13 +95,10 @@ export type TurfPriceRuleMinAggregateInputType = {
 export type TurfPriceRuleMaxAggregateInputType = {
   id?: true
   turfId?: true
+  slotTimeSetupId?: true
   dayOfWeek?: true
-  startMinute?: true
-  endMinute?: true
   price?: true
   active?: true
-  startDate?: true
-  endDate?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -129,13 +106,10 @@ export type TurfPriceRuleMaxAggregateInputType = {
 export type TurfPriceRuleCountAggregateInputType = {
   id?: true
   turfId?: true
+  slotTimeSetupId?: true
   dayOfWeek?: true
-  startMinute?: true
-  endMinute?: true
   price?: true
   active?: true
-  startDate?: true
-  endDate?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -230,13 +204,10 @@ export type TurfPriceRuleGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type TurfPriceRuleGroupByOutputType = {
   id: string
   turfId: string
+  slotTimeSetupId: string
   dayOfWeek: number
-  startMinute: number
-  endMinute: number
   price: runtime.Decimal
   active: boolean
-  startDate: Date
-  endDate: Date
   createdAt: Date
   updatedAt: Date
   _count: TurfPriceRuleCountAggregateOutputType | null
@@ -267,62 +238,53 @@ export type TurfPriceRuleWhereInput = {
   NOT?: Prisma.TurfPriceRuleWhereInput | Prisma.TurfPriceRuleWhereInput[]
   id?: Prisma.StringFilter<"TurfPriceRule"> | string
   turfId?: Prisma.StringFilter<"TurfPriceRule"> | string
+  slotTimeSetupId?: Prisma.StringFilter<"TurfPriceRule"> | string
   dayOfWeek?: Prisma.IntFilter<"TurfPriceRule"> | number
-  startMinute?: Prisma.IntFilter<"TurfPriceRule"> | number
-  endMinute?: Prisma.IntFilter<"TurfPriceRule"> | number
   price?: Prisma.DecimalFilter<"TurfPriceRule"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFilter<"TurfPriceRule"> | boolean
-  startDate?: Prisma.DateTimeFilter<"TurfPriceRule"> | Date | string
-  endDate?: Prisma.DateTimeFilter<"TurfPriceRule"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"TurfPriceRule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TurfPriceRule"> | Date | string
+  slotTimeSetup?: Prisma.XOR<Prisma.SlotTimeSetupScalarRelationFilter, Prisma.SlotTimeSetupWhereInput>
   turf?: Prisma.XOR<Prisma.TurfScalarRelationFilter, Prisma.TurfWhereInput>
 }
 
 export type TurfPriceRuleOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   turfId?: Prisma.SortOrder
+  slotTimeSetupId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startMinute?: Prisma.SortOrder
-  endMinute?: Prisma.SortOrder
   price?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  startDate?: Prisma.SortOrder
-  endDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  slotTimeSetup?: Prisma.SlotTimeSetupOrderByWithRelationInput
   turf?: Prisma.TurfOrderByWithRelationInput
 }
 
 export type TurfPriceRuleWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  turfId_dayOfWeek_startDate_endDate_startMinute_endMinute?: Prisma.TurfPriceRuleTurfIdDayOfWeekStartDateEndDateStartMinuteEndMinuteCompoundUniqueInput
+  turfId_dayOfWeek_slotTimeSetupId?: Prisma.TurfPriceRuleTurfIdDayOfWeekSlotTimeSetupIdCompoundUniqueInput
   AND?: Prisma.TurfPriceRuleWhereInput | Prisma.TurfPriceRuleWhereInput[]
   OR?: Prisma.TurfPriceRuleWhereInput[]
   NOT?: Prisma.TurfPriceRuleWhereInput | Prisma.TurfPriceRuleWhereInput[]
   turfId?: Prisma.StringFilter<"TurfPriceRule"> | string
+  slotTimeSetupId?: Prisma.StringFilter<"TurfPriceRule"> | string
   dayOfWeek?: Prisma.IntFilter<"TurfPriceRule"> | number
-  startMinute?: Prisma.IntFilter<"TurfPriceRule"> | number
-  endMinute?: Prisma.IntFilter<"TurfPriceRule"> | number
   price?: Prisma.DecimalFilter<"TurfPriceRule"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFilter<"TurfPriceRule"> | boolean
-  startDate?: Prisma.DateTimeFilter<"TurfPriceRule"> | Date | string
-  endDate?: Prisma.DateTimeFilter<"TurfPriceRule"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"TurfPriceRule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TurfPriceRule"> | Date | string
+  slotTimeSetup?: Prisma.XOR<Prisma.SlotTimeSetupScalarRelationFilter, Prisma.SlotTimeSetupWhereInput>
   turf?: Prisma.XOR<Prisma.TurfScalarRelationFilter, Prisma.TurfWhereInput>
-}, "id" | "turfId_dayOfWeek_startDate_endDate_startMinute_endMinute">
+}, "id" | "turfId_dayOfWeek_slotTimeSetupId">
 
 export type TurfPriceRuleOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   turfId?: Prisma.SortOrder
+  slotTimeSetupId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startMinute?: Prisma.SortOrder
-  endMinute?: Prisma.SortOrder
   price?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  startDate?: Prisma.SortOrder
-  endDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TurfPriceRuleCountOrderByAggregateInput
@@ -338,13 +300,10 @@ export type TurfPriceRuleScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TurfPriceRuleScalarWhereWithAggregatesInput | Prisma.TurfPriceRuleScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"TurfPriceRule"> | string
   turfId?: Prisma.StringWithAggregatesFilter<"TurfPriceRule"> | string
+  slotTimeSetupId?: Prisma.StringWithAggregatesFilter<"TurfPriceRule"> | string
   dayOfWeek?: Prisma.IntWithAggregatesFilter<"TurfPriceRule"> | number
-  startMinute?: Prisma.IntWithAggregatesFilter<"TurfPriceRule"> | number
-  endMinute?: Prisma.IntWithAggregatesFilter<"TurfPriceRule"> | number
   price?: Prisma.DecimalWithAggregatesFilter<"TurfPriceRule"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolWithAggregatesFilter<"TurfPriceRule"> | boolean
-  startDate?: Prisma.DateTimeWithAggregatesFilter<"TurfPriceRule"> | Date | string
-  endDate?: Prisma.DateTimeWithAggregatesFilter<"TurfPriceRule"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TurfPriceRule"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TurfPriceRule"> | Date | string
 }
@@ -352,27 +311,21 @@ export type TurfPriceRuleScalarWhereWithAggregatesInput = {
 export type TurfPriceRuleCreateInput = {
   id?: string
   dayOfWeek: number
-  startMinute: number
-  endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
-  startDate: Date | string
-  endDate: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  slotTimeSetup: Prisma.SlotTimeSetupCreateNestedOneWithoutTurfPriceRulesInput
   turf: Prisma.TurfCreateNestedOneWithoutPriceRulesInput
 }
 
 export type TurfPriceRuleUncheckedCreateInput = {
   id?: string
   turfId: string
+  slotTimeSetupId: string
   dayOfWeek: number
-  startMinute: number
-  endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
-  startDate: Date | string
-  endDate: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -380,27 +333,21 @@ export type TurfPriceRuleUncheckedCreateInput = {
 export type TurfPriceRuleUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinute?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinute?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slotTimeSetup?: Prisma.SlotTimeSetupUpdateOneRequiredWithoutTurfPriceRulesNestedInput
   turf?: Prisma.TurfUpdateOneRequiredWithoutPriceRulesNestedInput
 }
 
 export type TurfPriceRuleUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   turfId?: Prisma.StringFieldUpdateOperationsInput | string
+  slotTimeSetupId?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinute?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinute?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -408,13 +355,10 @@ export type TurfPriceRuleUncheckedUpdateInput = {
 export type TurfPriceRuleCreateManyInput = {
   id?: string
   turfId: string
+  slotTimeSetupId: string
   dayOfWeek: number
-  startMinute: number
-  endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
-  startDate: Date | string
-  endDate: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -422,12 +366,8 @@ export type TurfPriceRuleCreateManyInput = {
 export type TurfPriceRuleUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinute?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinute?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -435,13 +375,10 @@ export type TurfPriceRuleUpdateManyMutationInput = {
 export type TurfPriceRuleUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   turfId?: Prisma.StringFieldUpdateOperationsInput | string
+  slotTimeSetupId?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinute?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinute?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -456,46 +393,35 @@ export type TurfPriceRuleOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type TurfPriceRuleTurfIdDayOfWeekStartDateEndDateStartMinuteEndMinuteCompoundUniqueInput = {
+export type TurfPriceRuleTurfIdDayOfWeekSlotTimeSetupIdCompoundUniqueInput = {
   turfId: string
   dayOfWeek: number
-  startDate: Date | string
-  endDate: Date | string
-  startMinute: number
-  endMinute: number
+  slotTimeSetupId: string
 }
 
 export type TurfPriceRuleCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   turfId?: Prisma.SortOrder
+  slotTimeSetupId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startMinute?: Prisma.SortOrder
-  endMinute?: Prisma.SortOrder
   price?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  startDate?: Prisma.SortOrder
-  endDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TurfPriceRuleAvgOrderByAggregateInput = {
   dayOfWeek?: Prisma.SortOrder
-  startMinute?: Prisma.SortOrder
-  endMinute?: Prisma.SortOrder
   price?: Prisma.SortOrder
 }
 
 export type TurfPriceRuleMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   turfId?: Prisma.SortOrder
+  slotTimeSetupId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startMinute?: Prisma.SortOrder
-  endMinute?: Prisma.SortOrder
   price?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  startDate?: Prisma.SortOrder
-  endDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -503,21 +429,16 @@ export type TurfPriceRuleMaxOrderByAggregateInput = {
 export type TurfPriceRuleMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   turfId?: Prisma.SortOrder
+  slotTimeSetupId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startMinute?: Prisma.SortOrder
-  endMinute?: Prisma.SortOrder
   price?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  startDate?: Prisma.SortOrder
-  endDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TurfPriceRuleSumOrderByAggregateInput = {
   dayOfWeek?: Prisma.SortOrder
-  startMinute?: Prisma.SortOrder
-  endMinute?: Prisma.SortOrder
   price?: Prisma.SortOrder
 }
 
@@ -563,28 +484,64 @@ export type TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput = {
   deleteMany?: Prisma.TurfPriceRuleScalarWhereInput | Prisma.TurfPriceRuleScalarWhereInput[]
 }
 
+export type TurfPriceRuleCreateNestedManyWithoutSlotTimeSetupInput = {
+  create?: Prisma.XOR<Prisma.TurfPriceRuleCreateWithoutSlotTimeSetupInput, Prisma.TurfPriceRuleUncheckedCreateWithoutSlotTimeSetupInput> | Prisma.TurfPriceRuleCreateWithoutSlotTimeSetupInput[] | Prisma.TurfPriceRuleUncheckedCreateWithoutSlotTimeSetupInput[]
+  connectOrCreate?: Prisma.TurfPriceRuleCreateOrConnectWithoutSlotTimeSetupInput | Prisma.TurfPriceRuleCreateOrConnectWithoutSlotTimeSetupInput[]
+  createMany?: Prisma.TurfPriceRuleCreateManySlotTimeSetupInputEnvelope
+  connect?: Prisma.TurfPriceRuleWhereUniqueInput | Prisma.TurfPriceRuleWhereUniqueInput[]
+}
+
+export type TurfPriceRuleUncheckedCreateNestedManyWithoutSlotTimeSetupInput = {
+  create?: Prisma.XOR<Prisma.TurfPriceRuleCreateWithoutSlotTimeSetupInput, Prisma.TurfPriceRuleUncheckedCreateWithoutSlotTimeSetupInput> | Prisma.TurfPriceRuleCreateWithoutSlotTimeSetupInput[] | Prisma.TurfPriceRuleUncheckedCreateWithoutSlotTimeSetupInput[]
+  connectOrCreate?: Prisma.TurfPriceRuleCreateOrConnectWithoutSlotTimeSetupInput | Prisma.TurfPriceRuleCreateOrConnectWithoutSlotTimeSetupInput[]
+  createMany?: Prisma.TurfPriceRuleCreateManySlotTimeSetupInputEnvelope
+  connect?: Prisma.TurfPriceRuleWhereUniqueInput | Prisma.TurfPriceRuleWhereUniqueInput[]
+}
+
+export type TurfPriceRuleUpdateManyWithoutSlotTimeSetupNestedInput = {
+  create?: Prisma.XOR<Prisma.TurfPriceRuleCreateWithoutSlotTimeSetupInput, Prisma.TurfPriceRuleUncheckedCreateWithoutSlotTimeSetupInput> | Prisma.TurfPriceRuleCreateWithoutSlotTimeSetupInput[] | Prisma.TurfPriceRuleUncheckedCreateWithoutSlotTimeSetupInput[]
+  connectOrCreate?: Prisma.TurfPriceRuleCreateOrConnectWithoutSlotTimeSetupInput | Prisma.TurfPriceRuleCreateOrConnectWithoutSlotTimeSetupInput[]
+  upsert?: Prisma.TurfPriceRuleUpsertWithWhereUniqueWithoutSlotTimeSetupInput | Prisma.TurfPriceRuleUpsertWithWhereUniqueWithoutSlotTimeSetupInput[]
+  createMany?: Prisma.TurfPriceRuleCreateManySlotTimeSetupInputEnvelope
+  set?: Prisma.TurfPriceRuleWhereUniqueInput | Prisma.TurfPriceRuleWhereUniqueInput[]
+  disconnect?: Prisma.TurfPriceRuleWhereUniqueInput | Prisma.TurfPriceRuleWhereUniqueInput[]
+  delete?: Prisma.TurfPriceRuleWhereUniqueInput | Prisma.TurfPriceRuleWhereUniqueInput[]
+  connect?: Prisma.TurfPriceRuleWhereUniqueInput | Prisma.TurfPriceRuleWhereUniqueInput[]
+  update?: Prisma.TurfPriceRuleUpdateWithWhereUniqueWithoutSlotTimeSetupInput | Prisma.TurfPriceRuleUpdateWithWhereUniqueWithoutSlotTimeSetupInput[]
+  updateMany?: Prisma.TurfPriceRuleUpdateManyWithWhereWithoutSlotTimeSetupInput | Prisma.TurfPriceRuleUpdateManyWithWhereWithoutSlotTimeSetupInput[]
+  deleteMany?: Prisma.TurfPriceRuleScalarWhereInput | Prisma.TurfPriceRuleScalarWhereInput[]
+}
+
+export type TurfPriceRuleUncheckedUpdateManyWithoutSlotTimeSetupNestedInput = {
+  create?: Prisma.XOR<Prisma.TurfPriceRuleCreateWithoutSlotTimeSetupInput, Prisma.TurfPriceRuleUncheckedCreateWithoutSlotTimeSetupInput> | Prisma.TurfPriceRuleCreateWithoutSlotTimeSetupInput[] | Prisma.TurfPriceRuleUncheckedCreateWithoutSlotTimeSetupInput[]
+  connectOrCreate?: Prisma.TurfPriceRuleCreateOrConnectWithoutSlotTimeSetupInput | Prisma.TurfPriceRuleCreateOrConnectWithoutSlotTimeSetupInput[]
+  upsert?: Prisma.TurfPriceRuleUpsertWithWhereUniqueWithoutSlotTimeSetupInput | Prisma.TurfPriceRuleUpsertWithWhereUniqueWithoutSlotTimeSetupInput[]
+  createMany?: Prisma.TurfPriceRuleCreateManySlotTimeSetupInputEnvelope
+  set?: Prisma.TurfPriceRuleWhereUniqueInput | Prisma.TurfPriceRuleWhereUniqueInput[]
+  disconnect?: Prisma.TurfPriceRuleWhereUniqueInput | Prisma.TurfPriceRuleWhereUniqueInput[]
+  delete?: Prisma.TurfPriceRuleWhereUniqueInput | Prisma.TurfPriceRuleWhereUniqueInput[]
+  connect?: Prisma.TurfPriceRuleWhereUniqueInput | Prisma.TurfPriceRuleWhereUniqueInput[]
+  update?: Prisma.TurfPriceRuleUpdateWithWhereUniqueWithoutSlotTimeSetupInput | Prisma.TurfPriceRuleUpdateWithWhereUniqueWithoutSlotTimeSetupInput[]
+  updateMany?: Prisma.TurfPriceRuleUpdateManyWithWhereWithoutSlotTimeSetupInput | Prisma.TurfPriceRuleUpdateManyWithWhereWithoutSlotTimeSetupInput[]
+  deleteMany?: Prisma.TurfPriceRuleScalarWhereInput | Prisma.TurfPriceRuleScalarWhereInput[]
+}
+
 export type TurfPriceRuleCreateWithoutTurfInput = {
   id?: string
   dayOfWeek: number
-  startMinute: number
-  endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
-  startDate: Date | string
-  endDate: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  slotTimeSetup: Prisma.SlotTimeSetupCreateNestedOneWithoutTurfPriceRulesInput
 }
 
 export type TurfPriceRuleUncheckedCreateWithoutTurfInput = {
   id?: string
+  slotTimeSetupId: string
   dayOfWeek: number
-  startMinute: number
-  endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
-  startDate: Date | string
-  endDate: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -621,26 +578,66 @@ export type TurfPriceRuleScalarWhereInput = {
   NOT?: Prisma.TurfPriceRuleScalarWhereInput | Prisma.TurfPriceRuleScalarWhereInput[]
   id?: Prisma.StringFilter<"TurfPriceRule"> | string
   turfId?: Prisma.StringFilter<"TurfPriceRule"> | string
+  slotTimeSetupId?: Prisma.StringFilter<"TurfPriceRule"> | string
   dayOfWeek?: Prisma.IntFilter<"TurfPriceRule"> | number
-  startMinute?: Prisma.IntFilter<"TurfPriceRule"> | number
-  endMinute?: Prisma.IntFilter<"TurfPriceRule"> | number
   price?: Prisma.DecimalFilter<"TurfPriceRule"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFilter<"TurfPriceRule"> | boolean
-  startDate?: Prisma.DateTimeFilter<"TurfPriceRule"> | Date | string
-  endDate?: Prisma.DateTimeFilter<"TurfPriceRule"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"TurfPriceRule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TurfPriceRule"> | Date | string
 }
 
-export type TurfPriceRuleCreateManyTurfInput = {
+export type TurfPriceRuleCreateWithoutSlotTimeSetupInput = {
   id?: string
   dayOfWeek: number
-  startMinute: number
-  endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
-  startDate: Date | string
-  endDate: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  turf: Prisma.TurfCreateNestedOneWithoutPriceRulesInput
+}
+
+export type TurfPriceRuleUncheckedCreateWithoutSlotTimeSetupInput = {
+  id?: string
+  turfId: string
+  dayOfWeek: number
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TurfPriceRuleCreateOrConnectWithoutSlotTimeSetupInput = {
+  where: Prisma.TurfPriceRuleWhereUniqueInput
+  create: Prisma.XOR<Prisma.TurfPriceRuleCreateWithoutSlotTimeSetupInput, Prisma.TurfPriceRuleUncheckedCreateWithoutSlotTimeSetupInput>
+}
+
+export type TurfPriceRuleCreateManySlotTimeSetupInputEnvelope = {
+  data: Prisma.TurfPriceRuleCreateManySlotTimeSetupInput | Prisma.TurfPriceRuleCreateManySlotTimeSetupInput[]
+  skipDuplicates?: boolean
+}
+
+export type TurfPriceRuleUpsertWithWhereUniqueWithoutSlotTimeSetupInput = {
+  where: Prisma.TurfPriceRuleWhereUniqueInput
+  update: Prisma.XOR<Prisma.TurfPriceRuleUpdateWithoutSlotTimeSetupInput, Prisma.TurfPriceRuleUncheckedUpdateWithoutSlotTimeSetupInput>
+  create: Prisma.XOR<Prisma.TurfPriceRuleCreateWithoutSlotTimeSetupInput, Prisma.TurfPriceRuleUncheckedCreateWithoutSlotTimeSetupInput>
+}
+
+export type TurfPriceRuleUpdateWithWhereUniqueWithoutSlotTimeSetupInput = {
+  where: Prisma.TurfPriceRuleWhereUniqueInput
+  data: Prisma.XOR<Prisma.TurfPriceRuleUpdateWithoutSlotTimeSetupInput, Prisma.TurfPriceRuleUncheckedUpdateWithoutSlotTimeSetupInput>
+}
+
+export type TurfPriceRuleUpdateManyWithWhereWithoutSlotTimeSetupInput = {
+  where: Prisma.TurfPriceRuleScalarWhereInput
+  data: Prisma.XOR<Prisma.TurfPriceRuleUpdateManyMutationInput, Prisma.TurfPriceRuleUncheckedUpdateManyWithoutSlotTimeSetupInput>
+}
+
+export type TurfPriceRuleCreateManyTurfInput = {
+  id?: string
+  slotTimeSetupId: string
+  dayOfWeek: number
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -648,38 +645,69 @@ export type TurfPriceRuleCreateManyTurfInput = {
 export type TurfPriceRuleUpdateWithoutTurfInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinute?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinute?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slotTimeSetup?: Prisma.SlotTimeSetupUpdateOneRequiredWithoutTurfPriceRulesNestedInput
 }
 
 export type TurfPriceRuleUncheckedUpdateWithoutTurfInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slotTimeSetupId?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinute?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinute?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TurfPriceRuleUncheckedUpdateManyWithoutTurfInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slotTimeSetupId?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinute?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinute?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TurfPriceRuleCreateManySlotTimeSetupInput = {
+  id?: string
+  turfId: string
+  dayOfWeek: number
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TurfPriceRuleUpdateWithoutSlotTimeSetupInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  turf?: Prisma.TurfUpdateOneRequiredWithoutPriceRulesNestedInput
+}
+
+export type TurfPriceRuleUncheckedUpdateWithoutSlotTimeSetupInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  turfId?: Prisma.StringFieldUpdateOperationsInput | string
+  dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TurfPriceRuleUncheckedUpdateManyWithoutSlotTimeSetupInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  turfId?: Prisma.StringFieldUpdateOperationsInput | string
+  dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -689,88 +717,80 @@ export type TurfPriceRuleUncheckedUpdateManyWithoutTurfInput = {
 export type TurfPriceRuleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   turfId?: boolean
+  slotTimeSetupId?: boolean
   dayOfWeek?: boolean
-  startMinute?: boolean
-  endMinute?: boolean
   price?: boolean
   active?: boolean
-  startDate?: boolean
-  endDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  slotTimeSetup?: boolean | Prisma.SlotTimeSetupDefaultArgs<ExtArgs>
   turf?: boolean | Prisma.TurfDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["turfPriceRule"]>
 
 export type TurfPriceRuleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   turfId?: boolean
+  slotTimeSetupId?: boolean
   dayOfWeek?: boolean
-  startMinute?: boolean
-  endMinute?: boolean
   price?: boolean
   active?: boolean
-  startDate?: boolean
-  endDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  slotTimeSetup?: boolean | Prisma.SlotTimeSetupDefaultArgs<ExtArgs>
   turf?: boolean | Prisma.TurfDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["turfPriceRule"]>
 
 export type TurfPriceRuleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   turfId?: boolean
+  slotTimeSetupId?: boolean
   dayOfWeek?: boolean
-  startMinute?: boolean
-  endMinute?: boolean
   price?: boolean
   active?: boolean
-  startDate?: boolean
-  endDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  slotTimeSetup?: boolean | Prisma.SlotTimeSetupDefaultArgs<ExtArgs>
   turf?: boolean | Prisma.TurfDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["turfPriceRule"]>
 
 export type TurfPriceRuleSelectScalar = {
   id?: boolean
   turfId?: boolean
+  slotTimeSetupId?: boolean
   dayOfWeek?: boolean
-  startMinute?: boolean
-  endMinute?: boolean
   price?: boolean
   active?: boolean
-  startDate?: boolean
-  endDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TurfPriceRuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "turfId" | "dayOfWeek" | "startMinute" | "endMinute" | "price" | "active" | "startDate" | "endDate" | "createdAt" | "updatedAt", ExtArgs["result"]["turfPriceRule"]>
+export type TurfPriceRuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "turfId" | "slotTimeSetupId" | "dayOfWeek" | "price" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["turfPriceRule"]>
 export type TurfPriceRuleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  slotTimeSetup?: boolean | Prisma.SlotTimeSetupDefaultArgs<ExtArgs>
   turf?: boolean | Prisma.TurfDefaultArgs<ExtArgs>
 }
 export type TurfPriceRuleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  slotTimeSetup?: boolean | Prisma.SlotTimeSetupDefaultArgs<ExtArgs>
   turf?: boolean | Prisma.TurfDefaultArgs<ExtArgs>
 }
 export type TurfPriceRuleIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  slotTimeSetup?: boolean | Prisma.SlotTimeSetupDefaultArgs<ExtArgs>
   turf?: boolean | Prisma.TurfDefaultArgs<ExtArgs>
 }
 
 export type $TurfPriceRulePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TurfPriceRule"
   objects: {
+    slotTimeSetup: Prisma.$SlotTimeSetupPayload<ExtArgs>
     turf: Prisma.$TurfPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     turfId: string
+    slotTimeSetupId: string
     dayOfWeek: number
-    startMinute: number
-    endMinute: number
     price: runtime.Decimal
     active: boolean
-    startDate: Date
-    endDate: Date
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["turfPriceRule"]>
@@ -1167,6 +1187,7 @@ readonly fields: TurfPriceRuleFieldRefs;
  */
 export interface Prisma__TurfPriceRuleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  slotTimeSetup<T extends Prisma.SlotTimeSetupDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SlotTimeSetupDefaultArgs<ExtArgs>>): Prisma.Prisma__SlotTimeSetupClient<runtime.Types.Result.GetResult<Prisma.$SlotTimeSetupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   turf<T extends Prisma.TurfDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TurfDefaultArgs<ExtArgs>>): Prisma.Prisma__TurfClient<runtime.Types.Result.GetResult<Prisma.$TurfPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1199,13 +1220,10 @@ export interface Prisma__TurfPriceRuleClient<T, Null = never, ExtArgs extends ru
 export interface TurfPriceRuleFieldRefs {
   readonly id: Prisma.FieldRef<"TurfPriceRule", 'String'>
   readonly turfId: Prisma.FieldRef<"TurfPriceRule", 'String'>
+  readonly slotTimeSetupId: Prisma.FieldRef<"TurfPriceRule", 'String'>
   readonly dayOfWeek: Prisma.FieldRef<"TurfPriceRule", 'Int'>
-  readonly startMinute: Prisma.FieldRef<"TurfPriceRule", 'Int'>
-  readonly endMinute: Prisma.FieldRef<"TurfPriceRule", 'Int'>
   readonly price: Prisma.FieldRef<"TurfPriceRule", 'Decimal'>
   readonly active: Prisma.FieldRef<"TurfPriceRule", 'Boolean'>
-  readonly startDate: Prisma.FieldRef<"TurfPriceRule", 'DateTime'>
-  readonly endDate: Prisma.FieldRef<"TurfPriceRule", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"TurfPriceRule", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TurfPriceRule", 'DateTime'>
 }

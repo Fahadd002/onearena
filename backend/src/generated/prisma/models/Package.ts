@@ -308,7 +308,7 @@ export type PackageCreateInput = {
   id?: string
   name: string
   description?: string | null
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -321,7 +321,7 @@ export type PackageUncheckedCreateInput = {
   turfId: string
   name: string
   description?: string | null
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -357,7 +357,7 @@ export type PackageCreateManyInput = {
   turfId: string
   name: string
   description?: string | null
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -505,7 +505,7 @@ export type PackageCreateWithoutFacilitiesInput = {
   id?: string
   name: string
   description?: string | null
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -517,7 +517,7 @@ export type PackageUncheckedCreateWithoutFacilitiesInput = {
   turfId: string
   name: string
   description?: string | null
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -565,7 +565,7 @@ export type PackageCreateWithoutTurfInput = {
   id?: string
   name: string
   description?: string | null
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -576,7 +576,7 @@ export type PackageUncheckedCreateWithoutTurfInput = {
   id?: string
   name: string
   description?: string | null
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -627,7 +627,7 @@ export type PackageCreateManyTurfInput = {
   id?: string
   name: string
   description?: string | null
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string

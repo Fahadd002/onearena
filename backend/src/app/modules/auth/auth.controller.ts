@@ -2,13 +2,17 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Body,
   Query,
   Req,
   Res,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import status from 'http-status';
 import { AuthService } from './auth.service';
 import { tokenUtils } from '../../utils/token';
@@ -21,6 +25,7 @@ import { CheckAuthGuard } from '../../../common/guards/check-auth.guard';
 import { AuthRoles } from '../../../common/decorators/auth-roles.decorator';
 import { CurrentUser } from '../../../common/decorators/current-user.decorator';
 import { UserRole } from '../../../generated/prisma/enums';
+import { fileUploader } from '../../helpers/file';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
 import prisma from '../../../shared/prisma';
 
@@ -171,21 +176,21 @@ export class AuthController {
   async logoutUser(@Req() req: Request, @Res() res: Response) {
     const betterAuthSessionToken = req.cookies['better-auth.session_token'];
     const result = await this.authService.logoutUser(betterAuthSessionToken);
-    const cookieOptions = {
+    const cookieSecurity = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? ('none' as const) : ('lax' as const),
+      secure: (req as any).secure || (req as any).headers?.['x-forwarded-proto'] === 'https',
+      sameSite: ((req as any).secure || (req as any).headers?.['x-forwarded-proto'] === 'https') ? ("none" as const) : ("lax" as const),
       path: '/',
     };
 
     cookieUtils.clearCookie(res, 'accessToken', {
-      ...cookieOptions,
+      ...cookieSecurity,
     });
     cookieUtils.clearCookie(res, 'refreshToken', {
-      ...cookieOptions,
+      ...cookieSecurity,
     });
     cookieUtils.clearCookie(res, 'better-auth.session_token', {
-      ...cookieOptions,
+      ...cookieSecurity,
     });
 
     sendResponse(res, {
@@ -264,13 +269,12 @@ export class AuthController {
     });
   }
 
-  // /api/v1/auth/login/google?redirect=/profile
   @Get('login/google')
   googleLogin(
     @Query('redirect') redirect: string | undefined,
     @Res() res: Response,
   ) {
-    const redirectPath = redirect || '/dashboard';
+    const redirectPath = redirect || '/';
 
     const encodedRedirectPath = encodeURIComponent(redirectPath as string);
 
@@ -327,7 +331,7 @@ export class AuthController {
       if (role === UserRole.SUPER_ADMIN) return '/super-admin/dashboard';
       if (role === UserRole.ADMIN) return '/admin/dashboard';
       if (role === UserRole.MANAGER) return '/manager/dashboard';
-      if (role === UserRole.USER) return '/user/dashboard';
+      if (role === UserRole.USER) return '/';
       return '/';
     };
 
@@ -347,5 +351,35 @@ export class AuthController {
   ) {
     const oauthError = (error as string) || 'oauth_failed';
     res.redirect(`${config.frontendUrl}/login?error=${oauthError}`);
+  }
+
+  @Post('user/profile/image')
+  @AuthRoles(UserRole.USER, UserRole.ADMIN, UserRole.MANAGER, UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(
+    FileInterceptor('image', fileUploader.multerOptions((req: any) => {
+      const userId = req.user?.id || req.user?.userId;
+      return `uploads/user-profile/${userId}`;
+    })),
+  )
+  async uploadProfileImage(
+    @CurrentUser() user: IRequestUser,
+    @UploadedFile() file: Express.Multer.File,
+    @Res() res: Response,
+  ) {
+    const result = await this.authService.updateProfileImage(user.userId, file);
+    sendResponse(res, { statusCode: status.OK, success: true, message: 'Profile image uploaded successfully', data: result });
+  }
+
+  @Put('user/profile')
+  @AuthRoles(UserRole.USER, UserRole.ADMIN, UserRole.MANAGER, UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async updateProfile(
+    @CurrentUser() user: IRequestUser,
+    @Body() body: { name?: string; phoneNumber?: string },
+    @Res() res: Response,
+  ) {
+    const result = await this.authService.updateUserProfile(user.userId, body);
+    sendResponse(res, { statusCode: status.OK, success: true, message: 'Profile updated successfully', data: result });
   }
 }

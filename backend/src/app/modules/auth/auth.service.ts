@@ -39,7 +39,7 @@ export class AuthService {
     if (!data.user) {
       throw new AppError(status.NOT_FOUND, 'User Not Found');
     }
-    
+
     try {
       const userRole = role === 'owner' ? UserRole.ADMIN : UserRole.USER;
 
@@ -58,7 +58,7 @@ export class AuthService {
         const ownerProfile = await prisma.ownerProfile.create({
           data: {
             userId: data.user.id,
-            verificationStatus: 'SUBMITTED',
+            verificationStatus: 'CREATED',
           },
         });
         profileVerified = ownerProfile.verificationStatus === 'APPROVED';
@@ -188,7 +188,7 @@ export class AuthService {
     }
 
     const data = verifiedRefershToken.data as JwtPayload;
-    
+
     let profileVerified = true;
 
     if (data.role === UserRole.ADMIN) {
@@ -243,21 +243,42 @@ export class AuthService {
       where: {
         id: user.userId,
       },
-      include: {
-        ownerProfile: true,
-        managerProfile: true,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+        phoneNumber: true,
+        role: true,
+        status: true,
+        emailVerified: true,
+        createdAt:true,
+        ownerProfile: {
+          select: {
+            verificationStatus: true,
+          },
+        },
       },
     });
+
     if (!userExist) {
       throw new AppError(status.NOT_FOUND, 'User Not Found');
     }
 
-    const profileVerified =
-      userExist.role === UserRole.ADMIN
-        ? userExist.ownerProfile?.verificationStatus === 'APPROVED'
-        : true;
+    const profileVerified =userExist.role === UserRole.ADMIN ? userExist.ownerProfile?.verificationStatus === 'APPROVED' : true;
 
-    return { ...userExist, profileVerified };
+    return {
+      id: userExist.id,
+      name: userExist.name,
+      email: userExist.email,
+      image: userExist.image,
+      phoneNumber: userExist.phoneNumber,
+      role: userExist.role,
+      status: userExist.status,
+      emailVerified: userExist.emailVerified,
+      profileVerified,
+      createdAt: userExist.createdAt
+    };
   }
 
   async changePassword(
@@ -504,5 +525,27 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+
+  async updateProfileImage(userId: string, file: Express.Multer.File) {
+    const imageUrl = `/uploads/user-profile/${userId}/${file.filename}`;
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { image: imageUrl },
+      select: { id: true, name: true, email: true, image: true },
+    });
+    return user;
+  }
+
+  async updateUserProfile(userId: string, body: { name?: string; phoneNumber?: string }) {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        name: body.name,
+        phoneNumber: body.phoneNumber,
+      },
+      select: { id: true, name: true, email: true, image: true, phoneNumber: true, role: true },
+    });
+    return user;
   }
 }

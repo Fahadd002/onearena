@@ -1,26 +1,35 @@
 model OwnerProfile {
-  id                           String                  @id @default(uuid())
-  userId                       String                  @unique
-  companyName                  String?
-  bussinessEmail               String?
-  contactNumber                String?
-  address                      String?
-  nidNumber                    String?
-  businessRegistrationNumber   String?
-  tradeLicenseNumber           String?
-  businessLogo                 String?
-  nidImageFront                String?
-  nidImageBack                 String?
-  businessRegistrationDocument String?
-  tradeLicenseDocument         String?
-  taxIdentificationDocument    String?
-  verificationStatus           OwnerVerificationStatus @default(CREATED)
-  verifiedById                 String?
-  verifiedAt                   DateTime?
-  rejectionReason              String?
-  createdAt                    DateTime                @default(now())
-  updatedAt                    DateTime                @updatedAt
-  user                         User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                   String                  @id @default(uuid())
+  userId               String                  @unique
+  companyName          String?
+  bussinessEmail       String?
+  contactNumber        String?
+  address              String?
+  nidNumber            String?
+  tradeLicenseNumber   String?
+  etin                 String?
+  bin                  String?
+  businessLogo         String?
+  nidImage             String?
+  tradeLicenseDocument String?
+  etinDocument         String?
+  binDocument          String?
+  verificationStatus   OwnerVerificationStatus @default(CREATED)
+  verifiedById         String?
+  verifiedAt           DateTime?
+  rejectionReason      String?
+  createdAt            DateTime                @default(now())
+  updatedAt            DateTime                @updatedAt
+  user                 User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  heroSection      OwnerHeroSection?
+  aboutSection     OwnerAboutSection?
+  contactSection   OwnerContactSection?
+  ownerFaqItems    OwnerFaqItem[]
+  ownerGallery     OwnerGalleryItem[]
+  ownerBlogs       OwnerBlog[]
+  socialLinksOwner OwnerSocialLink[]
+  announcements    Announcement[]
 
   @@index([verificationStatus])
   @@index([verifiedById])
@@ -28,36 +37,129 @@ model OwnerProfile {
 }
 
 model OwnerGalleryItem {
-  id          String   @id @default(uuid())
-  ownerId     String
-  title       String?
-  description String?
-  imageUrl    String
-  sortOrder   Int      @default(0)
-  active      Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  id             String       @id @default(uuid())
+  ownerProfileId String
+  title          String?
+  description    String?
+  imageUrl       String
+  sortOrder      Int          @default(0)
+  active         Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  ownerProfile   OwnerProfile @relation(fields: [ownerProfileId], references: [id], onDelete: Cascade)
 
-  @@index([ownerId, active, sortOrder])
+  @@index([ownerProfileId, active, sortOrder])
   @@map("owner_gallery_item")
 }
 
 model OwnerBlog {
-  id          String   @id @default(uuid())
-  ownerId     String
-  title       String
-  slug        String
-  excerpt     String?
-  content     String
-  coverImage  String?
-  published   Boolean  @default(false)
-  publishedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  id             String       @id @default(uuid())
+  ownerProfileId String
+  title          String
+  slug           String
+  content        String
+  coverImage     String?
+  readMinutes    Int?
+  published      Boolean      @default(false)
+  publishedAt    DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  ownerProfile   OwnerProfile @relation(fields: [ownerProfileId], references: [id], onDelete: Cascade)
 
-  @@unique([ownerId, slug])
-  @@index([ownerId, published, publishedAt])
+  @@unique([ownerProfileId, slug])
+  @@index([ownerProfileId, published, publishedAt])
   @@map("owner_blog")
+}
+
+model Announcement {
+  id             String       @id @default(uuid())
+  ownerProfileId String
+  title          String
+  message        String
+  type           String       @default("INFO")
+  isActive       Boolean      @default(true)
+  pinned         Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  ownerProfile   OwnerProfile @relation(fields: [ownerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([ownerProfileId, isActive])
+  @@map("announcement")
+}
+
+model OwnerSocialLink {
+  id             String       @id @default(uuid())
+  ownerProfileId String
+  platform       String
+  url            String
+  icon           String?
+  sortOrder      Int          @default(0)
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  ownerProfile   OwnerProfile @relation(fields: [ownerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([ownerProfileId, isActive, sortOrder])
+  @@map("owner_social_link")
+}
+
+model OwnerHeroSection {
+  id              String       @id @default(uuid())
+  ownerProfileId  String       @unique
+  headline        String
+  subheadline     String?
+  coverImage      String?
+  overlayOpacity  Int          @default(40)
+  textAlign       String       @default("CENTER") // LEFT | CENTER | RIGHT
+  isVisible       Boolean      @default(true)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  ownerProfile    OwnerProfile @relation(fields: [ownerProfileId], references: [id], onDelete: Cascade)
+
+  @@map("owner_hero_section")
+}
+
+model OwnerAboutSection {
+  id             String       @id @default(uuid())
+  ownerProfileId String       @unique
+  heading        String       @default("About Us")
+  body           String
+  highlights     Json?        // [{ icon, label, value }]
+  imageUrl       String?
+  isVisible      Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  ownerProfile   OwnerProfile @relation(fields: [ownerProfileId], references: [id], onDelete: Cascade)
+
+  @@map("owner_about_section")
+}
+
+model OwnerContactSection {
+  id             String       @id @default(uuid())
+  ownerProfileId String       @unique
+  heading        String       @default("Contact Us")
+  phone          String?
+  email          String?
+  address        String?
+  openingHours   String?
+  isVisible      Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  ownerProfile   OwnerProfile @relation(fields: [ownerProfileId], references: [id], onDelete: Cascade)
+
+  @@map("owner_contact_section")
+}
+model OwnerFaqItem {
+  id             String       @id @default(uuid())
+  ownerProfileId String
+  question       String
+  answer         String
+  sortOrder      Int          @default(0)
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  ownerProfile   OwnerProfile @relation(fields: [ownerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([ownerProfileId, isActive, sortOrder])
+  @@map("owner_faq_item")
 }

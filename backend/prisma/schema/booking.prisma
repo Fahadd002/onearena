@@ -13,12 +13,18 @@ model Booking {
   bookingExpiresAt DateTime?
   idempotencyKey   String    @unique
 
+  numberOfSlot Int @default(1)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String
   user      User     @relation(fields: [userId], references: [id])
-  slotId    String   @unique
-  slot      TurfSlot @relation(fields: [slotId], references: [id])
+
+  bookedById String?
+  bookedBy   User?   @relation("BookedBy", fields: [bookedById], references: [id])
+
+  // One Booking can have many slots
+  bookingSlots BookingSlot[]
 
   // One Booking has zero or one Invoice
   invoice Invoice?
@@ -26,7 +32,23 @@ model Booking {
   refunds Refund[]
 
   @@index([userId, createdAt])
+  @@index([bookedById])
   @@index([status, createdAt])
   @@index([bookingExpiresAt])
   @@map("booking")
+}
+
+model BookingSlot {
+  id        String   @id @default(uuid())
+  bookingId String
+  slotId    String   @unique
+
+  createdAt DateTime @default(now())
+
+  booking Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  slot    TurfSlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+  @@index([bookingId])
+  @@index([slotId])
+  @@map("booking_slot")
 }

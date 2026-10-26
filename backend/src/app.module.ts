@@ -18,6 +18,8 @@ import { TurfSlotModule } from './app/modules/turf-slots/turf-slot.module';
 import { TurfPricingModule } from './app/modules/turf-pricing/turf-pricing.module';
 import { SubscriptionModule } from './app/modules/subscription/subscription.module';
 import { OwnerContentModule } from './app/modules/owner-content/owner-content.module';
+import { OwnerLandingPageModule } from './app/modules/owner-landing-page/owner-landing-page.module';
+import { TimeStupModule } from './app/modules/solt-time/time.module';
 
 @Module({
   imports: [
@@ -40,6 +42,8 @@ import { OwnerContentModule } from './app/modules/owner-content/owner-content.mo
     OwnerProfileModule,
     SubscriptionModule,
     OwnerContentModule,
+    OwnerLandingPageModule,
+    TimeStupModule
   ]
 })
 export class AppModule { }

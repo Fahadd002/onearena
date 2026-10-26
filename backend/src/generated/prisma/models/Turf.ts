@@ -27,17 +27,19 @@ export type AggregateTurf = {
 }
 
 export type TurfAvgAggregateOutputType = {
+  advancePaymentAmount: runtime.Decimal | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
-  basePrice: runtime.Decimal | null
-  slotMinutes: number | null
+  defaultSlotDuration: number | null
+  defaultSlotPrice: runtime.Decimal | null
 }
 
 export type TurfSumAggregateOutputType = {
+  advancePaymentAmount: runtime.Decimal | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
-  basePrice: runtime.Decimal | null
-  slotMinutes: number | null
+  defaultSlotDuration: number | null
+  defaultSlotPrice: runtime.Decimal | null
 }
 
 export type TurfMinAggregateOutputType = {
@@ -47,11 +49,13 @@ export type TurfMinAggregateOutputType = {
   name: string | null
   description: string | null
   address: string | null
+  allowAdvancePayment: boolean | null
+  advancePaymentAmount: runtime.Decimal | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
   status: $Enums.TurfStatus | null
-  basePrice: runtime.Decimal | null
-  slotMinutes: number | null
+  defaultSlotDuration: number | null
+  defaultSlotPrice: runtime.Decimal | null
   timezone: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -64,11 +68,13 @@ export type TurfMaxAggregateOutputType = {
   name: string | null
   description: string | null
   address: string | null
+  allowAdvancePayment: boolean | null
+  advancePaymentAmount: runtime.Decimal | null
   latitude: runtime.Decimal | null
   longitude: runtime.Decimal | null
   status: $Enums.TurfStatus | null
-  basePrice: runtime.Decimal | null
-  slotMinutes: number | null
+  defaultSlotDuration: number | null
+  defaultSlotPrice: runtime.Decimal | null
   timezone: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -81,11 +87,13 @@ export type TurfCountAggregateOutputType = {
   name: number
   description: number
   address: number
+  allowAdvancePayment: number
+  advancePaymentAmount: number
   latitude: number
   longitude: number
   status: number
-  basePrice: number
-  slotMinutes: number
+  defaultSlotDuration: number
+  defaultSlotPrice: number
   timezone: number
   createdAt: number
   updatedAt: number
@@ -94,17 +102,19 @@ export type TurfCountAggregateOutputType = {
 
 
 export type TurfAvgAggregateInputType = {
+  advancePaymentAmount?: true
   latitude?: true
   longitude?: true
-  basePrice?: true
-  slotMinutes?: true
+  defaultSlotDuration?: true
+  defaultSlotPrice?: true
 }
 
 export type TurfSumAggregateInputType = {
+  advancePaymentAmount?: true
   latitude?: true
   longitude?: true
-  basePrice?: true
-  slotMinutes?: true
+  defaultSlotDuration?: true
+  defaultSlotPrice?: true
 }
 
 export type TurfMinAggregateInputType = {
@@ -114,11 +124,13 @@ export type TurfMinAggregateInputType = {
   name?: true
   description?: true
   address?: true
+  allowAdvancePayment?: true
+  advancePaymentAmount?: true
   latitude?: true
   longitude?: true
   status?: true
-  basePrice?: true
-  slotMinutes?: true
+  defaultSlotDuration?: true
+  defaultSlotPrice?: true
   timezone?: true
   createdAt?: true
   updatedAt?: true
@@ -131,11 +143,13 @@ export type TurfMaxAggregateInputType = {
   name?: true
   description?: true
   address?: true
+  allowAdvancePayment?: true
+  advancePaymentAmount?: true
   latitude?: true
   longitude?: true
   status?: true
-  basePrice?: true
-  slotMinutes?: true
+  defaultSlotDuration?: true
+  defaultSlotPrice?: true
   timezone?: true
   createdAt?: true
   updatedAt?: true
@@ -148,11 +162,13 @@ export type TurfCountAggregateInputType = {
   name?: true
   description?: true
   address?: true
+  allowAdvancePayment?: true
+  advancePaymentAmount?: true
   latitude?: true
   longitude?: true
   status?: true
-  basePrice?: true
-  slotMinutes?: true
+  defaultSlotDuration?: true
+  defaultSlotPrice?: true
   timezone?: true
   createdAt?: true
   updatedAt?: true
@@ -252,11 +268,13 @@ export type TurfGroupByOutputType = {
   name: string
   description: string | null
   address: string
+  allowAdvancePayment: boolean
+  advancePaymentAmount: runtime.Decimal
   latitude: runtime.Decimal
   longitude: runtime.Decimal
   status: $Enums.TurfStatus
-  basePrice: runtime.Decimal
-  slotMinutes: number
+  defaultSlotDuration: number
+  defaultSlotPrice: runtime.Decimal
   timezone: string
   createdAt: Date
   updatedAt: Date
@@ -292,11 +310,13 @@ export type TurfWhereInput = {
   name?: Prisma.StringFilter<"Turf"> | string
   description?: Prisma.StringNullableFilter<"Turf"> | string | null
   address?: Prisma.StringFilter<"Turf"> | string
+  allowAdvancePayment?: Prisma.BoolFilter<"Turf"> | boolean
+  advancePaymentAmount?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFilter<"Turf"> | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFilter<"Turf"> | number
+  defaultSlotDuration?: Prisma.IntFilter<"Turf"> | number
+  defaultSlotPrice?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFilter<"Turf"> | string
   createdAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
@@ -307,6 +327,7 @@ export type TurfWhereInput = {
   managers?: Prisma.TurfManagerListRelationFilter
   priceRules?: Prisma.TurfPriceRuleListRelationFilter
   slots?: Prisma.TurfSlotListRelationFilter
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberListRelationFilter
   category?: Prisma.XOR<Prisma.TurfCategoryScalarRelationFilter, Prisma.TurfCategoryWhereInput>
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -318,11 +339,13 @@ export type TurfOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrder
+  allowAdvancePayment?: Prisma.SortOrder
+  advancePaymentAmount?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  basePrice?: Prisma.SortOrder
-  slotMinutes?: Prisma.SortOrder
+  defaultSlotDuration?: Prisma.SortOrder
+  defaultSlotPrice?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -333,6 +356,7 @@ export type TurfOrderByWithRelationInput = {
   managers?: Prisma.TurfManagerOrderByRelationAggregateInput
   priceRules?: Prisma.TurfPriceRuleOrderByRelationAggregateInput
   slots?: Prisma.TurfSlotOrderByRelationAggregateInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberOrderByRelationAggregateInput
   category?: Prisma.TurfCategoryOrderByWithRelationInput
   owner?: Prisma.UserOrderByWithRelationInput
 }
@@ -347,11 +371,13 @@ export type TurfWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Turf"> | string
   description?: Prisma.StringNullableFilter<"Turf"> | string | null
   address?: Prisma.StringFilter<"Turf"> | string
+  allowAdvancePayment?: Prisma.BoolFilter<"Turf"> | boolean
+  advancePaymentAmount?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFilter<"Turf"> | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFilter<"Turf"> | number
+  defaultSlotDuration?: Prisma.IntFilter<"Turf"> | number
+  defaultSlotPrice?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFilter<"Turf"> | string
   createdAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
@@ -362,6 +388,7 @@ export type TurfWhereUniqueInput = Prisma.AtLeast<{
   managers?: Prisma.TurfManagerListRelationFilter
   priceRules?: Prisma.TurfPriceRuleListRelationFilter
   slots?: Prisma.TurfSlotListRelationFilter
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberListRelationFilter
   category?: Prisma.XOR<Prisma.TurfCategoryScalarRelationFilter, Prisma.TurfCategoryWhereInput>
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
@@ -373,11 +400,13 @@ export type TurfOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrder
+  allowAdvancePayment?: Prisma.SortOrder
+  advancePaymentAmount?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  basePrice?: Prisma.SortOrder
-  slotMinutes?: Prisma.SortOrder
+  defaultSlotDuration?: Prisma.SortOrder
+  defaultSlotPrice?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -398,11 +427,13 @@ export type TurfScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Turf"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Turf"> | string | null
   address?: Prisma.StringWithAggregatesFilter<"Turf"> | string
+  allowAdvancePayment?: Prisma.BoolWithAggregatesFilter<"Turf"> | boolean
+  advancePaymentAmount?: Prisma.DecimalWithAggregatesFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalWithAggregatesFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalWithAggregatesFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusWithAggregatesFilter<"Turf"> | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalWithAggregatesFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntWithAggregatesFilter<"Turf"> | number
+  defaultSlotDuration?: Prisma.IntWithAggregatesFilter<"Turf"> | number
+  defaultSlotPrice?: Prisma.DecimalWithAggregatesFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringWithAggregatesFilter<"Turf"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Turf"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Turf"> | Date | string
@@ -413,11 +444,13 @@ export type TurfCreateInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -428,6 +461,7 @@ export type TurfCreateInput = {
   managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberCreateNestedManyWithoutTurfInput
   category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
   owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
 }
@@ -439,11 +473,13 @@ export type TurfUncheckedCreateInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -454,6 +490,7 @@ export type TurfUncheckedCreateInput = {
   managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedCreateNestedManyWithoutTurfInput
 }
 
 export type TurfUpdateInput = {
@@ -461,11 +498,13 @@ export type TurfUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -476,6 +515,7 @@ export type TurfUpdateInput = {
   managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUpdateManyWithoutTurfNestedInput
   category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
 }
@@ -487,11 +527,13 @@ export type TurfUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -502,6 +544,7 @@ export type TurfUncheckedUpdateInput = {
   managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedUpdateManyWithoutTurfNestedInput
 }
 
 export type TurfCreateManyInput = {
@@ -511,11 +554,13 @@ export type TurfCreateManyInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -526,11 +571,13 @@ export type TurfUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -543,11 +590,13 @@ export type TurfUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -575,21 +624,24 @@ export type TurfCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  allowAdvancePayment?: Prisma.SortOrder
+  advancePaymentAmount?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  basePrice?: Prisma.SortOrder
-  slotMinutes?: Prisma.SortOrder
+  defaultSlotDuration?: Prisma.SortOrder
+  defaultSlotPrice?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TurfAvgOrderByAggregateInput = {
+  advancePaymentAmount?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  basePrice?: Prisma.SortOrder
-  slotMinutes?: Prisma.SortOrder
+  defaultSlotDuration?: Prisma.SortOrder
+  defaultSlotPrice?: Prisma.SortOrder
 }
 
 export type TurfMaxOrderByAggregateInput = {
@@ -599,11 +651,13 @@ export type TurfMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  allowAdvancePayment?: Prisma.SortOrder
+  advancePaymentAmount?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  basePrice?: Prisma.SortOrder
-  slotMinutes?: Prisma.SortOrder
+  defaultSlotDuration?: Prisma.SortOrder
+  defaultSlotPrice?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -616,21 +670,24 @@ export type TurfMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  allowAdvancePayment?: Prisma.SortOrder
+  advancePaymentAmount?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  basePrice?: Prisma.SortOrder
-  slotMinutes?: Prisma.SortOrder
+  defaultSlotDuration?: Prisma.SortOrder
+  defaultSlotPrice?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TurfSumOrderByAggregateInput = {
+  advancePaymentAmount?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  basePrice?: Prisma.SortOrder
-  slotMinutes?: Prisma.SortOrder
+  defaultSlotDuration?: Prisma.SortOrder
+  defaultSlotPrice?: Prisma.SortOrder
 }
 
 export type TurfCreateNestedManyWithoutCategoryInput = {
@@ -719,6 +776,20 @@ export type TurfUpdateOneRequiredWithoutReviewsNestedInput = {
 
 export type EnumTurfStatusFieldUpdateOperationsInput = {
   set?: $Enums.TurfStatus
+}
+
+export type TurfCreateNestedOneWithoutPaymentPhoneNumbersInput = {
+  create?: Prisma.XOR<Prisma.TurfCreateWithoutPaymentPhoneNumbersInput, Prisma.TurfUncheckedCreateWithoutPaymentPhoneNumbersInput>
+  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutPaymentPhoneNumbersInput
+  connect?: Prisma.TurfWhereUniqueInput
+}
+
+export type TurfUpdateOneRequiredWithoutPaymentPhoneNumbersNestedInput = {
+  create?: Prisma.XOR<Prisma.TurfCreateWithoutPaymentPhoneNumbersInput, Prisma.TurfUncheckedCreateWithoutPaymentPhoneNumbersInput>
+  connectOrCreate?: Prisma.TurfCreateOrConnectWithoutPaymentPhoneNumbersInput
+  upsert?: Prisma.TurfUpsertWithoutPaymentPhoneNumbersInput
+  connect?: Prisma.TurfWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfUpdateToOneWithWhereWithoutPaymentPhoneNumbersInput, Prisma.TurfUpdateWithoutPaymentPhoneNumbersInput>, Prisma.TurfUncheckedUpdateWithoutPaymentPhoneNumbersInput>
 }
 
 export type TurfCreateNestedOneWithoutPriceRulesInput = {
@@ -824,11 +895,13 @@ export type TurfCreateWithoutCategoryInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -839,6 +912,7 @@ export type TurfCreateWithoutCategoryInput = {
   managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberCreateNestedManyWithoutTurfInput
   owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
 }
 
@@ -848,11 +922,13 @@ export type TurfUncheckedCreateWithoutCategoryInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -863,6 +939,7 @@ export type TurfUncheckedCreateWithoutCategoryInput = {
   managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedCreateNestedManyWithoutTurfInput
 }
 
 export type TurfCreateOrConnectWithoutCategoryInput = {
@@ -901,11 +978,13 @@ export type TurfScalarWhereInput = {
   name?: Prisma.StringFilter<"Turf"> | string
   description?: Prisma.StringNullableFilter<"Turf"> | string | null
   address?: Prisma.StringFilter<"Turf"> | string
+  allowAdvancePayment?: Prisma.BoolFilter<"Turf"> | boolean
+  advancePaymentAmount?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFilter<"Turf"> | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFilter<"Turf"> | number
+  defaultSlotDuration?: Prisma.IntFilter<"Turf"> | number
+  defaultSlotPrice?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFilter<"Turf"> | string
   createdAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
@@ -916,11 +995,13 @@ export type TurfCreateWithoutFacilitiesInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -930,6 +1011,7 @@ export type TurfCreateWithoutFacilitiesInput = {
   managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberCreateNestedManyWithoutTurfInput
   category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
   owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
 }
@@ -941,11 +1023,13 @@ export type TurfUncheckedCreateWithoutFacilitiesInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -955,6 +1039,7 @@ export type TurfUncheckedCreateWithoutFacilitiesInput = {
   managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedCreateNestedManyWithoutTurfInput
 }
 
 export type TurfCreateOrConnectWithoutFacilitiesInput = {
@@ -978,11 +1063,13 @@ export type TurfUpdateWithoutFacilitiesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -992,6 +1079,7 @@ export type TurfUpdateWithoutFacilitiesInput = {
   managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUpdateManyWithoutTurfNestedInput
   category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
 }
@@ -1003,11 +1091,13 @@ export type TurfUncheckedUpdateWithoutFacilitiesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1017,6 +1107,7 @@ export type TurfUncheckedUpdateWithoutFacilitiesInput = {
   managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedUpdateManyWithoutTurfNestedInput
 }
 
 export type TurfCreateWithoutManagersInput = {
@@ -1024,11 +1115,13 @@ export type TurfCreateWithoutManagersInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1038,6 +1131,7 @@ export type TurfCreateWithoutManagersInput = {
   images?: Prisma.TurfImageCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberCreateNestedManyWithoutTurfInput
   category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
   owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
 }
@@ -1049,11 +1143,13 @@ export type TurfUncheckedCreateWithoutManagersInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1063,6 +1159,7 @@ export type TurfUncheckedCreateWithoutManagersInput = {
   images?: Prisma.TurfImageUncheckedCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedCreateNestedManyWithoutTurfInput
 }
 
 export type TurfCreateOrConnectWithoutManagersInput = {
@@ -1086,11 +1183,13 @@ export type TurfUpdateWithoutManagersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1100,6 +1199,7 @@ export type TurfUpdateWithoutManagersInput = {
   images?: Prisma.TurfImageUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUpdateManyWithoutTurfNestedInput
   category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
 }
@@ -1111,11 +1211,13 @@ export type TurfUncheckedUpdateWithoutManagersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1125,6 +1227,7 @@ export type TurfUncheckedUpdateWithoutManagersInput = {
   images?: Prisma.TurfImageUncheckedUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedUpdateManyWithoutTurfNestedInput
 }
 
 export type TurfCreateWithoutReviewsInput = {
@@ -1132,11 +1235,13 @@ export type TurfCreateWithoutReviewsInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1146,6 +1251,7 @@ export type TurfCreateWithoutReviewsInput = {
   managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberCreateNestedManyWithoutTurfInput
   category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
   owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
 }
@@ -1157,11 +1263,13 @@ export type TurfUncheckedCreateWithoutReviewsInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1171,6 +1279,7 @@ export type TurfUncheckedCreateWithoutReviewsInput = {
   managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedCreateNestedManyWithoutTurfInput
 }
 
 export type TurfCreateOrConnectWithoutReviewsInput = {
@@ -1194,11 +1303,13 @@ export type TurfUpdateWithoutReviewsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1208,6 +1319,7 @@ export type TurfUpdateWithoutReviewsInput = {
   managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUpdateManyWithoutTurfNestedInput
   category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
 }
@@ -1219,15 +1331,138 @@ export type TurfUncheckedUpdateWithoutReviewsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
+  facilities?: Prisma.TurfFacilityUncheckedUpdateManyWithoutTurfNestedInput
+  images?: Prisma.TurfImageUncheckedUpdateManyWithoutTurfNestedInput
+  managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
+  priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
+  slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedUpdateManyWithoutTurfNestedInput
+}
+
+export type TurfCreateWithoutPaymentPhoneNumbersInput = {
+  id?: string
+  name: string
+  description?: string | null
+  address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TurfStatus
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutTurfInput
+  facilities?: Prisma.TurfFacilityCreateNestedManyWithoutTurfInput
+  images?: Prisma.TurfImageCreateNestedManyWithoutTurfInput
+  managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
+  priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
+  slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
+  owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
+}
+
+export type TurfUncheckedCreateWithoutPaymentPhoneNumbersInput = {
+  id?: string
+  ownerId: string
+  categoryId: string
+  name: string
+  description?: string | null
+  address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: $Enums.TurfStatus
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutTurfInput
+  facilities?: Prisma.TurfFacilityUncheckedCreateNestedManyWithoutTurfInput
+  images?: Prisma.TurfImageUncheckedCreateNestedManyWithoutTurfInput
+  managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
+  priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
+  slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+}
+
+export type TurfCreateOrConnectWithoutPaymentPhoneNumbersInput = {
+  where: Prisma.TurfWhereUniqueInput
+  create: Prisma.XOR<Prisma.TurfCreateWithoutPaymentPhoneNumbersInput, Prisma.TurfUncheckedCreateWithoutPaymentPhoneNumbersInput>
+}
+
+export type TurfUpsertWithoutPaymentPhoneNumbersInput = {
+  update: Prisma.XOR<Prisma.TurfUpdateWithoutPaymentPhoneNumbersInput, Prisma.TurfUncheckedUpdateWithoutPaymentPhoneNumbersInput>
+  create: Prisma.XOR<Prisma.TurfCreateWithoutPaymentPhoneNumbersInput, Prisma.TurfUncheckedCreateWithoutPaymentPhoneNumbersInput>
+  where?: Prisma.TurfWhereInput
+}
+
+export type TurfUpdateToOneWithWhereWithoutPaymentPhoneNumbersInput = {
+  where?: Prisma.TurfWhereInput
+  data: Prisma.XOR<Prisma.TurfUpdateWithoutPaymentPhoneNumbersInput, Prisma.TurfUncheckedUpdateWithoutPaymentPhoneNumbersInput>
+}
+
+export type TurfUpdateWithoutPaymentPhoneNumbersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutTurfNestedInput
+  facilities?: Prisma.TurfFacilityUpdateManyWithoutTurfNestedInput
+  images?: Prisma.TurfImageUpdateManyWithoutTurfNestedInput
+  managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
+  priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
+  slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
+}
+
+export type TurfUncheckedUpdateWithoutPaymentPhoneNumbersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTurfNestedInput
   facilities?: Prisma.TurfFacilityUncheckedUpdateManyWithoutTurfNestedInput
   images?: Prisma.TurfImageUncheckedUpdateManyWithoutTurfNestedInput
   managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
@@ -1240,11 +1475,13 @@ export type TurfCreateWithoutPriceRulesInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1254,6 +1491,7 @@ export type TurfCreateWithoutPriceRulesInput = {
   images?: Prisma.TurfImageCreateNestedManyWithoutTurfInput
   managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberCreateNestedManyWithoutTurfInput
   category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
   owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
 }
@@ -1265,11 +1503,13 @@ export type TurfUncheckedCreateWithoutPriceRulesInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1279,6 +1519,7 @@ export type TurfUncheckedCreateWithoutPriceRulesInput = {
   images?: Prisma.TurfImageUncheckedCreateNestedManyWithoutTurfInput
   managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedCreateNestedManyWithoutTurfInput
 }
 
 export type TurfCreateOrConnectWithoutPriceRulesInput = {
@@ -1302,11 +1543,13 @@ export type TurfUpdateWithoutPriceRulesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1316,6 +1559,7 @@ export type TurfUpdateWithoutPriceRulesInput = {
   images?: Prisma.TurfImageUpdateManyWithoutTurfNestedInput
   managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUpdateManyWithoutTurfNestedInput
   category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
 }
@@ -1327,11 +1571,13 @@ export type TurfUncheckedUpdateWithoutPriceRulesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1341,6 +1587,7 @@ export type TurfUncheckedUpdateWithoutPriceRulesInput = {
   images?: Prisma.TurfImageUncheckedUpdateManyWithoutTurfNestedInput
   managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedUpdateManyWithoutTurfNestedInput
 }
 
 export type TurfCreateWithoutSlotsInput = {
@@ -1348,11 +1595,13 @@ export type TurfCreateWithoutSlotsInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1362,6 +1611,7 @@ export type TurfCreateWithoutSlotsInput = {
   images?: Prisma.TurfImageCreateNestedManyWithoutTurfInput
   managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberCreateNestedManyWithoutTurfInput
   category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
   owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
 }
@@ -1373,11 +1623,13 @@ export type TurfUncheckedCreateWithoutSlotsInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1387,6 +1639,7 @@ export type TurfUncheckedCreateWithoutSlotsInput = {
   images?: Prisma.TurfImageUncheckedCreateNestedManyWithoutTurfInput
   managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedCreateNestedManyWithoutTurfInput
 }
 
 export type TurfCreateOrConnectWithoutSlotsInput = {
@@ -1410,11 +1663,13 @@ export type TurfUpdateWithoutSlotsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1424,6 +1679,7 @@ export type TurfUpdateWithoutSlotsInput = {
   images?: Prisma.TurfImageUpdateManyWithoutTurfNestedInput
   managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUpdateManyWithoutTurfNestedInput
   category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
 }
@@ -1435,11 +1691,13 @@ export type TurfUncheckedUpdateWithoutSlotsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1449,6 +1707,7 @@ export type TurfUncheckedUpdateWithoutSlotsInput = {
   images?: Prisma.TurfImageUncheckedUpdateManyWithoutTurfNestedInput
   managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedUpdateManyWithoutTurfNestedInput
 }
 
 export type TurfCreateWithoutImagesInput = {
@@ -1456,11 +1715,13 @@ export type TurfCreateWithoutImagesInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1470,6 +1731,7 @@ export type TurfCreateWithoutImagesInput = {
   managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberCreateNestedManyWithoutTurfInput
   category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
   owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
 }
@@ -1481,11 +1743,13 @@ export type TurfUncheckedCreateWithoutImagesInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1495,6 +1759,7 @@ export type TurfUncheckedCreateWithoutImagesInput = {
   managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedCreateNestedManyWithoutTurfInput
 }
 
 export type TurfCreateOrConnectWithoutImagesInput = {
@@ -1518,11 +1783,13 @@ export type TurfUpdateWithoutImagesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1532,6 +1799,7 @@ export type TurfUpdateWithoutImagesInput = {
   managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUpdateManyWithoutTurfNestedInput
   category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
 }
@@ -1543,11 +1811,13 @@ export type TurfUncheckedUpdateWithoutImagesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1557,6 +1827,7 @@ export type TurfUncheckedUpdateWithoutImagesInput = {
   managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedUpdateManyWithoutTurfNestedInput
 }
 
 export type TurfCreateWithoutPackagesInput = {
@@ -1564,11 +1835,13 @@ export type TurfCreateWithoutPackagesInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1578,6 +1851,7 @@ export type TurfCreateWithoutPackagesInput = {
   managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberCreateNestedManyWithoutTurfInput
   category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
   owner: Prisma.UserCreateNestedOneWithoutOwnedTurfsInput
 }
@@ -1589,11 +1863,13 @@ export type TurfUncheckedCreateWithoutPackagesInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1603,6 +1879,7 @@ export type TurfUncheckedCreateWithoutPackagesInput = {
   managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedCreateNestedManyWithoutTurfInput
 }
 
 export type TurfCreateOrConnectWithoutPackagesInput = {
@@ -1626,11 +1903,13 @@ export type TurfUpdateWithoutPackagesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1640,6 +1919,7 @@ export type TurfUpdateWithoutPackagesInput = {
   managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUpdateManyWithoutTurfNestedInput
   category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
 }
@@ -1651,11 +1931,13 @@ export type TurfUncheckedUpdateWithoutPackagesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1665,6 +1947,7 @@ export type TurfUncheckedUpdateWithoutPackagesInput = {
   managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedUpdateManyWithoutTurfNestedInput
 }
 
 export type TurfCreateWithoutOwnerInput = {
@@ -1672,11 +1955,13 @@ export type TurfCreateWithoutOwnerInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1687,6 +1972,7 @@ export type TurfCreateWithoutOwnerInput = {
   managers?: Prisma.TurfManagerCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberCreateNestedManyWithoutTurfInput
   category: Prisma.TurfCategoryCreateNestedOneWithoutTurfsInput
 }
 
@@ -1696,11 +1982,13 @@ export type TurfUncheckedCreateWithoutOwnerInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1711,6 +1999,7 @@ export type TurfUncheckedCreateWithoutOwnerInput = {
   managers?: Prisma.TurfManagerUncheckedCreateNestedManyWithoutTurfInput
   priceRules?: Prisma.TurfPriceRuleUncheckedCreateNestedManyWithoutTurfInput
   slots?: Prisma.TurfSlotUncheckedCreateNestedManyWithoutTurfInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedCreateNestedManyWithoutTurfInput
 }
 
 export type TurfCreateOrConnectWithoutOwnerInput = {
@@ -1745,11 +2034,13 @@ export type TurfCreateManyCategoryInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1760,11 +2051,13 @@ export type TurfUpdateWithoutCategoryInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1775,6 +2068,7 @@ export type TurfUpdateWithoutCategoryInput = {
   managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUpdateManyWithoutTurfNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedTurfsNestedInput
 }
 
@@ -1784,11 +2078,13 @@ export type TurfUncheckedUpdateWithoutCategoryInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1799,6 +2095,7 @@ export type TurfUncheckedUpdateWithoutCategoryInput = {
   managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedUpdateManyWithoutTurfNestedInput
 }
 
 export type TurfUncheckedUpdateManyWithoutCategoryInput = {
@@ -1807,11 +2104,13 @@ export type TurfUncheckedUpdateManyWithoutCategoryInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1823,11 +2122,13 @@ export type TurfCreateManyOwnerInput = {
   name: string
   description?: string | null
   address: string
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.TurfStatus
-  basePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: number
+  defaultSlotDuration?: number
+  defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1838,11 +2139,13 @@ export type TurfUpdateWithoutOwnerInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1853,6 +2156,7 @@ export type TurfUpdateWithoutOwnerInput = {
   managers?: Prisma.TurfManagerUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUpdateManyWithoutTurfNestedInput
   category?: Prisma.TurfCategoryUpdateOneRequiredWithoutTurfsNestedInput
 }
 
@@ -1862,11 +2166,13 @@ export type TurfUncheckedUpdateWithoutOwnerInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1877,6 +2183,7 @@ export type TurfUncheckedUpdateWithoutOwnerInput = {
   managers?: Prisma.TurfManagerUncheckedUpdateManyWithoutTurfNestedInput
   priceRules?: Prisma.TurfPriceRuleUncheckedUpdateManyWithoutTurfNestedInput
   slots?: Prisma.TurfSlotUncheckedUpdateManyWithoutTurfNestedInput
+  paymentPhoneNumbers?: Prisma.PaymentPhoneNumberUncheckedUpdateManyWithoutTurfNestedInput
 }
 
 export type TurfUncheckedUpdateManyWithoutOwnerInput = {
@@ -1885,11 +2192,13 @@ export type TurfUncheckedUpdateManyWithoutOwnerInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  allowAdvancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  advancePaymentAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumTurfStatusFieldUpdateOperationsInput | $Enums.TurfStatus
-  basePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  slotMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1908,6 +2217,7 @@ export type TurfCountOutputType = {
   managers: number
   priceRules: number
   slots: number
+  paymentPhoneNumbers: number
 }
 
 export type TurfCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1918,6 +2228,7 @@ export type TurfCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   managers?: boolean | TurfCountOutputTypeCountManagersArgs
   priceRules?: boolean | TurfCountOutputTypeCountPriceRulesArgs
   slots?: boolean | TurfCountOutputTypeCountSlotsArgs
+  paymentPhoneNumbers?: boolean | TurfCountOutputTypeCountPaymentPhoneNumbersArgs
 }
 
 /**
@@ -1979,6 +2290,13 @@ export type TurfCountOutputTypeCountSlotsArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.TurfSlotWhereInput
 }
 
+/**
+ * TurfCountOutputType without action
+ */
+export type TurfCountOutputTypeCountPaymentPhoneNumbersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentPhoneNumberWhereInput
+}
+
 
 export type TurfSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1987,11 +2305,13 @@ export type TurfSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   description?: boolean
   address?: boolean
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: boolean
   latitude?: boolean
   longitude?: boolean
   status?: boolean
-  basePrice?: boolean
-  slotMinutes?: boolean
+  defaultSlotDuration?: boolean
+  defaultSlotPrice?: boolean
   timezone?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2002,6 +2322,7 @@ export type TurfSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   managers?: boolean | Prisma.Turf$managersArgs<ExtArgs>
   priceRules?: boolean | Prisma.Turf$priceRulesArgs<ExtArgs>
   slots?: boolean | Prisma.Turf$slotsArgs<ExtArgs>
+  paymentPhoneNumbers?: boolean | Prisma.Turf$paymentPhoneNumbersArgs<ExtArgs>
   category?: boolean | Prisma.TurfCategoryDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.TurfCountOutputTypeDefaultArgs<ExtArgs>
@@ -2014,11 +2335,13 @@ export type TurfSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   description?: boolean
   address?: boolean
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: boolean
   latitude?: boolean
   longitude?: boolean
   status?: boolean
-  basePrice?: boolean
-  slotMinutes?: boolean
+  defaultSlotDuration?: boolean
+  defaultSlotPrice?: boolean
   timezone?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2033,11 +2356,13 @@ export type TurfSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   description?: boolean
   address?: boolean
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: boolean
   latitude?: boolean
   longitude?: boolean
   status?: boolean
-  basePrice?: boolean
-  slotMinutes?: boolean
+  defaultSlotDuration?: boolean
+  defaultSlotPrice?: boolean
   timezone?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2052,17 +2377,19 @@ export type TurfSelectScalar = {
   name?: boolean
   description?: boolean
   address?: boolean
+  allowAdvancePayment?: boolean
+  advancePaymentAmount?: boolean
   latitude?: boolean
   longitude?: boolean
   status?: boolean
-  basePrice?: boolean
-  slotMinutes?: boolean
+  defaultSlotDuration?: boolean
+  defaultSlotPrice?: boolean
   timezone?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TurfOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "categoryId" | "name" | "description" | "address" | "latitude" | "longitude" | "status" | "basePrice" | "slotMinutes" | "timezone" | "createdAt" | "updatedAt", ExtArgs["result"]["turf"]>
+export type TurfOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "categoryId" | "name" | "description" | "address" | "allowAdvancePayment" | "advancePaymentAmount" | "latitude" | "longitude" | "status" | "defaultSlotDuration" | "defaultSlotPrice" | "timezone" | "createdAt" | "updatedAt", ExtArgs["result"]["turf"]>
 export type TurfInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   packages?: boolean | Prisma.Turf$packagesArgs<ExtArgs>
   reviews?: boolean | Prisma.Turf$reviewsArgs<ExtArgs>
@@ -2071,6 +2398,7 @@ export type TurfInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   managers?: boolean | Prisma.Turf$managersArgs<ExtArgs>
   priceRules?: boolean | Prisma.Turf$priceRulesArgs<ExtArgs>
   slots?: boolean | Prisma.Turf$slotsArgs<ExtArgs>
+  paymentPhoneNumbers?: boolean | Prisma.Turf$paymentPhoneNumbersArgs<ExtArgs>
   category?: boolean | Prisma.TurfCategoryDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.TurfCountOutputTypeDefaultArgs<ExtArgs>
@@ -2094,6 +2422,7 @@ export type $TurfPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     managers: Prisma.$TurfManagerPayload<ExtArgs>[]
     priceRules: Prisma.$TurfPriceRulePayload<ExtArgs>[]
     slots: Prisma.$TurfSlotPayload<ExtArgs>[]
+    paymentPhoneNumbers: Prisma.$PaymentPhoneNumberPayload<ExtArgs>[]
     category: Prisma.$TurfCategoryPayload<ExtArgs>
     owner: Prisma.$UserPayload<ExtArgs>
   }
@@ -2104,11 +2433,13 @@ export type $TurfPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name: string
     description: string | null
     address: string
+    allowAdvancePayment: boolean
+    advancePaymentAmount: runtime.Decimal
     latitude: runtime.Decimal
     longitude: runtime.Decimal
     status: $Enums.TurfStatus
-    basePrice: runtime.Decimal
-    slotMinutes: number
+    defaultSlotDuration: number
+    defaultSlotPrice: runtime.Decimal
     timezone: string
     createdAt: Date
     updatedAt: Date
@@ -2513,6 +2844,7 @@ export interface Prisma__TurfClient<T, Null = never, ExtArgs extends runtime.Typ
   managers<T extends Prisma.Turf$managersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Turf$managersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TurfManagerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   priceRules<T extends Prisma.Turf$priceRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Turf$priceRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TurfPriceRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   slots<T extends Prisma.Turf$slotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Turf$slotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TurfSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  paymentPhoneNumbers<T extends Prisma.Turf$paymentPhoneNumbersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Turf$paymentPhoneNumbersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPhoneNumberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   category<T extends Prisma.TurfCategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TurfCategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__TurfCategoryClient<runtime.Types.Result.GetResult<Prisma.$TurfCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -2550,11 +2882,13 @@ export interface TurfFieldRefs {
   readonly name: Prisma.FieldRef<"Turf", 'String'>
   readonly description: Prisma.FieldRef<"Turf", 'String'>
   readonly address: Prisma.FieldRef<"Turf", 'String'>
+  readonly allowAdvancePayment: Prisma.FieldRef<"Turf", 'Boolean'>
+  readonly advancePaymentAmount: Prisma.FieldRef<"Turf", 'Decimal'>
   readonly latitude: Prisma.FieldRef<"Turf", 'Decimal'>
   readonly longitude: Prisma.FieldRef<"Turf", 'Decimal'>
   readonly status: Prisma.FieldRef<"Turf", 'TurfStatus'>
-  readonly basePrice: Prisma.FieldRef<"Turf", 'Decimal'>
-  readonly slotMinutes: Prisma.FieldRef<"Turf", 'Int'>
+  readonly defaultSlotDuration: Prisma.FieldRef<"Turf", 'Int'>
+  readonly defaultSlotPrice: Prisma.FieldRef<"Turf", 'Decimal'>
   readonly timezone: Prisma.FieldRef<"Turf", 'String'>
   readonly createdAt: Prisma.FieldRef<"Turf", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Turf", 'DateTime'>
@@ -3124,6 +3458,30 @@ export type Turf$slotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.TurfSlotScalarFieldEnum | Prisma.TurfSlotScalarFieldEnum[]
+}
+
+/**
+ * Turf.paymentPhoneNumbers
+ */
+export type Turf$paymentPhoneNumbersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentPhoneNumber
+   */
+  select?: Prisma.PaymentPhoneNumberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentPhoneNumber
+   */
+  omit?: Prisma.PaymentPhoneNumberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentPhoneNumberInclude<ExtArgs> | null
+  where?: Prisma.PaymentPhoneNumberWhereInput
+  orderBy?: Prisma.PaymentPhoneNumberOrderByWithRelationInput | Prisma.PaymentPhoneNumberOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentPhoneNumberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentPhoneNumberScalarFieldEnum | Prisma.PaymentPhoneNumberScalarFieldEnum[]
 }
 
 /**

@@ -1,13 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Res, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common'; 
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Res, UseGuards } from '@nestjs/common'; 
 import { Response } from 'express'; import status from 'http-status';
- import { AuthRoles } from '../../../common/decorators/auth-roles.decorator'; 
- import { CurrentUser } from '../../../common/decorators/current-user.decorator'; 
- import { CheckAuthGuard } from '../../../common/guards/check-auth.guard'; 
- import { UserRole } from '../../../generated/prisma/enums'; 
- import sendResponse from '../../../shared/sendResponse'; 
- import { IRequestUser } from '../../interfaces/requestUser.interface'; 
- import { TurfImageService } from './turf-image.service';
+import multer from 'multer';
+import { BadRequestException } from '@nestjs/common';
+import { AuthRoles } from '../../../common/decorators/auth-roles.decorator'; 
+import { CurrentUser } from '../../../common/decorators/current-user.decorator'; 
+import { CheckAuthGuard } from '../../../common/guards/check-auth.guard'; 
+import { UserRole } from '../../../generated/prisma/enums'; 
+import sendResponse from '../../../shared/sendResponse'; 
+import { IRequestUser } from '../../interfaces/requestUser.interface'; 
+import { TurfImageService } from './turf-image.service';
+import { diskStorage } from '../../helpers/file';
 @Controller('api/v1')
 export class TurfImageController {
   constructor(private readonly service: TurfImageService) {}
@@ -47,14 +49,54 @@ export class TurfImageController {
   @Post('owner/turfs/:turfId/images/upload')
   @AuthRoles(UserRole.ADMIN)
   @UseGuards(CheckAuthGuard)
-  @UseInterceptors(FilesInterceptor('files', 10))
   async uploadMany(
     @CurrentUser() user: IRequestUser,
     @Param('turfId') id: string,
-    @UploadedFiles() files: Express.Multer.File[],
     @Res() res: Response,
   ) {
-    return this.reply(res, this.service.createMany(user, id, files), status.CREATED);
+    const storage = diskStorage(`uploads/turfs/${id}`);
+
+    const upload = multer({
+      storage,
+      limits: { fileSize: 10 * 1024 * 1024 },
+      fileFilter: (_req, file, cb) => {
+        const allowedMimes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+        if (allowedMimes.includes(file.mimetype)) {
+          cb(null, true);
+        } else {
+          cb(new BadRequestException('Only JPEG, PNG, and WebP images are allowed'));
+        }
+      },
+    }).array('files', 10);
+
+    const req = res.req as any;
+    upload(req, res, async (err: any) => {
+      if (err) {
+        return sendResponse(res, {
+          statusCode: status.BAD_REQUEST,
+          success: false,
+          message: err.message || 'File upload failed',
+          data: null,
+        });
+      }
+
+      try {
+        const result = await this.service.createMany(user, id, req.files as Express.Multer.File[]);
+        return sendResponse(res, {
+          statusCode: status.CREATED,
+          success: true,
+          message: 'Turf images uploaded successfully',
+          data: result,
+        });
+      } catch (error: any) {
+        return sendResponse(res, {
+          statusCode: status.BAD_REQUEST,
+          success: false,
+          message: error.message || 'Failed to process images',
+          data: null,
+        });
+      }
+    });
   }
 
   @Patch('owner/turf-images/:id')

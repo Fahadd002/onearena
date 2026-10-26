@@ -29,6 +29,7 @@ export type SubscriptionLogMinAggregateOutputType = {
   subscriptionId: string | null
   action: $Enums.SubscriptionAction | null
   status: $Enums.SubscriptionStatus | null
+  period: $Enums.FixedPeriod | null
   startDate: Date | null
   endDate: Date | null
   createdAt: Date | null
@@ -40,6 +41,7 @@ export type SubscriptionLogMaxAggregateOutputType = {
   subscriptionId: string | null
   action: $Enums.SubscriptionAction | null
   status: $Enums.SubscriptionStatus | null
+  period: $Enums.FixedPeriod | null
   startDate: Date | null
   endDate: Date | null
   createdAt: Date | null
@@ -51,6 +53,7 @@ export type SubscriptionLogCountAggregateOutputType = {
   subscriptionId: number
   action: number
   status: number
+  period: number
   startDate: number
   endDate: number
   createdAt: number
@@ -64,6 +67,7 @@ export type SubscriptionLogMinAggregateInputType = {
   subscriptionId?: true
   action?: true
   status?: true
+  period?: true
   startDate?: true
   endDate?: true
   createdAt?: true
@@ -75,6 +79,7 @@ export type SubscriptionLogMaxAggregateInputType = {
   subscriptionId?: true
   action?: true
   status?: true
+  period?: true
   startDate?: true
   endDate?: true
   createdAt?: true
@@ -86,6 +91,7 @@ export type SubscriptionLogCountAggregateInputType = {
   subscriptionId?: true
   action?: true
   status?: true
+  period?: true
   startDate?: true
   endDate?: true
   createdAt?: true
@@ -170,6 +176,7 @@ export type SubscriptionLogGroupByOutputType = {
   subscriptionId: string
   action: $Enums.SubscriptionAction
   status: $Enums.SubscriptionStatus
+  period: $Enums.FixedPeriod
   startDate: Date
   endDate: Date
   createdAt: Date
@@ -202,6 +209,7 @@ export type SubscriptionLogWhereInput = {
   subscriptionId?: Prisma.StringFilter<"SubscriptionLog"> | string
   action?: Prisma.EnumSubscriptionActionFilter<"SubscriptionLog"> | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusFilter<"SubscriptionLog"> | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodFilter<"SubscriptionLog"> | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeFilter<"SubscriptionLog"> | Date | string
   endDate?: Prisma.DateTimeFilter<"SubscriptionLog"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"SubscriptionLog"> | Date | string
@@ -215,6 +223,7 @@ export type SubscriptionLogOrderByWithRelationInput = {
   subscriptionId?: Prisma.SortOrder
   action?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  period?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -231,6 +240,7 @@ export type SubscriptionLogWhereUniqueInput = Prisma.AtLeast<{
   subscriptionId?: Prisma.StringFilter<"SubscriptionLog"> | string
   action?: Prisma.EnumSubscriptionActionFilter<"SubscriptionLog"> | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusFilter<"SubscriptionLog"> | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodFilter<"SubscriptionLog"> | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeFilter<"SubscriptionLog"> | Date | string
   endDate?: Prisma.DateTimeFilter<"SubscriptionLog"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"SubscriptionLog"> | Date | string
@@ -244,6 +254,7 @@ export type SubscriptionLogOrderByWithAggregationInput = {
   subscriptionId?: Prisma.SortOrder
   action?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  period?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -261,6 +272,7 @@ export type SubscriptionLogScalarWhereWithAggregatesInput = {
   subscriptionId?: Prisma.StringWithAggregatesFilter<"SubscriptionLog"> | string
   action?: Prisma.EnumSubscriptionActionWithAggregatesFilter<"SubscriptionLog"> | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusWithAggregatesFilter<"SubscriptionLog"> | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodWithAggregatesFilter<"SubscriptionLog"> | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeWithAggregatesFilter<"SubscriptionLog"> | Date | string
   endDate?: Prisma.DateTimeWithAggregatesFilter<"SubscriptionLog"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SubscriptionLog"> | Date | string
@@ -271,6 +283,7 @@ export type SubscriptionLogCreateInput = {
   id?: string
   action: $Enums.SubscriptionAction
   status: $Enums.SubscriptionStatus
+  period: $Enums.FixedPeriod
   startDate: Date | string
   endDate: Date | string
   createdAt?: Date | string
@@ -284,6 +297,7 @@ export type SubscriptionLogUncheckedCreateInput = {
   subscriptionId: string
   action: $Enums.SubscriptionAction
   status: $Enums.SubscriptionStatus
+  period: $Enums.FixedPeriod
   startDate: Date | string
   endDate: Date | string
   createdAt?: Date | string
@@ -295,6 +309,7 @@ export type SubscriptionLogUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumSubscriptionActionFieldUpdateOperationsInput | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodFieldUpdateOperationsInput | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -308,6 +323,7 @@ export type SubscriptionLogUncheckedUpdateInput = {
   subscriptionId?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumSubscriptionActionFieldUpdateOperationsInput | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodFieldUpdateOperationsInput | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -320,6 +336,7 @@ export type SubscriptionLogCreateManyInput = {
   subscriptionId: string
   action: $Enums.SubscriptionAction
   status: $Enums.SubscriptionStatus
+  period: $Enums.FixedPeriod
   startDate: Date | string
   endDate: Date | string
   createdAt?: Date | string
@@ -330,6 +347,7 @@ export type SubscriptionLogUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumSubscriptionActionFieldUpdateOperationsInput | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodFieldUpdateOperationsInput | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -341,6 +359,7 @@ export type SubscriptionLogUncheckedUpdateManyInput = {
   subscriptionId?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumSubscriptionActionFieldUpdateOperationsInput | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodFieldUpdateOperationsInput | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -367,6 +386,7 @@ export type SubscriptionLogCountOrderByAggregateInput = {
   subscriptionId?: Prisma.SortOrder
   action?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  period?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -378,6 +398,7 @@ export type SubscriptionLogMaxOrderByAggregateInput = {
   subscriptionId?: Prisma.SortOrder
   action?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  period?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -389,6 +410,7 @@ export type SubscriptionLogMinOrderByAggregateInput = {
   subscriptionId?: Prisma.SortOrder
   action?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  period?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -461,6 +483,7 @@ export type SubscriptionLogCreateWithoutInvoiceInput = {
   id?: string
   action: $Enums.SubscriptionAction
   status: $Enums.SubscriptionStatus
+  period: $Enums.FixedPeriod
   startDate: Date | string
   endDate: Date | string
   createdAt?: Date | string
@@ -473,6 +496,7 @@ export type SubscriptionLogUncheckedCreateWithoutInvoiceInput = {
   subscriptionId: string
   action: $Enums.SubscriptionAction
   status: $Enums.SubscriptionStatus
+  period: $Enums.FixedPeriod
   startDate: Date | string
   endDate: Date | string
   createdAt?: Date | string
@@ -499,6 +523,7 @@ export type SubscriptionLogUpdateWithoutInvoiceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumSubscriptionActionFieldUpdateOperationsInput | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodFieldUpdateOperationsInput | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -511,6 +536,7 @@ export type SubscriptionLogUncheckedUpdateWithoutInvoiceInput = {
   subscriptionId?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumSubscriptionActionFieldUpdateOperationsInput | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodFieldUpdateOperationsInput | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -521,6 +547,7 @@ export type SubscriptionLogCreateWithoutSubscriptionInput = {
   id?: string
   action: $Enums.SubscriptionAction
   status: $Enums.SubscriptionStatus
+  period: $Enums.FixedPeriod
   startDate: Date | string
   endDate: Date | string
   createdAt?: Date | string
@@ -532,6 +559,7 @@ export type SubscriptionLogUncheckedCreateWithoutSubscriptionInput = {
   id?: string
   action: $Enums.SubscriptionAction
   status: $Enums.SubscriptionStatus
+  period: $Enums.FixedPeriod
   startDate: Date | string
   endDate: Date | string
   createdAt?: Date | string
@@ -573,6 +601,7 @@ export type SubscriptionLogScalarWhereInput = {
   subscriptionId?: Prisma.StringFilter<"SubscriptionLog"> | string
   action?: Prisma.EnumSubscriptionActionFilter<"SubscriptionLog"> | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusFilter<"SubscriptionLog"> | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodFilter<"SubscriptionLog"> | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeFilter<"SubscriptionLog"> | Date | string
   endDate?: Prisma.DateTimeFilter<"SubscriptionLog"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"SubscriptionLog"> | Date | string
@@ -583,6 +612,7 @@ export type SubscriptionLogCreateManySubscriptionInput = {
   id?: string
   action: $Enums.SubscriptionAction
   status: $Enums.SubscriptionStatus
+  period: $Enums.FixedPeriod
   startDate: Date | string
   endDate: Date | string
   createdAt?: Date | string
@@ -593,6 +623,7 @@ export type SubscriptionLogUpdateWithoutSubscriptionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumSubscriptionActionFieldUpdateOperationsInput | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodFieldUpdateOperationsInput | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -604,6 +635,7 @@ export type SubscriptionLogUncheckedUpdateWithoutSubscriptionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumSubscriptionActionFieldUpdateOperationsInput | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodFieldUpdateOperationsInput | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -615,6 +647,7 @@ export type SubscriptionLogUncheckedUpdateManyWithoutSubscriptionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumSubscriptionActionFieldUpdateOperationsInput | $Enums.SubscriptionAction
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+  period?: Prisma.EnumFixedPeriodFieldUpdateOperationsInput | $Enums.FixedPeriod
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -628,6 +661,7 @@ export type SubscriptionLogSelect<ExtArgs extends runtime.Types.Extensions.Inter
   subscriptionId?: boolean
   action?: boolean
   status?: boolean
+  period?: boolean
   startDate?: boolean
   endDate?: boolean
   createdAt?: boolean
@@ -641,6 +675,7 @@ export type SubscriptionLogSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   subscriptionId?: boolean
   action?: boolean
   status?: boolean
+  period?: boolean
   startDate?: boolean
   endDate?: boolean
   createdAt?: boolean
@@ -653,6 +688,7 @@ export type SubscriptionLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   subscriptionId?: boolean
   action?: boolean
   status?: boolean
+  period?: boolean
   startDate?: boolean
   endDate?: boolean
   createdAt?: boolean
@@ -665,13 +701,14 @@ export type SubscriptionLogSelectScalar = {
   subscriptionId?: boolean
   action?: boolean
   status?: boolean
+  period?: boolean
   startDate?: boolean
   endDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SubscriptionLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "subscriptionId" | "action" | "status" | "startDate" | "endDate" | "createdAt" | "updatedAt", ExtArgs["result"]["subscriptionLog"]>
+export type SubscriptionLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "subscriptionId" | "action" | "status" | "period" | "startDate" | "endDate" | "createdAt" | "updatedAt", ExtArgs["result"]["subscriptionLog"]>
 export type SubscriptionLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
   invoice?: boolean | Prisma.SubscriptionLog$invoiceArgs<ExtArgs>
@@ -694,6 +731,7 @@ export type $SubscriptionLogPayload<ExtArgs extends runtime.Types.Extensions.Int
     subscriptionId: string
     action: $Enums.SubscriptionAction
     status: $Enums.SubscriptionStatus
+    period: $Enums.FixedPeriod
     startDate: Date
     endDate: Date
     createdAt: Date
@@ -1127,6 +1165,7 @@ export interface SubscriptionLogFieldRefs {
   readonly subscriptionId: Prisma.FieldRef<"SubscriptionLog", 'String'>
   readonly action: Prisma.FieldRef<"SubscriptionLog", 'SubscriptionAction'>
   readonly status: Prisma.FieldRef<"SubscriptionLog", 'SubscriptionStatus'>
+  readonly period: Prisma.FieldRef<"SubscriptionLog", 'FixedPeriod'>
   readonly startDate: Prisma.FieldRef<"SubscriptionLog", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"SubscriptionLog", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"SubscriptionLog", 'DateTime'>

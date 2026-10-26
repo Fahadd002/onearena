@@ -36,3 +36,4 @@ model ManagerPermissionGrant {
   @@index([permission])
   @@map("manager_permission_grant")
 }
+

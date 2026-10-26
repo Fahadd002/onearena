@@ -30,8 +30,9 @@ interface SendEmailOptions {
 
 export const sendEmail = async ({ subject, templateName, templateData, to, attachments }: SendEmailOptions) => {
     try {
-        const tempalatePath = path.resolve(process.cwd(), `src/app/templates/${templateName}.ejs`);
-        const html = await ejs.renderFile(tempalatePath, templateData);
+        const templatePath = config.env === 'production' ? path.resolve(process.cwd(), 'dist/app/templates', `${templateName}.ejs`)
+            : path.resolve(process.cwd(), `src/app/templates/${templateName}.ejs`);
+        const html = await ejs.renderFile(templatePath, templateData);
         const info = await transporter.sendMail({
             from: config.emailSenderFrom,
             to: to,

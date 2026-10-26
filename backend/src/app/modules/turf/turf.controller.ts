@@ -17,6 +17,7 @@ import status from 'http-status';
 import { AuthRoles } from '../../../common/decorators/auth-roles.decorator';
 import { CurrentUser } from '../../../common/decorators/current-user.decorator';
 import { CheckAuthGuard } from '../../../common/guards/check-auth.guard';
+import { OptionalAuthGuard } from '../../../common/guards/optional-auth.guard';
 import { UserRole } from '../../../generated/prisma/enums';
 import sendResponse from '../../../shared/sendResponse';
 
@@ -33,7 +34,7 @@ export class TurfController {
   @AuthRoles(UserRole.SUPER_ADMIN)
   @UseGuards(CheckAuthGuard)
   async listForAdmin(
-    @Query() query: { search?: string; categoryId?: string; status?: string; sortBy?: string; sortOrder?: string; page?: string; limit?: string },
+    @Query() query: { search?: string; categoryId?: string; status?: string; facilityId?: string; sortBy?: string; sortOrder?: string; page?: string; limit?: string },
     @Res() res: Response,
   ) {
     const data = await this.turfService.listForAdmin({ ...query, page: query.page ? Number(query.page) : undefined, limit: query.limit ? Number(query.limit) : undefined });
@@ -65,46 +66,44 @@ export class TurfController {
   }
 
   @Get('turfs')
+  @UseGuards(OptionalAuthGuard)
   async list(
-    @Query()
-    query: {
-      categoryId?: string;
-      minPrice?: string;
-      maxPrice?: string;
-      lat?: string;
-      lng?: string;
-      radius?: string;
-    },
-    @Res() res: Response,
+    @CurrentUser() user: IRequestUser,
+    @Query() query: Record<string, string>,
+    @Res() res: Response
   ) {
-    const data = await this.turfService.list({
-      ...query,
-      minPrice: query.minPrice
-        ? Number(query.minPrice)
-        : undefined,
-      maxPrice: query.maxPrice
-        ? Number(query.maxPrice)
-        : undefined,
-      lat: query.lat ? Number(query.lat) : undefined,
-      lng: query.lng ? Number(query.lng) : undefined,
-      radius: query.radius ? Number(query.radius) : undefined,
-    });
+    const data = await this.turfService.list(
+      user,
+      {
+        area: query.area,
+        categoryId: query.categoryId,
+        minPrice: query.minPrice ? Number(query.minPrice) : undefined,
+        maxPrice: query.maxPrice ? Number(query.maxPrice) : undefined,
+        lat: query.lat ? Number(query.lat) : undefined,
+        lng: query.lng ? Number(query.lng) : undefined,
+        radius: query.radius ? Number(query.radius) : undefined,
+        page: query.page ? Number(query.page) : undefined,
+        limit: query.limit ? Number(query.limit) : undefined,
+        sortBy: query.sortBy,
+        sortOrder: query.sortOrder as "asc" | "desc" | undefined,
+        date: query.date,
+      });
 
     sendResponse(res, {
       statusCode: status.OK,
       success: true,
-      message: 'Turfs fetched successfully',
+      message: "Turfs fetched successfully",
       data,
     });
   }
 
   @Get('turfs/:turfId')
-  async get(
+  async getActiveTurfById(
     @Param('turfId') id: string,
     @Res() res: Response,
   ) {
     const data =
-      await this.turfService.findActive(id);
+      await this.turfService.findActiveTurfById(id);
 
     sendResponse(res, {
       statusCode: status.OK,
@@ -112,12 +111,6 @@ export class TurfController {
       message: 'Turf fetched successfully',
       data,
     });
-  }
-
-  @Get('owners/:ownerId/landing')
-  async getOwnerLanding(@Param('ownerId') ownerId: string, @Res() res: Response) {
-    const data = await this.turfService.getOwnerLanding(ownerId);
-    sendResponse(res, { statusCode: status.OK, success: true, message: 'Owner landing page fetched successfully', data });
   }
 
   @Post('owner/turfs')
@@ -130,24 +123,6 @@ export class TurfController {
   ) {
     const data =
       await this.turfService.create(user, body);
-
-    sendResponse(res, {
-      statusCode: status.CREATED,
-      success: true,
-      message: 'Turf created successfully',
-      data,
-    });
-  }
-
-  @Post('super-admin/turfs')
-  @AuthRoles(UserRole.SUPER_ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async createForAdmin(
-    @Body() body: TurfPayload,
-    @Res() res: Response,
-  ) {
-    const data =
-      await this.turfService.createForAdmin(body);
 
     sendResponse(res, {
       statusCode: status.CREATED,
@@ -249,7 +224,7 @@ export class TurfController {
     @Param('turfId') turfId: string,
     @Res() res: Response,
   ) {
-    const data = await this.turfService.findMine(user, turfId);
+    const data = await this.turfService.findMineById(user, turfId);
     sendResponse(res, { statusCode: status.OK, success: true, message: 'Turf fetched successfully', data });
   }
 }

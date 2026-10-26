@@ -1,66 +1,105 @@
 model Turf {
-  id          String     @id @default(uuid())
-  ownerId     String
-  categoryId  String
-  name        String
-  description String?
-  address     String
-  latitude    Decimal    @db.Decimal(13, 10)
-  longitude   Decimal    @db.Decimal(13, 10)
-  status      TurfStatus @default(ACTIVE)
-  basePrice   Decimal    @db.Decimal(12, 2)
-  slotMinutes Int        @default(90)
-  timezone    String     @default("Asia/Dhaka")
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id                   String     @id @default(uuid())
+  ownerId              String
+  categoryId           String
+  name                 String
+  description          String?
+  address              String
+  allowAdvancePayment  Boolean    @default(false)
+  advancePaymentAmount Decimal   @db.Decimal(12, 2) @default(0)
+  latitude             Decimal    @db.Decimal(13, 10)
+  longitude            Decimal    @db.Decimal(13, 10)
+  status               TurfStatus @default(ACTIVE)
+  defaultSlotDuration  Int        @default(90)
+  defaultSlotPrice     Decimal    @db.Decimal(12, 2) @default(0)
+  timezone             String     @default("Asia/Dhaka")
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
 
-  packages   Package[]
-  reviews    Review[]
-  facilities TurfFacility[]
-  images     TurfImage[]
-  managers   TurfManager[]
-  priceRules TurfPriceRule[]
-  slots      TurfSlot[]
-  category   TurfCategory    @relation(fields: [categoryId], references: [id])
-  owner      User            @relation(fields: [ownerId], references: [id])
+  packages            Package[]
+  reviews             Review[]
+  facilities          TurfFacility[]
+  images              TurfImage[]
+  managers            TurfManager[]
+  priceRules          TurfPriceRule[]
+  slots               TurfSlot[]
+  paymentPhoneNumbers PaymentPhoneNumber[]
+  category            TurfCategory         @relation(fields: [categoryId], references: [id])
+  owner               User                 @relation(fields: [ownerId], references: [id])
 
   @@index([ownerId, status])
   @@index([categoryId, status])
   @@map("turf")
 }
 
-model TurfPriceRule {
-  id          String   @id @default(uuid())
-  turfId      String
-  dayOfWeek   Int
-  startMinute Int
-  endMinute   Int
-  price       Decimal  @db.Decimal(12, 2)
-  active      Boolean  @default(true)
-  startDate   DateTime
-  endDate     DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  turf        Turf     @relation(fields: [turfId], references: [id], onDelete: Cascade)
+model SlotTimeSetup {
+  id           String  @id @default(uuid())
+  timeName     String
+  startMinute  Int
+  endMinute    Int
+  isPeakTime   Boolean @default(false)
+  slotDuration Int     @default(90)
+  ownerId      String
+  owner        User    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
-  @@unique([turfId, dayOfWeek, startDate, endDate, startMinute, endMinute])
-  @@index([turfId, dayOfWeek, startDate, endDate, startMinute, endMinute])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  turfPriceRules TurfPriceRule[]
+
+  @@unique([startMinute, endMinute, timeName, ownerId])
+  @@index([startMinute, endMinute, timeName, ownerId])
+  @@map("slot_time_setup")
+}
+
+model PaymentPhoneNumber {
+  id        String        @id @default(uuid())
+  turfId    String
+  number    String
+  method    PaymentMethod
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  turf Turf @relation(fields: [turfId], references: [id], onDelete: Cascade)
+
+  @@unique([turfId, method])
+  @@index([turfId])
+  @@map("payment_phone_number")
+}
+
+model TurfPriceRule {
+  id              String  @id @default(uuid())
+  turfId          String
+  slotTimeSetupId String
+  dayOfWeek       Int
+  price           Decimal @db.Decimal(12, 2)  @default(0)
+  active          Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  slotTimeSetup SlotTimeSetup @relation(fields: [slotTimeSetupId], references: [id])
+  turf          Turf          @relation(fields: [turfId], references: [id], onDelete: Cascade)
+
+  @@unique([turfId, dayOfWeek, slotTimeSetupId])
+  @@index([turfId, dayOfWeek, slotTimeSetupId])
   @@map("turf_price_rule")
 }
 
 model TurfSlot {
-  id          String    @id @default(uuid())
-  turfId      String
-  slotDate    DateTime  @db.Date
-  startMinute Int
-  endMinute   Int
-  price       Decimal   @db.Decimal(12, 2)
-  active      Boolean   @default(true)
-  slotStatus  SlotSatus @default(AVAILABLE)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  turf        Turf      @relation(fields: [turfId], references: [id], onDelete: Cascade)
-  booking     Booking?
+  id           String        @id @default(uuid())
+  turfId       String
+  slotDate     DateTime      @db.Date
+  startMinute  Int
+  endMinute    Int
+  price        Decimal       @db.Decimal(12, 2)  @default(0)
+  active       Boolean       @default(true)
+  slotStatus   SlotSatus     @default(AVAILABLE)
+  isPeakTime   Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  turf         Turf          @relation(fields: [turfId], references: [id], onDelete: Cascade)
+  bookingLinks BookingSlot[]
 
   @@unique([turfId, slotDate, startMinute, endMinute])
   @@index([turfId, slotDate, active])
@@ -86,7 +125,7 @@ model Package {
   turfId      String
   name        String
   description String?
-  price       Decimal           @db.Decimal(12, 2)
+  price       Decimal           @db.Decimal(12, 2) @default(0)
   active      Boolean           @default(true)
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt

@@ -6,12 +6,16 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 export default {
     env: process.env.NODE_ENV,
     port: process.env.PORT,
+    timezone: process.env.TIMEZONE,
     stripeSecretKey: process.env.STRIPE_SECRET_KEY,
     stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     salt_round: process.env.SALT_ROUND,
     openRouterApiKey: process.env.OPENROUTER_API_KEY,
     betterAuthUrl: process.env.BETTER_AUTH_URL as string,
     frontendUrl: process.env.FRONTEND_URL as string,
+    nonWWWUrl: process.env.NON_WWW_FRONTEND_URL as string,
+    cookieSecure: process.env.COOKIE_SECURE === 'true',
+    cookieSameSite: process.env.COOKIE_SAME_SITE === 'none' ? ('none' as const) : ('lax' as const),
     betterAuthtSecret: process.env.BETTER_AUTH_SECRET,
     accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
     refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
@@ -41,7 +45,6 @@ export default {
         reset_pass_secret: process.env.RESET_PASS_TOKEN,
         reset_pass_token_expires_in: process.env.RESET_PASS_TOKEN_EXPIRES_IN
     },
-    reset_pass_link: process.env.RESET_PASS_LINK,
     emailSender: {
         email: process.env.EMAIL,
         app_pass: process.env.APP_PASS

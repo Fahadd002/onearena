@@ -36,7 +36,7 @@ export type OwnerGalleryItemSumAggregateOutputType = {
 
 export type OwnerGalleryItemMinAggregateOutputType = {
   id: string | null
-  ownerId: string | null
+  ownerProfileId: string | null
   title: string | null
   description: string | null
   imageUrl: string | null
@@ -48,7 +48,7 @@ export type OwnerGalleryItemMinAggregateOutputType = {
 
 export type OwnerGalleryItemMaxAggregateOutputType = {
   id: string | null
-  ownerId: string | null
+  ownerProfileId: string | null
   title: string | null
   description: string | null
   imageUrl: string | null
@@ -60,7 +60,7 @@ export type OwnerGalleryItemMaxAggregateOutputType = {
 
 export type OwnerGalleryItemCountAggregateOutputType = {
   id: number
-  ownerId: number
+  ownerProfileId: number
   title: number
   description: number
   imageUrl: number
@@ -82,7 +82,7 @@ export type OwnerGalleryItemSumAggregateInputType = {
 
 export type OwnerGalleryItemMinAggregateInputType = {
   id?: true
-  ownerId?: true
+  ownerProfileId?: true
   title?: true
   description?: true
   imageUrl?: true
@@ -94,7 +94,7 @@ export type OwnerGalleryItemMinAggregateInputType = {
 
 export type OwnerGalleryItemMaxAggregateInputType = {
   id?: true
-  ownerId?: true
+  ownerProfileId?: true
   title?: true
   description?: true
   imageUrl?: true
@@ -106,7 +106,7 @@ export type OwnerGalleryItemMaxAggregateInputType = {
 
 export type OwnerGalleryItemCountAggregateInputType = {
   id?: true
-  ownerId?: true
+  ownerProfileId?: true
   title?: true
   description?: true
   imageUrl?: true
@@ -205,7 +205,7 @@ export type OwnerGalleryItemGroupByArgs<ExtArgs extends runtime.Types.Extensions
 
 export type OwnerGalleryItemGroupByOutputType = {
   id: string
-  ownerId: string
+  ownerProfileId: string
   title: string | null
   description: string | null
   imageUrl: string
@@ -240,7 +240,7 @@ export type OwnerGalleryItemWhereInput = {
   OR?: Prisma.OwnerGalleryItemWhereInput[]
   NOT?: Prisma.OwnerGalleryItemWhereInput | Prisma.OwnerGalleryItemWhereInput[]
   id?: Prisma.StringFilter<"OwnerGalleryItem"> | string
-  ownerId?: Prisma.StringFilter<"OwnerGalleryItem"> | string
+  ownerProfileId?: Prisma.StringFilter<"OwnerGalleryItem"> | string
   title?: Prisma.StringNullableFilter<"OwnerGalleryItem"> | string | null
   description?: Prisma.StringNullableFilter<"OwnerGalleryItem"> | string | null
   imageUrl?: Prisma.StringFilter<"OwnerGalleryItem"> | string
@@ -248,12 +248,12 @@ export type OwnerGalleryItemWhereInput = {
   active?: Prisma.BoolFilter<"OwnerGalleryItem"> | boolean
   createdAt?: Prisma.DateTimeFilter<"OwnerGalleryItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OwnerGalleryItem"> | Date | string
-  owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  ownerProfile?: Prisma.XOR<Prisma.OwnerProfileScalarRelationFilter, Prisma.OwnerProfileWhereInput>
 }
 
 export type OwnerGalleryItemOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
+  ownerProfileId?: Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
@@ -261,7 +261,7 @@ export type OwnerGalleryItemOrderByWithRelationInput = {
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  owner?: Prisma.UserOrderByWithRelationInput
+  ownerProfile?: Prisma.OwnerProfileOrderByWithRelationInput
 }
 
 export type OwnerGalleryItemWhereUniqueInput = Prisma.AtLeast<{
@@ -269,7 +269,7 @@ export type OwnerGalleryItemWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.OwnerGalleryItemWhereInput | Prisma.OwnerGalleryItemWhereInput[]
   OR?: Prisma.OwnerGalleryItemWhereInput[]
   NOT?: Prisma.OwnerGalleryItemWhereInput | Prisma.OwnerGalleryItemWhereInput[]
-  ownerId?: Prisma.StringFilter<"OwnerGalleryItem"> | string
+  ownerProfileId?: Prisma.StringFilter<"OwnerGalleryItem"> | string
   title?: Prisma.StringNullableFilter<"OwnerGalleryItem"> | string | null
   description?: Prisma.StringNullableFilter<"OwnerGalleryItem"> | string | null
   imageUrl?: Prisma.StringFilter<"OwnerGalleryItem"> | string
@@ -277,12 +277,12 @@ export type OwnerGalleryItemWhereUniqueInput = Prisma.AtLeast<{
   active?: Prisma.BoolFilter<"OwnerGalleryItem"> | boolean
   createdAt?: Prisma.DateTimeFilter<"OwnerGalleryItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OwnerGalleryItem"> | Date | string
-  owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  ownerProfile?: Prisma.XOR<Prisma.OwnerProfileScalarRelationFilter, Prisma.OwnerProfileWhereInput>
 }, "id">
 
 export type OwnerGalleryItemOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
+  ownerProfileId?: Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
@@ -302,7 +302,7 @@ export type OwnerGalleryItemScalarWhereWithAggregatesInput = {
   OR?: Prisma.OwnerGalleryItemScalarWhereWithAggregatesInput[]
   NOT?: Prisma.OwnerGalleryItemScalarWhereWithAggregatesInput | Prisma.OwnerGalleryItemScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"OwnerGalleryItem"> | string
-  ownerId?: Prisma.StringWithAggregatesFilter<"OwnerGalleryItem"> | string
+  ownerProfileId?: Prisma.StringWithAggregatesFilter<"OwnerGalleryItem"> | string
   title?: Prisma.StringNullableWithAggregatesFilter<"OwnerGalleryItem"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"OwnerGalleryItem"> | string | null
   imageUrl?: Prisma.StringWithAggregatesFilter<"OwnerGalleryItem"> | string
@@ -321,12 +321,12 @@ export type OwnerGalleryItemCreateInput = {
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  owner: Prisma.UserCreateNestedOneWithoutOwnerGalleryInput
+  ownerProfile: Prisma.OwnerProfileCreateNestedOneWithoutOwnerGalleryInput
 }
 
 export type OwnerGalleryItemUncheckedCreateInput = {
   id?: string
-  ownerId: string
+  ownerProfileId: string
   title?: string | null
   description?: string | null
   imageUrl: string
@@ -345,12 +345,12 @@ export type OwnerGalleryItemUpdateInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  owner?: Prisma.UserUpdateOneRequiredWithoutOwnerGalleryNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneRequiredWithoutOwnerGalleryNestedInput
 }
 
 export type OwnerGalleryItemUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
@@ -362,7 +362,7 @@ export type OwnerGalleryItemUncheckedUpdateInput = {
 
 export type OwnerGalleryItemCreateManyInput = {
   id?: string
-  ownerId: string
+  ownerProfileId: string
   title?: string | null
   description?: string | null
   imageUrl: string
@@ -385,7 +385,7 @@ export type OwnerGalleryItemUpdateManyMutationInput = {
 
 export type OwnerGalleryItemUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
@@ -395,9 +395,19 @@ export type OwnerGalleryItemUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type OwnerGalleryItemListRelationFilter = {
+  every?: Prisma.OwnerGalleryItemWhereInput
+  some?: Prisma.OwnerGalleryItemWhereInput
+  none?: Prisma.OwnerGalleryItemWhereInput
+}
+
+export type OwnerGalleryItemOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type OwnerGalleryItemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
+  ownerProfileId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
@@ -413,7 +423,7 @@ export type OwnerGalleryItemAvgOrderByAggregateInput = {
 
 export type OwnerGalleryItemMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
+  ownerProfileId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
@@ -425,7 +435,7 @@ export type OwnerGalleryItemMaxOrderByAggregateInput = {
 
 export type OwnerGalleryItemMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
+  ownerProfileId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
@@ -439,67 +449,49 @@ export type OwnerGalleryItemSumOrderByAggregateInput = {
   sortOrder?: Prisma.SortOrder
 }
 
-export type OwnerGalleryItemListRelationFilter = {
-  every?: Prisma.OwnerGalleryItemWhereInput
-  some?: Prisma.OwnerGalleryItemWhereInput
-  none?: Prisma.OwnerGalleryItemWhereInput
-}
-
-export type OwnerGalleryItemOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type OwnerGalleryItemCreateNestedManyWithoutOwnerInput = {
-  create?: Prisma.XOR<Prisma.OwnerGalleryItemCreateWithoutOwnerInput, Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerInput> | Prisma.OwnerGalleryItemCreateWithoutOwnerInput[] | Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerInput[]
-  connectOrCreate?: Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerInput | Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerInput[]
-  createMany?: Prisma.OwnerGalleryItemCreateManyOwnerInputEnvelope
+export type OwnerGalleryItemCreateNestedManyWithoutOwnerProfileInput = {
+  create?: Prisma.XOR<Prisma.OwnerGalleryItemCreateWithoutOwnerProfileInput, Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerProfileInput> | Prisma.OwnerGalleryItemCreateWithoutOwnerProfileInput[] | Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerProfileInput[]
+  connectOrCreate?: Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerProfileInput | Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerProfileInput[]
+  createMany?: Prisma.OwnerGalleryItemCreateManyOwnerProfileInputEnvelope
   connect?: Prisma.OwnerGalleryItemWhereUniqueInput | Prisma.OwnerGalleryItemWhereUniqueInput[]
 }
 
-export type OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerInput = {
-  create?: Prisma.XOR<Prisma.OwnerGalleryItemCreateWithoutOwnerInput, Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerInput> | Prisma.OwnerGalleryItemCreateWithoutOwnerInput[] | Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerInput[]
-  connectOrCreate?: Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerInput | Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerInput[]
-  createMany?: Prisma.OwnerGalleryItemCreateManyOwnerInputEnvelope
+export type OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerProfileInput = {
+  create?: Prisma.XOR<Prisma.OwnerGalleryItemCreateWithoutOwnerProfileInput, Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerProfileInput> | Prisma.OwnerGalleryItemCreateWithoutOwnerProfileInput[] | Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerProfileInput[]
+  connectOrCreate?: Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerProfileInput | Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerProfileInput[]
+  createMany?: Prisma.OwnerGalleryItemCreateManyOwnerProfileInputEnvelope
   connect?: Prisma.OwnerGalleryItemWhereUniqueInput | Prisma.OwnerGalleryItemWhereUniqueInput[]
 }
 
-export type OwnerGalleryItemUpdateManyWithoutOwnerNestedInput = {
-  create?: Prisma.XOR<Prisma.OwnerGalleryItemCreateWithoutOwnerInput, Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerInput> | Prisma.OwnerGalleryItemCreateWithoutOwnerInput[] | Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerInput[]
-  connectOrCreate?: Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerInput | Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerInput[]
-  upsert?: Prisma.OwnerGalleryItemUpsertWithWhereUniqueWithoutOwnerInput | Prisma.OwnerGalleryItemUpsertWithWhereUniqueWithoutOwnerInput[]
-  createMany?: Prisma.OwnerGalleryItemCreateManyOwnerInputEnvelope
+export type OwnerGalleryItemUpdateManyWithoutOwnerProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnerGalleryItemCreateWithoutOwnerProfileInput, Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerProfileInput> | Prisma.OwnerGalleryItemCreateWithoutOwnerProfileInput[] | Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerProfileInput[]
+  connectOrCreate?: Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerProfileInput | Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerProfileInput[]
+  upsert?: Prisma.OwnerGalleryItemUpsertWithWhereUniqueWithoutOwnerProfileInput | Prisma.OwnerGalleryItemUpsertWithWhereUniqueWithoutOwnerProfileInput[]
+  createMany?: Prisma.OwnerGalleryItemCreateManyOwnerProfileInputEnvelope
   set?: Prisma.OwnerGalleryItemWhereUniqueInput | Prisma.OwnerGalleryItemWhereUniqueInput[]
   disconnect?: Prisma.OwnerGalleryItemWhereUniqueInput | Prisma.OwnerGalleryItemWhereUniqueInput[]
   delete?: Prisma.OwnerGalleryItemWhereUniqueInput | Prisma.OwnerGalleryItemWhereUniqueInput[]
   connect?: Prisma.OwnerGalleryItemWhereUniqueInput | Prisma.OwnerGalleryItemWhereUniqueInput[]
-  update?: Prisma.OwnerGalleryItemUpdateWithWhereUniqueWithoutOwnerInput | Prisma.OwnerGalleryItemUpdateWithWhereUniqueWithoutOwnerInput[]
-  updateMany?: Prisma.OwnerGalleryItemUpdateManyWithWhereWithoutOwnerInput | Prisma.OwnerGalleryItemUpdateManyWithWhereWithoutOwnerInput[]
+  update?: Prisma.OwnerGalleryItemUpdateWithWhereUniqueWithoutOwnerProfileInput | Prisma.OwnerGalleryItemUpdateWithWhereUniqueWithoutOwnerProfileInput[]
+  updateMany?: Prisma.OwnerGalleryItemUpdateManyWithWhereWithoutOwnerProfileInput | Prisma.OwnerGalleryItemUpdateManyWithWhereWithoutOwnerProfileInput[]
   deleteMany?: Prisma.OwnerGalleryItemScalarWhereInput | Prisma.OwnerGalleryItemScalarWhereInput[]
 }
 
-export type OwnerGalleryItemUncheckedUpdateManyWithoutOwnerNestedInput = {
-  create?: Prisma.XOR<Prisma.OwnerGalleryItemCreateWithoutOwnerInput, Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerInput> | Prisma.OwnerGalleryItemCreateWithoutOwnerInput[] | Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerInput[]
-  connectOrCreate?: Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerInput | Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerInput[]
-  upsert?: Prisma.OwnerGalleryItemUpsertWithWhereUniqueWithoutOwnerInput | Prisma.OwnerGalleryItemUpsertWithWhereUniqueWithoutOwnerInput[]
-  createMany?: Prisma.OwnerGalleryItemCreateManyOwnerInputEnvelope
+export type OwnerGalleryItemUncheckedUpdateManyWithoutOwnerProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnerGalleryItemCreateWithoutOwnerProfileInput, Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerProfileInput> | Prisma.OwnerGalleryItemCreateWithoutOwnerProfileInput[] | Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerProfileInput[]
+  connectOrCreate?: Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerProfileInput | Prisma.OwnerGalleryItemCreateOrConnectWithoutOwnerProfileInput[]
+  upsert?: Prisma.OwnerGalleryItemUpsertWithWhereUniqueWithoutOwnerProfileInput | Prisma.OwnerGalleryItemUpsertWithWhereUniqueWithoutOwnerProfileInput[]
+  createMany?: Prisma.OwnerGalleryItemCreateManyOwnerProfileInputEnvelope
   set?: Prisma.OwnerGalleryItemWhereUniqueInput | Prisma.OwnerGalleryItemWhereUniqueInput[]
   disconnect?: Prisma.OwnerGalleryItemWhereUniqueInput | Prisma.OwnerGalleryItemWhereUniqueInput[]
   delete?: Prisma.OwnerGalleryItemWhereUniqueInput | Prisma.OwnerGalleryItemWhereUniqueInput[]
   connect?: Prisma.OwnerGalleryItemWhereUniqueInput | Prisma.OwnerGalleryItemWhereUniqueInput[]
-  update?: Prisma.OwnerGalleryItemUpdateWithWhereUniqueWithoutOwnerInput | Prisma.OwnerGalleryItemUpdateWithWhereUniqueWithoutOwnerInput[]
-  updateMany?: Prisma.OwnerGalleryItemUpdateManyWithWhereWithoutOwnerInput | Prisma.OwnerGalleryItemUpdateManyWithWhereWithoutOwnerInput[]
+  update?: Prisma.OwnerGalleryItemUpdateWithWhereUniqueWithoutOwnerProfileInput | Prisma.OwnerGalleryItemUpdateWithWhereUniqueWithoutOwnerProfileInput[]
+  updateMany?: Prisma.OwnerGalleryItemUpdateManyWithWhereWithoutOwnerProfileInput | Prisma.OwnerGalleryItemUpdateManyWithWhereWithoutOwnerProfileInput[]
   deleteMany?: Prisma.OwnerGalleryItemScalarWhereInput | Prisma.OwnerGalleryItemScalarWhereInput[]
 }
 
-export type OwnerGalleryItemCreateWithoutOwnerInput = {
+export type OwnerGalleryItemCreateWithoutOwnerProfileInput = {
   id?: string
   title?: string | null
   description?: string | null
@@ -510,7 +502,7 @@ export type OwnerGalleryItemCreateWithoutOwnerInput = {
   updatedAt?: Date | string
 }
 
-export type OwnerGalleryItemUncheckedCreateWithoutOwnerInput = {
+export type OwnerGalleryItemUncheckedCreateWithoutOwnerProfileInput = {
   id?: string
   title?: string | null
   description?: string | null
@@ -521,30 +513,30 @@ export type OwnerGalleryItemUncheckedCreateWithoutOwnerInput = {
   updatedAt?: Date | string
 }
 
-export type OwnerGalleryItemCreateOrConnectWithoutOwnerInput = {
+export type OwnerGalleryItemCreateOrConnectWithoutOwnerProfileInput = {
   where: Prisma.OwnerGalleryItemWhereUniqueInput
-  create: Prisma.XOR<Prisma.OwnerGalleryItemCreateWithoutOwnerInput, Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerInput>
+  create: Prisma.XOR<Prisma.OwnerGalleryItemCreateWithoutOwnerProfileInput, Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerProfileInput>
 }
 
-export type OwnerGalleryItemCreateManyOwnerInputEnvelope = {
-  data: Prisma.OwnerGalleryItemCreateManyOwnerInput | Prisma.OwnerGalleryItemCreateManyOwnerInput[]
+export type OwnerGalleryItemCreateManyOwnerProfileInputEnvelope = {
+  data: Prisma.OwnerGalleryItemCreateManyOwnerProfileInput | Prisma.OwnerGalleryItemCreateManyOwnerProfileInput[]
   skipDuplicates?: boolean
 }
 
-export type OwnerGalleryItemUpsertWithWhereUniqueWithoutOwnerInput = {
+export type OwnerGalleryItemUpsertWithWhereUniqueWithoutOwnerProfileInput = {
   where: Prisma.OwnerGalleryItemWhereUniqueInput
-  update: Prisma.XOR<Prisma.OwnerGalleryItemUpdateWithoutOwnerInput, Prisma.OwnerGalleryItemUncheckedUpdateWithoutOwnerInput>
-  create: Prisma.XOR<Prisma.OwnerGalleryItemCreateWithoutOwnerInput, Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerInput>
+  update: Prisma.XOR<Prisma.OwnerGalleryItemUpdateWithoutOwnerProfileInput, Prisma.OwnerGalleryItemUncheckedUpdateWithoutOwnerProfileInput>
+  create: Prisma.XOR<Prisma.OwnerGalleryItemCreateWithoutOwnerProfileInput, Prisma.OwnerGalleryItemUncheckedCreateWithoutOwnerProfileInput>
 }
 
-export type OwnerGalleryItemUpdateWithWhereUniqueWithoutOwnerInput = {
+export type OwnerGalleryItemUpdateWithWhereUniqueWithoutOwnerProfileInput = {
   where: Prisma.OwnerGalleryItemWhereUniqueInput
-  data: Prisma.XOR<Prisma.OwnerGalleryItemUpdateWithoutOwnerInput, Prisma.OwnerGalleryItemUncheckedUpdateWithoutOwnerInput>
+  data: Prisma.XOR<Prisma.OwnerGalleryItemUpdateWithoutOwnerProfileInput, Prisma.OwnerGalleryItemUncheckedUpdateWithoutOwnerProfileInput>
 }
 
-export type OwnerGalleryItemUpdateManyWithWhereWithoutOwnerInput = {
+export type OwnerGalleryItemUpdateManyWithWhereWithoutOwnerProfileInput = {
   where: Prisma.OwnerGalleryItemScalarWhereInput
-  data: Prisma.XOR<Prisma.OwnerGalleryItemUpdateManyMutationInput, Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerInput>
+  data: Prisma.XOR<Prisma.OwnerGalleryItemUpdateManyMutationInput, Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerProfileInput>
 }
 
 export type OwnerGalleryItemScalarWhereInput = {
@@ -552,7 +544,7 @@ export type OwnerGalleryItemScalarWhereInput = {
   OR?: Prisma.OwnerGalleryItemScalarWhereInput[]
   NOT?: Prisma.OwnerGalleryItemScalarWhereInput | Prisma.OwnerGalleryItemScalarWhereInput[]
   id?: Prisma.StringFilter<"OwnerGalleryItem"> | string
-  ownerId?: Prisma.StringFilter<"OwnerGalleryItem"> | string
+  ownerProfileId?: Prisma.StringFilter<"OwnerGalleryItem"> | string
   title?: Prisma.StringNullableFilter<"OwnerGalleryItem"> | string | null
   description?: Prisma.StringNullableFilter<"OwnerGalleryItem"> | string | null
   imageUrl?: Prisma.StringFilter<"OwnerGalleryItem"> | string
@@ -562,7 +554,7 @@ export type OwnerGalleryItemScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"OwnerGalleryItem"> | Date | string
 }
 
-export type OwnerGalleryItemCreateManyOwnerInput = {
+export type OwnerGalleryItemCreateManyOwnerProfileInput = {
   id?: string
   title?: string | null
   description?: string | null
@@ -573,7 +565,7 @@ export type OwnerGalleryItemCreateManyOwnerInput = {
   updatedAt?: Date | string
 }
 
-export type OwnerGalleryItemUpdateWithoutOwnerInput = {
+export type OwnerGalleryItemUpdateWithoutOwnerProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -584,7 +576,7 @@ export type OwnerGalleryItemUpdateWithoutOwnerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type OwnerGalleryItemUncheckedUpdateWithoutOwnerInput = {
+export type OwnerGalleryItemUncheckedUpdateWithoutOwnerProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -595,7 +587,7 @@ export type OwnerGalleryItemUncheckedUpdateWithoutOwnerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type OwnerGalleryItemUncheckedUpdateManyWithoutOwnerInput = {
+export type OwnerGalleryItemUncheckedUpdateManyWithoutOwnerProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -610,7 +602,7 @@ export type OwnerGalleryItemUncheckedUpdateManyWithoutOwnerInput = {
 
 export type OwnerGalleryItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  ownerId?: boolean
+  ownerProfileId?: boolean
   title?: boolean
   description?: boolean
   imageUrl?: boolean
@@ -618,12 +610,12 @@ export type OwnerGalleryItemSelect<ExtArgs extends runtime.Types.Extensions.Inte
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.OwnerProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ownerGalleryItem"]>
 
 export type OwnerGalleryItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  ownerId?: boolean
+  ownerProfileId?: boolean
   title?: boolean
   description?: boolean
   imageUrl?: boolean
@@ -631,12 +623,12 @@ export type OwnerGalleryItemSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.OwnerProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ownerGalleryItem"]>
 
 export type OwnerGalleryItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  ownerId?: boolean
+  ownerProfileId?: boolean
   title?: boolean
   description?: boolean
   imageUrl?: boolean
@@ -644,12 +636,12 @@ export type OwnerGalleryItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.OwnerProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ownerGalleryItem"]>
 
 export type OwnerGalleryItemSelectScalar = {
   id?: boolean
-  ownerId?: boolean
+  ownerProfileId?: boolean
   title?: boolean
   description?: boolean
   imageUrl?: boolean
@@ -659,25 +651,25 @@ export type OwnerGalleryItemSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OwnerGalleryItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "title" | "description" | "imageUrl" | "sortOrder" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["ownerGalleryItem"]>
+export type OwnerGalleryItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerProfileId" | "title" | "description" | "imageUrl" | "sortOrder" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["ownerGalleryItem"]>
 export type OwnerGalleryItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.OwnerProfileDefaultArgs<ExtArgs>
 }
 export type OwnerGalleryItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.OwnerProfileDefaultArgs<ExtArgs>
 }
 export type OwnerGalleryItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.OwnerProfileDefaultArgs<ExtArgs>
 }
 
 export type $OwnerGalleryItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "OwnerGalleryItem"
   objects: {
-    owner: Prisma.$UserPayload<ExtArgs>
+    ownerProfile: Prisma.$OwnerProfilePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    ownerId: string
+    ownerProfileId: string
     title: string | null
     description: string | null
     imageUrl: string
@@ -1079,7 +1071,7 @@ readonly fields: OwnerGalleryItemFieldRefs;
  */
 export interface Prisma__OwnerGalleryItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  ownerProfile<T extends Prisma.OwnerProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__OwnerProfileClient<runtime.Types.Result.GetResult<Prisma.$OwnerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1110,7 +1102,7 @@ export interface Prisma__OwnerGalleryItemClient<T, Null = never, ExtArgs extends
  */
 export interface OwnerGalleryItemFieldRefs {
   readonly id: Prisma.FieldRef<"OwnerGalleryItem", 'String'>
-  readonly ownerId: Prisma.FieldRef<"OwnerGalleryItem", 'String'>
+  readonly ownerProfileId: Prisma.FieldRef<"OwnerGalleryItem", 'String'>
   readonly title: Prisma.FieldRef<"OwnerGalleryItem", 'String'>
   readonly description: Prisma.FieldRef<"OwnerGalleryItem", 'String'>
   readonly imageUrl: Prisma.FieldRef<"OwnerGalleryItem", 'String'>

@@ -52,12 +52,14 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Booking: 'Booking',
+  BookingSlot: 'BookingSlot',
   TurfCategory: 'TurfCategory',
   Facility: 'Facility',
   PackageFacility: 'PackageFacility',
   TurfFacility: 'TurfFacility',
   Invoice: 'Invoice',
   Payment: 'Payment',
+  NumberingCounter: 'NumberingCounter',
   Refund: 'Refund',
   ManagerProfile: 'ManagerProfile',
   TurfManager: 'TurfManager',
@@ -65,13 +67,22 @@ export const ModelName = {
   OwnerProfile: 'OwnerProfile',
   OwnerGalleryItem: 'OwnerGalleryItem',
   OwnerBlog: 'OwnerBlog',
+  Announcement: 'Announcement',
+  OwnerSocialLink: 'OwnerSocialLink',
+  OwnerHeroSection: 'OwnerHeroSection',
+  OwnerAboutSection: 'OwnerAboutSection',
+  OwnerContactSection: 'OwnerContactSection',
+  OwnerFaqItem: 'OwnerFaqItem',
   Review: 'Review',
   ReviewReply: 'ReviewReply',
+  Feature: 'Feature',
   SubscriptionPlan: 'SubscriptionPlan',
   SubscriptionPrice: 'SubscriptionPrice',
   Subscription: 'Subscription',
   SubscriptionLog: 'SubscriptionLog',
   Turf: 'Turf',
+  SlotTimeSetup: 'SlotTimeSetup',
+  PaymentPhoneNumber: 'PaymentPhoneNumber',
   TurfPriceRule: 'TurfPriceRule',
   TurfSlot: 'TurfSlot',
   TurfImage: 'TurfImage',
@@ -110,13 +121,24 @@ export const BookingScalarFieldEnum = {
   totalAmount: 'totalAmount',
   bookingExpiresAt: 'bookingExpiresAt',
   idempotencyKey: 'idempotencyKey',
+  numberOfSlot: 'numberOfSlot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  slotId: 'slotId'
+  bookedById: 'bookedById'
 } as const
 
 export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
+export const BookingSlotScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  slotId: 'slotId',
+  createdAt: 'createdAt'
+} as const
+
+export type BookingSlotScalarFieldEnum = (typeof BookingSlotScalarFieldEnum)[keyof typeof BookingSlotScalarFieldEnum]
 
 
 export const TurfCategoryScalarFieldEnum = {
@@ -180,7 +202,6 @@ export const PaymentScalarFieldEnum = {
   id: 'id',
   paymentNumber: 'paymentNumber',
   invoiceId: 'invoiceId',
-  paidAmount: 'paidAmount',
   type: 'type',
   method: 'method',
   amount: 'amount',
@@ -188,6 +209,7 @@ export const PaymentScalarFieldEnum = {
   providerTransactionId: 'providerTransactionId',
   paymentIntentId: 'paymentIntentId',
   checkoutSessionId: 'checkoutSessionId',
+  payerMobileNumber: 'payerMobileNumber',
   idempotencyKey: 'idempotencyKey',
   rawEventId: 'rawEventId',
   receivedById: 'receivedById',
@@ -201,6 +223,15 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const NumberingCounterScalarFieldEnum = {
+  key: 'key',
+  currentValue: 'currentValue',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NumberingCounterScalarFieldEnum = (typeof NumberingCounterScalarFieldEnum)[keyof typeof NumberingCounterScalarFieldEnum]
 
 
 export const RefundScalarFieldEnum = {
@@ -260,14 +291,14 @@ export const OwnerProfileScalarFieldEnum = {
   contactNumber: 'contactNumber',
   address: 'address',
   nidNumber: 'nidNumber',
-  businessRegistrationNumber: 'businessRegistrationNumber',
   tradeLicenseNumber: 'tradeLicenseNumber',
+  etin: 'etin',
+  bin: 'bin',
   businessLogo: 'businessLogo',
-  nidImageFront: 'nidImageFront',
-  nidImageBack: 'nidImageBack',
-  businessRegistrationDocument: 'businessRegistrationDocument',
+  nidImage: 'nidImage',
   tradeLicenseDocument: 'tradeLicenseDocument',
-  taxIdentificationDocument: 'taxIdentificationDocument',
+  etinDocument: 'etinDocument',
+  binDocument: 'binDocument',
   verificationStatus: 'verificationStatus',
   verifiedById: 'verifiedById',
   verifiedAt: 'verifiedAt',
@@ -281,7 +312,7 @@ export type OwnerProfileScalarFieldEnum = (typeof OwnerProfileScalarFieldEnum)[k
 
 export const OwnerGalleryItemScalarFieldEnum = {
   id: 'id',
-  ownerId: 'ownerId',
+  ownerProfileId: 'ownerProfileId',
   title: 'title',
   description: 'description',
   imageUrl: 'imageUrl',
@@ -296,12 +327,12 @@ export type OwnerGalleryItemScalarFieldEnum = (typeof OwnerGalleryItemScalarFiel
 
 export const OwnerBlogScalarFieldEnum = {
   id: 'id',
-  ownerId: 'ownerId',
+  ownerProfileId: 'ownerProfileId',
   title: 'title',
   slug: 'slug',
-  excerpt: 'excerpt',
   content: 'content',
   coverImage: 'coverImage',
+  readMinutes: 'readMinutes',
   published: 'published',
   publishedAt: 'publishedAt',
   createdAt: 'createdAt',
@@ -309,6 +340,97 @@ export const OwnerBlogScalarFieldEnum = {
 } as const
 
 export type OwnerBlogScalarFieldEnum = (typeof OwnerBlogScalarFieldEnum)[keyof typeof OwnerBlogScalarFieldEnum]
+
+
+export const AnnouncementScalarFieldEnum = {
+  id: 'id',
+  ownerProfileId: 'ownerProfileId',
+  title: 'title',
+  message: 'message',
+  type: 'type',
+  isActive: 'isActive',
+  pinned: 'pinned',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AnnouncementScalarFieldEnum = (typeof AnnouncementScalarFieldEnum)[keyof typeof AnnouncementScalarFieldEnum]
+
+
+export const OwnerSocialLinkScalarFieldEnum = {
+  id: 'id',
+  ownerProfileId: 'ownerProfileId',
+  platform: 'platform',
+  url: 'url',
+  icon: 'icon',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OwnerSocialLinkScalarFieldEnum = (typeof OwnerSocialLinkScalarFieldEnum)[keyof typeof OwnerSocialLinkScalarFieldEnum]
+
+
+export const OwnerHeroSectionScalarFieldEnum = {
+  id: 'id',
+  ownerProfileId: 'ownerProfileId',
+  headline: 'headline',
+  subheadline: 'subheadline',
+  coverImage: 'coverImage',
+  overlayOpacity: 'overlayOpacity',
+  textAlign: 'textAlign',
+  isVisible: 'isVisible',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OwnerHeroSectionScalarFieldEnum = (typeof OwnerHeroSectionScalarFieldEnum)[keyof typeof OwnerHeroSectionScalarFieldEnum]
+
+
+export const OwnerAboutSectionScalarFieldEnum = {
+  id: 'id',
+  ownerProfileId: 'ownerProfileId',
+  heading: 'heading',
+  body: 'body',
+  highlights: 'highlights',
+  imageUrl: 'imageUrl',
+  isVisible: 'isVisible',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OwnerAboutSectionScalarFieldEnum = (typeof OwnerAboutSectionScalarFieldEnum)[keyof typeof OwnerAboutSectionScalarFieldEnum]
+
+
+export const OwnerContactSectionScalarFieldEnum = {
+  id: 'id',
+  ownerProfileId: 'ownerProfileId',
+  heading: 'heading',
+  phone: 'phone',
+  email: 'email',
+  address: 'address',
+  openingHours: 'openingHours',
+  isVisible: 'isVisible',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OwnerContactSectionScalarFieldEnum = (typeof OwnerContactSectionScalarFieldEnum)[keyof typeof OwnerContactSectionScalarFieldEnum]
+
+
+export const OwnerFaqItemScalarFieldEnum = {
+  id: 'id',
+  ownerProfileId: 'ownerProfileId',
+  question: 'question',
+  answer: 'answer',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OwnerFaqItemScalarFieldEnum = (typeof OwnerFaqItemScalarFieldEnum)[keyof typeof OwnerFaqItemScalarFieldEnum]
 
 
 export const ReviewScalarFieldEnum = {
@@ -338,12 +460,27 @@ export const ReviewReplyScalarFieldEnum = {
 export type ReviewReplyScalarFieldEnum = (typeof ReviewReplyScalarFieldEnum)[keyof typeof ReviewReplyScalarFieldEnum]
 
 
+export const FeatureScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  type: 'type',
+  key: 'key',
+  planId: 'planId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeatureScalarFieldEnum = (typeof FeatureScalarFieldEnum)[keyof typeof FeatureScalarFieldEnum]
+
+
 export const SubscriptionPlanScalarFieldEnum = {
   id: 'id',
   name: 'name',
   tierLevel: 'tierLevel',
   maxTurfs: 'maxTurfs',
-  features: 'features',
+  isFreeTrialAllowed: 'isFreeTrialAllowed',
+  freeTrialDuration: 'freeTrialDuration',
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -371,9 +508,10 @@ export const SubscriptionScalarFieldEnum = {
   status: 'status',
   startDate: 'startDate',
   endDate: 'endDate',
-  trialStart: 'trialStart',
-  trialEnd: 'trialEnd',
-  isTrialUsed: 'isTrialUsed',
+  freeStart: 'freeStart',
+  freeEnd: 'freeEnd',
+  isFreeUsed: 'isFreeUsed',
+  isFreeActive: 'isFreeActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -386,6 +524,7 @@ export const SubscriptionLogScalarFieldEnum = {
   subscriptionId: 'subscriptionId',
   action: 'action',
   status: 'status',
+  period: 'period',
   startDate: 'startDate',
   endDate: 'endDate',
   createdAt: 'createdAt',
@@ -402,11 +541,13 @@ export const TurfScalarFieldEnum = {
   name: 'name',
   description: 'description',
   address: 'address',
+  allowAdvancePayment: 'allowAdvancePayment',
+  advancePaymentAmount: 'advancePaymentAmount',
   latitude: 'latitude',
   longitude: 'longitude',
   status: 'status',
-  basePrice: 'basePrice',
-  slotMinutes: 'slotMinutes',
+  defaultSlotDuration: 'defaultSlotDuration',
+  defaultSlotPrice: 'defaultSlotPrice',
   timezone: 'timezone',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -415,16 +556,40 @@ export const TurfScalarFieldEnum = {
 export type TurfScalarFieldEnum = (typeof TurfScalarFieldEnum)[keyof typeof TurfScalarFieldEnum]
 
 
+export const SlotTimeSetupScalarFieldEnum = {
+  id: 'id',
+  timeName: 'timeName',
+  startMinute: 'startMinute',
+  endMinute: 'endMinute',
+  isPeakTime: 'isPeakTime',
+  slotDuration: 'slotDuration',
+  ownerId: 'ownerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SlotTimeSetupScalarFieldEnum = (typeof SlotTimeSetupScalarFieldEnum)[keyof typeof SlotTimeSetupScalarFieldEnum]
+
+
+export const PaymentPhoneNumberScalarFieldEnum = {
+  id: 'id',
+  turfId: 'turfId',
+  number: 'number',
+  method: 'method',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentPhoneNumberScalarFieldEnum = (typeof PaymentPhoneNumberScalarFieldEnum)[keyof typeof PaymentPhoneNumberScalarFieldEnum]
+
+
 export const TurfPriceRuleScalarFieldEnum = {
   id: 'id',
   turfId: 'turfId',
+  slotTimeSetupId: 'slotTimeSetupId',
   dayOfWeek: 'dayOfWeek',
-  startMinute: 'startMinute',
-  endMinute: 'endMinute',
   price: 'price',
   active: 'active',
-  startDate: 'startDate',
-  endDate: 'endDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -441,6 +606,7 @@ export const TurfSlotScalarFieldEnum = {
   price: 'price',
   active: 'active',
   slotStatus: 'slotStatus',
+  isPeakTime: 'isPeakTime',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -547,6 +713,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -561,4 +735,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

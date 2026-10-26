@@ -20,18 +20,28 @@ export type OwnerBlogModel = runtime.Types.Result.DefaultSelection<Prisma.$Owner
 
 export type AggregateOwnerBlog = {
   _count: OwnerBlogCountAggregateOutputType | null
+  _avg: OwnerBlogAvgAggregateOutputType | null
+  _sum: OwnerBlogSumAggregateOutputType | null
   _min: OwnerBlogMinAggregateOutputType | null
   _max: OwnerBlogMaxAggregateOutputType | null
 }
 
+export type OwnerBlogAvgAggregateOutputType = {
+  readMinutes: number | null
+}
+
+export type OwnerBlogSumAggregateOutputType = {
+  readMinutes: number | null
+}
+
 export type OwnerBlogMinAggregateOutputType = {
   id: string | null
-  ownerId: string | null
+  ownerProfileId: string | null
   title: string | null
   slug: string | null
-  excerpt: string | null
   content: string | null
   coverImage: string | null
+  readMinutes: number | null
   published: boolean | null
   publishedAt: Date | null
   createdAt: Date | null
@@ -40,12 +50,12 @@ export type OwnerBlogMinAggregateOutputType = {
 
 export type OwnerBlogMaxAggregateOutputType = {
   id: string | null
-  ownerId: string | null
+  ownerProfileId: string | null
   title: string | null
   slug: string | null
-  excerpt: string | null
   content: string | null
   coverImage: string | null
+  readMinutes: number | null
   published: boolean | null
   publishedAt: Date | null
   createdAt: Date | null
@@ -54,12 +64,12 @@ export type OwnerBlogMaxAggregateOutputType = {
 
 export type OwnerBlogCountAggregateOutputType = {
   id: number
-  ownerId: number
+  ownerProfileId: number
   title: number
   slug: number
-  excerpt: number
   content: number
   coverImage: number
+  readMinutes: number
   published: number
   publishedAt: number
   createdAt: number
@@ -68,14 +78,22 @@ export type OwnerBlogCountAggregateOutputType = {
 }
 
 
+export type OwnerBlogAvgAggregateInputType = {
+  readMinutes?: true
+}
+
+export type OwnerBlogSumAggregateInputType = {
+  readMinutes?: true
+}
+
 export type OwnerBlogMinAggregateInputType = {
   id?: true
-  ownerId?: true
+  ownerProfileId?: true
   title?: true
   slug?: true
-  excerpt?: true
   content?: true
   coverImage?: true
+  readMinutes?: true
   published?: true
   publishedAt?: true
   createdAt?: true
@@ -84,12 +102,12 @@ export type OwnerBlogMinAggregateInputType = {
 
 export type OwnerBlogMaxAggregateInputType = {
   id?: true
-  ownerId?: true
+  ownerProfileId?: true
   title?: true
   slug?: true
-  excerpt?: true
   content?: true
   coverImage?: true
+  readMinutes?: true
   published?: true
   publishedAt?: true
   createdAt?: true
@@ -98,12 +116,12 @@ export type OwnerBlogMaxAggregateInputType = {
 
 export type OwnerBlogCountAggregateInputType = {
   id?: true
-  ownerId?: true
+  ownerProfileId?: true
   title?: true
   slug?: true
-  excerpt?: true
   content?: true
   coverImage?: true
+  readMinutes?: true
   published?: true
   publishedAt?: true
   createdAt?: true
@@ -149,6 +167,18 @@ export type OwnerBlogAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inte
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: OwnerBlogAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: OwnerBlogSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: OwnerBlogMinAggregateInputType
@@ -179,23 +209,27 @@ export type OwnerBlogGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   _count?: OwnerBlogCountAggregateInputType | true
+  _avg?: OwnerBlogAvgAggregateInputType
+  _sum?: OwnerBlogSumAggregateInputType
   _min?: OwnerBlogMinAggregateInputType
   _max?: OwnerBlogMaxAggregateInputType
 }
 
 export type OwnerBlogGroupByOutputType = {
   id: string
-  ownerId: string
+  ownerProfileId: string
   title: string
   slug: string
-  excerpt: string | null
   content: string
   coverImage: string | null
+  readMinutes: number | null
   published: boolean
   publishedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: OwnerBlogCountAggregateOutputType | null
+  _avg: OwnerBlogAvgAggregateOutputType | null
+  _sum: OwnerBlogSumAggregateOutputType | null
   _min: OwnerBlogMinAggregateOutputType | null
   _max: OwnerBlogMaxAggregateOutputType | null
 }
@@ -220,68 +254,70 @@ export type OwnerBlogWhereInput = {
   OR?: Prisma.OwnerBlogWhereInput[]
   NOT?: Prisma.OwnerBlogWhereInput | Prisma.OwnerBlogWhereInput[]
   id?: Prisma.StringFilter<"OwnerBlog"> | string
-  ownerId?: Prisma.StringFilter<"OwnerBlog"> | string
+  ownerProfileId?: Prisma.StringFilter<"OwnerBlog"> | string
   title?: Prisma.StringFilter<"OwnerBlog"> | string
   slug?: Prisma.StringFilter<"OwnerBlog"> | string
-  excerpt?: Prisma.StringNullableFilter<"OwnerBlog"> | string | null
   content?: Prisma.StringFilter<"OwnerBlog"> | string
   coverImage?: Prisma.StringNullableFilter<"OwnerBlog"> | string | null
+  readMinutes?: Prisma.IntNullableFilter<"OwnerBlog"> | number | null
   published?: Prisma.BoolFilter<"OwnerBlog"> | boolean
   publishedAt?: Prisma.DateTimeNullableFilter<"OwnerBlog"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"OwnerBlog"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OwnerBlog"> | Date | string
-  owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  ownerProfile?: Prisma.XOR<Prisma.OwnerProfileScalarRelationFilter, Prisma.OwnerProfileWhereInput>
 }
 
 export type OwnerBlogOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
+  ownerProfileId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
-  excerpt?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrder
   coverImage?: Prisma.SortOrderInput | Prisma.SortOrder
+  readMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   published?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  owner?: Prisma.UserOrderByWithRelationInput
+  ownerProfile?: Prisma.OwnerProfileOrderByWithRelationInput
 }
 
 export type OwnerBlogWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  ownerId_slug?: Prisma.OwnerBlogOwnerIdSlugCompoundUniqueInput
+  ownerProfileId_slug?: Prisma.OwnerBlogOwnerProfileIdSlugCompoundUniqueInput
   AND?: Prisma.OwnerBlogWhereInput | Prisma.OwnerBlogWhereInput[]
   OR?: Prisma.OwnerBlogWhereInput[]
   NOT?: Prisma.OwnerBlogWhereInput | Prisma.OwnerBlogWhereInput[]
-  ownerId?: Prisma.StringFilter<"OwnerBlog"> | string
+  ownerProfileId?: Prisma.StringFilter<"OwnerBlog"> | string
   title?: Prisma.StringFilter<"OwnerBlog"> | string
   slug?: Prisma.StringFilter<"OwnerBlog"> | string
-  excerpt?: Prisma.StringNullableFilter<"OwnerBlog"> | string | null
   content?: Prisma.StringFilter<"OwnerBlog"> | string
   coverImage?: Prisma.StringNullableFilter<"OwnerBlog"> | string | null
+  readMinutes?: Prisma.IntNullableFilter<"OwnerBlog"> | number | null
   published?: Prisma.BoolFilter<"OwnerBlog"> | boolean
   publishedAt?: Prisma.DateTimeNullableFilter<"OwnerBlog"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"OwnerBlog"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OwnerBlog"> | Date | string
-  owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "ownerId_slug">
+  ownerProfile?: Prisma.XOR<Prisma.OwnerProfileScalarRelationFilter, Prisma.OwnerProfileWhereInput>
+}, "id" | "ownerProfileId_slug">
 
 export type OwnerBlogOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
+  ownerProfileId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
-  excerpt?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrder
   coverImage?: Prisma.SortOrderInput | Prisma.SortOrder
+  readMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   published?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.OwnerBlogCountOrderByAggregateInput
+  _avg?: Prisma.OwnerBlogAvgOrderByAggregateInput
   _max?: Prisma.OwnerBlogMaxOrderByAggregateInput
   _min?: Prisma.OwnerBlogMinOrderByAggregateInput
+  _sum?: Prisma.OwnerBlogSumOrderByAggregateInput
 }
 
 export type OwnerBlogScalarWhereWithAggregatesInput = {
@@ -289,12 +325,12 @@ export type OwnerBlogScalarWhereWithAggregatesInput = {
   OR?: Prisma.OwnerBlogScalarWhereWithAggregatesInput[]
   NOT?: Prisma.OwnerBlogScalarWhereWithAggregatesInput | Prisma.OwnerBlogScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"OwnerBlog"> | string
-  ownerId?: Prisma.StringWithAggregatesFilter<"OwnerBlog"> | string
+  ownerProfileId?: Prisma.StringWithAggregatesFilter<"OwnerBlog"> | string
   title?: Prisma.StringWithAggregatesFilter<"OwnerBlog"> | string
   slug?: Prisma.StringWithAggregatesFilter<"OwnerBlog"> | string
-  excerpt?: Prisma.StringNullableWithAggregatesFilter<"OwnerBlog"> | string | null
   content?: Prisma.StringWithAggregatesFilter<"OwnerBlog"> | string
   coverImage?: Prisma.StringNullableWithAggregatesFilter<"OwnerBlog"> | string | null
+  readMinutes?: Prisma.IntNullableWithAggregatesFilter<"OwnerBlog"> | number | null
   published?: Prisma.BoolWithAggregatesFilter<"OwnerBlog"> | boolean
   publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"OwnerBlog"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OwnerBlog"> | Date | string
@@ -305,24 +341,24 @@ export type OwnerBlogCreateInput = {
   id?: string
   title: string
   slug: string
-  excerpt?: string | null
   content: string
   coverImage?: string | null
+  readMinutes?: number | null
   published?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  owner: Prisma.UserCreateNestedOneWithoutOwnerBlogsInput
+  ownerProfile: Prisma.OwnerProfileCreateNestedOneWithoutOwnerBlogsInput
 }
 
 export type OwnerBlogUncheckedCreateInput = {
   id?: string
-  ownerId: string
+  ownerProfileId: string
   title: string
   slug: string
-  excerpt?: string | null
   content: string
   coverImage?: string | null
+  readMinutes?: number | null
   published?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
@@ -333,24 +369,24 @@ export type OwnerBlogUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   coverImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  owner?: Prisma.UserUpdateOneRequiredWithoutOwnerBlogsNestedInput
+  ownerProfile?: Prisma.OwnerProfileUpdateOneRequiredWithoutOwnerBlogsNestedInput
 }
 
 export type OwnerBlogUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   coverImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -359,12 +395,12 @@ export type OwnerBlogUncheckedUpdateInput = {
 
 export type OwnerBlogCreateManyInput = {
   id?: string
-  ownerId: string
+  ownerProfileId: string
   title: string
   slug: string
-  excerpt?: string | null
   content: string
   coverImage?: string | null
+  readMinutes?: number | null
   published?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
@@ -375,9 +411,9 @@ export type OwnerBlogUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   coverImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -386,63 +422,16 @@ export type OwnerBlogUpdateManyMutationInput = {
 
 export type OwnerBlogUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   coverImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type OwnerBlogOwnerIdSlugCompoundUniqueInput = {
-  ownerId: string
-  slug: string
-}
-
-export type OwnerBlogCountOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
-  excerpt?: Prisma.SortOrder
-  content?: Prisma.SortOrder
-  coverImage?: Prisma.SortOrder
-  published?: Prisma.SortOrder
-  publishedAt?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-}
-
-export type OwnerBlogMaxOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
-  excerpt?: Prisma.SortOrder
-  content?: Prisma.SortOrder
-  coverImage?: Prisma.SortOrder
-  published?: Prisma.SortOrder
-  publishedAt?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-}
-
-export type OwnerBlogMinOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  ownerId?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
-  excerpt?: Prisma.SortOrder
-  content?: Prisma.SortOrder
-  coverImage?: Prisma.SortOrder
-  published?: Prisma.SortOrder
-  publishedAt?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type OwnerBlogListRelationFilter = {
@@ -455,98 +444,161 @@ export type OwnerBlogOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type OwnerBlogCreateNestedManyWithoutOwnerInput = {
-  create?: Prisma.XOR<Prisma.OwnerBlogCreateWithoutOwnerInput, Prisma.OwnerBlogUncheckedCreateWithoutOwnerInput> | Prisma.OwnerBlogCreateWithoutOwnerInput[] | Prisma.OwnerBlogUncheckedCreateWithoutOwnerInput[]
-  connectOrCreate?: Prisma.OwnerBlogCreateOrConnectWithoutOwnerInput | Prisma.OwnerBlogCreateOrConnectWithoutOwnerInput[]
-  createMany?: Prisma.OwnerBlogCreateManyOwnerInputEnvelope
+export type OwnerBlogOwnerProfileIdSlugCompoundUniqueInput = {
+  ownerProfileId: string
+  slug: string
+}
+
+export type OwnerBlogCountOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  ownerProfileId?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  coverImage?: Prisma.SortOrder
+  readMinutes?: Prisma.SortOrder
+  published?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type OwnerBlogAvgOrderByAggregateInput = {
+  readMinutes?: Prisma.SortOrder
+}
+
+export type OwnerBlogMaxOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  ownerProfileId?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  coverImage?: Prisma.SortOrder
+  readMinutes?: Prisma.SortOrder
+  published?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type OwnerBlogMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  ownerProfileId?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  coverImage?: Prisma.SortOrder
+  readMinutes?: Prisma.SortOrder
+  published?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type OwnerBlogSumOrderByAggregateInput = {
+  readMinutes?: Prisma.SortOrder
+}
+
+export type OwnerBlogCreateNestedManyWithoutOwnerProfileInput = {
+  create?: Prisma.XOR<Prisma.OwnerBlogCreateWithoutOwnerProfileInput, Prisma.OwnerBlogUncheckedCreateWithoutOwnerProfileInput> | Prisma.OwnerBlogCreateWithoutOwnerProfileInput[] | Prisma.OwnerBlogUncheckedCreateWithoutOwnerProfileInput[]
+  connectOrCreate?: Prisma.OwnerBlogCreateOrConnectWithoutOwnerProfileInput | Prisma.OwnerBlogCreateOrConnectWithoutOwnerProfileInput[]
+  createMany?: Prisma.OwnerBlogCreateManyOwnerProfileInputEnvelope
   connect?: Prisma.OwnerBlogWhereUniqueInput | Prisma.OwnerBlogWhereUniqueInput[]
 }
 
-export type OwnerBlogUncheckedCreateNestedManyWithoutOwnerInput = {
-  create?: Prisma.XOR<Prisma.OwnerBlogCreateWithoutOwnerInput, Prisma.OwnerBlogUncheckedCreateWithoutOwnerInput> | Prisma.OwnerBlogCreateWithoutOwnerInput[] | Prisma.OwnerBlogUncheckedCreateWithoutOwnerInput[]
-  connectOrCreate?: Prisma.OwnerBlogCreateOrConnectWithoutOwnerInput | Prisma.OwnerBlogCreateOrConnectWithoutOwnerInput[]
-  createMany?: Prisma.OwnerBlogCreateManyOwnerInputEnvelope
+export type OwnerBlogUncheckedCreateNestedManyWithoutOwnerProfileInput = {
+  create?: Prisma.XOR<Prisma.OwnerBlogCreateWithoutOwnerProfileInput, Prisma.OwnerBlogUncheckedCreateWithoutOwnerProfileInput> | Prisma.OwnerBlogCreateWithoutOwnerProfileInput[] | Prisma.OwnerBlogUncheckedCreateWithoutOwnerProfileInput[]
+  connectOrCreate?: Prisma.OwnerBlogCreateOrConnectWithoutOwnerProfileInput | Prisma.OwnerBlogCreateOrConnectWithoutOwnerProfileInput[]
+  createMany?: Prisma.OwnerBlogCreateManyOwnerProfileInputEnvelope
   connect?: Prisma.OwnerBlogWhereUniqueInput | Prisma.OwnerBlogWhereUniqueInput[]
 }
 
-export type OwnerBlogUpdateManyWithoutOwnerNestedInput = {
-  create?: Prisma.XOR<Prisma.OwnerBlogCreateWithoutOwnerInput, Prisma.OwnerBlogUncheckedCreateWithoutOwnerInput> | Prisma.OwnerBlogCreateWithoutOwnerInput[] | Prisma.OwnerBlogUncheckedCreateWithoutOwnerInput[]
-  connectOrCreate?: Prisma.OwnerBlogCreateOrConnectWithoutOwnerInput | Prisma.OwnerBlogCreateOrConnectWithoutOwnerInput[]
-  upsert?: Prisma.OwnerBlogUpsertWithWhereUniqueWithoutOwnerInput | Prisma.OwnerBlogUpsertWithWhereUniqueWithoutOwnerInput[]
-  createMany?: Prisma.OwnerBlogCreateManyOwnerInputEnvelope
+export type OwnerBlogUpdateManyWithoutOwnerProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnerBlogCreateWithoutOwnerProfileInput, Prisma.OwnerBlogUncheckedCreateWithoutOwnerProfileInput> | Prisma.OwnerBlogCreateWithoutOwnerProfileInput[] | Prisma.OwnerBlogUncheckedCreateWithoutOwnerProfileInput[]
+  connectOrCreate?: Prisma.OwnerBlogCreateOrConnectWithoutOwnerProfileInput | Prisma.OwnerBlogCreateOrConnectWithoutOwnerProfileInput[]
+  upsert?: Prisma.OwnerBlogUpsertWithWhereUniqueWithoutOwnerProfileInput | Prisma.OwnerBlogUpsertWithWhereUniqueWithoutOwnerProfileInput[]
+  createMany?: Prisma.OwnerBlogCreateManyOwnerProfileInputEnvelope
   set?: Prisma.OwnerBlogWhereUniqueInput | Prisma.OwnerBlogWhereUniqueInput[]
   disconnect?: Prisma.OwnerBlogWhereUniqueInput | Prisma.OwnerBlogWhereUniqueInput[]
   delete?: Prisma.OwnerBlogWhereUniqueInput | Prisma.OwnerBlogWhereUniqueInput[]
   connect?: Prisma.OwnerBlogWhereUniqueInput | Prisma.OwnerBlogWhereUniqueInput[]
-  update?: Prisma.OwnerBlogUpdateWithWhereUniqueWithoutOwnerInput | Prisma.OwnerBlogUpdateWithWhereUniqueWithoutOwnerInput[]
-  updateMany?: Prisma.OwnerBlogUpdateManyWithWhereWithoutOwnerInput | Prisma.OwnerBlogUpdateManyWithWhereWithoutOwnerInput[]
+  update?: Prisma.OwnerBlogUpdateWithWhereUniqueWithoutOwnerProfileInput | Prisma.OwnerBlogUpdateWithWhereUniqueWithoutOwnerProfileInput[]
+  updateMany?: Prisma.OwnerBlogUpdateManyWithWhereWithoutOwnerProfileInput | Prisma.OwnerBlogUpdateManyWithWhereWithoutOwnerProfileInput[]
   deleteMany?: Prisma.OwnerBlogScalarWhereInput | Prisma.OwnerBlogScalarWhereInput[]
 }
 
-export type OwnerBlogUncheckedUpdateManyWithoutOwnerNestedInput = {
-  create?: Prisma.XOR<Prisma.OwnerBlogCreateWithoutOwnerInput, Prisma.OwnerBlogUncheckedCreateWithoutOwnerInput> | Prisma.OwnerBlogCreateWithoutOwnerInput[] | Prisma.OwnerBlogUncheckedCreateWithoutOwnerInput[]
-  connectOrCreate?: Prisma.OwnerBlogCreateOrConnectWithoutOwnerInput | Prisma.OwnerBlogCreateOrConnectWithoutOwnerInput[]
-  upsert?: Prisma.OwnerBlogUpsertWithWhereUniqueWithoutOwnerInput | Prisma.OwnerBlogUpsertWithWhereUniqueWithoutOwnerInput[]
-  createMany?: Prisma.OwnerBlogCreateManyOwnerInputEnvelope
+export type OwnerBlogUncheckedUpdateManyWithoutOwnerProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnerBlogCreateWithoutOwnerProfileInput, Prisma.OwnerBlogUncheckedCreateWithoutOwnerProfileInput> | Prisma.OwnerBlogCreateWithoutOwnerProfileInput[] | Prisma.OwnerBlogUncheckedCreateWithoutOwnerProfileInput[]
+  connectOrCreate?: Prisma.OwnerBlogCreateOrConnectWithoutOwnerProfileInput | Prisma.OwnerBlogCreateOrConnectWithoutOwnerProfileInput[]
+  upsert?: Prisma.OwnerBlogUpsertWithWhereUniqueWithoutOwnerProfileInput | Prisma.OwnerBlogUpsertWithWhereUniqueWithoutOwnerProfileInput[]
+  createMany?: Prisma.OwnerBlogCreateManyOwnerProfileInputEnvelope
   set?: Prisma.OwnerBlogWhereUniqueInput | Prisma.OwnerBlogWhereUniqueInput[]
   disconnect?: Prisma.OwnerBlogWhereUniqueInput | Prisma.OwnerBlogWhereUniqueInput[]
   delete?: Prisma.OwnerBlogWhereUniqueInput | Prisma.OwnerBlogWhereUniqueInput[]
   connect?: Prisma.OwnerBlogWhereUniqueInput | Prisma.OwnerBlogWhereUniqueInput[]
-  update?: Prisma.OwnerBlogUpdateWithWhereUniqueWithoutOwnerInput | Prisma.OwnerBlogUpdateWithWhereUniqueWithoutOwnerInput[]
-  updateMany?: Prisma.OwnerBlogUpdateManyWithWhereWithoutOwnerInput | Prisma.OwnerBlogUpdateManyWithWhereWithoutOwnerInput[]
+  update?: Prisma.OwnerBlogUpdateWithWhereUniqueWithoutOwnerProfileInput | Prisma.OwnerBlogUpdateWithWhereUniqueWithoutOwnerProfileInput[]
+  updateMany?: Prisma.OwnerBlogUpdateManyWithWhereWithoutOwnerProfileInput | Prisma.OwnerBlogUpdateManyWithWhereWithoutOwnerProfileInput[]
   deleteMany?: Prisma.OwnerBlogScalarWhereInput | Prisma.OwnerBlogScalarWhereInput[]
 }
 
-export type OwnerBlogCreateWithoutOwnerInput = {
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type OwnerBlogCreateWithoutOwnerProfileInput = {
   id?: string
   title: string
   slug: string
-  excerpt?: string | null
   content: string
   coverImage?: string | null
+  readMinutes?: number | null
   published?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type OwnerBlogUncheckedCreateWithoutOwnerInput = {
+export type OwnerBlogUncheckedCreateWithoutOwnerProfileInput = {
   id?: string
   title: string
   slug: string
-  excerpt?: string | null
   content: string
   coverImage?: string | null
+  readMinutes?: number | null
   published?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type OwnerBlogCreateOrConnectWithoutOwnerInput = {
+export type OwnerBlogCreateOrConnectWithoutOwnerProfileInput = {
   where: Prisma.OwnerBlogWhereUniqueInput
-  create: Prisma.XOR<Prisma.OwnerBlogCreateWithoutOwnerInput, Prisma.OwnerBlogUncheckedCreateWithoutOwnerInput>
+  create: Prisma.XOR<Prisma.OwnerBlogCreateWithoutOwnerProfileInput, Prisma.OwnerBlogUncheckedCreateWithoutOwnerProfileInput>
 }
 
-export type OwnerBlogCreateManyOwnerInputEnvelope = {
-  data: Prisma.OwnerBlogCreateManyOwnerInput | Prisma.OwnerBlogCreateManyOwnerInput[]
+export type OwnerBlogCreateManyOwnerProfileInputEnvelope = {
+  data: Prisma.OwnerBlogCreateManyOwnerProfileInput | Prisma.OwnerBlogCreateManyOwnerProfileInput[]
   skipDuplicates?: boolean
 }
 
-export type OwnerBlogUpsertWithWhereUniqueWithoutOwnerInput = {
+export type OwnerBlogUpsertWithWhereUniqueWithoutOwnerProfileInput = {
   where: Prisma.OwnerBlogWhereUniqueInput
-  update: Prisma.XOR<Prisma.OwnerBlogUpdateWithoutOwnerInput, Prisma.OwnerBlogUncheckedUpdateWithoutOwnerInput>
-  create: Prisma.XOR<Prisma.OwnerBlogCreateWithoutOwnerInput, Prisma.OwnerBlogUncheckedCreateWithoutOwnerInput>
+  update: Prisma.XOR<Prisma.OwnerBlogUpdateWithoutOwnerProfileInput, Prisma.OwnerBlogUncheckedUpdateWithoutOwnerProfileInput>
+  create: Prisma.XOR<Prisma.OwnerBlogCreateWithoutOwnerProfileInput, Prisma.OwnerBlogUncheckedCreateWithoutOwnerProfileInput>
 }
 
-export type OwnerBlogUpdateWithWhereUniqueWithoutOwnerInput = {
+export type OwnerBlogUpdateWithWhereUniqueWithoutOwnerProfileInput = {
   where: Prisma.OwnerBlogWhereUniqueInput
-  data: Prisma.XOR<Prisma.OwnerBlogUpdateWithoutOwnerInput, Prisma.OwnerBlogUncheckedUpdateWithoutOwnerInput>
+  data: Prisma.XOR<Prisma.OwnerBlogUpdateWithoutOwnerProfileInput, Prisma.OwnerBlogUncheckedUpdateWithoutOwnerProfileInput>
 }
 
-export type OwnerBlogUpdateManyWithWhereWithoutOwnerInput = {
+export type OwnerBlogUpdateManyWithWhereWithoutOwnerProfileInput = {
   where: Prisma.OwnerBlogScalarWhereInput
-  data: Prisma.XOR<Prisma.OwnerBlogUpdateManyMutationInput, Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerInput>
+  data: Prisma.XOR<Prisma.OwnerBlogUpdateManyMutationInput, Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerProfileInput>
 }
 
 export type OwnerBlogScalarWhereInput = {
@@ -554,64 +606,64 @@ export type OwnerBlogScalarWhereInput = {
   OR?: Prisma.OwnerBlogScalarWhereInput[]
   NOT?: Prisma.OwnerBlogScalarWhereInput | Prisma.OwnerBlogScalarWhereInput[]
   id?: Prisma.StringFilter<"OwnerBlog"> | string
-  ownerId?: Prisma.StringFilter<"OwnerBlog"> | string
+  ownerProfileId?: Prisma.StringFilter<"OwnerBlog"> | string
   title?: Prisma.StringFilter<"OwnerBlog"> | string
   slug?: Prisma.StringFilter<"OwnerBlog"> | string
-  excerpt?: Prisma.StringNullableFilter<"OwnerBlog"> | string | null
   content?: Prisma.StringFilter<"OwnerBlog"> | string
   coverImage?: Prisma.StringNullableFilter<"OwnerBlog"> | string | null
+  readMinutes?: Prisma.IntNullableFilter<"OwnerBlog"> | number | null
   published?: Prisma.BoolFilter<"OwnerBlog"> | boolean
   publishedAt?: Prisma.DateTimeNullableFilter<"OwnerBlog"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"OwnerBlog"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OwnerBlog"> | Date | string
 }
 
-export type OwnerBlogCreateManyOwnerInput = {
+export type OwnerBlogCreateManyOwnerProfileInput = {
   id?: string
   title: string
   slug: string
-  excerpt?: string | null
   content: string
   coverImage?: string | null
+  readMinutes?: number | null
   published?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type OwnerBlogUpdateWithoutOwnerInput = {
+export type OwnerBlogUpdateWithoutOwnerProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   coverImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type OwnerBlogUncheckedUpdateWithoutOwnerInput = {
+export type OwnerBlogUncheckedUpdateWithoutOwnerProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   coverImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type OwnerBlogUncheckedUpdateManyWithoutOwnerInput = {
+export type OwnerBlogUncheckedUpdateManyWithoutOwnerProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
-  excerpt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   coverImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -622,87 +674,87 @@ export type OwnerBlogUncheckedUpdateManyWithoutOwnerInput = {
 
 export type OwnerBlogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  ownerId?: boolean
+  ownerProfileId?: boolean
   title?: boolean
   slug?: boolean
-  excerpt?: boolean
   content?: boolean
   coverImage?: boolean
+  readMinutes?: boolean
   published?: boolean
   publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.OwnerProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ownerBlog"]>
 
 export type OwnerBlogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  ownerId?: boolean
+  ownerProfileId?: boolean
   title?: boolean
   slug?: boolean
-  excerpt?: boolean
   content?: boolean
   coverImage?: boolean
+  readMinutes?: boolean
   published?: boolean
   publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.OwnerProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ownerBlog"]>
 
 export type OwnerBlogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  ownerId?: boolean
+  ownerProfileId?: boolean
   title?: boolean
   slug?: boolean
-  excerpt?: boolean
   content?: boolean
   coverImage?: boolean
+  readMinutes?: boolean
   published?: boolean
   publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.OwnerProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ownerBlog"]>
 
 export type OwnerBlogSelectScalar = {
   id?: boolean
-  ownerId?: boolean
+  ownerProfileId?: boolean
   title?: boolean
   slug?: boolean
-  excerpt?: boolean
   content?: boolean
   coverImage?: boolean
+  readMinutes?: boolean
   published?: boolean
   publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type OwnerBlogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "title" | "slug" | "excerpt" | "content" | "coverImage" | "published" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["ownerBlog"]>
+export type OwnerBlogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerProfileId" | "title" | "slug" | "content" | "coverImage" | "readMinutes" | "published" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["ownerBlog"]>
 export type OwnerBlogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.OwnerProfileDefaultArgs<ExtArgs>
 }
 export type OwnerBlogIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.OwnerProfileDefaultArgs<ExtArgs>
 }
 export type OwnerBlogIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  ownerProfile?: boolean | Prisma.OwnerProfileDefaultArgs<ExtArgs>
 }
 
 export type $OwnerBlogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "OwnerBlog"
   objects: {
-    owner: Prisma.$UserPayload<ExtArgs>
+    ownerProfile: Prisma.$OwnerProfilePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    ownerId: string
+    ownerProfileId: string
     title: string
     slug: string
-    excerpt: string | null
     content: string
     coverImage: string | null
+    readMinutes: number | null
     published: boolean
     publishedAt: Date | null
     createdAt: Date
@@ -1101,7 +1153,7 @@ readonly fields: OwnerBlogFieldRefs;
  */
 export interface Prisma__OwnerBlogClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  ownerProfile<T extends Prisma.OwnerProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__OwnerProfileClient<runtime.Types.Result.GetResult<Prisma.$OwnerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1132,12 +1184,12 @@ export interface Prisma__OwnerBlogClient<T, Null = never, ExtArgs extends runtim
  */
 export interface OwnerBlogFieldRefs {
   readonly id: Prisma.FieldRef<"OwnerBlog", 'String'>
-  readonly ownerId: Prisma.FieldRef<"OwnerBlog", 'String'>
+  readonly ownerProfileId: Prisma.FieldRef<"OwnerBlog", 'String'>
   readonly title: Prisma.FieldRef<"OwnerBlog", 'String'>
   readonly slug: Prisma.FieldRef<"OwnerBlog", 'String'>
-  readonly excerpt: Prisma.FieldRef<"OwnerBlog", 'String'>
   readonly content: Prisma.FieldRef<"OwnerBlog", 'String'>
   readonly coverImage: Prisma.FieldRef<"OwnerBlog", 'String'>
+  readonly readMinutes: Prisma.FieldRef<"OwnerBlog", 'Int'>
   readonly published: Prisma.FieldRef<"OwnerBlog", 'Boolean'>
   readonly publishedAt: Prisma.FieldRef<"OwnerBlog", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"OwnerBlog", 'DateTime'>

@@ -29,11 +29,13 @@ export type AggregateSubscriptionPlan = {
 export type SubscriptionPlanAvgAggregateOutputType = {
   tierLevel: number | null
   maxTurfs: number | null
+  freeTrialDuration: number | null
 }
 
 export type SubscriptionPlanSumAggregateOutputType = {
   tierLevel: number | null
   maxTurfs: number | null
+  freeTrialDuration: number | null
 }
 
 export type SubscriptionPlanMinAggregateOutputType = {
@@ -41,6 +43,8 @@ export type SubscriptionPlanMinAggregateOutputType = {
   name: string | null
   tierLevel: number | null
   maxTurfs: number | null
+  isFreeTrialAllowed: boolean | null
+  freeTrialDuration: number | null
   active: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -51,6 +55,8 @@ export type SubscriptionPlanMaxAggregateOutputType = {
   name: string | null
   tierLevel: number | null
   maxTurfs: number | null
+  isFreeTrialAllowed: boolean | null
+  freeTrialDuration: number | null
   active: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -61,7 +67,8 @@ export type SubscriptionPlanCountAggregateOutputType = {
   name: number
   tierLevel: number
   maxTurfs: number
-  features: number
+  isFreeTrialAllowed: number
+  freeTrialDuration: number
   active: number
   createdAt: number
   updatedAt: number
@@ -72,11 +79,13 @@ export type SubscriptionPlanCountAggregateOutputType = {
 export type SubscriptionPlanAvgAggregateInputType = {
   tierLevel?: true
   maxTurfs?: true
+  freeTrialDuration?: true
 }
 
 export type SubscriptionPlanSumAggregateInputType = {
   tierLevel?: true
   maxTurfs?: true
+  freeTrialDuration?: true
 }
 
 export type SubscriptionPlanMinAggregateInputType = {
@@ -84,6 +93,8 @@ export type SubscriptionPlanMinAggregateInputType = {
   name?: true
   tierLevel?: true
   maxTurfs?: true
+  isFreeTrialAllowed?: true
+  freeTrialDuration?: true
   active?: true
   createdAt?: true
   updatedAt?: true
@@ -94,6 +105,8 @@ export type SubscriptionPlanMaxAggregateInputType = {
   name?: true
   tierLevel?: true
   maxTurfs?: true
+  isFreeTrialAllowed?: true
+  freeTrialDuration?: true
   active?: true
   createdAt?: true
   updatedAt?: true
@@ -104,7 +117,8 @@ export type SubscriptionPlanCountAggregateInputType = {
   name?: true
   tierLevel?: true
   maxTurfs?: true
-  features?: true
+  isFreeTrialAllowed?: true
+  freeTrialDuration?: true
   active?: true
   createdAt?: true
   updatedAt?: true
@@ -202,7 +216,8 @@ export type SubscriptionPlanGroupByOutputType = {
   name: string
   tierLevel: number
   maxTurfs: number
-  features: string[]
+  isFreeTrialAllowed: boolean
+  freeTrialDuration: number
   active: boolean
   createdAt: Date
   updatedAt: Date | null
@@ -236,12 +251,14 @@ export type SubscriptionPlanWhereInput = {
   name?: Prisma.StringFilter<"SubscriptionPlan"> | string
   tierLevel?: Prisma.IntFilter<"SubscriptionPlan"> | number
   maxTurfs?: Prisma.IntFilter<"SubscriptionPlan"> | number
-  features?: Prisma.StringNullableListFilter<"SubscriptionPlan">
+  isFreeTrialAllowed?: Prisma.BoolFilter<"SubscriptionPlan"> | boolean
+  freeTrialDuration?: Prisma.IntFilter<"SubscriptionPlan"> | number
   active?: Prisma.BoolFilter<"SubscriptionPlan"> | boolean
   createdAt?: Prisma.DateTimeFilter<"SubscriptionPlan"> | Date | string
   updatedAt?: Prisma.DateTimeNullableFilter<"SubscriptionPlan"> | Date | string | null
   prices?: Prisma.SubscriptionPriceListRelationFilter
   subscriptions?: Prisma.SubscriptionListRelationFilter
+  features?: Prisma.FeatureListRelationFilter
 }
 
 export type SubscriptionPlanOrderByWithRelationInput = {
@@ -249,12 +266,14 @@ export type SubscriptionPlanOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   tierLevel?: Prisma.SortOrder
   maxTurfs?: Prisma.SortOrder
-  features?: Prisma.SortOrder
+  isFreeTrialAllowed?: Prisma.SortOrder
+  freeTrialDuration?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   prices?: Prisma.SubscriptionPriceOrderByRelationAggregateInput
   subscriptions?: Prisma.SubscriptionOrderByRelationAggregateInput
+  features?: Prisma.FeatureOrderByRelationAggregateInput
 }
 
 export type SubscriptionPlanWhereUniqueInput = Prisma.AtLeast<{
@@ -265,12 +284,14 @@ export type SubscriptionPlanWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.SubscriptionPlanWhereInput[]
   NOT?: Prisma.SubscriptionPlanWhereInput | Prisma.SubscriptionPlanWhereInput[]
   maxTurfs?: Prisma.IntFilter<"SubscriptionPlan"> | number
-  features?: Prisma.StringNullableListFilter<"SubscriptionPlan">
+  isFreeTrialAllowed?: Prisma.BoolFilter<"SubscriptionPlan"> | boolean
+  freeTrialDuration?: Prisma.IntFilter<"SubscriptionPlan"> | number
   active?: Prisma.BoolFilter<"SubscriptionPlan"> | boolean
   createdAt?: Prisma.DateTimeFilter<"SubscriptionPlan"> | Date | string
   updatedAt?: Prisma.DateTimeNullableFilter<"SubscriptionPlan"> | Date | string | null
   prices?: Prisma.SubscriptionPriceListRelationFilter
   subscriptions?: Prisma.SubscriptionListRelationFilter
+  features?: Prisma.FeatureListRelationFilter
 }, "id" | "name" | "tierLevel">
 
 export type SubscriptionPlanOrderByWithAggregationInput = {
@@ -278,7 +299,8 @@ export type SubscriptionPlanOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   tierLevel?: Prisma.SortOrder
   maxTurfs?: Prisma.SortOrder
-  features?: Prisma.SortOrder
+  isFreeTrialAllowed?: Prisma.SortOrder
+  freeTrialDuration?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -297,7 +319,8 @@ export type SubscriptionPlanScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"SubscriptionPlan"> | string
   tierLevel?: Prisma.IntWithAggregatesFilter<"SubscriptionPlan"> | number
   maxTurfs?: Prisma.IntWithAggregatesFilter<"SubscriptionPlan"> | number
-  features?: Prisma.StringNullableListFilter<"SubscriptionPlan">
+  isFreeTrialAllowed?: Prisma.BoolWithAggregatesFilter<"SubscriptionPlan"> | boolean
+  freeTrialDuration?: Prisma.IntWithAggregatesFilter<"SubscriptionPlan"> | number
   active?: Prisma.BoolWithAggregatesFilter<"SubscriptionPlan"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SubscriptionPlan"> | Date | string
   updatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SubscriptionPlan"> | Date | string | null
@@ -308,12 +331,14 @@ export type SubscriptionPlanCreateInput = {
   name: string
   tierLevel: number
   maxTurfs: number
-  features?: Prisma.SubscriptionPlanCreatefeaturesInput | string[]
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
   prices?: Prisma.SubscriptionPriceCreateNestedManyWithoutPlanInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutPlanInput
+  features?: Prisma.FeatureCreateNestedManyWithoutPlanInput
 }
 
 export type SubscriptionPlanUncheckedCreateInput = {
@@ -321,12 +346,14 @@ export type SubscriptionPlanUncheckedCreateInput = {
   name: string
   tierLevel: number
   maxTurfs: number
-  features?: Prisma.SubscriptionPlanCreatefeaturesInput | string[]
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
   prices?: Prisma.SubscriptionPriceUncheckedCreateNestedManyWithoutPlanInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutPlanInput
+  features?: Prisma.FeatureUncheckedCreateNestedManyWithoutPlanInput
 }
 
 export type SubscriptionPlanUpdateInput = {
@@ -334,12 +361,14 @@ export type SubscriptionPlanUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tierLevel?: Prisma.IntFieldUpdateOperationsInput | number
   maxTurfs?: Prisma.IntFieldUpdateOperationsInput | number
-  features?: Prisma.SubscriptionPlanUpdatefeaturesInput | string[]
+  isFreeTrialAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  freeTrialDuration?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   prices?: Prisma.SubscriptionPriceUpdateManyWithoutPlanNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutPlanNestedInput
+  features?: Prisma.FeatureUpdateManyWithoutPlanNestedInput
 }
 
 export type SubscriptionPlanUncheckedUpdateInput = {
@@ -347,12 +376,14 @@ export type SubscriptionPlanUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tierLevel?: Prisma.IntFieldUpdateOperationsInput | number
   maxTurfs?: Prisma.IntFieldUpdateOperationsInput | number
-  features?: Prisma.SubscriptionPlanUpdatefeaturesInput | string[]
+  isFreeTrialAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  freeTrialDuration?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   prices?: Prisma.SubscriptionPriceUncheckedUpdateManyWithoutPlanNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutPlanNestedInput
+  features?: Prisma.FeatureUncheckedUpdateManyWithoutPlanNestedInput
 }
 
 export type SubscriptionPlanCreateManyInput = {
@@ -360,7 +391,8 @@ export type SubscriptionPlanCreateManyInput = {
   name: string
   tierLevel: number
   maxTurfs: number
-  features?: Prisma.SubscriptionPlanCreatefeaturesInput | string[]
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
@@ -371,7 +403,8 @@ export type SubscriptionPlanUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tierLevel?: Prisma.IntFieldUpdateOperationsInput | number
   maxTurfs?: Prisma.IntFieldUpdateOperationsInput | number
-  features?: Prisma.SubscriptionPlanUpdatefeaturesInput | string[]
+  isFreeTrialAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  freeTrialDuration?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -382,18 +415,16 @@ export type SubscriptionPlanUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tierLevel?: Prisma.IntFieldUpdateOperationsInput | number
   maxTurfs?: Prisma.IntFieldUpdateOperationsInput | number
-  features?: Prisma.SubscriptionPlanUpdatefeaturesInput | string[]
+  isFreeTrialAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  freeTrialDuration?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
-export type StringNullableListFilter<$PrismaModel = never> = {
-  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
-  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
-  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
+export type SubscriptionPlanNullableScalarRelationFilter = {
+  is?: Prisma.SubscriptionPlanWhereInput | null
+  isNot?: Prisma.SubscriptionPlanWhereInput | null
 }
 
 export type SubscriptionPlanCountOrderByAggregateInput = {
@@ -401,7 +432,8 @@ export type SubscriptionPlanCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   tierLevel?: Prisma.SortOrder
   maxTurfs?: Prisma.SortOrder
-  features?: Prisma.SortOrder
+  isFreeTrialAllowed?: Prisma.SortOrder
+  freeTrialDuration?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -410,6 +442,7 @@ export type SubscriptionPlanCountOrderByAggregateInput = {
 export type SubscriptionPlanAvgOrderByAggregateInput = {
   tierLevel?: Prisma.SortOrder
   maxTurfs?: Prisma.SortOrder
+  freeTrialDuration?: Prisma.SortOrder
 }
 
 export type SubscriptionPlanMaxOrderByAggregateInput = {
@@ -417,6 +450,8 @@ export type SubscriptionPlanMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   tierLevel?: Prisma.SortOrder
   maxTurfs?: Prisma.SortOrder
+  isFreeTrialAllowed?: Prisma.SortOrder
+  freeTrialDuration?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -427,6 +462,8 @@ export type SubscriptionPlanMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   tierLevel?: Prisma.SortOrder
   maxTurfs?: Prisma.SortOrder
+  isFreeTrialAllowed?: Prisma.SortOrder
+  freeTrialDuration?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -435,6 +472,7 @@ export type SubscriptionPlanMinOrderByAggregateInput = {
 export type SubscriptionPlanSumOrderByAggregateInput = {
   tierLevel?: Prisma.SortOrder
   maxTurfs?: Prisma.SortOrder
+  freeTrialDuration?: Prisma.SortOrder
 }
 
 export type SubscriptionPlanScalarRelationFilter = {
@@ -442,13 +480,20 @@ export type SubscriptionPlanScalarRelationFilter = {
   isNot?: Prisma.SubscriptionPlanWhereInput
 }
 
-export type SubscriptionPlanCreatefeaturesInput = {
-  set: string[]
+export type SubscriptionPlanCreateNestedOneWithoutFeaturesInput = {
+  create?: Prisma.XOR<Prisma.SubscriptionPlanCreateWithoutFeaturesInput, Prisma.SubscriptionPlanUncheckedCreateWithoutFeaturesInput>
+  connectOrCreate?: Prisma.SubscriptionPlanCreateOrConnectWithoutFeaturesInput
+  connect?: Prisma.SubscriptionPlanWhereUniqueInput
 }
 
-export type SubscriptionPlanUpdatefeaturesInput = {
-  set?: string[]
-  push?: string | string[]
+export type SubscriptionPlanUpdateOneWithoutFeaturesNestedInput = {
+  create?: Prisma.XOR<Prisma.SubscriptionPlanCreateWithoutFeaturesInput, Prisma.SubscriptionPlanUncheckedCreateWithoutFeaturesInput>
+  connectOrCreate?: Prisma.SubscriptionPlanCreateOrConnectWithoutFeaturesInput
+  upsert?: Prisma.SubscriptionPlanUpsertWithoutFeaturesInput
+  disconnect?: Prisma.SubscriptionPlanWhereInput | boolean
+  delete?: Prisma.SubscriptionPlanWhereInput | boolean
+  connect?: Prisma.SubscriptionPlanWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SubscriptionPlanUpdateToOneWithWhereWithoutFeaturesInput, Prisma.SubscriptionPlanUpdateWithoutFeaturesInput>, Prisma.SubscriptionPlanUncheckedUpdateWithoutFeaturesInput>
 }
 
 export type SubscriptionPlanCreateNestedOneWithoutPricesInput = {
@@ -479,16 +524,90 @@ export type SubscriptionPlanUpdateOneRequiredWithoutSubscriptionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SubscriptionPlanUpdateToOneWithWhereWithoutSubscriptionsInput, Prisma.SubscriptionPlanUpdateWithoutSubscriptionsInput>, Prisma.SubscriptionPlanUncheckedUpdateWithoutSubscriptionsInput>
 }
 
+export type SubscriptionPlanCreateWithoutFeaturesInput = {
+  id?: string
+  name: string
+  tierLevel: number
+  maxTurfs: number
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: number
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  prices?: Prisma.SubscriptionPriceCreateNestedManyWithoutPlanInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutPlanInput
+}
+
+export type SubscriptionPlanUncheckedCreateWithoutFeaturesInput = {
+  id?: string
+  name: string
+  tierLevel: number
+  maxTurfs: number
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: number
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  prices?: Prisma.SubscriptionPriceUncheckedCreateNestedManyWithoutPlanInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutPlanInput
+}
+
+export type SubscriptionPlanCreateOrConnectWithoutFeaturesInput = {
+  where: Prisma.SubscriptionPlanWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubscriptionPlanCreateWithoutFeaturesInput, Prisma.SubscriptionPlanUncheckedCreateWithoutFeaturesInput>
+}
+
+export type SubscriptionPlanUpsertWithoutFeaturesInput = {
+  update: Prisma.XOR<Prisma.SubscriptionPlanUpdateWithoutFeaturesInput, Prisma.SubscriptionPlanUncheckedUpdateWithoutFeaturesInput>
+  create: Prisma.XOR<Prisma.SubscriptionPlanCreateWithoutFeaturesInput, Prisma.SubscriptionPlanUncheckedCreateWithoutFeaturesInput>
+  where?: Prisma.SubscriptionPlanWhereInput
+}
+
+export type SubscriptionPlanUpdateToOneWithWhereWithoutFeaturesInput = {
+  where?: Prisma.SubscriptionPlanWhereInput
+  data: Prisma.XOR<Prisma.SubscriptionPlanUpdateWithoutFeaturesInput, Prisma.SubscriptionPlanUncheckedUpdateWithoutFeaturesInput>
+}
+
+export type SubscriptionPlanUpdateWithoutFeaturesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  tierLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTurfs?: Prisma.IntFieldUpdateOperationsInput | number
+  isFreeTrialAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  freeTrialDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  prices?: Prisma.SubscriptionPriceUpdateManyWithoutPlanNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutPlanNestedInput
+}
+
+export type SubscriptionPlanUncheckedUpdateWithoutFeaturesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  tierLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTurfs?: Prisma.IntFieldUpdateOperationsInput | number
+  isFreeTrialAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  freeTrialDuration?: Prisma.IntFieldUpdateOperationsInput | number
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  prices?: Prisma.SubscriptionPriceUncheckedUpdateManyWithoutPlanNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutPlanNestedInput
+}
+
 export type SubscriptionPlanCreateWithoutPricesInput = {
   id?: string
   name: string
   tierLevel: number
   maxTurfs: number
-  features?: Prisma.SubscriptionPlanCreatefeaturesInput | string[]
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutPlanInput
+  features?: Prisma.FeatureCreateNestedManyWithoutPlanInput
 }
 
 export type SubscriptionPlanUncheckedCreateWithoutPricesInput = {
@@ -496,11 +615,13 @@ export type SubscriptionPlanUncheckedCreateWithoutPricesInput = {
   name: string
   tierLevel: number
   maxTurfs: number
-  features?: Prisma.SubscriptionPlanCreatefeaturesInput | string[]
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutPlanInput
+  features?: Prisma.FeatureUncheckedCreateNestedManyWithoutPlanInput
 }
 
 export type SubscriptionPlanCreateOrConnectWithoutPricesInput = {
@@ -524,11 +645,13 @@ export type SubscriptionPlanUpdateWithoutPricesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tierLevel?: Prisma.IntFieldUpdateOperationsInput | number
   maxTurfs?: Prisma.IntFieldUpdateOperationsInput | number
-  features?: Prisma.SubscriptionPlanUpdatefeaturesInput | string[]
+  isFreeTrialAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  freeTrialDuration?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutPlanNestedInput
+  features?: Prisma.FeatureUpdateManyWithoutPlanNestedInput
 }
 
 export type SubscriptionPlanUncheckedUpdateWithoutPricesInput = {
@@ -536,11 +659,13 @@ export type SubscriptionPlanUncheckedUpdateWithoutPricesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tierLevel?: Prisma.IntFieldUpdateOperationsInput | number
   maxTurfs?: Prisma.IntFieldUpdateOperationsInput | number
-  features?: Prisma.SubscriptionPlanUpdatefeaturesInput | string[]
+  isFreeTrialAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  freeTrialDuration?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutPlanNestedInput
+  features?: Prisma.FeatureUncheckedUpdateManyWithoutPlanNestedInput
 }
 
 export type SubscriptionPlanCreateWithoutSubscriptionsInput = {
@@ -548,11 +673,13 @@ export type SubscriptionPlanCreateWithoutSubscriptionsInput = {
   name: string
   tierLevel: number
   maxTurfs: number
-  features?: Prisma.SubscriptionPlanCreatefeaturesInput | string[]
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
   prices?: Prisma.SubscriptionPriceCreateNestedManyWithoutPlanInput
+  features?: Prisma.FeatureCreateNestedManyWithoutPlanInput
 }
 
 export type SubscriptionPlanUncheckedCreateWithoutSubscriptionsInput = {
@@ -560,11 +687,13 @@ export type SubscriptionPlanUncheckedCreateWithoutSubscriptionsInput = {
   name: string
   tierLevel: number
   maxTurfs: number
-  features?: Prisma.SubscriptionPlanCreatefeaturesInput | string[]
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string | null
   prices?: Prisma.SubscriptionPriceUncheckedCreateNestedManyWithoutPlanInput
+  features?: Prisma.FeatureUncheckedCreateNestedManyWithoutPlanInput
 }
 
 export type SubscriptionPlanCreateOrConnectWithoutSubscriptionsInput = {
@@ -588,11 +717,13 @@ export type SubscriptionPlanUpdateWithoutSubscriptionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tierLevel?: Prisma.IntFieldUpdateOperationsInput | number
   maxTurfs?: Prisma.IntFieldUpdateOperationsInput | number
-  features?: Prisma.SubscriptionPlanUpdatefeaturesInput | string[]
+  isFreeTrialAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  freeTrialDuration?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   prices?: Prisma.SubscriptionPriceUpdateManyWithoutPlanNestedInput
+  features?: Prisma.FeatureUpdateManyWithoutPlanNestedInput
 }
 
 export type SubscriptionPlanUncheckedUpdateWithoutSubscriptionsInput = {
@@ -600,11 +731,13 @@ export type SubscriptionPlanUncheckedUpdateWithoutSubscriptionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   tierLevel?: Prisma.IntFieldUpdateOperationsInput | number
   maxTurfs?: Prisma.IntFieldUpdateOperationsInput | number
-  features?: Prisma.SubscriptionPlanUpdatefeaturesInput | string[]
+  isFreeTrialAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  freeTrialDuration?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   prices?: Prisma.SubscriptionPriceUncheckedUpdateManyWithoutPlanNestedInput
+  features?: Prisma.FeatureUncheckedUpdateManyWithoutPlanNestedInput
 }
 
 
@@ -615,11 +748,13 @@ export type SubscriptionPlanUncheckedUpdateWithoutSubscriptionsInput = {
 export type SubscriptionPlanCountOutputType = {
   prices: number
   subscriptions: number
+  features: number
 }
 
 export type SubscriptionPlanCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prices?: boolean | SubscriptionPlanCountOutputTypeCountPricesArgs
   subscriptions?: boolean | SubscriptionPlanCountOutputTypeCountSubscriptionsArgs
+  features?: boolean | SubscriptionPlanCountOutputTypeCountFeaturesArgs
 }
 
 /**
@@ -646,18 +781,27 @@ export type SubscriptionPlanCountOutputTypeCountSubscriptionsArgs<ExtArgs extend
   where?: Prisma.SubscriptionWhereInput
 }
 
+/**
+ * SubscriptionPlanCountOutputType without action
+ */
+export type SubscriptionPlanCountOutputTypeCountFeaturesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FeatureWhereInput
+}
+
 
 export type SubscriptionPlanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   tierLevel?: boolean
   maxTurfs?: boolean
-  features?: boolean
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   prices?: boolean | Prisma.SubscriptionPlan$pricesArgs<ExtArgs>
   subscriptions?: boolean | Prisma.SubscriptionPlan$subscriptionsArgs<ExtArgs>
+  features?: boolean | Prisma.SubscriptionPlan$featuresArgs<ExtArgs>
   _count?: boolean | Prisma.SubscriptionPlanCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subscriptionPlan"]>
 
@@ -666,7 +810,8 @@ export type SubscriptionPlanSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   name?: boolean
   tierLevel?: boolean
   maxTurfs?: boolean
-  features?: boolean
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -677,7 +822,8 @@ export type SubscriptionPlanSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   name?: boolean
   tierLevel?: boolean
   maxTurfs?: boolean
-  features?: boolean
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -688,16 +834,18 @@ export type SubscriptionPlanSelectScalar = {
   name?: boolean
   tierLevel?: boolean
   maxTurfs?: boolean
-  features?: boolean
+  isFreeTrialAllowed?: boolean
+  freeTrialDuration?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SubscriptionPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "tierLevel" | "maxTurfs" | "features" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["subscriptionPlan"]>
+export type SubscriptionPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "tierLevel" | "maxTurfs" | "isFreeTrialAllowed" | "freeTrialDuration" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["subscriptionPlan"]>
 export type SubscriptionPlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prices?: boolean | Prisma.SubscriptionPlan$pricesArgs<ExtArgs>
   subscriptions?: boolean | Prisma.SubscriptionPlan$subscriptionsArgs<ExtArgs>
+  features?: boolean | Prisma.SubscriptionPlan$featuresArgs<ExtArgs>
   _count?: boolean | Prisma.SubscriptionPlanCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SubscriptionPlanIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -708,13 +856,15 @@ export type $SubscriptionPlanPayload<ExtArgs extends runtime.Types.Extensions.In
   objects: {
     prices: Prisma.$SubscriptionPricePayload<ExtArgs>[]
     subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+    features: Prisma.$FeaturePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     tierLevel: number
     maxTurfs: number
-    features: string[]
+    isFreeTrialAllowed: boolean
+    freeTrialDuration: number
     active: boolean
     createdAt: Date
     updatedAt: Date | null
@@ -1114,6 +1264,7 @@ export interface Prisma__SubscriptionPlanClient<T, Null = never, ExtArgs extends
   readonly [Symbol.toStringTag]: "PrismaPromise"
   prices<T extends Prisma.SubscriptionPlan$pricesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubscriptionPlan$pricesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubscriptionPricePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscriptions<T extends Prisma.SubscriptionPlan$subscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubscriptionPlan$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  features<T extends Prisma.SubscriptionPlan$featuresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubscriptionPlan$featuresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1147,7 +1298,8 @@ export interface SubscriptionPlanFieldRefs {
   readonly name: Prisma.FieldRef<"SubscriptionPlan", 'String'>
   readonly tierLevel: Prisma.FieldRef<"SubscriptionPlan", 'Int'>
   readonly maxTurfs: Prisma.FieldRef<"SubscriptionPlan", 'Int'>
-  readonly features: Prisma.FieldRef<"SubscriptionPlan", 'String[]'>
+  readonly isFreeTrialAllowed: Prisma.FieldRef<"SubscriptionPlan", 'Boolean'>
+  readonly freeTrialDuration: Prisma.FieldRef<"SubscriptionPlan", 'Int'>
   readonly active: Prisma.FieldRef<"SubscriptionPlan", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"SubscriptionPlan", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"SubscriptionPlan", 'DateTime'>
@@ -1589,6 +1741,30 @@ export type SubscriptionPlan$subscriptionsArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.SubscriptionScalarFieldEnum | Prisma.SubscriptionScalarFieldEnum[]
+}
+
+/**
+ * SubscriptionPlan.features
+ */
+export type SubscriptionPlan$featuresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Feature
+   */
+  select?: Prisma.FeatureSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Feature
+   */
+  omit?: Prisma.FeatureOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FeatureInclude<ExtArgs> | null
+  where?: Prisma.FeatureWhereInput
+  orderBy?: Prisma.FeatureOrderByWithRelationInput | Prisma.FeatureOrderByWithRelationInput[]
+  cursor?: Prisma.FeatureWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FeatureScalarFieldEnum | Prisma.FeatureScalarFieldEnum[]
 }
 
 /**

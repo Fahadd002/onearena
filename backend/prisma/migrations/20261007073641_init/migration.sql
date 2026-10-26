@@ -38,25 +38,34 @@ CREATE TYPE "CommissionType" AS ENUM ('PERCENTAGE', 'FLAT_PER_BOOKING', 'FIXED')
 CREATE TYPE "FixedPeriod" AS ENUM ('MONTHLY', 'QUARTERLY', 'HALF_YEARLY', 'YEARLY');
 
 -- CreateEnum
-CREATE TYPE "SlotSatus" AS ENUM ('AVAILABLE', 'RESERVED', 'BOOKED');
+CREATE TYPE "SlotSatus" AS ENUM ('AVAILABLE', 'WAITLIST', 'BOOKED', 'EXPIRED');
 
 -- CreateEnum
 CREATE TYPE "BookingStatus" AS ENUM ('PREBOOKED', 'CONFIRMED', 'KICKED_OFF', 'COMPLETED', 'CANCELLED', 'EXPIRED');
 
 -- CreateEnum
-CREATE TYPE "PaymentMethod" AS ENUM ('BKASH', 'ROKET', 'NAGAD', 'CASH', 'OTHERS');
+CREATE TYPE "PaymentMethod" AS ENUM ('BKASH', 'ROKET', 'NAGAD', 'UPAY', 'CASH', 'OTHERS');
 
 -- CreateEnum
 CREATE TYPE "PaymentType" AS ENUM ('ADVANCE', 'REMAINING', 'FULL');
 
 -- CreateEnum
-CREATE TYPE "PaymentStatus" AS ENUM ('PENDING', 'PROCESSING', 'SUCCEEDED', 'FAILED', 'CANCELLED', 'REFUNDED', 'PARTIALLY_REFUNDED', 'UNPAID', 'PARTIALLY_PAID', 'PAID');
+CREATE TYPE "InvoiceStatus" AS ENUM ('DRAFT', 'PAID', 'PARTIALLY_PAID', 'UNPAID');
 
 -- CreateEnum
-CREATE TYPE "SubscriptionStatus" AS ENUM ('TRIAL', 'ACTIVE', 'EXPIRING', 'EXPIRED', 'CANCELLED');
+CREATE TYPE "PaymentStatus" AS ENUM ('PROCESSING', 'SUCCEEDED', 'FAILED', 'CANCELLED', 'REFUNDED', 'PARTIALLY_REFUNDED', 'UNPAID', 'PARTIALLY_PAID', 'PAID');
+
+-- CreateEnum
+CREATE TYPE "SubscriptionStatus" AS ENUM ('FREE_TRIAL', 'ACTIVE', 'EXPIRING', 'EXPIRED', 'CANCELLED', 'INACTIVE');
 
 -- CreateEnum
 CREATE TYPE "InvoiceFor" AS ENUM ('O', 'U');
+
+-- CreateEnum
+CREATE TYPE "FeatureType" AS ENUM ('GENERAL', 'PREMIUM');
+
+-- CreateEnum
+CREATE TYPE "SubscriptionAction" AS ENUM ('TRIAL_STARTED', 'SUBSCRIBED', 'RENEWED', 'UPGRADED', 'CANCELLED', 'EXPIRED');
 
 -- CreateTable
 CREATE TABLE "booking" (
@@ -71,12 +80,22 @@ CREATE TABLE "booking" (
     "totalAmount" DECIMAL(12,2) NOT NULL,
     "bookingExpiresAt" TIMESTAMP(3),
     "idempotencyKey" TEXT NOT NULL,
+    "numberOfSlot" INTEGER NOT NULL DEFAULT 1,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
-    "slotId" TEXT NOT NULL,
 
     CONSTRAINT "booking_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "booking_slot" (
+    "id" TEXT NOT NULL,
+    "bookingId" TEXT NOT NULL,
+    "slotId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "booking_slot_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -126,7 +145,7 @@ CREATE TABLE "invoice" (
     "totalAmount" DECIMAL(12,2) NOT NULL,
     "paidAmount" DECIMAL(12,2) NOT NULL DEFAULT 0,
     "isFullPaid" BOOLEAN NOT NULL DEFAULT false,
-    "status" "PaymentStatus" NOT NULL DEFAULT 'UNPAID',
+    "status" "InvoiceStatus" NOT NULL DEFAULT 'DRAFT',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
@@ -145,10 +164,11 @@ CREATE TABLE "payment" (
     "type" "PaymentType" NOT NULL,
     "method" "PaymentMethod" NOT NULL,
     "amount" DECIMAL(12,2) NOT NULL,
-    "status" "PaymentStatus" NOT NULL DEFAULT 'PENDING',
+    "status" "PaymentStatus" NOT NULL DEFAULT 'UNPAID',
     "providerTransactionId" TEXT,
     "paymentIntentId" TEXT,
     "checkoutSessionId" TEXT,
+    "payerMobileNumber" TEXT,
     "idempotencyKey" TEXT NOT NULL,
     "rawEventId" TEXT,
     "receivedById" TEXT,
@@ -161,6 +181,15 @@ CREATE TABLE "payment" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "payment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "numbering_counter" (
+    "key" TEXT NOT NULL,
+    "currentValue" INTEGER NOT NULL DEFAULT 0,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "numbering_counter_pkey" PRIMARY KEY ("key")
 );
 
 -- CreateTable
@@ -221,14 +250,14 @@ CREATE TABLE "owner_profile" (
     "contactNumber" TEXT,
     "address" TEXT,
     "nidNumber" TEXT,
-    "businessRegistrationNumber" TEXT,
     "tradeLicenseNumber" TEXT,
+    "etin" TEXT,
+    "bin" TEXT,
     "businessLogo" TEXT,
-    "nidImageFront" TEXT,
-    "nidImageBack" TEXT,
-    "businessRegistrationDocument" TEXT,
+    "nidImage" TEXT,
     "tradeLicenseDocument" TEXT,
-    "taxIdentificationDocument" TEXT,
+    "etinDocument" TEXT,
+    "binDocument" TEXT,
     "verificationStatus" "OwnerVerificationStatus" NOT NULL DEFAULT 'CREATED',
     "verifiedById" TEXT,
     "verifiedAt" TIMESTAMP(3),
@@ -260,7 +289,6 @@ CREATE TABLE "owner_blog" (
     "ownerId" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
-    "excerpt" TEXT,
     "content" TEXT NOT NULL,
     "coverImage" TEXT,
     "published" BOOLEAN NOT NULL DEFAULT false,
@@ -269,6 +297,35 @@ CREATE TABLE "owner_blog" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "owner_blog_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "announcement" (
+    "id" TEXT NOT NULL,
+    "ownerId" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "message" TEXT NOT NULL,
+    "type" TEXT NOT NULL DEFAULT 'INFO',
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "announcement_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "owner_social_link" (
+    "id" TEXT NOT NULL,
+    "ownerId" TEXT NOT NULL,
+    "platform" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+    "icon" TEXT,
+    "sortOrder" INTEGER NOT NULL DEFAULT 0,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "owner_social_link_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -299,11 +356,27 @@ CREATE TABLE "review_reply" (
 );
 
 -- CreateTable
+CREATE TABLE "feature" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "type" "FeatureType" NOT NULL DEFAULT 'GENERAL',
+    "key" TEXT,
+    "planId" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+
+    CONSTRAINT "feature_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "subscription_plan" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "tierLevel" INTEGER NOT NULL,
     "maxTurfs" INTEGER NOT NULL,
-    "features" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "isFreeTrialAllowed" BOOLEAN NOT NULL DEFAULT false,
+    "freeTrialDuration" INTEGER NOT NULL DEFAULT 0,
     "active" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
@@ -328,12 +401,13 @@ CREATE TABLE "subscription" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "planId" TEXT NOT NULL,
-    "status" "SubscriptionStatus" NOT NULL DEFAULT 'TRIAL',
+    "status" "SubscriptionStatus" NOT NULL DEFAULT 'FREE_TRIAL',
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
-    "trialStart" TIMESTAMP(3),
-    "trialEnd" TIMESTAMP(3),
-    "isTrialUsed" BOOLEAN NOT NULL DEFAULT false,
+    "freeStart" TIMESTAMP(3),
+    "freeEnd" TIMESTAMP(3),
+    "isFreeUsed" BOOLEAN NOT NULL DEFAULT false,
+    "isFreeActive" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
 
@@ -344,6 +418,9 @@ CREATE TABLE "subscription" (
 CREATE TABLE "subscription_log" (
     "id" TEXT NOT NULL,
     "subscriptionId" TEXT NOT NULL,
+    "action" "SubscriptionAction" NOT NULL,
+    "status" "SubscriptionStatus" NOT NULL,
+    "period" "FixedPeriod" NOT NULL,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -360,11 +437,12 @@ CREATE TABLE "turf" (
     "name" TEXT NOT NULL,
     "description" TEXT,
     "address" TEXT NOT NULL,
+    "allowAdvancePayment" BOOLEAN NOT NULL DEFAULT false,
     "latitude" DECIMAL(13,10) NOT NULL,
     "longitude" DECIMAL(13,10) NOT NULL,
     "status" "TurfStatus" NOT NULL DEFAULT 'ACTIVE',
-    "basePrice" DECIMAL(12,2) NOT NULL,
-    "slotMinutes" INTEGER NOT NULL DEFAULT 90,
+    "defaultSlotDuration" INTEGER NOT NULL DEFAULT 90,
+    "defaultSlotPrice" DECIMAL(12,2) NOT NULL,
     "timezone" TEXT NOT NULL DEFAULT 'Asia/Dhaka',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -373,16 +451,40 @@ CREATE TABLE "turf" (
 );
 
 -- CreateTable
+CREATE TABLE "slot_time_setup" (
+    "id" TEXT NOT NULL,
+    "timeName" TEXT NOT NULL,
+    "startMinute" INTEGER NOT NULL,
+    "endMinute" INTEGER NOT NULL,
+    "isPeakTime" BOOLEAN NOT NULL DEFAULT false,
+    "slotDuration" INTEGER NOT NULL DEFAULT 90,
+    "ownerId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+
+    CONSTRAINT "slot_time_setup_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "payment_phone_number" (
+    "id" TEXT NOT NULL,
+    "turfId" TEXT NOT NULL,
+    "number" TEXT NOT NULL,
+    "method" "PaymentMethod" NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "payment_phone_number_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "turf_price_rule" (
     "id" TEXT NOT NULL,
     "turfId" TEXT NOT NULL,
+    "slotTimeSetupId" TEXT NOT NULL,
     "dayOfWeek" INTEGER NOT NULL,
-    "startMinute" INTEGER NOT NULL,
-    "endMinute" INTEGER NOT NULL,
     "price" DECIMAL(12,2) NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT true,
-    "startDate" TIMESTAMP(3) NOT NULL,
-    "endDate" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -399,6 +501,7 @@ CREATE TABLE "turf_slot" (
     "price" DECIMAL(12,2) NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT true,
     "slotStatus" "SlotSatus" NOT NULL DEFAULT 'AVAILABLE',
+    "isPeakTime" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -503,9 +606,6 @@ CREATE UNIQUE INDEX "booking_bookingNumber_key" ON "booking"("bookingNumber");
 CREATE UNIQUE INDEX "booking_idempotencyKey_key" ON "booking"("idempotencyKey");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "booking_slotId_key" ON "booking"("slotId");
-
--- CreateIndex
 CREATE INDEX "booking_userId_createdAt_idx" ON "booking"("userId", "createdAt");
 
 -- CreateIndex
@@ -513,6 +613,15 @@ CREATE INDEX "booking_status_createdAt_idx" ON "booking"("status", "createdAt");
 
 -- CreateIndex
 CREATE INDEX "booking_bookingExpiresAt_idx" ON "booking"("bookingExpiresAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "booking_slot_slotId_key" ON "booking_slot"("slotId");
+
+-- CreateIndex
+CREATE INDEX "booking_slot_bookingId_idx" ON "booking_slot"("bookingId");
+
+-- CreateIndex
+CREATE INDEX "booking_slot_slotId_idx" ON "booking_slot"("slotId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "TurfCategory_name_key" ON "TurfCategory"("name");
@@ -593,6 +702,12 @@ CREATE INDEX "owner_blog_ownerId_published_publishedAt_idx" ON "owner_blog"("own
 CREATE UNIQUE INDEX "owner_blog_ownerId_slug_key" ON "owner_blog"("ownerId", "slug");
 
 -- CreateIndex
+CREATE INDEX "announcement_ownerId_isActive_idx" ON "announcement"("ownerId", "isActive");
+
+-- CreateIndex
+CREATE INDEX "owner_social_link_ownerId_isActive_sortOrder_idx" ON "owner_social_link"("ownerId", "isActive", "sortOrder");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "review_bookingId_key" ON "review"("bookingId");
 
 -- CreateIndex
@@ -605,7 +720,25 @@ CREATE INDEX "review_userId_idx" ON "review"("userId");
 CREATE INDEX "review_reply_reviewId_idx" ON "review_reply"("reviewId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "feature_key_key" ON "feature"("key");
+
+-- CreateIndex
+CREATE INDEX "feature_planId_idx" ON "feature"("planId");
+
+-- CreateIndex
+CREATE INDEX "feature_type_idx" ON "feature"("type");
+
+-- CreateIndex
+CREATE INDEX "feature_key_idx" ON "feature"("key");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "feature_name_planId_key" ON "feature"("name", "planId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "subscription_plan_name_key" ON "subscription_plan"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "subscription_plan_tierLevel_key" ON "subscription_plan"("tierLevel");
 
 -- CreateIndex
 CREATE INDEX "subscription_price_planId_idx" ON "subscription_price"("planId");
@@ -638,10 +771,22 @@ CREATE INDEX "turf_ownerId_status_idx" ON "turf"("ownerId", "status");
 CREATE INDEX "turf_categoryId_status_idx" ON "turf"("categoryId", "status");
 
 -- CreateIndex
-CREATE INDEX "turf_price_rule_turfId_dayOfWeek_startDate_endDate_startMin_idx" ON "turf_price_rule"("turfId", "dayOfWeek", "startDate", "endDate", "startMinute", "endMinute");
+CREATE INDEX "slot_time_setup_startMinute_endMinute_timeName_ownerId_idx" ON "slot_time_setup"("startMinute", "endMinute", "timeName", "ownerId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "turf_price_rule_turfId_dayOfWeek_startDate_endDate_startMin_key" ON "turf_price_rule"("turfId", "dayOfWeek", "startDate", "endDate", "startMinute", "endMinute");
+CREATE UNIQUE INDEX "slot_time_setup_startMinute_endMinute_timeName_ownerId_key" ON "slot_time_setup"("startMinute", "endMinute", "timeName", "ownerId");
+
+-- CreateIndex
+CREATE INDEX "payment_phone_number_turfId_idx" ON "payment_phone_number"("turfId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "payment_phone_number_turfId_method_key" ON "payment_phone_number"("turfId", "method");
+
+-- CreateIndex
+CREATE INDEX "turf_price_rule_turfId_dayOfWeek_slotTimeSetupId_idx" ON "turf_price_rule"("turfId", "dayOfWeek", "slotTimeSetupId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "turf_price_rule_turfId_dayOfWeek_slotTimeSetupId_key" ON "turf_price_rule"("turfId", "dayOfWeek", "slotTimeSetupId");
 
 -- CreateIndex
 CREATE INDEX "turf_slot_turfId_slotDate_active_idx" ON "turf_slot"("turfId", "slotDate", "active");
@@ -689,7 +834,10 @@ CREATE INDEX "verification_identifier_idx" ON "verification"("identifier");
 ALTER TABLE "booking" ADD CONSTRAINT "booking_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "booking" ADD CONSTRAINT "booking_slotId_fkey" FOREIGN KEY ("slotId") REFERENCES "turf_slot"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "booking_slot" ADD CONSTRAINT "booking_slot_bookingId_fkey" FOREIGN KEY ("bookingId") REFERENCES "booking"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "booking_slot" ADD CONSTRAINT "booking_slot_slotId_fkey" FOREIGN KEY ("slotId") REFERENCES "turf_slot"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "package_facilitie" ADD CONSTRAINT "package_facilitie_facilityId_fkey" FOREIGN KEY ("facilityId") REFERENCES "Facility"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -746,6 +894,12 @@ ALTER TABLE "owner_gallery_item" ADD CONSTRAINT "owner_gallery_item_ownerId_fkey
 ALTER TABLE "owner_blog" ADD CONSTRAINT "owner_blog_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "announcement" ADD CONSTRAINT "announcement_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "owner_social_link" ADD CONSTRAINT "owner_social_link_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "review" ADD CONSTRAINT "review_turfId_fkey" FOREIGN KEY ("turfId") REFERENCES "turf"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -758,6 +912,9 @@ ALTER TABLE "review_reply" ADD CONSTRAINT "review_reply_reviewId_fkey" FOREIGN K
 ALTER TABLE "review_reply" ADD CONSTRAINT "review_reply_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "feature" ADD CONSTRAINT "feature_planId_fkey" FOREIGN KEY ("planId") REFERENCES "subscription_plan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "subscription_price" ADD CONSTRAINT "subscription_price_planId_fkey" FOREIGN KEY ("planId") REFERENCES "subscription_plan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -767,13 +924,22 @@ ALTER TABLE "subscription" ADD CONSTRAINT "subscription_userId_fkey" FOREIGN KEY
 ALTER TABLE "subscription" ADD CONSTRAINT "subscription_planId_fkey" FOREIGN KEY ("planId") REFERENCES "subscription_plan"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "subscription_log" ADD CONSTRAINT "subscription_log_subscriptionId_fkey" FOREIGN KEY ("subscriptionId") REFERENCES "subscription"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "subscription_log" ADD CONSTRAINT "subscription_log_subscriptionId_fkey" FOREIGN KEY ("subscriptionId") REFERENCES "subscription"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "turf" ADD CONSTRAINT "turf_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "TurfCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "turf" ADD CONSTRAINT "turf_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "slot_time_setup" ADD CONSTRAINT "slot_time_setup_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "payment_phone_number" ADD CONSTRAINT "payment_phone_number_turfId_fkey" FOREIGN KEY ("turfId") REFERENCES "turf"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "turf_price_rule" ADD CONSTRAINT "turf_price_rule_slotTimeSetupId_fkey" FOREIGN KEY ("slotTimeSetupId") REFERENCES "slot_time_setup"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "turf_price_rule" ADD CONSTRAINT "turf_price_rule_turfId_fkey" FOREIGN KEY ("turfId") REFERENCES "turf"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -13,6 +13,8 @@ import { BookingPayload, BookingService } from './booking.service';
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 
+  //Get Booking For indivisual Turf
+
   @Get('bookings')
   @AuthRoles(UserRole.USER, UserRole.ADMIN, UserRole.MANAGER)
   @UseGuards(CheckAuthGuard)
@@ -44,15 +46,32 @@ export class BookingController {
     });
   }
 
+  @Get('bookings/:bookingId')
+  @AuthRoles(UserRole.USER, UserRole.ADMIN, UserRole.MANAGER)
+  @UseGuards(CheckAuthGuard)
+  async findById(
+    @Res() res: Response,
+    @CurrentUser() user: IRequestUser,
+    @Param('bookingId') bookingId: string,
+  ) {
+    const data = await this.bookingService.findById(user, bookingId);
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: 'Booking fetched successfully',
+      data,
+    });
+  }
+
   @Post('bookings')
   @AuthRoles(UserRole.USER)
   @UseGuards(CheckAuthGuard)
-  async create(
+  async createBooking(
     @CurrentUser() user: IRequestUser,
     @Body() body: BookingPayload,
     @Res() res: Response,
   ) {
-    const data = await this.bookingService.create(user, body);
+    const data = await this.bookingService.createBooking(user, body);
     sendResponse(res, {
       statusCode: status.CREATED,
       success: true,
@@ -169,24 +188,7 @@ export class BookingController {
     });
   }
 
-  @Post('bookings/:bookingId/kick-off')
-  @AuthRoles(UserRole.ADMIN, UserRole.MANAGER, UserRole.SUPER_ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async kickOff(
-    @CurrentUser() user: IRequestUser,
-    @Param('bookingId') bookingId: string,
-    @Res() res: Response,
-  ) {
-    const data = await this.bookingService.kickOff(user, bookingId);
-    sendResponse(res, {
-      statusCode: status.OK,
-      success: true,
-      message: 'Booking kicked off successfully',
-      data,
-    });
-  }
-
-  @Post('bookings/:bookingId/complete')
+@Post('bookings/:bookingId/complete')
   @AuthRoles(UserRole.ADMIN, UserRole.MANAGER, UserRole.SUPER_ADMIN)
   @UseGuards(CheckAuthGuard)
   async complete(
@@ -203,8 +205,42 @@ export class BookingController {
     });
   }
 
-  @Post('admin/bookings/:bookingId/confirm-with-payment')
+  @Patch('bookings/:bookingId/verify-advance')
   @AuthRoles(UserRole.ADMIN, UserRole.MANAGER, UserRole.SUPER_ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async verifyAdvancePayment(
+    @CurrentUser() user: IRequestUser,
+    @Param('bookingId') bookingId: string,
+    @Res() res: Response,
+  ) {
+    const data = await this.bookingService.verifyAdvancePayment(user, bookingId);
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: 'Advance payment verified successfully',
+      data,
+});
+  }
+
+  @Post('admin/bookings')
+  @AuthRoles(UserRole.ADMIN, UserRole.MANAGER)
+  @UseGuards(CheckAuthGuard)
+  async bookingByAdmin(
+    @CurrentUser() user: IRequestUser,
+    @Body() body: { userId: string; slotIds: string[]; discountAmount?: number; mobile?: string; advancePayment?: { method: string; senderMobile: string; transactionId: string; amount: number } },
+    @Res() res: Response,
+  ) {
+    const data = await this.bookingService.bookingByAdmin(user, body);
+    sendResponse(res, {
+      statusCode: status.CREATED,
+      success: true,
+      message: 'Booking created successfully',
+      data,
+    });
+  }
+
+  @Post('admin/bookings/:bookingId/confirm-with-payment')
+  @AuthRoles(UserRole.ADMIN, UserRole.MANAGER)
   @UseGuards(CheckAuthGuard)
   async confirmWithPayment(
     @CurrentUser() user: IRequestUser,

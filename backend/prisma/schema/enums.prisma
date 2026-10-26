@@ -95,17 +95,18 @@ enum FixedPeriod {
 
 enum SlotSatus {
   AVAILABLE
-  RESERVED
+  WAITLIST
   BOOKED
+  EXPIRED
+  PLAYED
+  ABANDONED
+  ABSENT
 }
 
 enum BookingStatus {
   PREBOOKED
   CONFIRMED
-  KICKED_OFF
-  COMPLETED
   CANCELLED
-  EXPIRED
 }
 
 enum PaymentMethod {
@@ -122,8 +123,14 @@ enum PaymentType {
   FULL
 }
 
+enum InvoiceStatus {
+  DRAFT
+  PAID
+  PARTIALLY_PAID
+  UNPAID
+}
+
 enum PaymentStatus {
-  VERIFIED
   PROCESSING
   SUCCEEDED
   FAILED
@@ -136,13 +143,28 @@ enum PaymentStatus {
 }
 
 enum SubscriptionStatus {
-  TRIAL
+  FREE_TRIAL
   ACTIVE
   EXPIRING
   EXPIRED
   CANCELLED
+  INACTIVE
 }
+
 enum InvoiceFor {
   O
   U
+}
+enum SubscriptionAction {
+  TRIAL_STARTED
+  SUBSCRIBED
+  RENEWED
+  UPGRADED
+  CANCELLED
+  EXPIRED
+}
+
+enum FeatureType {
+  GENERAL
+  PREMIUM
 }

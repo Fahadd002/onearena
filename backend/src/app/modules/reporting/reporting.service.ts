@@ -15,14 +15,14 @@ export class ReportingService {
       }),
       prisma.booking.count({
         where: {
-          slot: { turf: { ownerId: user.userId } },
+          bookingSlots: { some: { slot: { turf: { ownerId: user.userId } } } },
         },
       }),
       prisma.invoice.aggregate({
         where: {
-          booking: { slot: { turf: { ownerId: user.userId } } },
+          booking: { bookingSlots: { some: { slot: { turf: { ownerId: user.userId } } } } },
           status: {
-            in: [PaymentStatus.SUCCEEDED, PaymentStatus.PARTIALLY_PAID, PaymentStatus.PAID],
+            in: [PaymentStatus.PARTIALLY_PAID, PaymentStatus.PAID],
           },
         },
         _sum: {
@@ -94,7 +94,7 @@ export class ReportingService {
       prisma.booking.count({
         where: {
           userId: user.userId,
-          slot: { slotDate: { gte: new Date() } },
+          bookingSlots: { some: { slot: { slotDate: { gte: new Date() } } } },
           invoice: {
             status: {
               in: [PaymentStatus.PARTIALLY_PAID, PaymentStatus.PAID],
@@ -105,7 +105,7 @@ export class ReportingService {
       prisma.booking.findMany({
         where: { userId: user.userId },
         include: {
-          slot: { include: { turf: { select: { name: true } } } },
+          bookingSlots: { include: { slot: { include: { turf: { select: { name: true } } } } } },
         },
         orderBy: { createdAt: 'desc' },
         take: 5,
@@ -121,7 +121,11 @@ export class ReportingService {
 
     return {
       upcomingBookings: upcoming,
-      recentBookings: recent,
+      recentBookings: recent.map((booking) => ({
+        ...booking,
+        slot: booking.bookingSlots[0]?.slot ?? null,
+        slots: booking.bookingSlots.map((bookingSlot) => bookingSlot.slot),
+      })),
       ownerOnboarding: ownerProfile,
     };
   }
@@ -139,10 +143,14 @@ export class ReportingService {
 
     const bookings = await prisma.booking.count({
       where: {
-        slot: {
-          turf: {
-            managers: {
-              some: { managerId: user.userId },
+        bookingSlots: {
+          some: {
+            slot: {
+              turf: {
+                managers: {
+                  some: { managerId: user.userId },
+                },
+              },
             },
           },
         },

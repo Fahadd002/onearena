@@ -47,6 +47,7 @@ export type TurfSlotMinAggregateOutputType = {
   price: runtime.Decimal | null
   active: boolean | null
   slotStatus: $Enums.SlotSatus | null
+  isPeakTime: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -60,6 +61,7 @@ export type TurfSlotMaxAggregateOutputType = {
   price: runtime.Decimal | null
   active: boolean | null
   slotStatus: $Enums.SlotSatus | null
+  isPeakTime: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -73,6 +75,7 @@ export type TurfSlotCountAggregateOutputType = {
   price: number
   active: number
   slotStatus: number
+  isPeakTime: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -100,6 +103,7 @@ export type TurfSlotMinAggregateInputType = {
   price?: true
   active?: true
   slotStatus?: true
+  isPeakTime?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -113,6 +117,7 @@ export type TurfSlotMaxAggregateInputType = {
   price?: true
   active?: true
   slotStatus?: true
+  isPeakTime?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -126,6 +131,7 @@ export type TurfSlotCountAggregateInputType = {
   price?: true
   active?: true
   slotStatus?: true
+  isPeakTime?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -226,6 +232,7 @@ export type TurfSlotGroupByOutputType = {
   price: runtime.Decimal
   active: boolean
   slotStatus: $Enums.SlotSatus
+  isPeakTime: boolean
   createdAt: Date
   updatedAt: Date
   _count: TurfSlotCountAggregateOutputType | null
@@ -262,10 +269,11 @@ export type TurfSlotWhereInput = {
   price?: Prisma.DecimalFilter<"TurfSlot"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFilter<"TurfSlot"> | boolean
   slotStatus?: Prisma.EnumSlotSatusFilter<"TurfSlot"> | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolFilter<"TurfSlot"> | boolean
   createdAt?: Prisma.DateTimeFilter<"TurfSlot"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TurfSlot"> | Date | string
   turf?: Prisma.XOR<Prisma.TurfScalarRelationFilter, Prisma.TurfWhereInput>
-  booking?: Prisma.XOR<Prisma.BookingNullableScalarRelationFilter, Prisma.BookingWhereInput> | null
+  bookingLinks?: Prisma.BookingSlotListRelationFilter
 }
 
 export type TurfSlotOrderByWithRelationInput = {
@@ -277,10 +285,11 @@ export type TurfSlotOrderByWithRelationInput = {
   price?: Prisma.SortOrder
   active?: Prisma.SortOrder
   slotStatus?: Prisma.SortOrder
+  isPeakTime?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   turf?: Prisma.TurfOrderByWithRelationInput
-  booking?: Prisma.BookingOrderByWithRelationInput
+  bookingLinks?: Prisma.BookingSlotOrderByRelationAggregateInput
 }
 
 export type TurfSlotWhereUniqueInput = Prisma.AtLeast<{
@@ -296,10 +305,11 @@ export type TurfSlotWhereUniqueInput = Prisma.AtLeast<{
   price?: Prisma.DecimalFilter<"TurfSlot"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFilter<"TurfSlot"> | boolean
   slotStatus?: Prisma.EnumSlotSatusFilter<"TurfSlot"> | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolFilter<"TurfSlot"> | boolean
   createdAt?: Prisma.DateTimeFilter<"TurfSlot"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TurfSlot"> | Date | string
   turf?: Prisma.XOR<Prisma.TurfScalarRelationFilter, Prisma.TurfWhereInput>
-  booking?: Prisma.XOR<Prisma.BookingNullableScalarRelationFilter, Prisma.BookingWhereInput> | null
+  bookingLinks?: Prisma.BookingSlotListRelationFilter
 }, "id" | "turfId_slotDate_startMinute_endMinute">
 
 export type TurfSlotOrderByWithAggregationInput = {
@@ -311,6 +321,7 @@ export type TurfSlotOrderByWithAggregationInput = {
   price?: Prisma.SortOrder
   active?: Prisma.SortOrder
   slotStatus?: Prisma.SortOrder
+  isPeakTime?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TurfSlotCountOrderByAggregateInput
@@ -332,6 +343,7 @@ export type TurfSlotScalarWhereWithAggregatesInput = {
   price?: Prisma.DecimalWithAggregatesFilter<"TurfSlot"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolWithAggregatesFilter<"TurfSlot"> | boolean
   slotStatus?: Prisma.EnumSlotSatusWithAggregatesFilter<"TurfSlot"> | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolWithAggregatesFilter<"TurfSlot"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TurfSlot"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TurfSlot"> | Date | string
 }
@@ -341,13 +353,14 @@ export type TurfSlotCreateInput = {
   slotDate: Date | string
   startMinute: number
   endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   slotStatus?: $Enums.SlotSatus
+  isPeakTime?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   turf: Prisma.TurfCreateNestedOneWithoutSlotsInput
-  booking?: Prisma.BookingCreateNestedOneWithoutSlotInput
+  bookingLinks?: Prisma.BookingSlotCreateNestedManyWithoutSlotInput
 }
 
 export type TurfSlotUncheckedCreateInput = {
@@ -356,12 +369,13 @@ export type TurfSlotUncheckedCreateInput = {
   slotDate: Date | string
   startMinute: number
   endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   slotStatus?: $Enums.SlotSatus
+  isPeakTime?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  booking?: Prisma.BookingUncheckedCreateNestedOneWithoutSlotInput
+  bookingLinks?: Prisma.BookingSlotUncheckedCreateNestedManyWithoutSlotInput
 }
 
 export type TurfSlotUpdateInput = {
@@ -372,10 +386,11 @@ export type TurfSlotUpdateInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   slotStatus?: Prisma.EnumSlotSatusFieldUpdateOperationsInput | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   turf?: Prisma.TurfUpdateOneRequiredWithoutSlotsNestedInput
-  booking?: Prisma.BookingUpdateOneWithoutSlotNestedInput
+  bookingLinks?: Prisma.BookingSlotUpdateManyWithoutSlotNestedInput
 }
 
 export type TurfSlotUncheckedUpdateInput = {
@@ -387,9 +402,10 @@ export type TurfSlotUncheckedUpdateInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   slotStatus?: Prisma.EnumSlotSatusFieldUpdateOperationsInput | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  booking?: Prisma.BookingUncheckedUpdateOneWithoutSlotNestedInput
+  bookingLinks?: Prisma.BookingSlotUncheckedUpdateManyWithoutSlotNestedInput
 }
 
 export type TurfSlotCreateManyInput = {
@@ -398,9 +414,10 @@ export type TurfSlotCreateManyInput = {
   slotDate: Date | string
   startMinute: number
   endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   slotStatus?: $Enums.SlotSatus
+  isPeakTime?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -413,6 +430,7 @@ export type TurfSlotUpdateManyMutationInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   slotStatus?: Prisma.EnumSlotSatusFieldUpdateOperationsInput | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -426,6 +444,7 @@ export type TurfSlotUncheckedUpdateManyInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   slotStatus?: Prisma.EnumSlotSatusFieldUpdateOperationsInput | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -461,6 +480,7 @@ export type TurfSlotCountOrderByAggregateInput = {
   price?: Prisma.SortOrder
   active?: Prisma.SortOrder
   slotStatus?: Prisma.SortOrder
+  isPeakTime?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -480,6 +500,7 @@ export type TurfSlotMaxOrderByAggregateInput = {
   price?: Prisma.SortOrder
   active?: Prisma.SortOrder
   slotStatus?: Prisma.SortOrder
+  isPeakTime?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -493,6 +514,7 @@ export type TurfSlotMinOrderByAggregateInput = {
   price?: Prisma.SortOrder
   active?: Prisma.SortOrder
   slotStatus?: Prisma.SortOrder
+  isPeakTime?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -503,18 +525,18 @@ export type TurfSlotSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
 }
 
-export type TurfSlotCreateNestedOneWithoutBookingInput = {
-  create?: Prisma.XOR<Prisma.TurfSlotCreateWithoutBookingInput, Prisma.TurfSlotUncheckedCreateWithoutBookingInput>
-  connectOrCreate?: Prisma.TurfSlotCreateOrConnectWithoutBookingInput
+export type TurfSlotCreateNestedOneWithoutBookingLinksInput = {
+  create?: Prisma.XOR<Prisma.TurfSlotCreateWithoutBookingLinksInput, Prisma.TurfSlotUncheckedCreateWithoutBookingLinksInput>
+  connectOrCreate?: Prisma.TurfSlotCreateOrConnectWithoutBookingLinksInput
   connect?: Prisma.TurfSlotWhereUniqueInput
 }
 
-export type TurfSlotUpdateOneRequiredWithoutBookingNestedInput = {
-  create?: Prisma.XOR<Prisma.TurfSlotCreateWithoutBookingInput, Prisma.TurfSlotUncheckedCreateWithoutBookingInput>
-  connectOrCreate?: Prisma.TurfSlotCreateOrConnectWithoutBookingInput
-  upsert?: Prisma.TurfSlotUpsertWithoutBookingInput
+export type TurfSlotUpdateOneRequiredWithoutBookingLinksNestedInput = {
+  create?: Prisma.XOR<Prisma.TurfSlotCreateWithoutBookingLinksInput, Prisma.TurfSlotUncheckedCreateWithoutBookingLinksInput>
+  connectOrCreate?: Prisma.TurfSlotCreateOrConnectWithoutBookingLinksInput
+  upsert?: Prisma.TurfSlotUpsertWithoutBookingLinksInput
   connect?: Prisma.TurfSlotWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfSlotUpdateToOneWithWhereWithoutBookingInput, Prisma.TurfSlotUpdateWithoutBookingInput>, Prisma.TurfSlotUncheckedUpdateWithoutBookingInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TurfSlotUpdateToOneWithWhereWithoutBookingLinksInput, Prisma.TurfSlotUpdateWithoutBookingLinksInput>, Prisma.TurfSlotUncheckedUpdateWithoutBookingLinksInput>
 }
 
 export type TurfSlotCreateNestedManyWithoutTurfInput = {
@@ -563,49 +585,51 @@ export type EnumSlotSatusFieldUpdateOperationsInput = {
   set?: $Enums.SlotSatus
 }
 
-export type TurfSlotCreateWithoutBookingInput = {
+export type TurfSlotCreateWithoutBookingLinksInput = {
   id?: string
   slotDate: Date | string
   startMinute: number
   endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   slotStatus?: $Enums.SlotSatus
+  isPeakTime?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   turf: Prisma.TurfCreateNestedOneWithoutSlotsInput
 }
 
-export type TurfSlotUncheckedCreateWithoutBookingInput = {
+export type TurfSlotUncheckedCreateWithoutBookingLinksInput = {
   id?: string
   turfId: string
   slotDate: Date | string
   startMinute: number
   endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   slotStatus?: $Enums.SlotSatus
+  isPeakTime?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type TurfSlotCreateOrConnectWithoutBookingInput = {
+export type TurfSlotCreateOrConnectWithoutBookingLinksInput = {
   where: Prisma.TurfSlotWhereUniqueInput
-  create: Prisma.XOR<Prisma.TurfSlotCreateWithoutBookingInput, Prisma.TurfSlotUncheckedCreateWithoutBookingInput>
+  create: Prisma.XOR<Prisma.TurfSlotCreateWithoutBookingLinksInput, Prisma.TurfSlotUncheckedCreateWithoutBookingLinksInput>
 }
 
-export type TurfSlotUpsertWithoutBookingInput = {
-  update: Prisma.XOR<Prisma.TurfSlotUpdateWithoutBookingInput, Prisma.TurfSlotUncheckedUpdateWithoutBookingInput>
-  create: Prisma.XOR<Prisma.TurfSlotCreateWithoutBookingInput, Prisma.TurfSlotUncheckedCreateWithoutBookingInput>
+export type TurfSlotUpsertWithoutBookingLinksInput = {
+  update: Prisma.XOR<Prisma.TurfSlotUpdateWithoutBookingLinksInput, Prisma.TurfSlotUncheckedUpdateWithoutBookingLinksInput>
+  create: Prisma.XOR<Prisma.TurfSlotCreateWithoutBookingLinksInput, Prisma.TurfSlotUncheckedCreateWithoutBookingLinksInput>
   where?: Prisma.TurfSlotWhereInput
 }
 
-export type TurfSlotUpdateToOneWithWhereWithoutBookingInput = {
+export type TurfSlotUpdateToOneWithWhereWithoutBookingLinksInput = {
   where?: Prisma.TurfSlotWhereInput
-  data: Prisma.XOR<Prisma.TurfSlotUpdateWithoutBookingInput, Prisma.TurfSlotUncheckedUpdateWithoutBookingInput>
+  data: Prisma.XOR<Prisma.TurfSlotUpdateWithoutBookingLinksInput, Prisma.TurfSlotUncheckedUpdateWithoutBookingLinksInput>
 }
 
-export type TurfSlotUpdateWithoutBookingInput = {
+export type TurfSlotUpdateWithoutBookingLinksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slotDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startMinute?: Prisma.IntFieldUpdateOperationsInput | number
@@ -613,12 +637,13 @@ export type TurfSlotUpdateWithoutBookingInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   slotStatus?: Prisma.EnumSlotSatusFieldUpdateOperationsInput | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   turf?: Prisma.TurfUpdateOneRequiredWithoutSlotsNestedInput
 }
 
-export type TurfSlotUncheckedUpdateWithoutBookingInput = {
+export type TurfSlotUncheckedUpdateWithoutBookingLinksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   turfId?: Prisma.StringFieldUpdateOperationsInput | string
   slotDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -627,6 +652,7 @@ export type TurfSlotUncheckedUpdateWithoutBookingInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   slotStatus?: Prisma.EnumSlotSatusFieldUpdateOperationsInput | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -636,12 +662,13 @@ export type TurfSlotCreateWithoutTurfInput = {
   slotDate: Date | string
   startMinute: number
   endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   slotStatus?: $Enums.SlotSatus
+  isPeakTime?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  booking?: Prisma.BookingCreateNestedOneWithoutSlotInput
+  bookingLinks?: Prisma.BookingSlotCreateNestedManyWithoutSlotInput
 }
 
 export type TurfSlotUncheckedCreateWithoutTurfInput = {
@@ -649,12 +676,13 @@ export type TurfSlotUncheckedCreateWithoutTurfInput = {
   slotDate: Date | string
   startMinute: number
   endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   slotStatus?: $Enums.SlotSatus
+  isPeakTime?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  booking?: Prisma.BookingUncheckedCreateNestedOneWithoutSlotInput
+  bookingLinks?: Prisma.BookingSlotUncheckedCreateNestedManyWithoutSlotInput
 }
 
 export type TurfSlotCreateOrConnectWithoutTurfInput = {
@@ -695,6 +723,7 @@ export type TurfSlotScalarWhereInput = {
   price?: Prisma.DecimalFilter<"TurfSlot"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFilter<"TurfSlot"> | boolean
   slotStatus?: Prisma.EnumSlotSatusFilter<"TurfSlot"> | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolFilter<"TurfSlot"> | boolean
   createdAt?: Prisma.DateTimeFilter<"TurfSlot"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TurfSlot"> | Date | string
 }
@@ -704,9 +733,10 @@ export type TurfSlotCreateManyTurfInput = {
   slotDate: Date | string
   startMinute: number
   endMinute: number
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: boolean
   slotStatus?: $Enums.SlotSatus
+  isPeakTime?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -719,9 +749,10 @@ export type TurfSlotUpdateWithoutTurfInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   slotStatus?: Prisma.EnumSlotSatusFieldUpdateOperationsInput | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  booking?: Prisma.BookingUpdateOneWithoutSlotNestedInput
+  bookingLinks?: Prisma.BookingSlotUpdateManyWithoutSlotNestedInput
 }
 
 export type TurfSlotUncheckedUpdateWithoutTurfInput = {
@@ -732,9 +763,10 @@ export type TurfSlotUncheckedUpdateWithoutTurfInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   slotStatus?: Prisma.EnumSlotSatusFieldUpdateOperationsInput | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  booking?: Prisma.BookingUncheckedUpdateOneWithoutSlotNestedInput
+  bookingLinks?: Prisma.BookingSlotUncheckedUpdateManyWithoutSlotNestedInput
 }
 
 export type TurfSlotUncheckedUpdateManyWithoutTurfInput = {
@@ -745,10 +777,40 @@ export type TurfSlotUncheckedUpdateManyWithoutTurfInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   slotStatus?: Prisma.EnumSlotSatusFieldUpdateOperationsInput | $Enums.SlotSatus
+  isPeakTime?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type TurfSlotCountOutputType
+ */
+
+export type TurfSlotCountOutputType = {
+  bookingLinks: number
+}
+
+export type TurfSlotCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  bookingLinks?: boolean | TurfSlotCountOutputTypeCountBookingLinksArgs
+}
+
+/**
+ * TurfSlotCountOutputType without action
+ */
+export type TurfSlotCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TurfSlotCountOutputType
+   */
+  select?: Prisma.TurfSlotCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * TurfSlotCountOutputType without action
+ */
+export type TurfSlotCountOutputTypeCountBookingLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingSlotWhereInput
+}
 
 
 export type TurfSlotSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -760,10 +822,12 @@ export type TurfSlotSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   price?: boolean
   active?: boolean
   slotStatus?: boolean
+  isPeakTime?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   turf?: boolean | Prisma.TurfDefaultArgs<ExtArgs>
-  booking?: boolean | Prisma.TurfSlot$bookingArgs<ExtArgs>
+  bookingLinks?: boolean | Prisma.TurfSlot$bookingLinksArgs<ExtArgs>
+  _count?: boolean | Prisma.TurfSlotCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["turfSlot"]>
 
 export type TurfSlotSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -775,6 +839,7 @@ export type TurfSlotSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   price?: boolean
   active?: boolean
   slotStatus?: boolean
+  isPeakTime?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   turf?: boolean | Prisma.TurfDefaultArgs<ExtArgs>
@@ -789,6 +854,7 @@ export type TurfSlotSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   price?: boolean
   active?: boolean
   slotStatus?: boolean
+  isPeakTime?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   turf?: boolean | Prisma.TurfDefaultArgs<ExtArgs>
@@ -803,14 +869,16 @@ export type TurfSlotSelectScalar = {
   price?: boolean
   active?: boolean
   slotStatus?: boolean
+  isPeakTime?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TurfSlotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "turfId" | "slotDate" | "startMinute" | "endMinute" | "price" | "active" | "slotStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["turfSlot"]>
+export type TurfSlotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "turfId" | "slotDate" | "startMinute" | "endMinute" | "price" | "active" | "slotStatus" | "isPeakTime" | "createdAt" | "updatedAt", ExtArgs["result"]["turfSlot"]>
 export type TurfSlotInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   turf?: boolean | Prisma.TurfDefaultArgs<ExtArgs>
-  booking?: boolean | Prisma.TurfSlot$bookingArgs<ExtArgs>
+  bookingLinks?: boolean | Prisma.TurfSlot$bookingLinksArgs<ExtArgs>
+  _count?: boolean | Prisma.TurfSlotCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TurfSlotIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   turf?: boolean | Prisma.TurfDefaultArgs<ExtArgs>
@@ -823,7 +891,7 @@ export type $TurfSlotPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   name: "TurfSlot"
   objects: {
     turf: Prisma.$TurfPayload<ExtArgs>
-    booking: Prisma.$BookingPayload<ExtArgs> | null
+    bookingLinks: Prisma.$BookingSlotPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -834,6 +902,7 @@ export type $TurfSlotPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     price: runtime.Decimal
     active: boolean
     slotStatus: $Enums.SlotSatus
+    isPeakTime: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["turfSlot"]>
@@ -1231,7 +1300,7 @@ readonly fields: TurfSlotFieldRefs;
 export interface Prisma__TurfSlotClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   turf<T extends Prisma.TurfDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TurfDefaultArgs<ExtArgs>>): Prisma.Prisma__TurfClient<runtime.Types.Result.GetResult<Prisma.$TurfPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  booking<T extends Prisma.TurfSlot$bookingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TurfSlot$bookingArgs<ExtArgs>>): Prisma.Prisma__BookingClient<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  bookingLinks<T extends Prisma.TurfSlot$bookingLinksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TurfSlot$bookingLinksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1269,6 +1338,7 @@ export interface TurfSlotFieldRefs {
   readonly price: Prisma.FieldRef<"TurfSlot", 'Decimal'>
   readonly active: Prisma.FieldRef<"TurfSlot", 'Boolean'>
   readonly slotStatus: Prisma.FieldRef<"TurfSlot", 'SlotSatus'>
+  readonly isPeakTime: Prisma.FieldRef<"TurfSlot", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"TurfSlot", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TurfSlot", 'DateTime'>
 }
@@ -1672,22 +1742,27 @@ export type TurfSlotDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * TurfSlot.booking
+ * TurfSlot.bookingLinks
  */
-export type TurfSlot$bookingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type TurfSlot$bookingLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Booking
+   * Select specific fields to fetch from the BookingSlot
    */
-  select?: Prisma.BookingSelect<ExtArgs> | null
+  select?: Prisma.BookingSlotSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Booking
+   * Omit specific fields from the BookingSlot
    */
-  omit?: Prisma.BookingOmit<ExtArgs> | null
+  omit?: Prisma.BookingSlotOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.BookingInclude<ExtArgs> | null
-  where?: Prisma.BookingWhereInput
+  include?: Prisma.BookingSlotInclude<ExtArgs> | null
+  where?: Prisma.BookingSlotWhereInput
+  orderBy?: Prisma.BookingSlotOrderByWithRelationInput | Prisma.BookingSlotOrderByWithRelationInput[]
+  cursor?: Prisma.BookingSlotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingSlotScalarFieldEnum | Prisma.BookingSlotScalarFieldEnum[]
 }
 
 /**

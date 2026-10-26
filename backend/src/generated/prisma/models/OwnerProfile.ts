@@ -32,14 +32,14 @@ export type OwnerProfileMinAggregateOutputType = {
   contactNumber: string | null
   address: string | null
   nidNumber: string | null
-  businessRegistrationNumber: string | null
   tradeLicenseNumber: string | null
+  etin: string | null
+  bin: string | null
   businessLogo: string | null
-  nidImageFront: string | null
-  nidImageBack: string | null
-  businessRegistrationDocument: string | null
+  nidImage: string | null
   tradeLicenseDocument: string | null
-  taxIdentificationDocument: string | null
+  etinDocument: string | null
+  binDocument: string | null
   verificationStatus: $Enums.OwnerVerificationStatus | null
   verifiedById: string | null
   verifiedAt: Date | null
@@ -56,14 +56,14 @@ export type OwnerProfileMaxAggregateOutputType = {
   contactNumber: string | null
   address: string | null
   nidNumber: string | null
-  businessRegistrationNumber: string | null
   tradeLicenseNumber: string | null
+  etin: string | null
+  bin: string | null
   businessLogo: string | null
-  nidImageFront: string | null
-  nidImageBack: string | null
-  businessRegistrationDocument: string | null
+  nidImage: string | null
   tradeLicenseDocument: string | null
-  taxIdentificationDocument: string | null
+  etinDocument: string | null
+  binDocument: string | null
   verificationStatus: $Enums.OwnerVerificationStatus | null
   verifiedById: string | null
   verifiedAt: Date | null
@@ -80,14 +80,14 @@ export type OwnerProfileCountAggregateOutputType = {
   contactNumber: number
   address: number
   nidNumber: number
-  businessRegistrationNumber: number
   tradeLicenseNumber: number
+  etin: number
+  bin: number
   businessLogo: number
-  nidImageFront: number
-  nidImageBack: number
-  businessRegistrationDocument: number
+  nidImage: number
   tradeLicenseDocument: number
-  taxIdentificationDocument: number
+  etinDocument: number
+  binDocument: number
   verificationStatus: number
   verifiedById: number
   verifiedAt: number
@@ -106,14 +106,14 @@ export type OwnerProfileMinAggregateInputType = {
   contactNumber?: true
   address?: true
   nidNumber?: true
-  businessRegistrationNumber?: true
   tradeLicenseNumber?: true
+  etin?: true
+  bin?: true
   businessLogo?: true
-  nidImageFront?: true
-  nidImageBack?: true
-  businessRegistrationDocument?: true
+  nidImage?: true
   tradeLicenseDocument?: true
-  taxIdentificationDocument?: true
+  etinDocument?: true
+  binDocument?: true
   verificationStatus?: true
   verifiedById?: true
   verifiedAt?: true
@@ -130,14 +130,14 @@ export type OwnerProfileMaxAggregateInputType = {
   contactNumber?: true
   address?: true
   nidNumber?: true
-  businessRegistrationNumber?: true
   tradeLicenseNumber?: true
+  etin?: true
+  bin?: true
   businessLogo?: true
-  nidImageFront?: true
-  nidImageBack?: true
-  businessRegistrationDocument?: true
+  nidImage?: true
   tradeLicenseDocument?: true
-  taxIdentificationDocument?: true
+  etinDocument?: true
+  binDocument?: true
   verificationStatus?: true
   verifiedById?: true
   verifiedAt?: true
@@ -154,14 +154,14 @@ export type OwnerProfileCountAggregateInputType = {
   contactNumber?: true
   address?: true
   nidNumber?: true
-  businessRegistrationNumber?: true
   tradeLicenseNumber?: true
+  etin?: true
+  bin?: true
   businessLogo?: true
-  nidImageFront?: true
-  nidImageBack?: true
-  businessRegistrationDocument?: true
+  nidImage?: true
   tradeLicenseDocument?: true
-  taxIdentificationDocument?: true
+  etinDocument?: true
+  binDocument?: true
   verificationStatus?: true
   verifiedById?: true
   verifiedAt?: true
@@ -251,14 +251,14 @@ export type OwnerProfileGroupByOutputType = {
   contactNumber: string | null
   address: string | null
   nidNumber: string | null
-  businessRegistrationNumber: string | null
   tradeLicenseNumber: string | null
+  etin: string | null
+  bin: string | null
   businessLogo: string | null
-  nidImageFront: string | null
-  nidImageBack: string | null
-  businessRegistrationDocument: string | null
+  nidImage: string | null
   tradeLicenseDocument: string | null
-  taxIdentificationDocument: string | null
+  etinDocument: string | null
+  binDocument: string | null
   verificationStatus: $Enums.OwnerVerificationStatus
   verifiedById: string | null
   verifiedAt: Date | null
@@ -296,14 +296,14 @@ export type OwnerProfileWhereInput = {
   contactNumber?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   address?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   nidNumber?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
-  businessRegistrationNumber?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   tradeLicenseNumber?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
+  etin?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
+  bin?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   businessLogo?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
-  nidImageFront?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
-  nidImageBack?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
-  businessRegistrationDocument?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
+  nidImage?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   tradeLicenseDocument?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
-  taxIdentificationDocument?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
+  etinDocument?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
+  binDocument?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   verificationStatus?: Prisma.EnumOwnerVerificationStatusFilter<"OwnerProfile"> | $Enums.OwnerVerificationStatus
   verifiedById?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   verifiedAt?: Prisma.DateTimeNullableFilter<"OwnerProfile"> | Date | string | null
@@ -311,6 +311,14 @@ export type OwnerProfileWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"OwnerProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OwnerProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  heroSection?: Prisma.XOR<Prisma.OwnerHeroSectionNullableScalarRelationFilter, Prisma.OwnerHeroSectionWhereInput> | null
+  aboutSection?: Prisma.XOR<Prisma.OwnerAboutSectionNullableScalarRelationFilter, Prisma.OwnerAboutSectionWhereInput> | null
+  contactSection?: Prisma.XOR<Prisma.OwnerContactSectionNullableScalarRelationFilter, Prisma.OwnerContactSectionWhereInput> | null
+  ownerFaqItems?: Prisma.OwnerFaqItemListRelationFilter
+  ownerGallery?: Prisma.OwnerGalleryItemListRelationFilter
+  ownerBlogs?: Prisma.OwnerBlogListRelationFilter
+  socialLinksOwner?: Prisma.OwnerSocialLinkListRelationFilter
+  announcements?: Prisma.AnnouncementListRelationFilter
 }
 
 export type OwnerProfileOrderByWithRelationInput = {
@@ -321,14 +329,14 @@ export type OwnerProfileOrderByWithRelationInput = {
   contactNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   nidNumber?: Prisma.SortOrderInput | Prisma.SortOrder
-  businessRegistrationNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   tradeLicenseNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  etin?: Prisma.SortOrderInput | Prisma.SortOrder
+  bin?: Prisma.SortOrderInput | Prisma.SortOrder
   businessLogo?: Prisma.SortOrderInput | Prisma.SortOrder
-  nidImageFront?: Prisma.SortOrderInput | Prisma.SortOrder
-  nidImageBack?: Prisma.SortOrderInput | Prisma.SortOrder
-  businessRegistrationDocument?: Prisma.SortOrderInput | Prisma.SortOrder
+  nidImage?: Prisma.SortOrderInput | Prisma.SortOrder
   tradeLicenseDocument?: Prisma.SortOrderInput | Prisma.SortOrder
-  taxIdentificationDocument?: Prisma.SortOrderInput | Prisma.SortOrder
+  etinDocument?: Prisma.SortOrderInput | Prisma.SortOrder
+  binDocument?: Prisma.SortOrderInput | Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   verifiedById?: Prisma.SortOrderInput | Prisma.SortOrder
   verifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -336,6 +344,14 @@ export type OwnerProfileOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  heroSection?: Prisma.OwnerHeroSectionOrderByWithRelationInput
+  aboutSection?: Prisma.OwnerAboutSectionOrderByWithRelationInput
+  contactSection?: Prisma.OwnerContactSectionOrderByWithRelationInput
+  ownerFaqItems?: Prisma.OwnerFaqItemOrderByRelationAggregateInput
+  ownerGallery?: Prisma.OwnerGalleryItemOrderByRelationAggregateInput
+  ownerBlogs?: Prisma.OwnerBlogOrderByRelationAggregateInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkOrderByRelationAggregateInput
+  announcements?: Prisma.AnnouncementOrderByRelationAggregateInput
 }
 
 export type OwnerProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -349,14 +365,14 @@ export type OwnerProfileWhereUniqueInput = Prisma.AtLeast<{
   contactNumber?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   address?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   nidNumber?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
-  businessRegistrationNumber?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   tradeLicenseNumber?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
+  etin?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
+  bin?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   businessLogo?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
-  nidImageFront?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
-  nidImageBack?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
-  businessRegistrationDocument?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
+  nidImage?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   tradeLicenseDocument?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
-  taxIdentificationDocument?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
+  etinDocument?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
+  binDocument?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   verificationStatus?: Prisma.EnumOwnerVerificationStatusFilter<"OwnerProfile"> | $Enums.OwnerVerificationStatus
   verifiedById?: Prisma.StringNullableFilter<"OwnerProfile"> | string | null
   verifiedAt?: Prisma.DateTimeNullableFilter<"OwnerProfile"> | Date | string | null
@@ -364,6 +380,14 @@ export type OwnerProfileWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"OwnerProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OwnerProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  heroSection?: Prisma.XOR<Prisma.OwnerHeroSectionNullableScalarRelationFilter, Prisma.OwnerHeroSectionWhereInput> | null
+  aboutSection?: Prisma.XOR<Prisma.OwnerAboutSectionNullableScalarRelationFilter, Prisma.OwnerAboutSectionWhereInput> | null
+  contactSection?: Prisma.XOR<Prisma.OwnerContactSectionNullableScalarRelationFilter, Prisma.OwnerContactSectionWhereInput> | null
+  ownerFaqItems?: Prisma.OwnerFaqItemListRelationFilter
+  ownerGallery?: Prisma.OwnerGalleryItemListRelationFilter
+  ownerBlogs?: Prisma.OwnerBlogListRelationFilter
+  socialLinksOwner?: Prisma.OwnerSocialLinkListRelationFilter
+  announcements?: Prisma.AnnouncementListRelationFilter
 }, "id" | "userId">
 
 export type OwnerProfileOrderByWithAggregationInput = {
@@ -374,14 +398,14 @@ export type OwnerProfileOrderByWithAggregationInput = {
   contactNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   nidNumber?: Prisma.SortOrderInput | Prisma.SortOrder
-  businessRegistrationNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   tradeLicenseNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  etin?: Prisma.SortOrderInput | Prisma.SortOrder
+  bin?: Prisma.SortOrderInput | Prisma.SortOrder
   businessLogo?: Prisma.SortOrderInput | Prisma.SortOrder
-  nidImageFront?: Prisma.SortOrderInput | Prisma.SortOrder
-  nidImageBack?: Prisma.SortOrderInput | Prisma.SortOrder
-  businessRegistrationDocument?: Prisma.SortOrderInput | Prisma.SortOrder
+  nidImage?: Prisma.SortOrderInput | Prisma.SortOrder
   tradeLicenseDocument?: Prisma.SortOrderInput | Prisma.SortOrder
-  taxIdentificationDocument?: Prisma.SortOrderInput | Prisma.SortOrder
+  etinDocument?: Prisma.SortOrderInput | Prisma.SortOrder
+  binDocument?: Prisma.SortOrderInput | Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   verifiedById?: Prisma.SortOrderInput | Prisma.SortOrder
   verifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -404,14 +428,14 @@ export type OwnerProfileScalarWhereWithAggregatesInput = {
   contactNumber?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
   address?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
   nidNumber?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
-  businessRegistrationNumber?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
   tradeLicenseNumber?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
+  etin?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
+  bin?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
   businessLogo?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
-  nidImageFront?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
-  nidImageBack?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
-  businessRegistrationDocument?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
+  nidImage?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
   tradeLicenseDocument?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
-  taxIdentificationDocument?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
+  etinDocument?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
+  binDocument?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
   verificationStatus?: Prisma.EnumOwnerVerificationStatusWithAggregatesFilter<"OwnerProfile"> | $Enums.OwnerVerificationStatus
   verifiedById?: Prisma.StringNullableWithAggregatesFilter<"OwnerProfile"> | string | null
   verifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"OwnerProfile"> | Date | string | null
@@ -427,14 +451,14 @@ export type OwnerProfileCreateInput = {
   contactNumber?: string | null
   address?: string | null
   nidNumber?: string | null
-  businessRegistrationNumber?: string | null
   tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
   businessLogo?: string | null
-  nidImageFront?: string | null
-  nidImageBack?: string | null
-  businessRegistrationDocument?: string | null
+  nidImage?: string | null
   tradeLicenseDocument?: string | null
-  taxIdentificationDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
   verificationStatus?: $Enums.OwnerVerificationStatus
   verifiedById?: string | null
   verifiedAt?: Date | string | null
@@ -442,6 +466,14 @@ export type OwnerProfileCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutOwnerProfileInput
+  heroSection?: Prisma.OwnerHeroSectionCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutOwnerProfileInput
 }
 
 export type OwnerProfileUncheckedCreateInput = {
@@ -452,20 +484,28 @@ export type OwnerProfileUncheckedCreateInput = {
   contactNumber?: string | null
   address?: string | null
   nidNumber?: string | null
-  businessRegistrationNumber?: string | null
   tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
   businessLogo?: string | null
-  nidImageFront?: string | null
-  nidImageBack?: string | null
-  businessRegistrationDocument?: string | null
+  nidImage?: string | null
   tradeLicenseDocument?: string | null
-  taxIdentificationDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
   verificationStatus?: $Enums.OwnerVerificationStatus
   verifiedById?: string | null
   verifiedAt?: Date | string | null
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutOwnerProfileInput
 }
 
 export type OwnerProfileUpdateInput = {
@@ -475,14 +515,14 @@ export type OwnerProfileUpdateInput = {
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessRegistrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nidImageFront?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nidImageBack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessRegistrationDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  taxIdentificationDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
   verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -490,6 +530,14 @@ export type OwnerProfileUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutOwnerProfileNestedInput
+  heroSection?: Prisma.OwnerHeroSectionUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutOwnerProfileNestedInput
 }
 
 export type OwnerProfileUncheckedUpdateInput = {
@@ -500,20 +548,28 @@ export type OwnerProfileUncheckedUpdateInput = {
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessRegistrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nidImageFront?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nidImageBack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessRegistrationDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  taxIdentificationDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
   verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutOwnerProfileNestedInput
 }
 
 export type OwnerProfileCreateManyInput = {
@@ -524,14 +580,14 @@ export type OwnerProfileCreateManyInput = {
   contactNumber?: string | null
   address?: string | null
   nidNumber?: string | null
-  businessRegistrationNumber?: string | null
   tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
   businessLogo?: string | null
-  nidImageFront?: string | null
-  nidImageBack?: string | null
-  businessRegistrationDocument?: string | null
+  nidImage?: string | null
   tradeLicenseDocument?: string | null
-  taxIdentificationDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
   verificationStatus?: $Enums.OwnerVerificationStatus
   verifiedById?: string | null
   verifiedAt?: Date | string | null
@@ -547,14 +603,14 @@ export type OwnerProfileUpdateManyMutationInput = {
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessRegistrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nidImageFront?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nidImageBack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessRegistrationDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  taxIdentificationDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
   verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -571,14 +627,14 @@ export type OwnerProfileUncheckedUpdateManyInput = {
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessRegistrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nidImageFront?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nidImageBack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessRegistrationDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  taxIdentificationDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
   verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -595,14 +651,14 @@ export type OwnerProfileCountOrderByAggregateInput = {
   contactNumber?: Prisma.SortOrder
   address?: Prisma.SortOrder
   nidNumber?: Prisma.SortOrder
-  businessRegistrationNumber?: Prisma.SortOrder
   tradeLicenseNumber?: Prisma.SortOrder
+  etin?: Prisma.SortOrder
+  bin?: Prisma.SortOrder
   businessLogo?: Prisma.SortOrder
-  nidImageFront?: Prisma.SortOrder
-  nidImageBack?: Prisma.SortOrder
-  businessRegistrationDocument?: Prisma.SortOrder
+  nidImage?: Prisma.SortOrder
   tradeLicenseDocument?: Prisma.SortOrder
-  taxIdentificationDocument?: Prisma.SortOrder
+  etinDocument?: Prisma.SortOrder
+  binDocument?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   verifiedById?: Prisma.SortOrder
   verifiedAt?: Prisma.SortOrder
@@ -619,14 +675,14 @@ export type OwnerProfileMaxOrderByAggregateInput = {
   contactNumber?: Prisma.SortOrder
   address?: Prisma.SortOrder
   nidNumber?: Prisma.SortOrder
-  businessRegistrationNumber?: Prisma.SortOrder
   tradeLicenseNumber?: Prisma.SortOrder
+  etin?: Prisma.SortOrder
+  bin?: Prisma.SortOrder
   businessLogo?: Prisma.SortOrder
-  nidImageFront?: Prisma.SortOrder
-  nidImageBack?: Prisma.SortOrder
-  businessRegistrationDocument?: Prisma.SortOrder
+  nidImage?: Prisma.SortOrder
   tradeLicenseDocument?: Prisma.SortOrder
-  taxIdentificationDocument?: Prisma.SortOrder
+  etinDocument?: Prisma.SortOrder
+  binDocument?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   verifiedById?: Prisma.SortOrder
   verifiedAt?: Prisma.SortOrder
@@ -643,20 +699,25 @@ export type OwnerProfileMinOrderByAggregateInput = {
   contactNumber?: Prisma.SortOrder
   address?: Prisma.SortOrder
   nidNumber?: Prisma.SortOrder
-  businessRegistrationNumber?: Prisma.SortOrder
   tradeLicenseNumber?: Prisma.SortOrder
+  etin?: Prisma.SortOrder
+  bin?: Prisma.SortOrder
   businessLogo?: Prisma.SortOrder
-  nidImageFront?: Prisma.SortOrder
-  nidImageBack?: Prisma.SortOrder
-  businessRegistrationDocument?: Prisma.SortOrder
+  nidImage?: Prisma.SortOrder
   tradeLicenseDocument?: Prisma.SortOrder
-  taxIdentificationDocument?: Prisma.SortOrder
+  etinDocument?: Prisma.SortOrder
+  binDocument?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   verifiedById?: Prisma.SortOrder
   verifiedAt?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type OwnerProfileScalarRelationFilter = {
+  is?: Prisma.OwnerProfileWhereInput
+  isNot?: Prisma.OwnerProfileWhereInput
 }
 
 export type OwnerProfileNullableScalarRelationFilter = {
@@ -666,6 +727,118 @@ export type OwnerProfileNullableScalarRelationFilter = {
 
 export type EnumOwnerVerificationStatusFieldUpdateOperationsInput = {
   set?: $Enums.OwnerVerificationStatus
+}
+
+export type OwnerProfileCreateNestedOneWithoutOwnerGalleryInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutOwnerGalleryInput, Prisma.OwnerProfileUncheckedCreateWithoutOwnerGalleryInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutOwnerGalleryInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+}
+
+export type OwnerProfileUpdateOneRequiredWithoutOwnerGalleryNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutOwnerGalleryInput, Prisma.OwnerProfileUncheckedCreateWithoutOwnerGalleryInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutOwnerGalleryInput
+  upsert?: Prisma.OwnerProfileUpsertWithoutOwnerGalleryInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OwnerProfileUpdateToOneWithWhereWithoutOwnerGalleryInput, Prisma.OwnerProfileUpdateWithoutOwnerGalleryInput>, Prisma.OwnerProfileUncheckedUpdateWithoutOwnerGalleryInput>
+}
+
+export type OwnerProfileCreateNestedOneWithoutOwnerBlogsInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutOwnerBlogsInput, Prisma.OwnerProfileUncheckedCreateWithoutOwnerBlogsInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutOwnerBlogsInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+}
+
+export type OwnerProfileUpdateOneRequiredWithoutOwnerBlogsNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutOwnerBlogsInput, Prisma.OwnerProfileUncheckedCreateWithoutOwnerBlogsInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutOwnerBlogsInput
+  upsert?: Prisma.OwnerProfileUpsertWithoutOwnerBlogsInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OwnerProfileUpdateToOneWithWhereWithoutOwnerBlogsInput, Prisma.OwnerProfileUpdateWithoutOwnerBlogsInput>, Prisma.OwnerProfileUncheckedUpdateWithoutOwnerBlogsInput>
+}
+
+export type OwnerProfileCreateNestedOneWithoutAnnouncementsInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutAnnouncementsInput, Prisma.OwnerProfileUncheckedCreateWithoutAnnouncementsInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutAnnouncementsInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+}
+
+export type OwnerProfileUpdateOneRequiredWithoutAnnouncementsNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutAnnouncementsInput, Prisma.OwnerProfileUncheckedCreateWithoutAnnouncementsInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutAnnouncementsInput
+  upsert?: Prisma.OwnerProfileUpsertWithoutAnnouncementsInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OwnerProfileUpdateToOneWithWhereWithoutAnnouncementsInput, Prisma.OwnerProfileUpdateWithoutAnnouncementsInput>, Prisma.OwnerProfileUncheckedUpdateWithoutAnnouncementsInput>
+}
+
+export type OwnerProfileCreateNestedOneWithoutSocialLinksOwnerInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutSocialLinksOwnerInput, Prisma.OwnerProfileUncheckedCreateWithoutSocialLinksOwnerInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutSocialLinksOwnerInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+}
+
+export type OwnerProfileUpdateOneRequiredWithoutSocialLinksOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutSocialLinksOwnerInput, Prisma.OwnerProfileUncheckedCreateWithoutSocialLinksOwnerInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutSocialLinksOwnerInput
+  upsert?: Prisma.OwnerProfileUpsertWithoutSocialLinksOwnerInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OwnerProfileUpdateToOneWithWhereWithoutSocialLinksOwnerInput, Prisma.OwnerProfileUpdateWithoutSocialLinksOwnerInput>, Prisma.OwnerProfileUncheckedUpdateWithoutSocialLinksOwnerInput>
+}
+
+export type OwnerProfileCreateNestedOneWithoutHeroSectionInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutHeroSectionInput, Prisma.OwnerProfileUncheckedCreateWithoutHeroSectionInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutHeroSectionInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+}
+
+export type OwnerProfileUpdateOneRequiredWithoutHeroSectionNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutHeroSectionInput, Prisma.OwnerProfileUncheckedCreateWithoutHeroSectionInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutHeroSectionInput
+  upsert?: Prisma.OwnerProfileUpsertWithoutHeroSectionInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OwnerProfileUpdateToOneWithWhereWithoutHeroSectionInput, Prisma.OwnerProfileUpdateWithoutHeroSectionInput>, Prisma.OwnerProfileUncheckedUpdateWithoutHeroSectionInput>
+}
+
+export type OwnerProfileCreateNestedOneWithoutAboutSectionInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutAboutSectionInput, Prisma.OwnerProfileUncheckedCreateWithoutAboutSectionInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutAboutSectionInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+}
+
+export type OwnerProfileUpdateOneRequiredWithoutAboutSectionNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutAboutSectionInput, Prisma.OwnerProfileUncheckedCreateWithoutAboutSectionInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutAboutSectionInput
+  upsert?: Prisma.OwnerProfileUpsertWithoutAboutSectionInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OwnerProfileUpdateToOneWithWhereWithoutAboutSectionInput, Prisma.OwnerProfileUpdateWithoutAboutSectionInput>, Prisma.OwnerProfileUncheckedUpdateWithoutAboutSectionInput>
+}
+
+export type OwnerProfileCreateNestedOneWithoutContactSectionInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutContactSectionInput, Prisma.OwnerProfileUncheckedCreateWithoutContactSectionInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutContactSectionInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+}
+
+export type OwnerProfileUpdateOneRequiredWithoutContactSectionNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutContactSectionInput, Prisma.OwnerProfileUncheckedCreateWithoutContactSectionInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutContactSectionInput
+  upsert?: Prisma.OwnerProfileUpsertWithoutContactSectionInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OwnerProfileUpdateToOneWithWhereWithoutContactSectionInput, Prisma.OwnerProfileUpdateWithoutContactSectionInput>, Prisma.OwnerProfileUncheckedUpdateWithoutContactSectionInput>
+}
+
+export type OwnerProfileCreateNestedOneWithoutOwnerFaqItemsInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutOwnerFaqItemsInput, Prisma.OwnerProfileUncheckedCreateWithoutOwnerFaqItemsInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutOwnerFaqItemsInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+}
+
+export type OwnerProfileUpdateOneRequiredWithoutOwnerFaqItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.OwnerProfileCreateWithoutOwnerFaqItemsInput, Prisma.OwnerProfileUncheckedCreateWithoutOwnerFaqItemsInput>
+  connectOrCreate?: Prisma.OwnerProfileCreateOrConnectWithoutOwnerFaqItemsInput
+  upsert?: Prisma.OwnerProfileUpsertWithoutOwnerFaqItemsInput
+  connect?: Prisma.OwnerProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OwnerProfileUpdateToOneWithWhereWithoutOwnerFaqItemsInput, Prisma.OwnerProfileUpdateWithoutOwnerFaqItemsInput>, Prisma.OwnerProfileUncheckedUpdateWithoutOwnerFaqItemsInput>
 }
 
 export type OwnerProfileCreateNestedOneWithoutUserInput = {
@@ -700,6 +873,1126 @@ export type OwnerProfileUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OwnerProfileUpdateToOneWithWhereWithoutUserInput, Prisma.OwnerProfileUpdateWithoutUserInput>, Prisma.OwnerProfileUncheckedUpdateWithoutUserInput>
 }
 
+export type OwnerProfileCreateWithoutOwnerGalleryInput = {
+  id?: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutOwnerProfileInput
+  heroSection?: Prisma.OwnerHeroSectionCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileUncheckedCreateWithoutOwnerGalleryInput = {
+  id?: string
+  userId: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileCreateOrConnectWithoutOwnerGalleryInput = {
+  where: Prisma.OwnerProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutOwnerGalleryInput, Prisma.OwnerProfileUncheckedCreateWithoutOwnerGalleryInput>
+}
+
+export type OwnerProfileUpsertWithoutOwnerGalleryInput = {
+  update: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutOwnerGalleryInput, Prisma.OwnerProfileUncheckedUpdateWithoutOwnerGalleryInput>
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutOwnerGalleryInput, Prisma.OwnerProfileUncheckedCreateWithoutOwnerGalleryInput>
+  where?: Prisma.OwnerProfileWhereInput
+}
+
+export type OwnerProfileUpdateToOneWithWhereWithoutOwnerGalleryInput = {
+  where?: Prisma.OwnerProfileWhereInput
+  data: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutOwnerGalleryInput, Prisma.OwnerProfileUncheckedUpdateWithoutOwnerGalleryInput>
+}
+
+export type OwnerProfileUpdateWithoutOwnerGalleryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutOwnerProfileNestedInput
+  heroSection?: Prisma.OwnerHeroSectionUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileUncheckedUpdateWithoutOwnerGalleryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileCreateWithoutOwnerBlogsInput = {
+  id?: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutOwnerProfileInput
+  heroSection?: Prisma.OwnerHeroSectionCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileUncheckedCreateWithoutOwnerBlogsInput = {
+  id?: string
+  userId: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileCreateOrConnectWithoutOwnerBlogsInput = {
+  where: Prisma.OwnerProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutOwnerBlogsInput, Prisma.OwnerProfileUncheckedCreateWithoutOwnerBlogsInput>
+}
+
+export type OwnerProfileUpsertWithoutOwnerBlogsInput = {
+  update: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutOwnerBlogsInput, Prisma.OwnerProfileUncheckedUpdateWithoutOwnerBlogsInput>
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutOwnerBlogsInput, Prisma.OwnerProfileUncheckedCreateWithoutOwnerBlogsInput>
+  where?: Prisma.OwnerProfileWhereInput
+}
+
+export type OwnerProfileUpdateToOneWithWhereWithoutOwnerBlogsInput = {
+  where?: Prisma.OwnerProfileWhereInput
+  data: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutOwnerBlogsInput, Prisma.OwnerProfileUncheckedUpdateWithoutOwnerBlogsInput>
+}
+
+export type OwnerProfileUpdateWithoutOwnerBlogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutOwnerProfileNestedInput
+  heroSection?: Prisma.OwnerHeroSectionUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileUncheckedUpdateWithoutOwnerBlogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileCreateWithoutAnnouncementsInput = {
+  id?: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutOwnerProfileInput
+  heroSection?: Prisma.OwnerHeroSectionCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileUncheckedCreateWithoutAnnouncementsInput = {
+  id?: string
+  userId: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileCreateOrConnectWithoutAnnouncementsInput = {
+  where: Prisma.OwnerProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutAnnouncementsInput, Prisma.OwnerProfileUncheckedCreateWithoutAnnouncementsInput>
+}
+
+export type OwnerProfileUpsertWithoutAnnouncementsInput = {
+  update: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutAnnouncementsInput, Prisma.OwnerProfileUncheckedUpdateWithoutAnnouncementsInput>
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutAnnouncementsInput, Prisma.OwnerProfileUncheckedCreateWithoutAnnouncementsInput>
+  where?: Prisma.OwnerProfileWhereInput
+}
+
+export type OwnerProfileUpdateToOneWithWhereWithoutAnnouncementsInput = {
+  where?: Prisma.OwnerProfileWhereInput
+  data: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutAnnouncementsInput, Prisma.OwnerProfileUncheckedUpdateWithoutAnnouncementsInput>
+}
+
+export type OwnerProfileUpdateWithoutAnnouncementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutOwnerProfileNestedInput
+  heroSection?: Prisma.OwnerHeroSectionUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileUncheckedUpdateWithoutAnnouncementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileCreateWithoutSocialLinksOwnerInput = {
+  id?: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutOwnerProfileInput
+  heroSection?: Prisma.OwnerHeroSectionCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileUncheckedCreateWithoutSocialLinksOwnerInput = {
+  id?: string
+  userId: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileCreateOrConnectWithoutSocialLinksOwnerInput = {
+  where: Prisma.OwnerProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutSocialLinksOwnerInput, Prisma.OwnerProfileUncheckedCreateWithoutSocialLinksOwnerInput>
+}
+
+export type OwnerProfileUpsertWithoutSocialLinksOwnerInput = {
+  update: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutSocialLinksOwnerInput, Prisma.OwnerProfileUncheckedUpdateWithoutSocialLinksOwnerInput>
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutSocialLinksOwnerInput, Prisma.OwnerProfileUncheckedCreateWithoutSocialLinksOwnerInput>
+  where?: Prisma.OwnerProfileWhereInput
+}
+
+export type OwnerProfileUpdateToOneWithWhereWithoutSocialLinksOwnerInput = {
+  where?: Prisma.OwnerProfileWhereInput
+  data: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutSocialLinksOwnerInput, Prisma.OwnerProfileUncheckedUpdateWithoutSocialLinksOwnerInput>
+}
+
+export type OwnerProfileUpdateWithoutSocialLinksOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutOwnerProfileNestedInput
+  heroSection?: Prisma.OwnerHeroSectionUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileUncheckedUpdateWithoutSocialLinksOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileCreateWithoutHeroSectionInput = {
+  id?: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileUncheckedCreateWithoutHeroSectionInput = {
+  id?: string
+  userId: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileCreateOrConnectWithoutHeroSectionInput = {
+  where: Prisma.OwnerProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutHeroSectionInput, Prisma.OwnerProfileUncheckedCreateWithoutHeroSectionInput>
+}
+
+export type OwnerProfileUpsertWithoutHeroSectionInput = {
+  update: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutHeroSectionInput, Prisma.OwnerProfileUncheckedUpdateWithoutHeroSectionInput>
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutHeroSectionInput, Prisma.OwnerProfileUncheckedCreateWithoutHeroSectionInput>
+  where?: Prisma.OwnerProfileWhereInput
+}
+
+export type OwnerProfileUpdateToOneWithWhereWithoutHeroSectionInput = {
+  where?: Prisma.OwnerProfileWhereInput
+  data: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutHeroSectionInput, Prisma.OwnerProfileUncheckedUpdateWithoutHeroSectionInput>
+}
+
+export type OwnerProfileUpdateWithoutHeroSectionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileUncheckedUpdateWithoutHeroSectionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileCreateWithoutAboutSectionInput = {
+  id?: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutOwnerProfileInput
+  heroSection?: Prisma.OwnerHeroSectionCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileUncheckedCreateWithoutAboutSectionInput = {
+  id?: string
+  userId: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileCreateOrConnectWithoutAboutSectionInput = {
+  where: Prisma.OwnerProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutAboutSectionInput, Prisma.OwnerProfileUncheckedCreateWithoutAboutSectionInput>
+}
+
+export type OwnerProfileUpsertWithoutAboutSectionInput = {
+  update: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutAboutSectionInput, Prisma.OwnerProfileUncheckedUpdateWithoutAboutSectionInput>
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutAboutSectionInput, Prisma.OwnerProfileUncheckedCreateWithoutAboutSectionInput>
+  where?: Prisma.OwnerProfileWhereInput
+}
+
+export type OwnerProfileUpdateToOneWithWhereWithoutAboutSectionInput = {
+  where?: Prisma.OwnerProfileWhereInput
+  data: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutAboutSectionInput, Prisma.OwnerProfileUncheckedUpdateWithoutAboutSectionInput>
+}
+
+export type OwnerProfileUpdateWithoutAboutSectionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutOwnerProfileNestedInput
+  heroSection?: Prisma.OwnerHeroSectionUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileUncheckedUpdateWithoutAboutSectionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileCreateWithoutContactSectionInput = {
+  id?: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutOwnerProfileInput
+  heroSection?: Prisma.OwnerHeroSectionCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileUncheckedCreateWithoutContactSectionInput = {
+  id?: string
+  userId: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileCreateOrConnectWithoutContactSectionInput = {
+  where: Prisma.OwnerProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutContactSectionInput, Prisma.OwnerProfileUncheckedCreateWithoutContactSectionInput>
+}
+
+export type OwnerProfileUpsertWithoutContactSectionInput = {
+  update: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutContactSectionInput, Prisma.OwnerProfileUncheckedUpdateWithoutContactSectionInput>
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutContactSectionInput, Prisma.OwnerProfileUncheckedCreateWithoutContactSectionInput>
+  where?: Prisma.OwnerProfileWhereInput
+}
+
+export type OwnerProfileUpdateToOneWithWhereWithoutContactSectionInput = {
+  where?: Prisma.OwnerProfileWhereInput
+  data: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutContactSectionInput, Prisma.OwnerProfileUncheckedUpdateWithoutContactSectionInput>
+}
+
+export type OwnerProfileUpdateWithoutContactSectionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutOwnerProfileNestedInput
+  heroSection?: Prisma.OwnerHeroSectionUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileUncheckedUpdateWithoutContactSectionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileCreateWithoutOwnerFaqItemsInput = {
+  id?: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutOwnerProfileInput
+  heroSection?: Prisma.OwnerHeroSectionCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionCreateNestedOneWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileUncheckedCreateWithoutOwnerFaqItemsInput = {
+  id?: string
+  userId: string
+  companyName?: string | null
+  bussinessEmail?: string | null
+  contactNumber?: string | null
+  address?: string | null
+  nidNumber?: string | null
+  tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
+  businessLogo?: string | null
+  nidImage?: string | null
+  tradeLicenseDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
+  verificationStatus?: $Enums.OwnerVerificationStatus
+  verifiedById?: string | null
+  verifiedAt?: Date | string | null
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutOwnerProfileInput
+}
+
+export type OwnerProfileCreateOrConnectWithoutOwnerFaqItemsInput = {
+  where: Prisma.OwnerProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutOwnerFaqItemsInput, Prisma.OwnerProfileUncheckedCreateWithoutOwnerFaqItemsInput>
+}
+
+export type OwnerProfileUpsertWithoutOwnerFaqItemsInput = {
+  update: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutOwnerFaqItemsInput, Prisma.OwnerProfileUncheckedUpdateWithoutOwnerFaqItemsInput>
+  create: Prisma.XOR<Prisma.OwnerProfileCreateWithoutOwnerFaqItemsInput, Prisma.OwnerProfileUncheckedCreateWithoutOwnerFaqItemsInput>
+  where?: Prisma.OwnerProfileWhereInput
+}
+
+export type OwnerProfileUpdateToOneWithWhereWithoutOwnerFaqItemsInput = {
+  where?: Prisma.OwnerProfileWhereInput
+  data: Prisma.XOR<Prisma.OwnerProfileUpdateWithoutOwnerFaqItemsInput, Prisma.OwnerProfileUncheckedUpdateWithoutOwnerFaqItemsInput>
+}
+
+export type OwnerProfileUpdateWithoutOwnerFaqItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutOwnerProfileNestedInput
+  heroSection?: Prisma.OwnerHeroSectionUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUpdateOneWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutOwnerProfileNestedInput
+}
+
+export type OwnerProfileUncheckedUpdateWithoutOwnerFaqItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bussinessEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
+  verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutOwnerProfileNestedInput
+}
+
 export type OwnerProfileCreateWithoutUserInput = {
   id?: string
   companyName?: string | null
@@ -707,20 +2000,28 @@ export type OwnerProfileCreateWithoutUserInput = {
   contactNumber?: string | null
   address?: string | null
   nidNumber?: string | null
-  businessRegistrationNumber?: string | null
   tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
   businessLogo?: string | null
-  nidImageFront?: string | null
-  nidImageBack?: string | null
-  businessRegistrationDocument?: string | null
+  nidImage?: string | null
   tradeLicenseDocument?: string | null
-  taxIdentificationDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
   verificationStatus?: $Enums.OwnerVerificationStatus
   verifiedById?: string | null
   verifiedAt?: Date | string | null
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  heroSection?: Prisma.OwnerHeroSectionCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutOwnerProfileInput
 }
 
 export type OwnerProfileUncheckedCreateWithoutUserInput = {
@@ -730,20 +2031,28 @@ export type OwnerProfileUncheckedCreateWithoutUserInput = {
   contactNumber?: string | null
   address?: string | null
   nidNumber?: string | null
-  businessRegistrationNumber?: string | null
   tradeLicenseNumber?: string | null
+  etin?: string | null
+  bin?: string | null
   businessLogo?: string | null
-  nidImageFront?: string | null
-  nidImageBack?: string | null
-  businessRegistrationDocument?: string | null
+  nidImage?: string | null
   tradeLicenseDocument?: string | null
-  taxIdentificationDocument?: string | null
+  etinDocument?: string | null
+  binDocument?: string | null
   verificationStatus?: $Enums.OwnerVerificationStatus
   verifiedById?: string | null
   verifiedAt?: Date | string | null
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedCreateNestedOneWithoutOwnerProfileInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedCreateNestedManyWithoutOwnerProfileInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedCreateNestedManyWithoutOwnerProfileInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedCreateNestedManyWithoutOwnerProfileInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutOwnerProfileInput
 }
 
 export type OwnerProfileCreateOrConnectWithoutUserInput = {
@@ -769,20 +2078,28 @@ export type OwnerProfileUpdateWithoutUserInput = {
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessRegistrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nidImageFront?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nidImageBack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessRegistrationDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  taxIdentificationDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
   verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  heroSection?: Prisma.OwnerHeroSectionUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutOwnerProfileNestedInput
 }
 
 export type OwnerProfileUncheckedUpdateWithoutUserInput = {
@@ -792,22 +2109,95 @@ export type OwnerProfileUncheckedUpdateWithoutUserInput = {
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nidNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessRegistrationNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   businessLogo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nidImageFront?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nidImageBack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  businessRegistrationDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nidImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tradeLicenseDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  taxIdentificationDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  etinDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  binDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationStatus?: Prisma.EnumOwnerVerificationStatusFieldUpdateOperationsInput | $Enums.OwnerVerificationStatus
   verifiedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  heroSection?: Prisma.OwnerHeroSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  aboutSection?: Prisma.OwnerAboutSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  contactSection?: Prisma.OwnerContactSectionUncheckedUpdateOneWithoutOwnerProfileNestedInput
+  ownerFaqItems?: Prisma.OwnerFaqItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerGallery?: Prisma.OwnerGalleryItemUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  ownerBlogs?: Prisma.OwnerBlogUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  socialLinksOwner?: Prisma.OwnerSocialLinkUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutOwnerProfileNestedInput
 }
 
+
+/**
+ * Count Type OwnerProfileCountOutputType
+ */
+
+export type OwnerProfileCountOutputType = {
+  ownerFaqItems: number
+  ownerGallery: number
+  ownerBlogs: number
+  socialLinksOwner: number
+  announcements: number
+}
+
+export type OwnerProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ownerFaqItems?: boolean | OwnerProfileCountOutputTypeCountOwnerFaqItemsArgs
+  ownerGallery?: boolean | OwnerProfileCountOutputTypeCountOwnerGalleryArgs
+  ownerBlogs?: boolean | OwnerProfileCountOutputTypeCountOwnerBlogsArgs
+  socialLinksOwner?: boolean | OwnerProfileCountOutputTypeCountSocialLinksOwnerArgs
+  announcements?: boolean | OwnerProfileCountOutputTypeCountAnnouncementsArgs
+}
+
+/**
+ * OwnerProfileCountOutputType without action
+ */
+export type OwnerProfileCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnerProfileCountOutputType
+   */
+  select?: Prisma.OwnerProfileCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * OwnerProfileCountOutputType without action
+ */
+export type OwnerProfileCountOutputTypeCountOwnerFaqItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OwnerFaqItemWhereInput
+}
+
+/**
+ * OwnerProfileCountOutputType without action
+ */
+export type OwnerProfileCountOutputTypeCountOwnerGalleryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OwnerGalleryItemWhereInput
+}
+
+/**
+ * OwnerProfileCountOutputType without action
+ */
+export type OwnerProfileCountOutputTypeCountOwnerBlogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OwnerBlogWhereInput
+}
+
+/**
+ * OwnerProfileCountOutputType without action
+ */
+export type OwnerProfileCountOutputTypeCountSocialLinksOwnerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OwnerSocialLinkWhereInput
+}
+
+/**
+ * OwnerProfileCountOutputType without action
+ */
+export type OwnerProfileCountOutputTypeCountAnnouncementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AnnouncementWhereInput
+}
 
 
 export type OwnerProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -818,14 +2208,14 @@ export type OwnerProfileSelect<ExtArgs extends runtime.Types.Extensions.Internal
   contactNumber?: boolean
   address?: boolean
   nidNumber?: boolean
-  businessRegistrationNumber?: boolean
   tradeLicenseNumber?: boolean
+  etin?: boolean
+  bin?: boolean
   businessLogo?: boolean
-  nidImageFront?: boolean
-  nidImageBack?: boolean
-  businessRegistrationDocument?: boolean
+  nidImage?: boolean
   tradeLicenseDocument?: boolean
-  taxIdentificationDocument?: boolean
+  etinDocument?: boolean
+  binDocument?: boolean
   verificationStatus?: boolean
   verifiedById?: boolean
   verifiedAt?: boolean
@@ -833,6 +2223,15 @@ export type OwnerProfileSelect<ExtArgs extends runtime.Types.Extensions.Internal
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  heroSection?: boolean | Prisma.OwnerProfile$heroSectionArgs<ExtArgs>
+  aboutSection?: boolean | Prisma.OwnerProfile$aboutSectionArgs<ExtArgs>
+  contactSection?: boolean | Prisma.OwnerProfile$contactSectionArgs<ExtArgs>
+  ownerFaqItems?: boolean | Prisma.OwnerProfile$ownerFaqItemsArgs<ExtArgs>
+  ownerGallery?: boolean | Prisma.OwnerProfile$ownerGalleryArgs<ExtArgs>
+  ownerBlogs?: boolean | Prisma.OwnerProfile$ownerBlogsArgs<ExtArgs>
+  socialLinksOwner?: boolean | Prisma.OwnerProfile$socialLinksOwnerArgs<ExtArgs>
+  announcements?: boolean | Prisma.OwnerProfile$announcementsArgs<ExtArgs>
+  _count?: boolean | Prisma.OwnerProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ownerProfile"]>
 
 export type OwnerProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -843,14 +2242,14 @@ export type OwnerProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   contactNumber?: boolean
   address?: boolean
   nidNumber?: boolean
-  businessRegistrationNumber?: boolean
   tradeLicenseNumber?: boolean
+  etin?: boolean
+  bin?: boolean
   businessLogo?: boolean
-  nidImageFront?: boolean
-  nidImageBack?: boolean
-  businessRegistrationDocument?: boolean
+  nidImage?: boolean
   tradeLicenseDocument?: boolean
-  taxIdentificationDocument?: boolean
+  etinDocument?: boolean
+  binDocument?: boolean
   verificationStatus?: boolean
   verifiedById?: boolean
   verifiedAt?: boolean
@@ -868,14 +2267,14 @@ export type OwnerProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   contactNumber?: boolean
   address?: boolean
   nidNumber?: boolean
-  businessRegistrationNumber?: boolean
   tradeLicenseNumber?: boolean
+  etin?: boolean
+  bin?: boolean
   businessLogo?: boolean
-  nidImageFront?: boolean
-  nidImageBack?: boolean
-  businessRegistrationDocument?: boolean
+  nidImage?: boolean
   tradeLicenseDocument?: boolean
-  taxIdentificationDocument?: boolean
+  etinDocument?: boolean
+  binDocument?: boolean
   verificationStatus?: boolean
   verifiedById?: boolean
   verifiedAt?: boolean
@@ -893,14 +2292,14 @@ export type OwnerProfileSelectScalar = {
   contactNumber?: boolean
   address?: boolean
   nidNumber?: boolean
-  businessRegistrationNumber?: boolean
   tradeLicenseNumber?: boolean
+  etin?: boolean
+  bin?: boolean
   businessLogo?: boolean
-  nidImageFront?: boolean
-  nidImageBack?: boolean
-  businessRegistrationDocument?: boolean
+  nidImage?: boolean
   tradeLicenseDocument?: boolean
-  taxIdentificationDocument?: boolean
+  etinDocument?: boolean
+  binDocument?: boolean
   verificationStatus?: boolean
   verifiedById?: boolean
   verifiedAt?: boolean
@@ -909,9 +2308,18 @@ export type OwnerProfileSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OwnerProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "companyName" | "bussinessEmail" | "contactNumber" | "address" | "nidNumber" | "businessRegistrationNumber" | "tradeLicenseNumber" | "businessLogo" | "nidImageFront" | "nidImageBack" | "businessRegistrationDocument" | "tradeLicenseDocument" | "taxIdentificationDocument" | "verificationStatus" | "verifiedById" | "verifiedAt" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["ownerProfile"]>
+export type OwnerProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "companyName" | "bussinessEmail" | "contactNumber" | "address" | "nidNumber" | "tradeLicenseNumber" | "etin" | "bin" | "businessLogo" | "nidImage" | "tradeLicenseDocument" | "etinDocument" | "binDocument" | "verificationStatus" | "verifiedById" | "verifiedAt" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["ownerProfile"]>
 export type OwnerProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  heroSection?: boolean | Prisma.OwnerProfile$heroSectionArgs<ExtArgs>
+  aboutSection?: boolean | Prisma.OwnerProfile$aboutSectionArgs<ExtArgs>
+  contactSection?: boolean | Prisma.OwnerProfile$contactSectionArgs<ExtArgs>
+  ownerFaqItems?: boolean | Prisma.OwnerProfile$ownerFaqItemsArgs<ExtArgs>
+  ownerGallery?: boolean | Prisma.OwnerProfile$ownerGalleryArgs<ExtArgs>
+  ownerBlogs?: boolean | Prisma.OwnerProfile$ownerBlogsArgs<ExtArgs>
+  socialLinksOwner?: boolean | Prisma.OwnerProfile$socialLinksOwnerArgs<ExtArgs>
+  announcements?: boolean | Prisma.OwnerProfile$announcementsArgs<ExtArgs>
+  _count?: boolean | Prisma.OwnerProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OwnerProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -924,6 +2332,14 @@ export type $OwnerProfilePayload<ExtArgs extends runtime.Types.Extensions.Intern
   name: "OwnerProfile"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    heroSection: Prisma.$OwnerHeroSectionPayload<ExtArgs> | null
+    aboutSection: Prisma.$OwnerAboutSectionPayload<ExtArgs> | null
+    contactSection: Prisma.$OwnerContactSectionPayload<ExtArgs> | null
+    ownerFaqItems: Prisma.$OwnerFaqItemPayload<ExtArgs>[]
+    ownerGallery: Prisma.$OwnerGalleryItemPayload<ExtArgs>[]
+    ownerBlogs: Prisma.$OwnerBlogPayload<ExtArgs>[]
+    socialLinksOwner: Prisma.$OwnerSocialLinkPayload<ExtArgs>[]
+    announcements: Prisma.$AnnouncementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -933,14 +2349,14 @@ export type $OwnerProfilePayload<ExtArgs extends runtime.Types.Extensions.Intern
     contactNumber: string | null
     address: string | null
     nidNumber: string | null
-    businessRegistrationNumber: string | null
     tradeLicenseNumber: string | null
+    etin: string | null
+    bin: string | null
     businessLogo: string | null
-    nidImageFront: string | null
-    nidImageBack: string | null
-    businessRegistrationDocument: string | null
+    nidImage: string | null
     tradeLicenseDocument: string | null
-    taxIdentificationDocument: string | null
+    etinDocument: string | null
+    binDocument: string | null
     verificationStatus: $Enums.OwnerVerificationStatus
     verifiedById: string | null
     verifiedAt: Date | null
@@ -1342,6 +2758,14 @@ readonly fields: OwnerProfileFieldRefs;
 export interface Prisma__OwnerProfileClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  heroSection<T extends Prisma.OwnerProfile$heroSectionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerProfile$heroSectionArgs<ExtArgs>>): Prisma.Prisma__OwnerHeroSectionClient<runtime.Types.Result.GetResult<Prisma.$OwnerHeroSectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  aboutSection<T extends Prisma.OwnerProfile$aboutSectionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerProfile$aboutSectionArgs<ExtArgs>>): Prisma.Prisma__OwnerAboutSectionClient<runtime.Types.Result.GetResult<Prisma.$OwnerAboutSectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  contactSection<T extends Prisma.OwnerProfile$contactSectionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerProfile$contactSectionArgs<ExtArgs>>): Prisma.Prisma__OwnerContactSectionClient<runtime.Types.Result.GetResult<Prisma.$OwnerContactSectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  ownerFaqItems<T extends Prisma.OwnerProfile$ownerFaqItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerProfile$ownerFaqItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerFaqItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ownerGallery<T extends Prisma.OwnerProfile$ownerGalleryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerProfile$ownerGalleryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerGalleryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ownerBlogs<T extends Prisma.OwnerProfile$ownerBlogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerProfile$ownerBlogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerBlogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  socialLinksOwner<T extends Prisma.OwnerProfile$socialLinksOwnerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerProfile$socialLinksOwnerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnerSocialLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  announcements<T extends Prisma.OwnerProfile$announcementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OwnerProfile$announcementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1378,14 +2802,14 @@ export interface OwnerProfileFieldRefs {
   readonly contactNumber: Prisma.FieldRef<"OwnerProfile", 'String'>
   readonly address: Prisma.FieldRef<"OwnerProfile", 'String'>
   readonly nidNumber: Prisma.FieldRef<"OwnerProfile", 'String'>
-  readonly businessRegistrationNumber: Prisma.FieldRef<"OwnerProfile", 'String'>
   readonly tradeLicenseNumber: Prisma.FieldRef<"OwnerProfile", 'String'>
+  readonly etin: Prisma.FieldRef<"OwnerProfile", 'String'>
+  readonly bin: Prisma.FieldRef<"OwnerProfile", 'String'>
   readonly businessLogo: Prisma.FieldRef<"OwnerProfile", 'String'>
-  readonly nidImageFront: Prisma.FieldRef<"OwnerProfile", 'String'>
-  readonly nidImageBack: Prisma.FieldRef<"OwnerProfile", 'String'>
-  readonly businessRegistrationDocument: Prisma.FieldRef<"OwnerProfile", 'String'>
+  readonly nidImage: Prisma.FieldRef<"OwnerProfile", 'String'>
   readonly tradeLicenseDocument: Prisma.FieldRef<"OwnerProfile", 'String'>
-  readonly taxIdentificationDocument: Prisma.FieldRef<"OwnerProfile", 'String'>
+  readonly etinDocument: Prisma.FieldRef<"OwnerProfile", 'String'>
+  readonly binDocument: Prisma.FieldRef<"OwnerProfile", 'String'>
   readonly verificationStatus: Prisma.FieldRef<"OwnerProfile", 'OwnerVerificationStatus'>
   readonly verifiedById: Prisma.FieldRef<"OwnerProfile", 'String'>
   readonly verifiedAt: Prisma.FieldRef<"OwnerProfile", 'DateTime'>
@@ -1790,6 +3214,183 @@ export type OwnerProfileDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many OwnerProfiles to delete.
    */
   limit?: number
+}
+
+/**
+ * OwnerProfile.heroSection
+ */
+export type OwnerProfile$heroSectionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnerHeroSection
+   */
+  select?: Prisma.OwnerHeroSectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnerHeroSection
+   */
+  omit?: Prisma.OwnerHeroSectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnerHeroSectionInclude<ExtArgs> | null
+  where?: Prisma.OwnerHeroSectionWhereInput
+}
+
+/**
+ * OwnerProfile.aboutSection
+ */
+export type OwnerProfile$aboutSectionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnerAboutSection
+   */
+  select?: Prisma.OwnerAboutSectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnerAboutSection
+   */
+  omit?: Prisma.OwnerAboutSectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnerAboutSectionInclude<ExtArgs> | null
+  where?: Prisma.OwnerAboutSectionWhereInput
+}
+
+/**
+ * OwnerProfile.contactSection
+ */
+export type OwnerProfile$contactSectionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnerContactSection
+   */
+  select?: Prisma.OwnerContactSectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnerContactSection
+   */
+  omit?: Prisma.OwnerContactSectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnerContactSectionInclude<ExtArgs> | null
+  where?: Prisma.OwnerContactSectionWhereInput
+}
+
+/**
+ * OwnerProfile.ownerFaqItems
+ */
+export type OwnerProfile$ownerFaqItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnerFaqItem
+   */
+  select?: Prisma.OwnerFaqItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnerFaqItem
+   */
+  omit?: Prisma.OwnerFaqItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnerFaqItemInclude<ExtArgs> | null
+  where?: Prisma.OwnerFaqItemWhereInput
+  orderBy?: Prisma.OwnerFaqItemOrderByWithRelationInput | Prisma.OwnerFaqItemOrderByWithRelationInput[]
+  cursor?: Prisma.OwnerFaqItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OwnerFaqItemScalarFieldEnum | Prisma.OwnerFaqItemScalarFieldEnum[]
+}
+
+/**
+ * OwnerProfile.ownerGallery
+ */
+export type OwnerProfile$ownerGalleryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnerGalleryItem
+   */
+  select?: Prisma.OwnerGalleryItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnerGalleryItem
+   */
+  omit?: Prisma.OwnerGalleryItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnerGalleryItemInclude<ExtArgs> | null
+  where?: Prisma.OwnerGalleryItemWhereInput
+  orderBy?: Prisma.OwnerGalleryItemOrderByWithRelationInput | Prisma.OwnerGalleryItemOrderByWithRelationInput[]
+  cursor?: Prisma.OwnerGalleryItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OwnerGalleryItemScalarFieldEnum | Prisma.OwnerGalleryItemScalarFieldEnum[]
+}
+
+/**
+ * OwnerProfile.ownerBlogs
+ */
+export type OwnerProfile$ownerBlogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnerBlog
+   */
+  select?: Prisma.OwnerBlogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnerBlog
+   */
+  omit?: Prisma.OwnerBlogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnerBlogInclude<ExtArgs> | null
+  where?: Prisma.OwnerBlogWhereInput
+  orderBy?: Prisma.OwnerBlogOrderByWithRelationInput | Prisma.OwnerBlogOrderByWithRelationInput[]
+  cursor?: Prisma.OwnerBlogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OwnerBlogScalarFieldEnum | Prisma.OwnerBlogScalarFieldEnum[]
+}
+
+/**
+ * OwnerProfile.socialLinksOwner
+ */
+export type OwnerProfile$socialLinksOwnerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OwnerSocialLink
+   */
+  select?: Prisma.OwnerSocialLinkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OwnerSocialLink
+   */
+  omit?: Prisma.OwnerSocialLinkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OwnerSocialLinkInclude<ExtArgs> | null
+  where?: Prisma.OwnerSocialLinkWhereInput
+  orderBy?: Prisma.OwnerSocialLinkOrderByWithRelationInput | Prisma.OwnerSocialLinkOrderByWithRelationInput[]
+  cursor?: Prisma.OwnerSocialLinkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OwnerSocialLinkScalarFieldEnum | Prisma.OwnerSocialLinkScalarFieldEnum[]
+}
+
+/**
+ * OwnerProfile.announcements
+ */
+export type OwnerProfile$announcementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Announcement
+   */
+  select?: Prisma.AnnouncementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Announcement
+   */
+  omit?: Prisma.AnnouncementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnnouncementInclude<ExtArgs> | null
+  where?: Prisma.AnnouncementWhereInput
+  orderBy?: Prisma.AnnouncementOrderByWithRelationInput | Prisma.AnnouncementOrderByWithRelationInput[]
+  cursor?: Prisma.AnnouncementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AnnouncementScalarFieldEnum | Prisma.AnnouncementScalarFieldEnum[]
 }
 
 /**
