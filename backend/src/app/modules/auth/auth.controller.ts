@@ -68,6 +68,16 @@ export class AuthController {
       payload as { email: string; password: string },
     );
 
+    if ('needsEmailSetup' in result) {
+      sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Email setup is required',
+        data: result,
+      });
+      return;
+    }
+
     const { accessToken, refreshToken, token, ...rest } = result;
 
     tokenUtils.setAccessTokenCookie(res, accessToken);
@@ -87,16 +97,24 @@ export class AuthController {
     });
   }
 
-  @Post('phone-login/request-email-otp')
-  async requestEmailSetupOtp(@Body() body: { phone: string; newEmail: string }, @Res() res: Response) {
-    await this.authService.requestEmailSetupOtp(body.phone, body.newEmail);
-    sendResponse(res, { statusCode: status.OK, success: true, message: 'OTP sent', data: null });
-  }
-
-  @Post('phone-login/verify-email')
-  async verifyEmailSetup(@Body() body: { phone: string; newEmail: string; otp: string; newPassword: string }, @Res() res: Response) {
-    await this.authService.verifyEmailSetup(body.phone, body.newEmail, body.otp, body.newPassword);
-    sendResponse(res, { statusCode: status.OK, success: true, message: 'Email updated', data: null });
+  @Post('phone-login/setup-email')
+  async setupEmail(
+    @Body()
+    body: {
+      phone: string;
+      email: string;
+      currentPassword: string;
+      newPassword: string;
+    },
+    @Res() res: Response,
+  ) {
+    await this.authService.setupEmail(body);
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: 'Email and password updated. Check your email for a verification code.',
+      data: null,
+    });
   }
 
   @Get('me')

@@ -23,6 +23,13 @@ interface ILoginUserPayload {
   password: string;
 }
 
+interface IEmailSetupPayload {
+  phone: string;
+  email: string;
+  currentPassword: string;
+  newPassword: string;
+}
+
 @Injectable()
 export class AuthService {
   async registerUser(payload: IRegisterUserPayload) {
@@ -114,13 +121,35 @@ export class AuthService {
 
     const isEmail = email.includes('@');
 
-    const user = isEmail  ? await prisma.user.findUnique({ where: { email } })
+    const user = isEmail
+      ? await prisma.user.findUnique({ where: { email } })
       : await prisma.user.findUnique({ where: { phoneNumber: email } });
-      
-    if (!user) { throw new AppError(status.NOT_FOUND, 'User not found'); }
+
+    if (!user) {
+      throw new AppError(status.NOT_FOUND, 'User not found');
+    }
 
     if (!user.email) {
-      return { needsEmailSetup: true, phone: user.phoneNumber } as any;
+      if (user.isDeleted || user.status !== UserStatus.ACTIVE) {
+        throw new AppError(status.NOT_FOUND, 'User is not active');
+      }
+
+      const credentialAccount = await prisma.account.findFirst({
+        where: { userId: user.id, providerId: 'credential' },
+        select: { password: true },
+      });
+
+      if (
+        !credentialAccount?.password ||
+        !(await (await auth.$context).password.verify({
+          hash: credentialAccount.password,
+          password,
+        }))
+      ) {
+        throw new AppError(status.UNAUTHORIZED, 'Invalid email or password');
+      }
+
+      return { needsEmailSetup: true, phone: user.phoneNumber ?? '' };
     }
 
     const data = await auth.api.signInEmail({
@@ -249,24 +278,88 @@ export class AuthService {
     };
   }
 
-  async requestEmailSetupOtp(phone: string, newEmail: string) {
-    const user = await prisma.user.findUnique({ where: { phoneNumber: phone } });
-    if (!user) { throw new AppError(status.NOT_FOUND, 'User not found'); }
-    const existing = await prisma.user.findUnique({ where: { email: newEmail } });
-    if (existing) { throw new AppError(status.BAD_REQUEST, 'Email already in use'); }
-    
-    await auth.api.sendVerificationOTP({ body: { email: newEmail, type: 'forget-password' } });
-    return { success: true };
-  }
+  async setupEmail(payload: IEmailSetupPayload) {
+    const { phone, email, currentPassword, newPassword } = payload;
 
-  async verifyEmailSetup(phone: string, newEmail: string, otp: string, newPassword: string) {
-    await auth.api.verifyEmailOTP({ body: { email: newEmail, otp } });
-    try { await auth.api.resetPasswordEmailOTP({ body: { email: newEmail, otp, password: newPassword } }); } catch (e) {}
-    await prisma.user.update({
+    if (!phone?.trim() || !email?.trim() || !currentPassword || !newPassword) {
+      throw new AppError(status.BAD_REQUEST, 'Phone, email, and passwords are required');
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      throw new AppError(status.BAD_REQUEST, 'Enter a valid email address');
+    }
+
+    if (
+      newPassword.length < 6 ||
+      !/[A-Z]/.test(newPassword) ||
+      !/[a-z]/.test(newPassword) ||
+      !/[0-9]/.test(newPassword) ||
+      !/[@$!%*?&]/.test(newPassword)
+    ) {
+      throw new AppError(status.BAD_REQUEST, 'New password does not meet the requirements');
+    }
+
+    const user = await prisma.user.findUnique({
       where: { phoneNumber: phone },
-      data: { email: newEmail, emailVerified: true, needPasswordChange: false },
+      select: { id: true, email: true, isDeleted: true, status: true },
     });
-    return { success: true };
+
+    if (!user || user.isDeleted || user.status !== UserStatus.ACTIVE) {
+      throw new AppError(status.NOT_FOUND, 'User not found');
+    }
+
+    if (user.email) {
+      throw new AppError(status.BAD_REQUEST, 'Email is already set up for this account');
+    }
+
+    const existingEmail = await prisma.user.findUnique({
+      where: { email: normalizedEmail },
+      select: { id: true },
+    });
+    if (existingEmail) {
+      throw new AppError(status.CONFLICT, 'Email already in use');
+    }
+
+    const credentialAccount = await prisma.account.findFirst({
+      where: { userId: user.id, providerId: 'credential' },
+      select: { id: true, password: true },
+    });
+
+    if (
+      !credentialAccount?.password ||
+      !(await (await auth.$context).password.verify({
+        hash: credentialAccount.password,
+        password: currentPassword,
+      }))
+    ) {
+      throw new AppError(status.UNAUTHORIZED, 'Invalid current password');
+    }
+
+    const hashedPassword = await (await auth.$context).password.hash(newPassword);
+
+    await prisma.$transaction([
+      prisma.user.update({
+        where: { id: user.id },
+        data: {
+          email: normalizedEmail,
+          emailVerified: false,
+          needPasswordChange: false,
+        },
+      }),
+      prisma.account.update({
+        where: { id: credentialAccount.id },
+        data: { password: hashedPassword },
+      }),
+    ]);
+
+    await auth.api.sendVerificationOTP({
+      body: {
+        email: normalizedEmail,
+        type: 'email-verification',
+      },
+    });
   }
   
   async getMe(user: IRequestUser) {
