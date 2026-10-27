@@ -131,9 +131,11 @@ export class BookingService {
       mobile?: string;
       advancePayment?: {
         method: string;
-        senderMobile: string;
-        transactionId: string;
         amount: number;
+        senderMobile?: string;
+        transactionId?: string;
+        reference?: string;
+        note?: string;
       };
     },
   ) {
@@ -206,61 +208,55 @@ export class BookingService {
       method: PaymentMethod;
       senderMobile: string;
       transactionId: string;
+      reference: string | null;
+      note: string | null;
       amount: number;
     } | null = null;
 
     if (payload.advancePayment) {
-      const { method, senderMobile, transactionId } = payload.advancePayment;
+      const { method, senderMobile, transactionId, reference, note } = payload.advancePayment;
       const amount = Number(payload.advancePayment.amount);
       if (!Number.isFinite(amount) || amount <= 0) {
-        throw new AppError(status.BAD_REQUEST, 'Enter a valid advance amount');
+        throw new AppError(status.BAD_REQUEST, 'Enter a valid amount received');
       }
       if (!turf.allowAdvancePayment) {
-        throw new AppError(
-          status.BAD_REQUEST,
-          'This turf does not accept advance payments',
-        );
-      }
-      const accepted = turf.paymentPhoneNumbers.find((p) => p.method === method);
-      if (!accepted) {
-        throw new AppError(
-          status.BAD_REQUEST,
-          'Unsupported payment method for this turf',
-        );
-      }
-      const sender = (senderMobile ?? '').replace(/[\s-]/g, '');
-      if (!/^(?:\+8801|01)\d{9}$/.test(sender)) {
-        throw new AppError(status.BAD_REQUEST, 'Enter a valid sender mobile number');
+        throw new AppError(status.BAD_REQUEST, 'This turf does not accept advance payments');
       }
 
+      const isCash = method === PaymentMethod.CASH;
+      const sender = (senderMobile ?? '').replace(/[\s-]/g, '');
+
+      if (!isCash && !/^01[3-9]\d{8}$/.test(sender)) {
+        throw new AppError(status.BAD_REQUEST, 'Enter a valid sender mobile number');
+      }
       const txn = (transactionId ?? '').trim();
-      if (txn.length < 4 || txn.length > 64) {
+      if (!isCash && (txn.length < 4 || txn.length > 64)) {
         throw new AppError(status.BAD_REQUEST, 'Enter a valid transaction number');
       }
+
       advance = {
-        method: accepted.method,
-        senderMobile: sender,
-        transactionId: txn,
+        method: method as PaymentMethod,
+        senderMobile: isCash ? '' : sender,
+        transactionId: isCash ? '' : txn,
+        reference: (reference ?? '').trim() || null,
+        note: (note ?? '').trim() || null,
         amount,
       };
 
-      const usedTransaction = await prisma.payment.findUnique({
-        where: { providerTransactionId: txn },
-      });
-      if (usedTransaction) {
-        throw new AppError(
-          status.CONFLICT,
-          'This transaction number has already been used',
-        );
+      if (!isCash && txn) {
+        const usedTransaction = await prisma.payment.findUnique({
+          where: { providerTransactionId: txn },
+        });
+
+        if (usedTransaction) {
+          throw new AppError(status.CONFLICT, 'This transaction number has already been used',);
+        }
       }
     }
 
     for (const slot of storedSlots) {
       if (!slot.active) {
-        throw new AppError(
-          status.BAD_REQUEST,
-          'One or more slots are not available for booking',
-        );
+        throw new AppError(status.BAD_REQUEST, 'One or more slots are not available for booking',);
       }
       if (slot.slotStatus === SlotSatus.BOOKED) {
         throw new AppError(status.CONFLICT, 'One or more turf slots are already booked');
@@ -372,7 +368,8 @@ export class BookingService {
               amount: advanceAmount,
               payerMobileNumber: advance.senderMobile,
               providerTransactionId: advance.transactionId,
-              reference: advance.transactionId,
+              reference: advance.reference,
+              note: advance.note,
               receivedById: bookedBy.userId,
               paidAt: new Date(),
               idempotencyKey: `admin-advance-${idempotencyKey}`,

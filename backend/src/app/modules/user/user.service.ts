@@ -126,52 +126,49 @@ export class UserService {
    * forced to `true` so the user is prompted to set their own password on
    * first login.
    */
-  async createByPhone(body: {
+async createByPhone(body: {
     name: string;
     phoneNumber: string;
-    email?: string | null;
     role: UserRole;
-    defaultPassword: string;
+    defaultPassword?: string;
   }) {
     const normalizedPhone = body.phoneNumber.trim();
     if (!normalizedPhone) {
       throw new AppError(status.BAD_REQUEST, 'Phone number is required');
-    }
-    if (body.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) {
-      throw new AppError(status.BAD_REQUEST, 'Invalid email address');
     }
 
     const existingPhone = await prisma.user.findUnique({ where: { phoneNumber: normalizedPhone } });
     if (existingPhone) {
       throw new AppError(status.CONFLICT, 'A user with this phone number already exists');
     }
-    if (body.email) {
-      const existingEmail = await prisma.user.findUnique({ where: { email: body.email } });
-      if (existingEmail) {
-        throw new AppError(status.CONFLICT, 'A user with this email already exists');
-      }
-    }
+
+    // Generate a strong-enough 6-digit numeric password the admin can read
+    // aloud to the customer. The user is then forced to change it on first login.
+    const defaultPassword = body.defaultPassword || generateSixDigitPassword();
 
     const ctx = await auth.$context;
-    const hashedPassword = await ctx.password.hash(body.defaultPassword);
+    const hashedPassword = await ctx.password.hash(defaultPassword);
 
     const user = await prisma.user.create({
       data: {
         name: body.name,
-        email: body.email ?? null,
+        email: null,
         phoneNumber: normalizedPhone,
-        role: body.role,
+        role: UserRole.USER,
         status: UserStatus.ACTIVE,
         needPasswordChange: true,
       },
     });
 
-    await ctx.internalAdapter.linkAccount({
-      userId: user.id,
-      providerId: 'credential',
-      issuer: 'local:credential',
-      accountId: user.id,
-      password: hashedPassword,
+    await prisma.account.create({
+      data: {
+        id: crypto.randomUUID(),
+        accountId: user.id,
+        providerId: 'credential',
+        issuer: 'local:credential',
+        userId: user.id,
+        password: hashedPassword,
+      },
     });
 
     return {
@@ -183,6 +180,7 @@ export class UserService {
       status: user.status,
       needPasswordChange: user.needPasswordChange,
       createdAt: user.createdAt,
+      tempPassword: defaultPassword,
     };
   }
 
@@ -242,4 +240,15 @@ export class UserService {
     const data = await prisma.user.update({ where: { id }, data: { isDeleted: true, deletedAt: new Date() } });
     return data;
   }
+}
+
+/**
+ * Generates a strong-enough 6-digit numeric password the admin can read
+ * aloud to the customer. The user is forced to change it on first login.
+ */
+function generateSixDigitPassword(): string {
+  const bytes = new Uint32Array(1);
+  crypto.getRandomValues(bytes);
+  const n = bytes[0] % 1000000;
+  return String(n).padStart(6, '0');
 }

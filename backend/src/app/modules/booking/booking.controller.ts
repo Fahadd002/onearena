@@ -227,7 +227,7 @@ export class BookingController {
   @UseGuards(CheckAuthGuard)
   async bookingByAdmin(
     @CurrentUser() user: IRequestUser,
-    @Body() body: { userId: string; slotIds: string[]; discountAmount?: number; mobile?: string; advancePayment?: { method: string; senderMobile: string; transactionId: string; amount: number } },
+    @Body() body: { userId: string; slotIds: string[]; discountAmount?: number; mobile?: string; advancePayment?: { method: string; amount: number; senderMobile?: string; transactionId?: string; reference?: string; note?: string } },
     @Res() res: Response,
   ) {
     const data = await this.bookingService.bookingByAdmin(user, body);

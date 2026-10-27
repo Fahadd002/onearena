@@ -112,9 +112,20 @@ export class AuthService {
   async loginUser(payload: ILoginUserPayload) {
     const { email, password } = payload;
 
+    const isEmail = email.includes('@');
+
+    const user = isEmail  ? await prisma.user.findUnique({ where: { email } })
+      : await prisma.user.findUnique({ where: { phoneNumber: email } });
+      
+    if (!user) { throw new AppError(status.NOT_FOUND, 'User not found'); }
+
+    if (!user.email) {
+      return { needsEmailSetup: true, phone: user.phoneNumber } as any;
+    }
+
     const data = await auth.api.signInEmail({
       body: {
-        email,
+        email: user.email,
         password,
       },
     });
@@ -238,6 +249,26 @@ export class AuthService {
     };
   }
 
+  async requestEmailSetupOtp(phone: string, newEmail: string) {
+    const user = await prisma.user.findUnique({ where: { phoneNumber: phone } });
+    if (!user) { throw new AppError(status.NOT_FOUND, 'User not found'); }
+    const existing = await prisma.user.findUnique({ where: { email: newEmail } });
+    if (existing) { throw new AppError(status.BAD_REQUEST, 'Email already in use'); }
+    
+    await auth.api.sendVerificationOTP({ body: { email: newEmail, type: 'forget-password' } });
+    return { success: true };
+  }
+
+  async verifyEmailSetup(phone: string, newEmail: string, otp: string, newPassword: string) {
+    await auth.api.verifyEmailOTP({ body: { email: newEmail, otp } });
+    try { await auth.api.resetPasswordEmailOTP({ body: { email: newEmail, otp, password: newPassword } }); } catch (e) {}
+    await prisma.user.update({
+      where: { phoneNumber: phone },
+      data: { email: newEmail, emailVerified: true, needPasswordChange: false },
+    });
+    return { success: true };
+  }
+  
   async getMe(user: IRequestUser) {
     const userExist = await prisma.user.findUnique({
       where: {

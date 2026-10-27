@@ -87,6 +87,18 @@ export class AuthController {
     });
   }
 
+  @Post('phone-login/request-email-otp')
+  async requestEmailSetupOtp(@Body() body: { phone: string; newEmail: string }, @Res() res: Response) {
+    await this.authService.requestEmailSetupOtp(body.phone, body.newEmail);
+    sendResponse(res, { statusCode: status.OK, success: true, message: 'OTP sent', data: null });
+  }
+
+  @Post('phone-login/verify-email')
+  async verifyEmailSetup(@Body() body: { phone: string; newEmail: string; otp: string; newPassword: string }, @Res() res: Response) {
+    await this.authService.verifyEmailSetup(body.phone, body.newEmail, body.otp, body.newPassword);
+    sendResponse(res, { statusCode: status.OK, success: true, message: 'Email updated', data: null });
+  }
+
   @Get('me')
   @AuthRoles(
     UserRole.USER,
