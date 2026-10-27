@@ -7,6 +7,7 @@ import { ArrowLeft, CheckCircle2, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { loginAction } from "@/app/(authRouteGroup)/login/_action";
 import { API_BASE_URL, API_ENDPOINTS } from "@/lib/api/config";
 import { formatFieldErrors } from "@/lib/form-errors";
@@ -30,6 +31,7 @@ interface LoginFormProps {
 
 export default function LoginForm({ redirectPath }: LoginFormProps) {
   const router = useRouter();
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -40,7 +42,7 @@ export default function LoginForm({ redirectPath }: LoginFormProps) {
   };
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: (payload: { email: string; password: string; phoneNumber?: string }) =>
+    mutationFn: (payload: { email: string; password: string; phoneNumber?: string; rememberMe?: boolean; recaptchaToken: string }) =>
       loginAction(payload, redirectPath),
   });
 
@@ -53,7 +55,12 @@ export default function LoginForm({ redirectPath }: LoginFormProps) {
     onSubmit: async ({ value }) => {
       setServerError(null);
       try {
-        const result = await mutateAsync(value);
+        if (!executeRecaptcha) {
+          throw new Error("reCAPTCHA is not ready. Please try again.");
+        }
+
+        const recaptchaToken = await executeRecaptcha("login");
+        const result = await mutateAsync({ ...value, recaptchaToken });
 
         if (result && typeof result === "object" && "success" in result && result.success === false) {
           const message = result.message || "Login failed";

@@ -6,7 +6,7 @@ import { ApiErrorResponse, ApiResponse } from "@/types/api.type";
 import { IRegisterResponse } from "@/types/auth.type";
 import { IRegisterPayload, registerZodSchema } from "@/zod/auth.validation";
 
-export const registerAction = async (payload : IRegisterPayload) : Promise<ApiResponse<IRegisterResponse> | ApiErrorResponse> =>{
+export const registerAction = async (payload : IRegisterPayload & { recaptchaToken: string }) : Promise<ApiResponse<IRegisterResponse> | ApiErrorResponse> =>{
     const parsedPayload = registerZodSchema.safeParse(payload);
 
     if(!parsedPayload.success){
@@ -18,7 +18,10 @@ export const registerAction = async (payload : IRegisterPayload) : Promise<ApiRe
     }
 
     try {
-        const response = await httpClient.post<IRegisterResponse>("/auth/register", parsedPayload.data);
+        const response = await httpClient.post<IRegisterResponse>("/auth/register", {
+            ...parsedPayload.data,
+            recaptchaToken: payload.recaptchaToken,
+        });
         // Return the full ApiResponse so the client receives `{ success, message, data }`.
         return response;
     } catch (error : any) {

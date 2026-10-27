@@ -9,10 +9,10 @@ import { IEmailSetupRequiredResponse, ILoginResponse } from "@/types/auth.type";
 import { ILoginPayload, loginZodSchema } from "@/zod/auth.validation";
 
 export const loginAction = async (
-    payload : ILoginPayload & { rememberMe?: boolean },
+    payload : ILoginPayload & { rememberMe?: boolean; recaptchaToken: string },
     redirectPath ?: string
 ) : Promise<((ILoginResponse | IEmailSetupRequiredResponse) & { redirectPath: string }) | ApiErrorResponse> => {
-    const { rememberMe = true, ...credentials } = payload;
+    const { rememberMe = true, recaptchaToken, ...credentials } = payload;
     const parsedPayload = loginZodSchema.safeParse(credentials);
 
     if (!parsedPayload.success) {
@@ -26,7 +26,7 @@ export const loginAction = async (
     try {
         const response = await httpClient.post<ILoginResponse | IEmailSetupRequiredResponse>(
             API_ENDPOINTS.auth.login,
-            parsedPayload.data,
+            { ...parsedPayload.data, recaptchaToken },
         );
 
         if ("needsEmailSetup" in response.data) {
