@@ -17,6 +17,7 @@ export default {
     cookieSecure: process.env.COOKIE_SECURE === 'true',
     cookieSameSite: process.env.COOKIE_SAME_SITE === 'none' ? ('none' as const) : ('lax' as const),
     betterAuthtSecret: process.env.BETTER_AUTH_SECRET,
+    recaptchaSecretKey: process.env.RECAPTCHA_SECRET_KEY,
     accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
     refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
     accessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,

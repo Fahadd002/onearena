@@ -35,6 +35,10 @@ export class AuthController {
 
   @Post('register')
   async registerUser(@Body() payload: Record<string, unknown>, @Res() res: Response) {
+    await this.authService.verifyRecaptchaToken(
+      typeof payload.recaptchaToken === 'string' ? payload.recaptchaToken : '',
+      'register',
+    );
     const result = await this.authService.registerUser(
       payload as {
         name: string;
@@ -64,6 +68,10 @@ export class AuthController {
 
   @Post('login')
   async loginUser(@Body() payload: Record<string, unknown>, @Res() res: Response) {
+    await this.authService.verifyRecaptchaToken(
+      typeof payload.recaptchaToken === 'string' ? payload.recaptchaToken : '',
+      'login',
+    );
     const result = await this.authService.loginUser(
       payload as { email: string; password: string },
     );

@@ -30,8 +30,89 @@ interface IEmailSetupPayload {
   newPassword: string;
 }
 
+interface IRecaptchaVerificationResponse {
+  success?: unknown;
+  action?: unknown;
+  score?: unknown;
+  hostname?: unknown;
+  'error-codes'?: unknown;
+}
+
 @Injectable()
 export class AuthService {
+  async verifyRecaptchaToken(token: string, expectedAction: 'login' | 'register') {
+    if (!token?.trim()) {
+      throw new AppError(status.BAD_REQUEST, 'reCAPTCHA verification is required');
+    }
+
+    if (!config.recaptchaSecretKey) {
+      throw new AppError(status.SERVICE_UNAVAILABLE, 'reCAPTCHA is not configured');
+    }
+
+    let verification: IRecaptchaVerificationResponse;
+
+    try {
+      const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          secret: config.recaptchaSecretKey,
+          response: token,
+        }),
+        signal: AbortSignal.timeout(5000),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Google reCAPTCHA returned ${response.status}`);
+      }
+
+      verification = await response.json() as IRecaptchaVerificationResponse;
+    } catch (error) {
+      console.error('Unable to verify reCAPTCHA token:', error);
+      throw new AppError(status.SERVICE_UNAVAILABLE, 'Unable to verify reCAPTCHA right now');
+    }
+
+    const errorCodes = Array.isArray(verification['error-codes'])
+      ? verification['error-codes'].filter((code): code is string => typeof code === 'string')
+      : [];
+    const invalidSecret = errorCodes.includes('invalid-input-secret') ||
+      errorCodes.includes('missing-input-secret');
+
+    if (verification.success !== true) {
+      console.warn('Google reCAPTCHA rejected the token', {
+        expectedAction,
+        success: verification.success,
+        hostname: verification.hostname,
+        errorCodes,
+      });
+
+      throw new AppError(
+        invalidSecret ? status.SERVICE_UNAVAILABLE : status.BAD_REQUEST,
+        invalidSecret
+          ? 'reCAPTCHA secret key is invalid or missing'
+          : 'reCAPTCHA token was rejected. Please try again',
+      );
+    }
+
+    if (verification.action !== expectedAction) {
+      console.warn('Google reCAPTCHA action did not match', {
+        expectedAction,
+        actualAction: verification.action,
+        hostname: verification.hostname,
+      });
+      throw new AppError(status.BAD_REQUEST, 'reCAPTCHA action mismatch. Please try again');
+    }
+
+    if (typeof verification.score !== 'number' || verification.score < 0.5) {
+      console.warn('Google reCAPTCHA score was below the accepted threshold', {
+        expectedAction,
+        score: verification.score,
+        hostname: verification.hostname,
+      });
+      throw new AppError(status.BAD_REQUEST, 'reCAPTCHA score was too low. Please try again');
+    }
+  }
+
   async registerUser(payload: IRegisterUserPayload) {
     const { name, email, password, role } = payload;
 

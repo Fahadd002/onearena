@@ -9,7 +9,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { toNodeHandler } from 'better-auth/node';
 import cookieParser from 'cookie-parser';
 import cron from 'node-cron';
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import path from 'path';
 import qs from 'qs';
 import { AppModule } from './app.module';
@@ -71,6 +71,22 @@ async function bootstrap() {
   });
 
   // better-auth must be mounted before JSON body parsing (same as Express app.ts)
+  expressApp.use('/api/auth', (req: Request, res: Response, next: NextFunction) => {
+    if (
+      req.method === 'POST' &&
+      (req.path === '/sign-in/email' || req.path === '/sign-up/email')
+    ) {
+      res.status(403).json({
+        success: false,
+        message: 'Use the CAPTCHA-protected authentication endpoint',
+        meta: null,
+        data: null,
+      });
+      return;
+    }
+
+    next();
+  });
   expressApp.use('/api/auth', toNodeHandler(auth));
 
   expressApp.use(express.urlencoded({ extended: true }));
