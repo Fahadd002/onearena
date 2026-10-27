@@ -178,3 +178,81 @@ export async function verifyAdvancePaymentAction(
     return { success: false, message: errorMessage(error, "Failed to verify advance payment") };
   }
 }
+
+// ----------------------------------------------------------------
+// Admin: create a user + create a booking on behalf of a user
+// ----------------------------------------------------------------
+const createUserByAdminSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+});
+
+const adminBookingAdvanceSchema = z.object({
+  method: z.string().min(1, "Payment method is required"),
+  amount: z.number().min(0.01, "Amount must be greater than 0"),
+  senderMobile: z.string().optional(),
+  transactionId: z.string().optional(),
+  reference: z.string().optional(),
+  note: z.string().optional(),
+});
+
+const adminBookingSchema = z.object({
+  userId: z.string().min(1, "User is required"),
+  slotIds: z.array(z.string().min(1)).min(1, "At least one slot is required"),
+  discountAmount: z.number().min(0).optional(),
+  mobile: z.string().optional(),
+  advancePayment: adminBookingAdvanceSchema.optional(),
+});
+
+export type CreateUserByAdminPayload = z.infer<typeof createUserByAdminSchema>;
+export type AdminBookingAdvancePayload = z.infer<typeof adminBookingAdvanceSchema>;
+export type AdminBookingPayload = z.infer<typeof adminBookingSchema>;
+
+export interface CreatedUser {
+  id: string;
+  name: string;
+  email: string | null;
+  phoneNumber: string | null;
+  tempPassword?: string | null;
+}
+
+export interface CreatedBooking {
+  id: string;
+  bookingNumber: string;
+}
+
+export async function createUserByAdminAction(
+  payload: CreateUserByAdminPayload
+): Promise<ApiResponse<CreatedUser> | ApiErrorResponse> {
+  const parsed = createUserByAdminSchema.safeParse(payload);
+  if (!parsed.success) {
+    return { success: false, message: parsed.error.issues[0]?.message || "Invalid user data" };
+  }
+  try {
+    const response = await httpClient.post<CreatedUser>(
+      API_ENDPOINTS.marketplace.usersByPhone,
+      parsed.data
+    );
+    return response;
+  } catch (error: any) {
+    return { success: false, message: errorMessage(error, "Failed to create user") };
+  }
+}
+
+export async function createBookingByAdminAction(
+  payload: AdminBookingPayload
+): Promise<ApiResponse<CreatedBooking> | ApiErrorResponse> {
+  const parsed = adminBookingSchema.safeParse(payload);
+  if (!parsed.success) {
+    return { success: false, message: parsed.error.issues[0]?.message || "Invalid booking data" };
+  }
+  try {
+    const response = await httpClient.post<CreatedBooking>(
+      API_ENDPOINTS.marketplace.adminBookings,
+      parsed.data
+    );
+    return response;
+  } catch (error: any) {
+    return { success: false, message: errorMessage(error, "Failed to create booking") };
+  }
+}

@@ -1,17 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import { getDefaultDashboardRoute, isValidRedirectForRole, UserRole } from "@/lib/authUtils";
 import { httpClient } from "@/lib/axios/httpClient";
+import { API_ENDPOINTS } from "@/lib/api/config";
 import { setTokenInCookies } from "@/lib/token.ulits";
 import { ApiErrorResponse } from "@/types/api.type";
-import { ILoginResponse } from "@/types/auth.type";
+import { IEmailSetupRequiredResponse, ILoginResponse } from "@/types/auth.type";
 import { ILoginPayload, loginZodSchema } from "@/zod/auth.validation";
 
 export const loginAction = async (
     payload : ILoginPayload & { rememberMe?: boolean },
     redirectPath ?: string
-) : Promise<(ILoginResponse & { redirectPath: string }) | ApiErrorResponse> => {
+) : Promise<((ILoginResponse | IEmailSetupRequiredResponse) & { redirectPath: string }) | ApiErrorResponse> => {
     const { rememberMe = true, ...credentials } = payload;
     const parsedPayload = loginZodSchema.safeParse(credentials);
 
@@ -24,7 +24,17 @@ export const loginAction = async (
     }
 
     try {
-        const response = await httpClient.post<ILoginResponse>("/auth/login", parsedPayload.data);
+        const response = await httpClient.post<ILoginResponse | IEmailSetupRequiredResponse>(
+            API_ENDPOINTS.auth.login,
+            parsedPayload.data,
+        );
+
+        if ("needsEmailSetup" in response.data) {
+            return {
+                ...response.data,
+                redirectPath: `/email-setup?phone=${encodeURIComponent(response.data.phone)}`,
+            };
+        }
 
         const { accessToken, refreshToken, token, user } = response.data;
         const { role, emailVerified, needPasswordChange, email } = user;
@@ -34,7 +44,7 @@ export const loginAction = async (
         await setTokenInCookies("better-auth.session_token", token, rememberMe ? 24 * 60 * 60 : undefined, rememberMe);
 
         const targetPath = !emailVerified
-            ? `/verify-email?email=${email}`
+            ? `/verify-email?email=${encodeURIComponent(email)}`
             : needPasswordChange
                 ? `/reset-password?email=${email}`
                 : redirectPath && isValidRedirectForRole(redirectPath, role as UserRole)
@@ -45,10 +55,14 @@ export const loginAction = async (
             ...response.data,
             redirectPath: targetPath,
         };
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const apiError = error as {
+            response?: { data?: { message?: string } };
+            message?: string;
+        };
         const message =
-            error?.response?.data?.message ||
-            error?.message ||
+            apiError.response?.data?.message ||
+            apiError.message ||
             "Unknown error";
 
         return {

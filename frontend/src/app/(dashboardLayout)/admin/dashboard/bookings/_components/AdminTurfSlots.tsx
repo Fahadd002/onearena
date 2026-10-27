@@ -156,13 +156,13 @@ export function AdminTurfSlots({ turf, date, bucket, cart, toggle }: Props) {
         </div>
         <div className="absolute inset-y-0 left-0 z-40 flex items-center justify-between w-full px-2 pointer-events-none">
           {edges.left && (
-            <button type="button" aria-label="Scroll slots left" onClick={() => scrollSlots("left")} className="pointer-events-auto z-40 flex size-7 items-center justify-center rounded-full border border-border/60 bg-card shadow-sm">
-              <ChevronLeft className="size-3.5" />
+            <button type="button" aria-label="Scroll slots left" onClick={() => scrollSlots("left")} className="pointer-events-auto z-40 flex size-7 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm">
+              <ChevronLeft className="size-4 stroke-[2.5]" />
             </button>
           )}
           {edges.right && (
-            <button type="button" aria-label="Scroll slots right" onClick={() => scrollSlots("right")} className="pointer-events-auto z-40 flex size-7 items-center justify-center rounded-full border border-border/60 bg-card shadow-sm">
-              <ChevronRight className="size-3.5" />
+            <button type="button" aria-label="Scroll slots right" onClick={() => scrollSlots("right")} className="pointer-events-auto z-40 flex size-7 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm">
+              <ChevronRight className="size-4 stroke-[2.5]" />
             </button>
           )}
         </div>

@@ -40,7 +40,7 @@ export default function LoginForm({ redirectPath }: LoginFormProps) {
   };
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: (payload: { email: string; password: string }) =>
+    mutationFn: (payload: { email: string; password: string; phoneNumber?: string }) =>
       loginAction(payload, redirectPath),
   });
 
@@ -59,6 +59,12 @@ export default function LoginForm({ redirectPath }: LoginFormProps) {
           const message = result.message || "Login failed";
           setServerError(message);
           toast.error(message);
+          return;
+        }
+
+        if ("needsEmailSetup" in result && result.needsEmailSetup) {
+          toast.info("Complete your email and password setup to secure your account");
+          router.push(result.redirectPath);
           return;
         }
 
@@ -177,13 +183,13 @@ export default function LoginForm({ redirectPath }: LoginFormProps) {
                   >
                     {(field) => (
                       <div className="space-y-1.5">
-                        <Label htmlFor={field.name} className="text-sm">Email address</Label>
+                        <Label htmlFor={field.name} className="text-sm">Email or phone number</Label>
                         <div className="relative">
                           <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                           <Input
                             id={field.name}
-                            type="email"
-                            placeholder="you@example.com"
+                            type="text"
+                            placeholder="Email or phone number"
                             className="h-10 pl-10"
                             value={field.state.value}
                             onChange={(e) => field.handleChange(e.target.value)}

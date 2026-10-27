@@ -23,24 +23,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { formatTimeWithPeriod } from "@/lib/time-utils";
-import { cn } from "@/lib/utils";
 import { SlotCountCell } from "@/components/bookings/SlotCountCell";
 import {
   bookingSlots,
   bookingTurfNames,
-  formatBookingDate,
-  groupSlotsByDate,
-  slotStatusLabel,
-  slotStatusStyle,
 } from "@/lib/booking-utils";
 import { useSort } from "@/hooks/useSort";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearch } from "@/context/SearchContext";
 import { toast } from "sonner";
-import { Calendar, Check, Eye, ArrowRight, AlertCircle, Plus } from "lucide-react";
+import { Eye, ArrowRight, Plus } from "lucide-react";
 import { httpClient } from "@/lib/axios/httpClient";
-import { AdminBookingDrawer } from "./_components/AdminBookingDrawer";
 import { API_ENDPOINTS } from "@/lib/api/config";
 import {
   confirmBookingAction,
@@ -52,6 +45,7 @@ import {
   type PaymentStatusValue,
 } from "./_actions";
 import BookingCofirmationDrawer from "./_components/BookingCofirmationDrawer";
+import { AdminBookingDrawer } from "./_components/AdminBookingDrawer";
 
 const ALL = "ALL";
 
@@ -359,7 +353,7 @@ export default function AdminBookingsPage() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle>All Bookings</CardTitle>
             <div className="flex flex-wrap items-center gap-3">
-              <Button variant="outline" className="h-8" onClick={() => setTurfDrawerOpen(true)}>
+              <Button variant="outline" className="h-8" onClick={() => setTurfDrawerOpen(true)} disabled={isLoadingBookings}>
                 <Plus className="mr-1.5 h-4 w-4" />
                 Book Slot
               </Button>
@@ -641,7 +635,7 @@ export default function AdminBookingsPage() {
         onVerifyAdvance={handleVerifyAdvance}
         verifyAdvancePending={verifyAdvancePaymentMutation.isPending}
       />
-   
+
       <AdminBookingDrawer isOpen={turfDrawerOpen} onClose={() => setTurfDrawerOpen(false)} turfs={turfs} />
     </section>
   );

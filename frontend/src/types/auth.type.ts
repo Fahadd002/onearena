@@ -28,6 +28,11 @@ export interface ILoginResponse {
     }
 }
 
+export interface IEmailSetupRequiredResponse {
+    needsEmailSetup: true;
+    phone: string;
+}
+
 
 export interface IRegisterResponse {
     success: boolean;

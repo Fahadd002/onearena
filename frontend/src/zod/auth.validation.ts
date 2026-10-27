@@ -2,13 +2,8 @@ import { z } from "zod";
 
 // --- Login ---
 export const loginZodSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string()
-    .min(6, "Password must be at least 6 characters long")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number")
-    .regex(/[@$!%*?&]/, "Password must contain at least one special character (@, $, !, %, *, ?, &)"),
+  email: z.string().min(1, "Email or phone is required"),
+  password: z.string().min(1, "Password is required"),
 });
 export type ILoginPayload = z.infer<typeof loginZodSchema>;
 
@@ -31,6 +26,17 @@ export const registerZodSchema = registerBaseSchema.refine(
 );
 
 export type IRegisterPayload = z.infer<typeof registerZodSchema>;
+
+export const emailSetupZodSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  currentPassword: z.string().min(1, "Current password is required"),
+  newPassword: registerBaseSchema.shape.password,
+  confirmPassword: z.string(),
+}).refine(
+  (data) => data.newPassword === data.confirmPassword,
+  { message: "Passwords don't match", path: ["confirmPassword"] }
+);
+export type IEmailSetupPayload = z.infer<typeof emailSetupZodSchema>;
 
 export const verifyEmailZodSchema = z.object({
   email: z.string().email("Invalid email address"),
