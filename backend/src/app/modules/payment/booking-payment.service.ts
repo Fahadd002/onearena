@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import type Stripe from 'stripe';
 import httpStatus from 'http-status';
 import { PaymentStatus, UserRole, PaymentType, PaymentMethod } from '../../../generated/prisma/enums';
 import { Prisma } from '../../../generated/prisma/client';
 import AppError from '../../../config/errorHelpers/AppError';
 import prisma from '../../../shared/prisma';
-import { stripe } from '../../helpers/stripe';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
 import { nextDocumentNumber } from '../../utils/document-number';
 import { InvoiceService } from '../invoice/invoice.service';
@@ -46,137 +44,6 @@ export class BookingPaymentService {
     });
   }
 
-  async checkout(user: IRequestUser, bookingId: string) {
-    const booking = await prisma.booking.findUnique({
-      where: { id: bookingId },
-      include: {
-        invoice: true,
-        bookingSlots: { include: { slot: { include: { turf: true } } } },
-      },
-    });
-
-    if (!booking || booking.userId !== user.userId) {
-      throw new AppError(httpStatus.NOT_FOUND, 'Booking not found');
-    }
-
-    const primarySlot = booking.bookingSlots[0]?.slot ?? null;
-
-    if (!booking.invoice) {
-      throw new AppError(
-        httpStatus.BAD_REQUEST,
-        'No invoice found for this booking. Booking must be confirmed first.'
-      );
-    }
-
-    if (booking.invoice.isFullPaid) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Invoice is already fully paid');
-    }
-
-    const payment = await prisma.payment.findFirst({
-      where: { invoiceId: booking.invoice.id },
-    });
-
-    if (!payment) {
-      throw new AppError(httpStatus.NOT_FOUND, 'Payment not found');
-    }
-
-    if (payment.status !== PaymentStatus.UNPAID) {
-      return payment;
-    }
-
-    const session = await stripe.checkout.sessions.create(
-      {
-        mode: 'payment',
-        line_items: [
-          {
-            price_data: {
-              currency: 'bdt',
-              product_data: { name: primarySlot?.turf?.name ?? 'Turf Booking' },
-              unit_amount: Math.round(Number(payment.amount) * 100),
-            },
-            quantity: 1,
-          },
-        ],
-        success_url: `${process.env.FRONTEND_URL}/user/dashboard/payment/success?bookingId=${bookingId}`,
-        cancel_url: `${process.env.FRONTEND_URL}/user/dashboard/payment/cancel?bookingId=${bookingId}`,
-        metadata: { bookingId, paymentId: payment.id },
-      },
-      { idempotencyKey: `checkout-${payment.id}` }
-    );
-
-    const paymentRecord = await prisma.payment.update({
-      where: { id: payment.id },
-      data: { checkoutSessionId: session.id },
-    });
-
-    return { ...paymentRecord, checkoutUrl: session.url };
-  }
-
-  async webhook(payload: Buffer, signature: string) {
-    let event: Stripe.Event;
-
-    try {
-      event = stripe.webhooks.constructEvent(
-        payload,
-        signature,
-        process.env.STRIPE_WEBHOOK_SECRET as string
-      );
-    } catch {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Invalid Stripe webhook signature');
-    }
-
-    if (event.type !== 'checkout.session.completed') {
-      return { received: true };
-    }
-
-    const session = event.data.object as Stripe.Checkout.Session;
-    const paymentId = session.metadata?.paymentId;
-    const bookingId = session.metadata?.bookingId;
-
-    if (!paymentId || !bookingId) {
-      return { received: true };
-    }
-
-    return prisma.$transaction(async (tx) => {
-      const payment = await tx.payment.findUnique({
-        where: { id: paymentId },
-        include: { invoice: { include: { booking: true } } },
-      });
-
-      if (!payment || payment.rawEventId === event.id) {
-        return { received: true };
-      }
-
-      await tx.payment.update({
-        where: { id: paymentId },
-        data: {
-          status: PaymentStatus.SUCCEEDED,
-          checkoutSessionId: session.id,
-          rawEventId: event.id,
-          paidAt: new Date(),
-        },
-      });
-
-      if (payment.invoice) {
-        const invoice = await this.invoiceService.getInvoiceWithPayments(tx, payment.invoiceId);
-        if (invoice) {
-          const successfulPayments = filterSuccessfulPayments(invoice.payments);
-          const totals = computeInvoiceTotals(successfulPayments, invoice.totalAmount);
-
-          await tx.invoice.update({
-            where: { id: payment.invoiceId },
-            data: {
-              paidAmount: totals.paidAmount,
-              status: totals.status,
-              isFullPaid: totals.isFullPaid,
-            },
-          });
-        }
-      }
-
-      return { received: true };
-    });
-  }
 
   async manualPayment(
     user: IRequestUser,

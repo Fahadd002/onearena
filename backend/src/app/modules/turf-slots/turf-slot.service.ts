@@ -44,9 +44,29 @@ export class TurfSlotService {
     return { count: result.count };
   }
 
-  // =========================
-  // Core helpers
-  // =========================
+  // async UpdateExpireSlots() {
+  //   const now = new Date();
+    
+  //   const slots = await prisma.turfSlot.findMany({
+  //     where: { slotStatus: SlotSatus.AVAILABLE },
+  //     select: { id: true, slotDate: true, endMinute: true },
+  //   });
+
+  //   const expiredIds = slots
+  //     .filter((s) => {
+  //       const end = new Date(s.slotDate);
+  //       end.setHours(Math.floor(s.endMinute / 60), s.endMinute % 60, 0, 0);
+  //       return end <= now;
+  //     })
+  //     .map((s) => s.id);
+  //   if (expiredIds.length === 0) return { count: 0 };
+  //   const result = await prisma.turfSlot.updateMany({
+  //     where: { id: { in: expiredIds } },
+  //     data: { slotStatus: SlotSatus.EXPIRED },
+  //   });
+  //   return { count: result.count };
+  // }
+
 
   private async getOwnerSlotTimeSetups(
     ownerId: string,

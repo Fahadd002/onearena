@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Patch,
@@ -55,14 +54,6 @@ export class TurfController {
   async updateStatus(@Param('id') id: string, @Body('status') nextStatus: string, @Res() res: Response) {
     const data = await this.turfService.updateStatus(id, nextStatus);
     sendResponse(res, { statusCode: status.OK, success: true, message: 'Turf status updated successfully', data });
-  }
-
-  @Delete('super-admin/turfs/:id')
-  @AuthRoles(UserRole.SUPER_ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async removeForAdmin(@Param('id') id: string, @Res() res: Response) {
-    const data = await this.turfService.deleteForAdmin(id);
-    sendResponse(res, { statusCode: status.OK, success: true, message: 'Turf removed successfully', data });
   }
 
   @Get('turfs')
@@ -156,24 +147,6 @@ export class TurfController {
     });
   }
 
-  @Delete('owner/turfs/:id')
-  @AuthRoles(UserRole.ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async remove(
-    @CurrentUser() user: IRequestUser,
-    @Param('id') id: string,
-    @Res() res: Response,
-  ) {
-    const data =
-      await this.turfService.delete(user, id);
-
-    sendResponse(res, {
-      statusCode: status.OK,
-      success: true,
-      message: 'Turf deleted successfully',
-      data,
-    });
-  }
 
   @Get('owner/turfs')
   @AuthRoles(UserRole.ADMIN)

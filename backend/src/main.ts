@@ -34,10 +34,16 @@ function registerCronJobs(app: NestExpressApplication) {
   });
 
   // Deactivate turfs of inactive subscriptions: once on startup, then hourly
-  const deactivateTurfs = () =>
-    turfService.deactivateTurfsForInactiveSubscriptions().catch(() => undefined);
+  const deactivateTurfs = () =>turfService.deactivateTurfsForInactiveSubscriptions().catch(() => undefined);
+  
   deactivateTurfs();
+  
   cron.schedule('0 * * * *', deactivateTurfs);
+
+  // Hourly: expire AVAILABLE slots whose end time has passed (Dhaka)
+  // cron.schedule('0 * * * *', () => turfSlotService.UpdateExpireSlots().catch(() => undefined), {
+  //   timezone: CRON_TZ,
+  // });
 
   // Daily rolling slot generation (midnight, Dhaka)
   cron.schedule('0 0 * * *', () => turfSlotService.generateRollingSlots(CRON_TZ).catch(() => undefined), {
@@ -56,8 +62,8 @@ async function bootstrap() {
 
   expressApp.set('query parser', (str: string) => qs.parse(str));
   app.setViewEngine('ejs');
-  
-  const templatePath = config.env == 'production' ? 'dist/app/templates': 'src/app/templates';
+
+  const templatePath = config.env == 'production' ? 'dist/app/templates' : 'src/app/templates';
   app.setBaseViewsDir(path.resolve(process.cwd(), templatePath));
   app.enableCors({
     origin: [
@@ -90,7 +96,7 @@ async function bootstrap() {
   expressApp.use('/api/auth', toNodeHandler(auth));
 
   expressApp.use(express.urlencoded({ extended: true }));
-  expressApp.use('/api/v1/payments/stripe/webhook', express.raw({ type: 'application/json' }));
+  // expressApp.use('/api/v1/payments/stripe/webhook', express.raw({ type: 'application/json' }));
   expressApp.use(express.json());
   expressApp.use(cookieParser());
   expressApp.use(express.urlencoded({ extended: true }));
@@ -108,7 +114,7 @@ async function bootstrap() {
     });
   });
 
-  const port = Number(config.port) || 5000;
+  const port = Number(config.port) || 4000;
   await app.listen(port);
   registerCronJobs(app);
   console.log(`🚀 Server is running on http://localhost:${port}`);

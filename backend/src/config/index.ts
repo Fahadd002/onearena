@@ -7,8 +7,7 @@ export default {
     env: process.env.NODE_ENV,
     port: process.env.PORT,
     timezone: process.env.TIMEZONE,
-    stripeSecretKey: process.env.STRIPE_SECRET_KEY,
-    stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+  
     salt_round: process.env.SALT_ROUND,
     openRouterApiKey: process.env.OPENROUTER_API_KEY,
     betterAuthUrl: process.env.BETTER_AUTH_URL as string,
@@ -18,6 +17,7 @@ export default {
     cookieSameSite: process.env.COOKIE_SAME_SITE === 'none' ? ('none' as const) : ('lax' as const),
     betterAuthtSecret: process.env.BETTER_AUTH_SECRET,
     recaptchaSecretKey: process.env.RECAPTCHA_SECRET_KEY,
+
     accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
     refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
     accessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
@@ -33,11 +33,7 @@ export default {
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     googleCallbackUrl: process.env.GOOGLE_CALLBACK_URL as string,
     bookingPaymentTimeout: process.env.BOOKING_PAYMENT_TIMEOUT_MINUTES,
-    bookingAdvancePercentage: process.env.BOOKING_ADVANCE_PERCENTAGE,
-    stripe: {
-        secretKey: process.env.STRIPE_SECRET_KEY,
-        webhookSecret: process.env.STRIPE_WEBHOOK_SECRET
-    },
+   
     jwt: {
         jwt_secret: process.env.JWT_SECRET,
         expires_in: process.env.EXPIRES_IN,
@@ -50,10 +46,5 @@ export default {
         email: process.env.EMAIL,
         app_pass: process.env.APP_PASS
     },
-    cloudinary: {
-        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-        api_key: process.env.CLOUDINARY_API_KEY,
-        api_secret: process.env.CLOUDINARY_API_SECRET
-    }
 
 }

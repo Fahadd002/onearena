@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import status from 'http-status';
 import { Prisma } from '../../../generated/prisma/client';
-import { PaymentMethod, SubscriptionStatus, TurfStatus, UserRole } from '../../../generated/prisma/enums';
+import { PaymentMethod, SlotSatus, SubscriptionStatus, TurfStatus, UserRole } from '../../../generated/prisma/enums';
 
 import AppError from '../../../config/errorHelpers/AppError';
-import { deleteFiles } from '../../helpers/file';
 import prisma from '../../../shared/prisma';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
 
@@ -218,7 +217,7 @@ export class TurfService {
     }) {
     const page = Math.max(1, query.page ?? 1);
     const limit = Math.min(50, Math.max(1, query.limit ?? 10));
-    // console.log('User: ', user)
+
     // owners with active subscription
     const subs = await prisma.subscription.findMany({
       where: { status: { in: [SubscriptionStatus.ACTIVE, SubscriptionStatus.FREE_TRIAL] } },
@@ -255,7 +254,7 @@ export class TurfService {
       images: { orderBy: { sortOrder: "asc" as const } },
       facilities: { select: { facility: { select: { name: true } } } },
       slots: {
-        where: { slotDate: { equals: targetDate }, active: true },
+        where: { slotDate: { equals: targetDate }, slotStatus: { not: SlotSatus.EXPIRED }, active: true },
         orderBy: { startMinute: "asc" as const },
       },
     };
@@ -498,37 +497,5 @@ export class TurfService {
         include: { paymentPhoneNumbers: true },
       });
     });
-  }
-
-  async delete(owner: IRequestUser, id: string) {
-    const turf = await prisma.turf.findFirst({
-      where: { id, ownerId: owner.userId },
-    });
-
-    if (!turf) {
-      throw new AppError(status.NOT_FOUND, 'Turf not found');
-    }
-
-    await this.deleteTurfImageFiles(id);
-
-    return prisma.turf.delete({ where: { id } });
-  }
-
-  async deleteForAdmin(id: string) {
-    const turf = await prisma.turf.findUnique({ where: { id } });
-    if (!turf) throw new AppError(status.NOT_FOUND, 'Turf not found');
-
-    await this.deleteTurfImageFiles(id);
-
-    return prisma.turf.delete({ where: { id } });
-  }
-
-  private async deleteTurfImageFiles(turfId: string) {
-    const images = await prisma.turfImage.findMany({
-      where: { turfId },
-      select: { url: true },
-    });
-
-    deleteFiles(images.map((image) => image.url));
   }
 }

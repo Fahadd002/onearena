@@ -227,7 +227,7 @@ export class AuthService {
           password,
         }))
       ) {
-        throw new AppError(status.UNAUTHORIZED, 'Invalid email or password');
+        throw new AppError(status.UNAUTHORIZED, 'Invalid password');
       }
 
       return { needsEmailSetup: true, phone: user.phoneNumber ?? '' };

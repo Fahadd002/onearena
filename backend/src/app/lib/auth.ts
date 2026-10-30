@@ -131,7 +131,7 @@ export const auth = betterAuth({
         signIn: `${config.betterAuthUrl}/api/v1/auth/google/success`,
     },
 
-    trustedOrigins: [config.betterAuthUrl, config.frontendUrl as string],
+    trustedOrigins: [config.betterAuthUrl, config.frontendUrl as string, config.nonWWWUrl as string],
 
     advanced: {
         useSecureCookies: config.cookieSecure,

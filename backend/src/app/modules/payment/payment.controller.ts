@@ -1,5 +1,5 @@
-import { Controller, Get, Headers, Param, Patch, Post, Req, Res, UseGuards, Body } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Controller, Get, Param, Patch, Post, Res, UseGuards, Body } from '@nestjs/common';
+import { Response } from 'express';
 import status from 'http-status';
 import { AuthRoles } from '../../../common/decorators/auth-roles.decorator';
 import { CurrentUser } from '../../../common/decorators/current-user.decorator';
@@ -17,23 +17,6 @@ export class PaymentController {
     private readonly subscriptionPaymentService: SubscriptionPaymentService
   ) { }
 
-  @Post('bookings/:bookingId/checkout')
-  @AuthRoles(UserRole.USER, UserRole.ADMIN, UserRole.MANAGER)
-  @UseGuards(CheckAuthGuard)
-  async checkout(
-    @CurrentUser() user: IRequestUser,
-    @Param('bookingId') id: string,
-    @Res() res: Response,
-  ) {
-    const data = await this.bookingPaymentService.checkout(user, id);
-    sendResponse(res, {
-      statusCode: status.OK,
-      success: true,
-      message: 'Checkout session created successfully',
-      data,
-    });
-  }
-
   @Post('bookings/:bookingId/manual-payment')
   @AuthRoles(UserRole.ADMIN, UserRole.MANAGER, UserRole.SUPER_ADMIN)
   @UseGuards(CheckAuthGuard)
@@ -48,21 +31,6 @@ export class PaymentController {
       statusCode: status.CREATED,
       success: true,
       message: 'Manual payment recorded successfully',
-      data,
-    });
-  }
-
-  @Post('payments/stripe/webhook')
-  async webhook(
-    @Req() req: Request,
-    @Headers('stripe-signature') signature: string,
-    @Res() res: Response,
-  ) {
-    const data = await this.bookingPaymentService.webhook(req.body as Buffer, signature);
-    sendResponse(res, {
-      statusCode: status.OK,
-      success: true,
-      message: 'Webhook received',
       data,
     });
   }

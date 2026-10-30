@@ -633,6 +633,7 @@ export class SubscriptionService {
             OR: [
               { name: { contains: options.search, mode: "insensitive" } },
               { email: { contains: options.search, mode: "insensitive" } },
+              { ownerProfile: { companyName: { contains: options.search, mode: "insensitive" } } }
             ],
           },
         }
@@ -661,7 +662,7 @@ export class SubscriptionService {
           startDate: true,
           endDate: true,
           user: {
-            select: { name: true, email: true, ownerProfile: { select: { companyName: true } } },
+            select: { name: true, email: true, ownedTurfs:{ select: {name: true}}, ownerProfile: { select: { companyName: true } } },
           },
           plan: {
             select: { name: true },
@@ -673,7 +674,6 @@ export class SubscriptionService {
             take: 1,
             select: {
               period: true,
-              
               invoice: {
                 select: {
                   invoiceNumber: true,
@@ -712,10 +712,10 @@ export class SubscriptionService {
       const paidTotal = (invoice?.payments ?? []).filter((payment) => payment.status === PaymentStatus.PAID || PaymentStatus.PROCESSING).reduce((sum, payment) => sum + Number(payment.amount), 0);
       const outstanding = invoice ? Math.max(0, Number(invoice.totalAmount) - paidTotal) : 0;
 
-       const { ownerProfile, ...userRest } = (sub.user ?? {}) as any;
+       const { ownerProfile, ownedTurfs, ...userRest } = (sub.user ?? {}) as any;
        return {
          ...rest,
-         user: { ...userRest, companyName: ownerProfile?.companyName ?? null },
+         user: { ...userRest, companyName: ownerProfile?.companyName ?? null, ownedTurfs: (ownedTurfs ?? []).map((t: any) => t.name) },
          latestLog,
          invoice,
          outstanding,
