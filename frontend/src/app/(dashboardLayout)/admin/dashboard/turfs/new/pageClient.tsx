@@ -22,7 +22,6 @@ import { turfZodSchema } from "@/zod/auth.validation";
 import {
   assignTurfFacilitiesAction,
   createTurfAction,
-  deleteTurfAction,
   deleteTurfImageAction,
   uploadTurfImagesAction,
   updateTurfAction,
@@ -215,7 +214,6 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
       } catch (error: unknown) {
         if (createdTurfId) {
           try {
-            await deleteTurfAction(createdTurfId);
           } catch (cleanupError) {
             console.error("Could not roll back turf creation", cleanupError);
           }
@@ -369,7 +367,7 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
   }
 
   return (
-    <section className="dashboard-section mx-auto max-w-5xl space-y-3">
+    <section className="dashboard-section space-y-3">
       {/* Header */}
       <div className="flex items-center gap-2.5">
         <Button

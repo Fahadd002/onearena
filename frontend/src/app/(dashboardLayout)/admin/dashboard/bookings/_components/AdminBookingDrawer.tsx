@@ -60,6 +60,7 @@ export function AdminBookingDrawer({ isOpen, onClose, todayISO }: Props) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newUser, setNewUser] = useState({ name: "", phoneNumber: "" });
+  const [newUserPhoneError, setNewUserPhoneError] = useState<string | null>(null);
   const [tempPassword, setTempPassword] = useState<string | null>(null);
   const trimmedSearch = searchTerm.trim();
 
@@ -160,7 +161,10 @@ export function AdminBookingDrawer({ isOpen, onClose, todayISO }: Props) {
   const baseTotal = picked.reduce((sum, p) => sum + p.price, 0);
   const discountValue = Math.max(0, Math.min(Number(discount) || 0, baseTotal));
   const grandTotal = baseTotal - discountValue;
-  const suggestedAdvanceTotal = Math.min(ADVANCE_PER_SLOT * picked.length, grandTotal);
+  const perSlotAdvance = pickedTurf?.allowAdvancePayment
+  ? Number(pickedTurf.advancePaymentAmount) || ADVANCE_PER_SLOT
+  : ADVANCE_PER_SLOT;
+const suggestedAdvanceTotal = Math.min(perSlotAdvance * picked.length, grandTotal);
   const effectiveMethod = advanceMethod || pickDefaultPaymentMethod();
   const isCash = effectiveMethod === "CASH";
   const paymentAmount = Math.max(0, Math.min(Number(advanceAmount) || 0, grandTotal));
@@ -185,7 +189,7 @@ export function AdminBookingDrawer({ isOpen, onClose, todayISO }: Props) {
     if (paymentAmount <= 0) err = "Amount received must be greater than 0";
     else if (paymentAmount > grandTotal) err = "Amount cannot exceed booking total";
     else if (!isCash) {
-      if (validateBangladeshiMobile(sender)) err = "Enter a valid sender mobile number";
+      if (validateBangladeshiMobile(sender)) err = validateBangladeshiMobile(sender) as string;
       else if (txn.length < 4 || txn.length > 64) err = "Enter a valid transaction number";
     }
     setAdvanceError(err);
@@ -226,7 +230,8 @@ export function AdminBookingDrawer({ isOpen, onClose, todayISO }: Props) {
     setSearchTerm("");
     setSearchOpen(false);
     setShowCreateForm(false);
-    setNewUser({ name: "", phoneNumber: "" });
+setNewUser({ name: "", phoneNumber: "" });
+    setNewUserPhoneError(null);
     setTempPassword(null);
     setPicked([]);
     setDiscount("0");
@@ -412,7 +417,7 @@ export function AdminBookingDrawer({ isOpen, onClose, todayISO }: Props) {
                                 <div className="space-y-3 p-4 text-center">
                                   <p className="text-sm text-muted-foreground">No user found</p>
                                   <Button
-                                    type="button" size="sm"
+                                    type="button" size="sm" variant="hero" className="shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5"
                                     onClick={() => { setNewUser({ name: "", phoneNumber: "" }); setTempPassword(null); setShowCreateForm(true); setSearchOpen(false); }}
                                   >
                                     <UserPlus className="mr-1.5 size-3.5" /> Create New User
@@ -431,7 +436,8 @@ export function AdminBookingDrawer({ isOpen, onClose, todayISO }: Props) {
                             </div>
                             <div className="space-y-2">
                               <Input placeholder="Full name" value={newUser.name} onChange={(e) => setNewUser({ ...newUser, name: e.target.value })} />
-                              <Input placeholder="Phone number" value={newUser.phoneNumber} onChange={(e) => setNewUser({ ...newUser, phoneNumber: e.target.value })} />
+                              <Input placeholder="Phone number" value={newUser.phoneNumber} onChange={(e) => { setNewUser({ ...newUser, phoneNumber: e.target.value }); setNewUserPhoneError(validateBangladeshiMobile(e.target.value)); }} />
+                              {newUserPhoneError && <p className="text-xs text-destructive">{newUserPhoneError}</p>}
                             </div>
                             {tempPassword && (
                               <div className="flex items-center justify-between gap-2 rounded-md border border-primary/40 bg-primary/5 px-3 py-2">
@@ -445,8 +451,8 @@ export function AdminBookingDrawer({ isOpen, onClose, todayISO }: Props) {
                               </div>
                             )}
                             <div className="flex gap-2">
-                              <Button size="sm" onClick={() => createUserMutation.mutate()} disabled={!newUser.name || !newUser.phoneNumber || createUserMutation.isPending}>
-                                {createUserMutation.isPending && <Loader2 className="mr-1.5 size-3.5 animate-spin" />} Create
+                              <Button size="sm" variant="hero" className="shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5" onClick={() => createUserMutation.mutate()} disabled={!newUser.name || !newUser.phoneNumber || !!newUserPhoneError || createUserMutation.isPending}>
+                                {createUserMutation.isPending && <Loader2 className="mr-1.5 size-3.5 animate-spin" />} Create New User
                               </Button>
                               <Button size="sm" variant="outline" onClick={() => { setShowCreateForm(false); setTempPassword(null); }}>Cancel</Button>
                             </div>
@@ -637,22 +643,22 @@ export function AdminBookingDrawer({ isOpen, onClose, todayISO }: Props) {
 
                 <div className="flex shrink-0 gap-2">
                   {step > 0 && (
-                    <Button size="sm" variant="outline" onClick={() => setStep((s) => (s - 1) as 0 | 1 | 2)}>
+                    <Button size="sm" variant="hero" className="shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5" onClick={() => setStep((s) => (s - 1) as 0 | 1 | 2)}>
                       <ChevronLeft className="mr-1 size-3.5" /> Back
                     </Button>
                   )}
                   {step === 0 && (
-                    <Button size="sm" variant="default" disabled={!selectedUser} onClick={() => setStep(1)}>
+                    <Button size="sm" variant="hero" className="shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5" disabled={!selectedUser} onClick={() => setStep(1)}>
                       Next <ChevronRight className="ml-1 size-3.5" />
                     </Button>
                   )}
                   {step === 1 && (
-                    <Button size="sm" variant="default" disabled={!canNext} onClick={() => setStep(2)}>
+                    <Button size="sm" variant="hero" className="shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5" disabled={!canNext} onClick={() => setStep(2)}>
                       Next <ChevronRight className="ml-1 size-3.5" />
                     </Button>
                   )}
                   {step === 2 && (
-                    <Button size="sm" variant="default" onClick={() => bookingMutation.mutate()} disabled={bookingMutation.isPending || (advanceEnabled && !advance)}>
+                    <Button size="sm" variant="hero" className="shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5" onClick={() => bookingMutation.mutate()} disabled={bookingMutation.isPending || (advanceEnabled && !advance)}>
                       {bookingMutation.isPending ? <Loader2 className="mr-1.5 size-3.5 animate-spin" /> : advanceEnabled ? (isCash ? <Banknote className="mr-1.5 size-3.5" /> : <CreditCard className="mr-1.5 size-3.5" />) : <Sparkles className="mr-1.5 size-3.5" />}
                       {advanceEnabled ? `Confirm & Record ${isCash ? "Cash" : paymentMethodLabel(effectiveMethod)}` : "Confirm Booking"}
                     </Button>

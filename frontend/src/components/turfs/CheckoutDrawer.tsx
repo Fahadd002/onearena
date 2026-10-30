@@ -488,7 +488,7 @@ export function CheckoutDrawer({ isOpen, onClose, cart, date, onCartChange }: Pr
           {/* Footer */}
           <div className="space-y-3 border-t border-border bg-card/50 px-5 py-4">
             <Button
-              className="w-full bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90 py-3.5 rounded-xl shadow-none"
+              className="w-full bg-gradient-to-r from-primary to-primary-glow text-sm font-semibold text-primary-foreground hover:brightness-110 py-3.5 rounded-xl shadow-none"
               disabled={booking || authLoading}
               onClick={book}
             >

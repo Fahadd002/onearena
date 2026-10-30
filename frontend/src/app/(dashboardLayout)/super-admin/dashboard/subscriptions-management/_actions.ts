@@ -68,7 +68,7 @@ export interface AdminSubscription {
   startDate: string;
   endDate: string;
 
-  user: { name: string; email: string, companyName: string };
+  user: { name: string; email: string, companyName: string; ownedTurfs?: string[] };
   plan: AdminSubscriptionPlan;
 
   // Flattened from backend

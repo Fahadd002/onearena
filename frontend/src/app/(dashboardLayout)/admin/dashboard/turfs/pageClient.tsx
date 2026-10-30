@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowUpDown, CircleDollarSign, Eye, MapPin, Plus, Trash2 } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Eye, MapPin, Plus} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -14,9 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TablePagination } from "@/components/common/TablePagination";
-import { TableEmptyState, TableLoadingState } from "@/components/common/TableStates";
-import { DeleteConfirmDialog } from "@/components/common/DeleteConfirmDialog";
+import { DataTable } from "@/components/premium/DataTable";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearch } from "@/context/SearchContext";
 import { useSort } from "@/hooks/useSort";
@@ -30,8 +29,7 @@ import {
 } from "@/components/ui/select";
 import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
-import { toast } from "sonner";
-import { deleteTurfAction } from "./_actions";
+
 
 type Turf = {
   id: string;
@@ -65,7 +63,6 @@ export default function AdminTurfsPage() {
   const pagination = usePagination(10);
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [deleteTarget, setDeleteTarget] = useState<Turf | null>(null);
 
   useEffect(() => {
     setPlaceholder("Search your turfs...");
@@ -111,189 +108,196 @@ export default function AdminTurfsPage() {
     if (meta?.total !== undefined) pagination.setTotal(meta.total);
   }, [meta?.total, pagination]);
   
-  const remove = useMutation({
-    mutationFn: (id: string) => deleteTurfAction(id),
-    onSuccess: (result) => {
-      if (!result.success) {
-        toast.error(result.message);
-        return;
-      }
-      void queryClient.invalidateQueries({ queryKey: ["owner-turfs"] });
-      setDeleteTarget(null);
-      toast.success("Turf removed");
-    },
-    onError: (error) =>
-      toast.error(error instanceof Error ? error.message : "Could not remove this turf"),
-  });
-
-  const SortHeader = ({ field, label }: { field: string; label: string }) => (
-    <TableHead className="h-9">
-      <button
-        className="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
-        onClick={() => handleSort(field)}
-      >
-        {label}
-        {sortField === field && <ArrowUpDown className="size-3" />}
-      </button>
-    </TableHead>
-  );
-
   return (
-    <section className="dashboard-section mx-auto max-w-5xl space-y-4">
-      {/* Header */}
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2">
-          <Select
-            value={categoryId || "all"}
-            onValueChange={(value) => {
-              setCategoryId(value === "all" ? "" : value);
-              pagination.resetPage();
-            }}
-          >
-            <SelectTrigger className="h-8 w-44 text-xs">
-              <SelectValue placeholder="Filter by category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All categories</SelectItem>
-              {categories.map((category) => (
-                <SelectItem key={category.value} value={category.value}>
-                  {category.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <Button
-          asChild
-          size="sm"
-          variant="hero"
-          className="shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5"
-        >
-          <Link href="/admin/dashboard/turfs/new">
-            <Plus className="mr-1.5 size-3.5" />
-            Add a turf
-          </Link>
-        </Button>
-      </div>
+    <section className="dashboard-section">
+      <Card className="surface-elevated">
+        <CardHeader>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <CardTitle>All Turfs</CardTitle>
+            <div className="flex flex-wrap items-center gap-3">
+              {query.isLoading ? (
+                <div className="flex gap-2">
+                  <Skeleton className="h-8 w-44 rounded-lg bg-muted" />
+                  <Skeleton className="h-8 w-24 rounded-lg bg-muted" />
+                </div>
+              ) : (
+                <>
+                  <Select
+                    value={categoryId || "all"}
+                    onValueChange={(value) => {
+                      setCategoryId(value === "all" ? "" : value);
+                      pagination.resetPage();
+                    }}
+                  >
+                    <SelectTrigger className="h-8 w-44 text-sm">
+                      <SelectValue placeholder="Filter by category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All categories</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category.value} value={category.value}>
+                          {category.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+              <Button asChild size="sm" variant="hero" className="h-8 shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5">
+                <Link href="/admin/dashboard/turfs/new">
+                  <Plus className="mr-1.5 size-3.5" />
+                  Add a turf
+                </Link>
+              </Button>
+                </>
+              )}
+            </div>
+          </div>
+        </CardHeader>
 
-      {query.isLoading ? (
-        <TableLoadingState message="Loading turfs..." />
-      ) : query.isError ? (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-          Your turfs could not be loaded. Refresh and try again.
-        </div>
-      ) : (
-        <Card className="overflow-hidden">
-          <CardContent className="p-0">
-            <div className="overflow-x-auto">
+        <CardContent>
+          {query.isLoading ? (
+            <div className="overflow-x-auto border rounded-xl bg-card">
               <Table>
-                <TableHeader>
-                  <TableRow className="bg-muted/40 hover:bg-muted/40">
-                    <SortHeader field="name" label="Turf" />
-                    <TableHead className="h-9 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                      Location
+                <TableHeader className="bg-muted/40 border-b border-border">
+                  <TableRow className="hover:bg-transparent border-b border-border">
+                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+                      <Skeleton className="h-3 w-12 rounded" />
                     </TableHead>
-                    <SortHeader field="defaultSlotPrice" label="Price" />
-                    <SortHeader field="status" label="Status" />
-                    <TableHead className="h-9 text-right text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                      Actions
+                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+                      <Skeleton className="h-3 w-16 rounded" />
+                    </TableHead>
+                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+                      <Skeleton className="h-3 w-10 rounded" />
+                    </TableHead>
+                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+                      <Skeleton className="h-3 w-12 rounded" />
+                    </TableHead>
+                    <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border text-right">
+                      <Skeleton className="h-3 w-14 rounded ml-auto" />
                     </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {turfs.map((turf) => (
-                    <TableRow key={turf.id} className="group">
-                      <TableCell className="py-2.5">
-                        <div className="text-sm font-semibold leading-tight">{turf.name}</div>
-                        <div className="mt-0.5 text-xs text-muted-foreground">
-                          {turf.category.name}
-                        </div>
+                  {[...Array(5)].map((_, i) => (
+                    <TableRow key={i} className="border-b border-border">
+                      <TableCell className="py-3.5">
+                        <Skeleton className="h-4 w-32 rounded" />
+                        <Skeleton className="h-3 w-20 rounded mt-1" />
                       </TableCell>
-                      <TableCell className="py-2.5">
-                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <MapPin className="size-3.5 shrink-0 text-primary" />
-                          <span className="block max-w-[180px] truncate" title={turf.address}>
-                            {turf.address}
-                          </span>
-                        </div>
+                      <TableCell className="py-3.5">
+                        <Skeleton className="h-4 w-40 rounded" />
                       </TableCell>
-                      <TableCell className="py-2.5">
-                        <span className="flex items-center gap-1 text-sm font-medium">
-                          <CircleDollarSign className="size-3.5 text-primary" />
-                          ৳ {Number(turf.defaultSlotPrice).toLocaleString()}
-                        </span>
+                      <TableCell className="py-3.5">
+                        <Skeleton className="h-4 w-16 rounded" />
                       </TableCell>
-                      <TableCell className="py-2.5">
-                        <span
-                          className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold ${colors[turf.status]}`}
-                        >
-                          {labels[turf.status]}
-                        </span>
+                      <TableCell className="py-3.5">
+                        <Skeleton className="h-6 w-16 rounded-full" />
                       </TableCell>
-                      <TableCell className="py-2.5">
+                      <TableCell className="py-3.5">
                         <div className="flex justify-end gap-1.5">
-                          <Button
-                            size="sm"
-                            variant="glass"
-                            className="h-7 px-2.5 text-xs shadow-sm transition-transform hover:-translate-y-0.5"
-                            asChild
-                          >
-                            <Link href={`/admin/dashboard/turfs/${turf.id}`}>
-                              <Eye className="mr-1 size-3.5" />
-                              View
-                            </Link>
-                          </Button>
-                          <DeleteConfirmDialog
-                            open={deleteTarget?.id === turf.id}
-                            onOpenChange={(open) => !open && setDeleteTarget(null)}
-                            title="Delete Turf"
-                            description={`Are you sure you want to delete "${turf.name}"? This action cannot be undone.`}
-                            onConfirm={() => remove.mutate(turf.id)}
-                            isPending={remove.isPending}
-                            trigger={
-                              <Button
-                                size="icon"
-                                variant="destructive"
-                                className="size-7 shadow-sm shadow-destructive/15 transition-transform hover:-translate-y-0.5"
-                                onClick={() => setDeleteTarget(turf)}
-                                aria-label={`Remove ${turf.name}`}
-                              >
-                                <Trash2 className="size-3.5" />
-                              </Button>
-                            }
-                          />
+                          <Skeleton className="h-7 w-16 rounded-md" />
+                          <Skeleton className="h-7 w-7 rounded-md" />
                         </div>
                       </TableCell>
                     </TableRow>
                   ))}
-                  {turfs.length === 0 && (
-                    <TableRow>
-                      <TableCell colSpan={5}>
-                        <TableEmptyState
-                          message="No turfs found"
-                          description={
-                            search || categoryId
-                              ? "Try adjusting your filters."
-                              : "Add your first turf to get started."
-                          }
-                        />
-                      </TableCell>
-                    </TableRow>
-                  )}
                 </TableBody>
               </Table>
             </div>
-            <TablePagination
-              page={pagination.page}
-              totalPages={meta?.totalPages ?? 1}
-              total={meta?.total ?? 0}
+          ) : query.isError ? (
+            <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+              Your turfs could not be loaded. Refresh and try again.
+            </div>
+          ) : (
+            <DataTable
+              columns={[
+                {
+                  key: "name",
+                  header: "Turf",
+                  sortable: true,
+                  render: (row: Turf) => (
+                    <div>
+                      <div className="text-sm font-semibold leading-tight">{row.name}</div>
+                      <div className="mt-0.5 text-xs text-muted-foreground">
+                        {row.category.name}
+                      </div>
+                    </div>
+                  ),
+                },
+                {
+                  key: "address",
+                  header: "Location",
+                  render: (row: Turf) => (
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <MapPin className="size-3.5 shrink-0 text-primary" />
+                      <span className="block max-w-[180px] truncate" title={row.address}>
+                        {row.address}
+                      </span>
+                    </div>
+                  ),
+                },
+                {
+                  key: "defaultSlotPrice",
+                  header: "Price",
+                  sortable: true,
+                  render: (row: Turf) => (
+                    <span className="flex items-center gap-1 text-sm font-medium">
+                      ৳ {Number(row.defaultSlotPrice).toLocaleString()}
+                    </span>
+                  ),
+                },
+                {
+                  key: "status",
+                  header: "Status",
+                  sortable: true,
+                  render: (row: Turf) => (
+                    <span
+                      className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold ${colors[row.status]}`}
+                    >
+                      {labels[row.status]}
+                    </span>
+                  ),
+                },
+                {
+                  key: "actions",
+                  header: "",
+                  render: (row: Turf) => (
+                    <div className="flex justify-end gap-1.5">
+                      <Button
+                        size="sm"
+                        variant="glass"
+                        className="h-7 px-2.5 text-xs shadow-sm transition-transform hover:-translate-y-0.5"
+                        asChild
+                      >
+                        <Link href={`/admin/dashboard/turfs/${row.id}`}>
+                          <Eye className="mr-1 size-3.5" />
+                          View
+                        </Link>
+                      </Button>
+                    </div>
+                  ),
+                },
+              ]}
+              data={turfs}
+              minWidth={900}
+              sortKey={sortField}
+              sortDirection={sortDirection}
+              onSort={handleSort}
+              currentPage={pagination.page}
+              totalPages={meta?.totalPages ?? 0}
               pageSize={pagination.pageSize}
+              totalItems={meta?.total ?? 0}
               onPageChange={pagination.setPage}
               onPageSizeChange={pagination.setPageSize}
+              emptyTitle="No turfs found"
+              emptyDescription={
+                search || categoryId
+                  ? "Try adjusting your filters."
+                  : "Add your first turf to get started."
+              }
             />
-          </CardContent>
-        </Card>
-      )}
+          )}
+        </CardContent>
+      </Card>
     </section>
   );
 }

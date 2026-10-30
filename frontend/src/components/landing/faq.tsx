@@ -53,7 +53,7 @@ export function Faq() {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto w-full max-w-4xl px-4 sm:px-6 relative z-10"
       >
-        <div className="max-w-3xl mx-auto text-center mb-16">
+        <div className="mx-auto text-center mb-16">
           <p className="text-xs uppercase tracking-[0.2em] text-primary mb-2">Frequently asked questions</p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
             Questions, <span className="text-gradient-pitch">answered</span>

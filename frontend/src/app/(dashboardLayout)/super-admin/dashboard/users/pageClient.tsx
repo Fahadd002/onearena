@@ -81,52 +81,6 @@ const statusStyle: Record<User["status"], "default" | "secondary" | "destructive
   BLOCKED: "destructive",
 };
 
-/** Status Badge Styling */
-function getStatusBadge(status: User["status"]) {
-  switch (status) {
-    case "ACTIVE":
-      return (
-        <Badge className="h-8 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 flex items-center justify-center">
-          Active
-        </Badge>
-      );
-    case "INACTIVE":
-      return (
-        <Badge className="h-8 bg-slate-500/10 text-slate-600 dark:text-slate-300 border-slate-500/20 flex items-center justify-center">
-          Inactive
-        </Badge>
-      );
-    case "SUSPENDED":
-      return (
-        <Badge className="h-8 bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 flex items-center justify-center">
-          Suspended
-        </Badge>
-      );
-    case "BLOCKED":
-      return (
-        <Badge className="h-8 bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 flex items-center justify-center">
-          Blocked
-        </Badge>
-      );
-    default:
-      return (
-        <Badge variant="outline" className="h-8 flex items-center justify-center">
-          {status}
-        </Badge>
-      );
-  }
-}
-
-/** Role Badge Styling */
-function getRoleBadge(role: User["role"]) {
-  return (
-    <span
-      className={`inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-semibold ${roleStyle[role]}`}
-    >
-      {replaceAll(role, "_", " ")}
-    </span>
-  );
-}
 
 /** Helper to format join date with time */
 function formatJoinedDateTime(dateString: string) {

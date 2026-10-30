@@ -52,7 +52,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
+import { motion } from "framer-motion";
 import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
 import { useSearch } from "@/context/SearchContext";
@@ -67,6 +67,7 @@ import {
   takeCashPaymentForSubscription,
   confirmOnlinePaymentForSubscription,
 } from "./_actions";
+import { toast } from "sonner";
 
 const statuses: SubscriptionStatus[] = [
   "FREE_TRIAL",
@@ -77,11 +78,31 @@ const statuses: SubscriptionStatus[] = [
   "INACTIVE",
 ];
 
+/** ─────────────────────────────────────────────────────────────
+ *  Reusable flowing ripple for icon buttons
+ *  Single scale + opacity animation = one smooth continuous wave
+ *  ───────────────────────────────────────────────────────────── */
+function IconRipple() {
+  return (
+    <motion.span
+      className="absolute inset-0 block rounded-full bg-amber-400 pointer-events-none"
+      initial={{ scale: 1, opacity: 0.45 }}
+      animate={{ scale: 2, opacity: 0 }}
+      transition={{
+        duration: 1.6,
+        repeat: Infinity,
+        repeatDelay: 0.4,
+        ease: "easeOut",
+      }}
+    />
+  );
+}
+
 /** Cycle Badge Styling */
 function getCycleBadge(period?: string | null) {
   if (!period) return <span className="text-xs text-muted-foreground">—</span>;
   return (
-    <Badge variant="outline" className="h-8 text-[10px] uppercase font-mono bg-background border-border flex items-center justify-center">
+    <Badge variant="secondary" className="h-6 px-2 text-[10px] uppercase tracking-wider font-medium">
       {period}
     </Badge>
   );
@@ -92,42 +113,42 @@ function getStatusBadge(status: SubscriptionStatus) {
   switch (status) {
     case "ACTIVE":
       return (
-        <Badge className="h-8 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 flex items-center justify-center">
+        <Badge className="h-6 px-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20">
           Active
         </Badge>
       );
     case "FREE_TRIAL":
       return (
-        <Badge className="h-8 bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 flex items-center justify-center">
+        <Badge className="h-6 px-2 bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20">
           Free Trial
         </Badge>
       );
     case "INACTIVE":
       return (
-        <Badge className="h-8 bg-slate-500/10 text-slate-600 dark:text-slate-300 border-slate-500/20 flex items-center justify-center">
+        <Badge className="h-6 px-2 bg-slate-500/10 text-slate-600 dark:text-slate-300 border-slate-500/20">
           Inactive
         </Badge>
       );
     case "EXPIRING":
       return (
-        <Badge className="h-8 bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 flex items-center justify-center">
+        <Badge className="h-6 px-2 bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20">
           Expiring
         </Badge>
       );
     case "EXPIRED":
       return (
-        <Badge className="h-8 bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 flex items-center justify-center">
+        <Badge className="h-6 px-2 bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20">
           Expired
         </Badge>
       );
     case "CANCELLED":
       return (
-        <Badge variant="outline" className="h-8 text-muted-foreground border-border flex items-center justify-center">
+        <Badge variant="outline" className="h-6 px-2 text-muted-foreground">
           Cancelled
         </Badge>
       );
     default:
-      return <Badge variant="outline" className="h-8 flex items-center justify-center">{status}</Badge>;
+      return <Badge variant="outline" className="h-6 px-2">{status}</Badge>;
   }
 }
 
@@ -145,30 +166,30 @@ function formatDateDisplay(dateStr?: string | null): string {
 
 /** Invoice Badge Styling */
 function getInvoiceBadge(invoice: AdminSubscription["invoice"]) {
-  if (!invoice) return <span className="text-[11px] text-muted-foreground">No invoice</span>;
+  if (!invoice) return <span className="text-xs text-muted-foreground">—</span>;
   if (invoice.status === "PAID") {
     return (
-      <Badge className="h-8 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 text-[11px] font-semibold flex items-center justify-center">
+      <Badge className="h-6 px-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 text-[10px] font-medium">
         Paid
       </Badge>
     );
   }
   if (invoice.status === "PARTIALLY_PAID") {
     return (
-      <Badge className="h-8 bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 text-[11px] font-semibold flex items-center justify-center">
+      <Badge className="h-6 px-2 bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 text-[10px] font-medium">
         Partial
       </Badge>
     );
   }
   if (invoice.status === "DRAFT") {
     return (
-      <Badge className="h-8 bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 text-[11px] font-semibold flex items-center justify-center">
+      <Badge className="h-6 px-2 bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 text-[10px] font-medium">
         Draft
       </Badge>
     );
   }
   return (
-    <Badge className="h-8 bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 text-[11px] font-semibold flex items-center justify-center">
+    <Badge className="h-6 px-2 bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 text-[10px] font-medium">
       Unpaid
     </Badge>
   );
@@ -535,9 +556,45 @@ export default function OwnerSubscriptionsPage() {
                           >
                             {/* Company */}
                             <TableCell className="px-1 py-1">
-                              <span className="text-sm text-foreground">
-                                {sub.user.companyName || "—"}
-                              </span>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-sm text-foreground">
+                                  {sub.user.companyName || "—"}
+                                </span>
+                                {sub.user.ownedTurfs && sub.user.ownedTurfs.length > 0 && (
+                                  <Popover>
+                                    <PopoverTrigger asChild>
+                                      <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="relative h-6 w-6 rounded-full text-muted-foreground transition-all duration-300 hover:text-foreground"
+                                      >
+                                        <IconRipple />
+                                        <Info className="relative h-3.5 w-3.5" />
+                                        <span className="sr-only">Turfs under this company</span>
+                                      </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent
+                                      side="right"
+                                      align="start"
+                                      sideOffset={8}
+                                      className="w-60 p-3 space-y-2 shadow-lg border border-border
+                                                 origin-[var(--radix-popover-content-transform-origin)]
+                                                 data-[state=open]:animate-in data-[state=closed]:animate-out
+                                                 data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0
+                                                 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95
+                                                 data-[state=open]:slide-in-from-left-1 data-[state=closed]:slide-out-to-left-1
+                                                 duration-200 ease-out"
+                                    >
+                                      <div className="text-xs font-semibold text-foreground">Turfs under this company</div>
+                                      <ul className="space-y-1 text-xs text-muted-foreground">
+                                        {sub.user.ownedTurfs.map((t, i) => (
+                                          <li key={i} className="truncate">{t}</li>
+                                        ))}
+                                      </ul>
+                                    </PopoverContent>
+                                  </Popover>
+                                )}
+                              </div>
                             </TableCell>
                             {/* Owner */}
                             <TableCell className="px-1 py-1">
@@ -558,16 +615,16 @@ export default function OwnerSubscriptionsPage() {
                             </TableCell>
 
                             {/* Cycle */}
-                            <TableCell className="px-1 py-1">
+                            <TableCell className="px-3 py-2.5">
                               {getCycleBadge(latestLog?.period)}
                             </TableCell>
 
                             {/* Invoice Column */}
-                            <TableCell className="px-1 py-1">
+                            <TableCell className="px-3 py-2.5">
                               {invoice ? (
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-1.5">
                                   {getInvoiceBadge(invoice)}
-                                  <span className="text-xs font-bold font-mono text-foreground">
+                                  <span className="text-xs font-medium tabular-nums">
                                     ৳{Number(invoice.totalAmount).toLocaleString()}
                                   </span>
 
@@ -577,35 +634,31 @@ export default function OwnerSubscriptionsPage() {
                                       <Button
                                         variant="ghost"
                                         size="icon"
-                                        className="h-6 w-6 rounded-full text-muted-foreground transition-colors"
+                                        className="relative h-6 w-6 rounded-full text-muted-foreground transition-all duration-300 hover:text-foreground"
                                       >
-                                        <Info className="h-3.5 w-3.5" />
+                                        <IconRipple />
+                                        <Info className="relative h-3.5 w-3.5" />
                                         <span className="sr-only">Invoice Details</span>
                                       </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-72 p-3.5 space-y-3 shadow-lg border border-border">
+                                    <PopoverContent
+                                      side="right"
+                                      align="start"
+                                      sideOffset={8}
+                                      className="w-72 p-3.5 space-y-3 shadow-lg border border-border
+                                                 origin-[var(--radix-popover-content-transform-origin)]
+                                                 data-[state=open]:animate-in data-[state=closed]:animate-out
+                                                 data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0
+                                                 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95
+                                                 data-[state=open]:slide-in-from-left-1 data-[state=closed]:slide-out-to-left-1
+                                                 duration-200 ease-out"
+                                    >
                                       <div className="flex items-center justify-between border-b border-border pb-2">
                                         <span className="text-xs font-mono font-semibold text-foreground flex items-center gap-1.5">
                                           <FileText className="w-3.5 h-3.5 text-primary" />
                                           {invoice.invoiceNumber}
                                         </span>
-                                        {invoice.status === "PAID" ? (
-                                          <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 text-[10px]">
-                                            Paid
-                                          </Badge>
-                                        ) : invoice.status === "PARTIALLY_PAID" ? (
-                                          <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 text-[10px]">
-                                            Partial
-                                          </Badge>
-                                        ) : invoice.status === "DRAFT" ? (
-                                          <Badge className="bg-blue-500/10 text-blue-600 border-blue-500/20 text-[10px]">
-                                            Draft
-                                          </Badge>
-                                        ) : (
-                                          <Badge className="bg-rose-500/10 text-rose-600 border-rose-500/20 text-[10px]">
-                                            Unpaid
-                                          </Badge>
-                                        )}
+                                        {getInvoiceBadge(invoice)}
                                       </div>
 
                                       <div className="space-y-1.5 text-xs">
@@ -687,14 +740,12 @@ export default function OwnerSubscriptionsPage() {
                                   </Popover>
                                 </div>
                               ) : (
-                                <span className="text-[11px] text-muted-foreground">
-                                  No invoice
-                                </span>
+                                <span className="text-xs text-muted-foreground">—</span>
                               )}
                             </TableCell>
 
                             {/* Status */}
-                            <TableCell className="px-1 py-1">
+                            <TableCell className="px-3 py-2.5">
                               {draft ? (
                                 <Select
                                   value={draft.status}
@@ -708,7 +759,7 @@ export default function OwnerSubscriptionsPage() {
                                     }))
                                   }
                                 >
-                                  <SelectTrigger className="h-8 w-28 text-xs rounded-lg">
+                                  <SelectTrigger className="h-7 w-28 text-xs">
                                     <SelectValue />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -923,8 +974,7 @@ export default function OwnerSubscriptionsPage() {
                                             <span className="font-semibold text-foreground font-mono">
                                               ৳
                                               {Number(
-                                                invoice.totalAmount
-                                              ).toLocaleString()}
+                                                invoice.totalAmount                                              ).toLocaleString()}
                                             </span>
                                           </div>
                                           <div>

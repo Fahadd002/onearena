@@ -15,11 +15,11 @@ import { startOfToday } from "@/components/turfs/dateRanges";
 import { ymd } from "@/lib/slotsUtils";
 
 export const metadata: Metadata = {
-  title: "OneArena - Football Turf Booking Platform",
-  description: "Find, book and play at verified football turfs across Bangladesh. Real-time availability, transparent pricing, instant confirmations.",
+  title: "OneArena - Turf Booking Platform",
+  description: "Find, book and play at verified turfs across Bangladesh. Real-time availability, transparent pricing, instant confirmations.",
   openGraph: {
-    title: "OneArena - Football Turf Booking Platform",
-    description: "Find, book and play at verified football turfs across Bangladesh.",
+    title: "OneArena -Turf Booking Platform",
+    description: "Find, book and play at verified turfs across Bangladesh.",
     type: "website",
   },
 };

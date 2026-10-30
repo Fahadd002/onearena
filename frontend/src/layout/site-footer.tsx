@@ -13,7 +13,7 @@ export function SiteFooter() {
             rel="noopener noreferrer"
             className="font-semibold text-muted-foreground underline underline-offset-4 hover:text-foreground"
           >
-            Oner Systems Limited
+            Oner Systems Ltd.
           </Link>
         </p>
       </div>

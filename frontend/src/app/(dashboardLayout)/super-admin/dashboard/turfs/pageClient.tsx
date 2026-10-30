@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Check, Eye, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CheckCircle2, XCircle, Eye, LockKeyhole } from "lucide-react";
+import { Badge } from "@/components/premium/Badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
@@ -32,6 +32,7 @@ import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
 import { toast } from "sonner";
 import { getFileUrl } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 type Status = "ACTIVE" | "INACTIVE" | "REJECTED";
 type Turf = {
@@ -49,13 +50,13 @@ type TurfPage = {
   meta: { page: number; limit: number; total: number; totalPages: number };
 };
 const labels: Record<Status, string> = {
-  ACTIVE: "Approved",
-  INACTIVE: "Unapproved",
+  ACTIVE: "Active",
+  INACTIVE: "Suspended",
   REJECTED: "Rejected",
 };
 const colors: Record<Status, string> = {
-  ACTIVE: "bg-primary/10 text-primary",
-  INACTIVE: "bg-secondary text-muted-foreground",
+  ACTIVE: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  INACTIVE: "bg-muted text-muted-foreground",
   REJECTED: "bg-destructive/10 text-destructive",
 };
 
@@ -309,41 +310,45 @@ export default function TurfApprovalsPage() {
                   header: "Status",
                   sortable: true,
                   render: (row: Turf) => (
-                    <span
-                      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-bold ${colors[row.status]}`}
+                    <Badge
+                      className={`h-6 px-2 text-[10px] ${colors[row.status]}`}
+                      variant="secondary"
                     >
                       {labels[row.status]}
-                    </span>
+                    </Badge>
                   ),
                 },
                 {
                   key: "actions",
                   header: "Review",
                   render: (row: Turf) => (
-                    <div className="flex justify-end gap-2">
-                      <Button size="sm" variant="glass" asChild>
+                    <div className="flex justify-end gap-1.5">
+                      <Button size="sm" variant="outline" className="h-7 px-2.5 text-xs" asChild>
                         <Link href={`/super-admin/dashboard/turfs/${row.id}`}>
-                          <Eye className="size-4" />
+                          <Eye className="mr-1 size-3.5" />
                           Review
                         </Link>
                       </Button>
                       {row.status !== "ACTIVE" && (
                         <Button
                           size="sm"
-                          variant="hero"
+                          className="h-7 px-2.5 text-xs bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-400"
                           onClick={() => update.mutate({ id: row.id, nextStatus: "ACTIVE" })}
                           disabled={update.isPending}
-                        />
+                        >
+                          <CheckCircle2 className="mr-1 size-3.5" />
+                          Active
+                        </Button>
                       )}
                       {row.status === "ACTIVE" && (
                         <Button
                           size="sm"
-                          variant="outline"
+                          className="h-7 px-2.5 text-xs bg-muted text-muted-foreground hover:bg-muted/80"
                           onClick={() => update.mutate({ id: row.id, nextStatus: "INACTIVE" })}
                           disabled={update.isPending}
                         >
-                          <X className="size-4" />
-                          Unapprove
+                          <LockKeyhole className="mr-1 size-3.5 text-destructive" />
+                          Suspend
                         </Button>
                       )}
                     </div>

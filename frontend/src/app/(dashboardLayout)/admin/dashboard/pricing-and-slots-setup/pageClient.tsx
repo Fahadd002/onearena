@@ -7,7 +7,6 @@ import {
   ArrowLeft,
   Clock3,
   Loader2,
-  Plus,
   Trash2,
   Power,
   PowerOff,
@@ -81,6 +80,7 @@ import {
   type StoredSlotTimeSetup,
   type StoredPriceRule,
 } from "./_actions";
+import { Skeleton } from "@/components/ui/skeleton";
 
 /* -------------------------------------------------------------------------- */
 /* Types                                                                      */
@@ -400,7 +400,7 @@ export default function AdminPricingAndSlotsPage() {
   const handleSlotPriceChange = (slot: StoredSlot, newPrice: string) => {
     setDraftPrices((prev) => ({ ...prev, [slot.id]: newPrice }));
   };
-  
+
   const handleSlotPriceCancel = (slot: StoredSlot) => {
     setDraftPrices((prev) => {
       const next = { ...prev };
@@ -459,53 +459,47 @@ export default function AdminPricingAndSlotsPage() {
   /* -------------------------------------------------------------------------- */
 
   return (
-    <section className="dashboard-section space-y-6">
+    <section className="dashboard-section">
       {/* Top Header & Turf Selection */}
-      <div className="flex flex-col gap-4 rounded-xl border bg-card p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" asChild className="h-9 w-9 shrink-0">
-            <Link href="/admin/dashboard/turfs" aria-label="Back to turfs">
-              <ArrowLeft className="size-4" />
-            </Link>
-          </Button>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Management
-              </span>
-              {selectedTurfName && (
-                <Badge variant="secondary" className="gap-1 font-normal text-xs">
-                  <Building2 className="size-3" />
-                  {selectedTurfName}
-                </Badge>
-              )}
+      <Card className="surface-elevated mb-6">
+        <CardHeader>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
+              <Button variant="outline" size="icon" asChild className="h-8 w-8 shrink-0">
+                <Link href="/admin/dashboard/turfs" aria-label="Back to turfs">
+                  <ArrowLeft className="size-4" />
+                </Link>
+              </Button>
+              <div>
+                <CardTitle className="text-lg">Pricing &amp; Slots Setup</CardTitle>
+                {selectedTurfName && (
+                  <p className="text-sm text-muted-foreground mt-1">{selectedTurfName}</p>
+                )}
+              </div>
             </div>
-            <h1 className="text-xl font-bold tracking-tight text-foreground">
-              Pricing &amp; Slots Setup
-            </h1>
-          </div>
-        </div>
 
-        <div className="flex items-center gap-2 border-t pt-3 sm:border-t-0 sm:pt-0">
-          <Label className="text-xs font-semibold text-muted-foreground whitespace-nowrap">
-            Select Turf:
-          </Label>
-          <Select value={selectedTurfId} onValueChange={handleTurfChange}>
-            <SelectTrigger className="h-9 min-w-[200px] text-sm font-medium">
-              <SelectValue
-                placeholder={turfsLoading ? "Loading turfs..." : "Choose a turf"}
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {turfs.map((turf) => (
-                <SelectItem key={turf.id} value={turf.id}>
-                  {turf.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+            <div className="flex items-center gap-2">
+              <Label className="text-sm text-muted-foreground whitespace-nowrap">
+                Select Turf:
+              </Label>
+              <Select value={selectedTurfId} onValueChange={handleTurfChange}>
+                <SelectTrigger className="h-8 min-w-[200px] text-sm">
+                  <SelectValue
+                    placeholder={turfsLoading ? "Loading turfs..." : "Choose a turf"}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {turfs.map((turf) => (
+                    <SelectItem key={turf.id} value={turf.id}>
+                      {turf.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardHeader>
+      </Card>
 
       {!selectedTurfId ? (
         <Card className="border-dashed p-12 text-center">
@@ -526,10 +520,11 @@ export default function AdminPricingAndSlotsPage() {
               <button
                 type="button"
                 onClick={() => setActiveTab("pricing-rules")}
-                className={`inline-flex items-center gap-2 border-b-2 pb-3 pt-1 text-sm font-semibold transition-colors ${activeTab === "pricing-rules"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:border-border hover:text-foreground"
-                  }`}
+                className={`inline-flex items-center gap-2 border-b-2 pb-3 pt-1 text-sm font-semibold transition-colors ${
+                  activeTab === "pricing-rules"
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted-foreground hover:border-border hover:text-foreground"
+                }`}
               >
                 Pricing Rules
                 <Badge variant="secondary" className="px-1.5 py-0.2 text-[10px]">
@@ -539,10 +534,11 @@ export default function AdminPricingAndSlotsPage() {
               <button
                 type="button"
                 onClick={() => setActiveTab("slots")}
-                className={`inline-flex items-center gap-2 border-b-2 pb-3 pt-1 text-sm font-semibold transition-colors ${activeTab === "slots"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:border-border hover:text-foreground"
-                  }`}
+                className={`inline-flex items-center gap-2 border-b-2 pb-3 pt-1 text-sm font-semibold transition-colors ${
+                  activeTab === "slots"
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted-foreground hover:border-border hover:text-foreground"
+                }`}
               >
                 Slots Overview
                 <Badge variant="secondary" className="px-1.5 py-0.2 text-[10px]">
@@ -562,10 +558,6 @@ export default function AdminPricingAndSlotsPage() {
                       <CardTitle className="text-base font-semibold">
                         {editingRuleId ? "Edit Pricing Rule" : "Create Pricing Rule"}
                       </CardTitle>
-                      <CardDescription className="text-xs">
-                        Configure daily rate schedules and time windows for{" "}
-                        {selectedTurfName}.
-                      </CardDescription>
                     </div>
                     {editingRuleId && (
                       <Badge
@@ -688,7 +680,8 @@ export default function AdminPricingAndSlotsPage() {
                           type="submit"
                           size="sm"
                           disabled={isMutating || !price || !slotTimeSetupId}
-                          className="h-8 text-xs font-medium"
+                          className="h-8 text-xs"
+                          variant="hero"
                         >
                           {isMutating && (
                             <Loader2 className="mr-1.5 size-3.5 animate-spin" />
@@ -723,9 +716,6 @@ export default function AdminPricingAndSlotsPage() {
                       <CardTitle className="text-base font-semibold">
                         Daily Pricing Rules
                       </CardTitle>
-                      <CardDescription className="text-xs">
-                        Active rate configurations by day of week.
-                      </CardDescription>
                     </div>
 
                     {/* Filter Tabs by Setup */}
@@ -734,10 +724,11 @@ export default function AdminPricingAndSlotsPage() {
                         <button
                           type="button"
                           onClick={() => setActiveSetupFilter(null)}
-                          className={`rounded px-2.5 py-1 text-xs font-medium transition-colors ${activeSetupFilter === null
-                            ? "bg-primary text-primary-foreground"
-                            : "text-muted-foreground hover:text-foreground"
-                            }`}
+                          className={`rounded px-2.5 py-1 text-xs font-medium transition-colors ${
+                            activeSetupFilter === null
+                              ? "bg-primary text-primary-foreground"
+                              : "text-muted-foreground hover:text-foreground"
+                          }`}
                         >
                           All Windows
                         </button>
@@ -746,10 +737,11 @@ export default function AdminPricingAndSlotsPage() {
                             key={setup.id}
                             type="button"
                             onClick={() => setActiveSetupFilter(setup.id)}
-                            className={`rounded px-2.5 py-1 text-xs font-medium transition-colors ${activeSetupFilter === setup.id
-                              ? "bg-primary text-primary-foreground"
-                              : "text-muted-foreground hover:text-foreground"
-                              }`}
+                            className={`rounded px-2.5 py-1 text-xs font-medium transition-colors ${
+                              activeSetupFilter === setup.id
+                                ? "bg-primary text-primary-foreground"
+                                : "text-muted-foreground hover:text-foreground"
+                            }`}
                           >
                             {setup.timeName}
                           </button>
@@ -759,155 +751,207 @@ export default function AdminPricingAndSlotsPage() {
                   </div>
                 </CardHeader>
 
-                <CardContent className="p-0">
+                <CardContent>
                   {isLoading ? (
-                    <TableLoadingState message="Loading pricing rules..." />
-                  ) : (
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="bg-muted/50">
-                          <TableHead className="w-32">Day</TableHead>
-                          <TableHead>Time Window</TableHead>
-                          <TableHead>Price</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {DAY_NAMES.map((dayName, dayIndex) => {
-                          const dayRules = rules
-                            .filter((r) => r.dayOfWeek === dayIndex)
-                            .filter((r) =>
-                              activeSetupFilter
-                                ? r.slotTimeSetupId === activeSetupFilter
-                                : true,
-                            )
-                            .sort(
-                              (a, b) =>
-                                a.slotTimeSetup.startMinute -
-                                b.slotTimeSetup.startMinute,
-                            );
-
-                          const rule = dayRules[0];
-
-                          return (
-                            <TableRow
-                              key={dayIndex}
-                              className={rule?.active ? "bg-primary/5" : undefined}
-                            >
-                              <TableCell className="font-medium">
-                                <div className="flex items-center gap-2">
-                                  <span>{dayName}</span>
-                                  {dayIndex === today.getDay() && (
-                                    <Badge
-                                      variant="outline"
-                                      className="border-primary/30 bg-primary/10 text-[10px] text-primary"
-                                    >
-                                      Today
-                                    </Badge>
-                                  )}
-                                </div>
+                    <div className="overflow-x-auto border rounded-xl bg-card">
+                      <Table>
+                        <TableHeader className="bg-muted/40 border-b border-border">
+                          <TableRow className="hover:bg-transparent border-b border-border">
+                            <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+                              <Skeleton className="h-3 w-12 rounded" />
+                            </TableHead>
+                            <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+                              <Skeleton className="h-3 w-20 rounded" />
+                            </TableHead>
+                            <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+                              <Skeleton className="h-3 w-12 rounded" />
+                            </TableHead>
+                            <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+                              <Skeleton className="h-3 w-12 rounded" />
+                            </TableHead>
+                            <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border text-right">
+                              <Skeleton className="h-3 w-16 rounded ml-auto" />
+                            </TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {[...Array(7)].map((_, i) => (
+                            <TableRow key={i} className="border-b border-border">
+                              <TableCell className="py-3">
+                                <Skeleton className="h-4 w-16 rounded" />
                               </TableCell>
-                              <TableCell>
-                                {rule ? (
-                                  <div className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
-                                    <Clock3 className="size-3.5 text-primary" />
-                                    <span className="font-medium text-foreground">
-                                      {rule.slotTimeSetup.timeName}
-                                    </span>
-                                    <span>
-                                      ({formatTimeWithPeriod(
-                                        rule.slotTimeSetup.startMinute,
-                                      )}{" "}
-                                      –{" "}
-                                      {formatTimeWithPeriod(
-                                        rule.slotTimeSetup.endMinute,
-                                      )})
-                                    </span>
-                                  </div>
-                                ) : (
-                                  <span className="text-sm text-muted-foreground/40">
-                                    —
-                                  </span>
-                                )}
+                              <TableCell className="py-3">
+                                <Skeleton className="h-4 w-40 rounded" />
                               </TableCell>
-                              <TableCell>
-                                {rule ? (
-                                  <span className="font-semibold text-foreground">
-                                    ৳{Number(rule.price).toLocaleString()}
-                                  </span>
-                                ) : (
-                                  <span className="text-xs text-muted-foreground/40">
-                                    Not Configured
-                                  </span>
-                                )}
+                              <TableCell className="py-3">
+                                <Skeleton className="h-4 w-16 rounded" />
                               </TableCell>
-                              <TableCell>
-                                {rule ? (
-                                  <div className="flex items-center gap-2">
-                                    <Switch
-                                      checked={rule.active}
-                                      onCheckedChange={() => toggleActive(rule)}
-                                      disabled={updateRule.isPending}
-                                    />
-                                    <Badge
-                                      variant={
-                                        rule.active ? "default" : "secondary"
-                                      }
-                                      className="text-[10px]"
-                                    >
-                                      {rule.active ? "Active" : "Disabled"}
-                                    </Badge>
-                                  </div>
-                                ) : (
-                                  <span className="text-xs text-muted-foreground/40">
-                                    Inactive
-                                  </span>
-                                )}
+                              <TableCell className="py-3">
+                                <Skeleton className="h-6 w-16 rounded-full" />
                               </TableCell>
-                              <TableCell>
-                                <div className="flex justify-end gap-1.5">
-                                  {rule && (
-                                    <>
-                                      <Button
-                                        size="sm"
-                                        variant="ghost"
-                                        onClick={() => startEdit(rule)}
-                                        className="h-8 text-xs"
-                                      >
-                                        Edit
-                                      </Button>
-                                      <DeleteConfirmDialog
-                                        open={deleteTarget?.id === rule.id}
-                                        onOpenChange={(open) =>
-                                          !open && setDeleteTarget(null)
-                                        }
-                                        title="Delete pricing rule"
-                                        description="Are you sure you want to delete this rule? This will revert this time window to default pricing."
-                                        onConfirm={() =>
-                                          removeRule.mutate(rule.id)
-                                        }
-                                        isPending={removeRule.isPending}
-                                        trigger={
-                                          <Button
-                                            size="sm"
-                                            variant="ghost"
-                                            onClick={() => setDeleteTarget(rule)}
-                                            className="h-8 text-xs text-destructive hover:bg-destructive/10"
-                                          >
-                                            <Trash2 className="size-3.5" />
-                                          </Button>
-                                        }
-                                      />
-                                    </>
-                                  )}
-                                </div>
+                              <TableCell className="py-3">
+                                <Skeleton className="h-7 w-20 rounded ml-auto" />
                               </TableCell>
                             </TableRow>
-                          );
-                        })}
-                      </TableBody>
-                    </Table>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto border rounded-xl bg-card">
+                      <Table>
+                        <TableHeader className="bg-muted/40 border-b border-border">
+                          <TableRow className="hover:bg-transparent border-b border-border">
+                            <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border w-32">
+                              Day
+                            </TableHead>
+                            <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+                              Time Window
+                            </TableHead>
+                            <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+                              Price
+                            </TableHead>
+                            <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+                              Status
+                            </TableHead>
+                            <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border text-right">
+                              Actions
+                            </TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {DAY_NAMES.map((dayName, dayIndex) => {
+                            const dayRules = rules
+                              .filter((r) => r.dayOfWeek === dayIndex)
+                              .filter((r) =>
+                                activeSetupFilter
+                                  ? r.slotTimeSetupId === activeSetupFilter
+                                  : true,
+                              )
+                              .sort(
+                                (a, b) =>
+                                  a.slotTimeSetup.startMinute -
+                                  b.slotTimeSetup.startMinute,
+                              );
+
+                            const rule = dayRules[0];
+
+                            return (
+                              <TableRow
+                                key={dayIndex}
+                                className={rule?.active ? "bg-primary/5" : undefined}
+                              >
+                                <TableCell className="font-medium">
+                                  <div className="flex items-center gap-2">
+                                    <span>{dayName}</span>
+                                    {dayIndex === today.getDay() && (
+                                      <Badge className="h-5 px-1.5 text-[10px] bg-primary/10 text-primary border-primary/20">
+                                        Today
+                                      </Badge>
+                                    )}
+                                  </div>
+                                </TableCell>
+                                <TableCell>
+                                  {rule ? (
+                                    <div className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
+                                      <Clock3 className="size-3.5 text-primary" />
+                                      <span className="font-medium text-foreground">
+                                        {rule.slotTimeSetup.timeName}
+                                      </span>
+                                      <span>
+                                        ({formatTimeWithPeriod(
+                                          rule.slotTimeSetup.startMinute,
+                                        )}{" "}
+                                        –{" "}
+                                        {formatTimeWithPeriod(
+                                          rule.slotTimeSetup.endMinute,
+                                        )})
+                                      </span>
+                                    </div>
+                                  ) : (
+                                    <span className="text-sm text-muted-foreground/40">
+                                      —
+                                    </span>
+                                  )}
+                                </TableCell>
+                                <TableCell>
+                                  {rule ? (
+                                    <span className="font-semibold text-foreground">
+                                      ৳{Number(rule.price).toLocaleString()}
+                                    </span>
+                                  ) : (
+                                    <span className="text-xs text-muted-foreground/40">
+                                      Not Configured
+                                    </span>
+                                  )}
+                                </TableCell>
+                                <TableCell>
+                                  {rule ? (
+                                    <div className="flex items-center gap-2">
+                                      <Switch
+                                        checked={rule.active}
+                                        onCheckedChange={() => toggleActive(rule)}
+                                        disabled={updateRule.isPending}
+                                      />
+                                      <Badge
+                                        className={`h-6 px-2 text-[10px] ${
+                                          rule.active
+                                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                            : "bg-muted text-muted-foreground"
+                                        }`}
+                                        variant="secondary"
+                                      >
+                                        {rule.active ? "Active" : "Disabled"}
+                                      </Badge>
+                                    </div>
+                                  ) : (
+                                    <span className="text-xs text-muted-foreground/40">
+                                      Inactive
+                                    </span>
+                                  )}
+                                </TableCell>
+                                <TableCell>
+                                  <div className="flex justify-end gap-1.5">
+                                    {rule && (
+                                      <>
+                                        <Button
+                                          size="sm"
+                                          variant="ghost"
+                                          onClick={() => startEdit(rule)}
+                                          className="h-8 text-xs"
+                                        >
+                                          Edit
+                                        </Button>
+                                        <DeleteConfirmDialog
+                                          open={deleteTarget?.id === rule.id}
+                                          onOpenChange={(open) =>
+                                            !open && setDeleteTarget(null)
+                                          }
+                                          title="Delete pricing rule"
+                                          description="Are you sure you want to delete this rule? This will revert this time window to default pricing."
+                                          onConfirm={() => removeRule.mutate(rule.id)}
+                                          isPending={removeRule.isPending}
+                                          trigger={
+                                            <Button
+                                              size="sm"
+                                              variant="ghost"
+                                              onClick={() => setDeleteTarget(rule)}
+                                              className="h-8 text-xs text-destructive hover:bg-destructive/10"
+                                            >
+                                              <Trash2 className="size-3.5" />
+                                            </Button>
+                                          }
+                                        />
+                                      </>
+                                    )}
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      </Table>
+                    </div>
                   )}
                 </CardContent>
               </Card>
@@ -922,9 +966,6 @@ export default function AdminPricingAndSlotsPage() {
                     <CardTitle className="text-base font-semibold">
                       Generated Slots Table
                     </CardTitle>
-                    <CardDescription className="text-xs">
-                      Inspect and modify individual slot pricing or availability.
-                    </CardDescription>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-3">
@@ -940,9 +981,7 @@ export default function AdminPricingAndSlotsPage() {
                       <div className="flex items-center gap-2 rounded-md border bg-background px-2.5 py-1 text-xs">
                         <Clock className="size-3 text-primary" />
                         <span>
-                          {formatTimeWithPeriod(
-                            timeToMinutes(timeFilter.start),
-                          )}{" "}
+                          {formatTimeWithPeriod(timeToMinutes(timeFilter.start))}{" "}
                           – {formatTimeWithPeriod(timeToMinutes(timeFilter.end))}
                         </span>
                         <button
@@ -976,9 +1015,7 @@ export default function AdminPricingAndSlotsPage() {
                               <Input
                                 type="time"
                                 value={filterStartTime}
-                                onChange={(e) =>
-                                  setFilterStartTime(e.target.value)
-                                }
+                                onChange={(e) => setFilterStartTime(e.target.value)}
                                 className="h-8 text-xs"
                               />
                             </div>
@@ -987,9 +1024,7 @@ export default function AdminPricingAndSlotsPage() {
                               <Input
                                 type="time"
                                 value={filterEndTime}
-                                onChange={(e) =>
-                                  setFilterEndTime(e.target.value)
-                                }
+                                onChange={(e) => setFilterEndTime(e.target.value)}
                                 className="h-8 text-xs"
                               />
                             </div>
@@ -1007,7 +1042,8 @@ export default function AdminPricingAndSlotsPage() {
 
                     <Button
                       size="sm"
-                      className="h-9 gap-1.5 text-xs font-medium"
+                      variant="hero"
+                      className="h-8 text-xs"
                       disabled={generatingSlots}
                       onClick={handleGenerateSlots}
                     >
@@ -1038,7 +1074,6 @@ export default function AdminPricingAndSlotsPage() {
                         <TableHead>Slot Time</TableHead>
                         <TableHead className="w-40">Price (BDT)</TableHead>
                         <TableHead>Status</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -1055,16 +1090,13 @@ export default function AdminPricingAndSlotsPage() {
                           <TableRow key={slot.id}>
                             <TableCell className="font-medium">
                               <div className="flex items-center gap-2">
-                                <span>{dateStr}</span>
+                                <span className="text-sm">{dateStr}</span>
                                 {dateObj.toDateString() ===
                                   today.toDateString() && (
-                                    <Badge
-                                      variant="outline"
-                                      className="text-[10px] bg-primary/10 text-primary border-primary/20"
-                                    >
-                                      Today
-                                    </Badge>
-                                  )}
+                                  <Badge className="h-5 px-1.5 text-[10px] bg-primary/10 text-primary border-primary/20">
+                                    Today
+                                  </Badge>
+                                )}
                               </div>
                             </TableCell>
                             <TableCell>
@@ -1080,7 +1112,9 @@ export default function AdminPricingAndSlotsPage() {
                                   type="number"
                                   min={0}
                                   value={isDraft ? draftPrices[slot.id] : slot.price}
-                                  onChange={(e) => handleSlotPriceChange(slot, e.target.value)}
+                                  onChange={(e) =>
+                                    handleSlotPriceChange(slot, e.target.value)
+                                  }
                                   onKeyDown={(e) => handleSlotPriceKeyDown(slot, e)}
                                   className="h-8 w-24 text-xs font-semibold"
                                 />
@@ -1118,38 +1152,15 @@ export default function AdminPricingAndSlotsPage() {
                                   disabled={updateSlot.isPending}
                                 />
                                 <Badge
-                                  variant={slot.active ? "default" : "secondary"}
-                                  className="text-[10px]"
+                                  className={`h-6 px-2 text-[10px] ${
+                                    slot.active
+                                      ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                      : "bg-muted text-muted-foreground"
+                                  }`}
+                                  variant="secondary"
                                 >
                                   {slot.active ? "Active" : "Disabled"}
                                 </Badge>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex justify-end">
-                                <Button
-                                  size="sm"
-                                  variant="ghost"
-                                  className="h-8 text-xs gap-1.5"
-                                  onClick={() =>
-                                    updateSlot.mutate({
-                                      id: slot.id,
-                                      payload: { active: !slot.active },
-                                    })
-                                  }
-                                >
-                                  {slot.active ? (
-                                    <>
-                                      <PowerOff className="size-3.5 text-muted-foreground" />
-                                      Deactivate
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Power className="size-3.5 text-emerald-600" />
-                                      Activate
-                                    </>
-                                  )}
-                                </Button>
                               </div>
                             </TableCell>
                           </TableRow>
@@ -1168,13 +1179,6 @@ export default function AdminPricingAndSlotsPage() {
                                 <p className="mt-1 text-xs text-muted-foreground">
                                   There are no generated slots for {slotDate}.
                                 </p>
-                                <Button
-                                  size="sm"
-                                  className="mt-4 gap-1.5 text-xs"
-                                  onClick={handleGenerateSlots}
-                                >
-                                  <Plus className="size-3.5" /> Generate Slots Now
-                                </Button>
                               </div>
                             </TableCell>
                           </TableRow>

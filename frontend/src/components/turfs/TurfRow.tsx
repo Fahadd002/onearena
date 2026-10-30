@@ -375,7 +375,7 @@ export function TurfRow({ turf, date, bucket, cart, toggle, onSelect, surface = 
                   <button
                     key={s.id}
                     disabled={!open}
-                    aria-label={`${timeLabel(s.startMinute)} to ${timeLabel(s.endMinute)}: ${status.label}${picked ? ", selected" : ""}, ৳${formatPrice(s.price)}`}
+                    aria-label={`${timeLabel(s.startMinute)} to ${timeLabel(s.endMinute)}: ${status.label}${picked ? ", selected" : ""}, ৳ ${formatPrice(s.price)}`}
                     onClick={() => {
                       if (open && onSelect) {
                         onSelect({

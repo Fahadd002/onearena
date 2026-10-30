@@ -29,7 +29,6 @@ import { getDefaultDashboardRoute, UserRole } from "@/lib/authUtils";
 import { useAuth } from "@/lib/auth";
 import { getFileUrl } from "@/lib/utils";
 import { ThemeToggleButton } from "@/components/common/ThemeToggleButton";
-import NotificationDropdown from "@/components/header/NotificationDropdown";
 import { NAVBAR_HEIGHT, TURF_SECTION_ID } from "@/lib/turfs";
 
 const navItems = [
@@ -69,9 +68,9 @@ export function SiteHeader() {
         const rect = turf?.getBoundingClientRect();
         setHidden(
           y > NAVBAR_HEIGHT &&
-            !!rect &&
-            rect.top <= 0 &&
-            rect.bottom > NAVBAR_HEIGHT,
+          !!rect &&
+          rect.top <= 0 &&
+          rect.bottom > NAVBAR_HEIGHT,
         );
       });
     };
@@ -133,22 +132,45 @@ export function SiteHeader() {
     <header
       aria-hidden={hidden}
       inert={hidden}
-      className={`fixed top-0 left-0 right-0 z-[60] will-change-transform transition-[translate,background-color,border-color] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-        hidden ? "-translate-y-full" : "translate-y-0"
-      } ${
-        scrolled
+      className={`fixed top-0 left-0 right-0 z-[60] will-change-transform transition-[translate,background-color,border-color] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${hidden ? "-translate-y-full" : "translate-y-0"
+        } ${scrolled
           ? "bg-background/95 backdrop-blur-xl border-b border-border"
           : "bg-transparent"
-      }`}
+        }`}
     >
       <div className="mx-auto flex h-16 w-full max-w-screen-2xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="relative flex items-center gap-2">
+
           <span className="grid size-8 place-items-center rounded-full bg-gradient-to-br from-primary to-primary-glow text-primary-foreground">
             <Trophy className="size-4" />
           </span>
           <span className="font-display text-xl font-bold tracking-tight">
             One<span className="text-primary">Arena</span>
+          </span>
+
+          <span className="absolute top-[2px] -right-5 block">
+            <span className="relative flex items-center justify-center">
+              {/* Single flowing ripple — expands AND fades together */}
+              <motion.span
+                className="absolute inset-0 block rotate-45 rounded-sm bg-amber-400 pointer-events-none"
+                initial={{ scale: 1, opacity: 0.55 }}
+                animate={{ scale: 2.2, opacity: 0 }}
+                transition={{
+                  duration: 1.6,
+                  repeat: Infinity,
+                  repeatDelay: 0.4,
+                  ease: "easeOut",
+                }}
+              />
+
+              {/* Solid Beta badge */}
+              <span className="relative rotate-45 whitespace-nowrap px-1 py-0.5 bg-gradient-to-br from-amber-300 to-amber-500 shadow-lg shadow-amber-500/40 rounded-sm">
+                <span className="block text-[10px] font-bold uppercase tracking-wide text-white drop-shadow-sm leading-none">
+                  Beta
+                </span>
+              </span>
+            </span>
           </span>
         </Link>
 
@@ -161,16 +183,14 @@ export function SiteHeader() {
               <Link
                 key={item.label}
                 href={item.to}
-                className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                  active
-                    ? "bg-background text-primary"
-                    : "text-foreground hover:bg-accent/10 hover:text-primary"
-                }`}
+                className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${active
+                  ? "bg-background text-primary"
+                  : "text-foreground hover:bg-accent/10 hover:text-primary"
+                  }`}
               >
                 <Icon
-                  className={`size-3.5 transition-opacity ${
-                    active ? "opacity-100" : "opacity-60"
-                  }`}
+                  className={`size-3.5 transition-opacity ${active ? "opacity-100" : "opacity-60"
+                    }`}
                 />
                 {item.label}
               </Link>
@@ -206,7 +226,7 @@ export function SiteHeader() {
             </>
           ) : session ? (
             <>
-              <NotificationDropdown className="rounded-full border border-border bg-background/80 text-foreground backdrop-blur-xl transition-all hover:bg-accent/10" />
+              {/* <NotificationDropdown className="rounded-full border border-border bg-background/80 text-foreground backdrop-blur-xl transition-all hover:bg-accent/10" /> */}
               <Popover open={userOpen} onOpenChange={setUserOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -232,8 +252,7 @@ export function SiteHeader() {
                     </span>
                   </Button>
                 </PopoverTrigger>
-                {/* z-[70] keeps the card above the turf filter deck (z-[55]).
-                    Mirrors the notification dropdown's surface. */}
+
                 <PopoverContent
                   align="end"
                   sideOffset={12}
@@ -313,11 +332,10 @@ export function SiteHeader() {
                       key={item.label}
                       href={item.to}
                       onClick={() => setMobileOpen(false)}
-                      className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                        active
-                          ? "bg-primary/10 text-primary"
-                          : "text-foreground hover:bg-accent/10"
-                      }`}
+                      className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${active
+                        ? "bg-primary/10 text-primary"
+                        : "text-foreground hover:bg-accent/10"
+                        }`}
                     >
                       <Icon className="size-4 shrink-0 opacity-70" />
                       {item.label}

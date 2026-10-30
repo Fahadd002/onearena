@@ -61,11 +61,10 @@ export function DateMonthFilter({ today, optionKey, onOption }: Props) {
             type="button"
             onClick={() => onOption(opt.key)}
             style={{ animationDelay: `${idx * 25}ms` }}
-            className={`group inline-flex min-w-[4.25rem] shrink-0 items-center justify-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-tight transition-colors duration-200 animate-in fade-in ${
-              active
-                ? "border-primary bg-primary text-primary-foreground"
+            className={`group inline-flex min-w-[4.25rem] shrink-0 items-center justify-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-tight transition-colors duration-200 animate-in fade-in ${active
+                ? "border-primary bg-gradient-to-r from-primary to-primary-glow text-primary-foreground"
                 : "border-border/60 bg-card text-foreground hover:border-neutral-400/50 hover:bg-neutral-500/10"
-            }`}
+              }`}
           >
             <Icon
               className={`size-3 ${active ? "" : "group-hover:scale-110"} transition-transform`}
@@ -87,18 +86,16 @@ export function DateMonthFilter({ today, optionKey, onOption }: Props) {
               type="button"
               onClick={() => onOption(opt.key)}
               style={{ animationDelay: `${(idx + 3) * 20}ms` }}
-              className={`group inline-flex items-center justify-center gap-0.5 rounded-full border px-1.5 py-0.5 text-[10px] font-bold transition-colors duration-150 animate-in fade-in ${
-                active
-? "border-primary bg-primary text-primary-foreground"
+              className={`group inline-flex items-center justify-center gap-0.5 rounded-full border px-1.5 py-0.5 text-[10px] font-bold transition-colors duration-150 animate-in fade-in ${active
+                  ? "border-primary bg-gradient-to-r from-primary to-primary-glow text-primary-foreground"
                   : "border-border/60 bg-card text-foreground hover:border-neutral-400/50 hover:bg-neutral-500/10"
-              }`}
+                }`}
             >
               <CalendarRange className="size-2.5 shrink-0" />
               <span>{opt.label}</span>
               <span
-                className={`rounded-full px-1 text-[9px] font-black tabular-nums ${
-                  active ? "bg-primary/20 text-primary" : "bg-muted/70 text-muted-foreground/80"
-                }`}
+                className={`rounded-full size-5 flex items-center justify-center text-[9px] font-black tabular-nums leading-none ${active ? "bg-primary/20 text-primary-foreground" : "bg-muted/70 text-muted-foreground/80"
+                  }`}
               >
                 {opt.count}
               </span>

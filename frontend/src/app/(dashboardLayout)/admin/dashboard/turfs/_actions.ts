@@ -75,13 +75,5 @@ export async function deleteTurfImageAction(id: string): Promise<ApiResponse<unk
   }
 }
 
-export async function deleteTurfAction(id: string): Promise<ApiResponse<void> | ApiErrorResponse> {
-  try {
-    const response = await httpClient.delete<void>(`${API_ENDPOINTS.marketplace.ownerTurfs}/${id}`);
-    return response;
-  } catch (error: any) {
-    return { success: false, message: errorMessage(error, "Failed to delete turf") };
-  }
-}
 
 

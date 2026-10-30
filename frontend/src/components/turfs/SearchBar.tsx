@@ -163,7 +163,7 @@ export function SearchBar({
         aria-label="Open filters"
         className={`group inline-flex h-7 min-w-[4.25rem] shrink-0 items-center justify-center gap-1 rounded-full border px-2 text-[10px] font-bold transition-colors duration-200 ${
           filtersOpen || activeCount
-? "border-primary bg-primary text-primary-foreground"
+? "border-primary bg-gradient-to-r from-primary to-primary-glow text-primary-foreground"
             : "border-border/60 bg-card text-foreground hover:border-neutral-400/50 hover:bg-neutral-500/10"
         }`}
       >
@@ -173,11 +173,7 @@ export function SearchBar({
           }`}
         />
         <span>Filters</span>
-        {activeCount > 0 && (
-          <span className="grid size-3.5 place-items-center rounded-full bg-white/25 text-[9px] font-black">
-            {activeCount}
-          </span>
-        )}
+        
         <ChevronDown
           className={`size-2.5 shrink-0 transition-transform ${filtersOpen ? "rotate-180" : ""}`}
         />
@@ -254,7 +250,7 @@ export function SearchBar({
       aria-pressed={!!geo}
       className={`group inline-flex h-7 min-w-[4.25rem] shrink-0 items-center justify-center gap-1 rounded-full border px-2 text-[10px] font-bold transition-colors duration-200 disabled:opacity-60 ${
         geo
-          ? "border-primary bg-primary text-primary-foreground"
+          ? "border-primary bg-gradient-to-r from-primary to-primary-glow text-primary-foreground"
           : "border-border/60 bg-card text-foreground hover:border-neutral-400/50 hover:bg-neutral-500/10"
       }`}
     >

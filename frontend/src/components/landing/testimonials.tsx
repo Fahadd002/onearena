@@ -27,7 +27,7 @@ export function Testimonials() {
     return (
       <section className="border-y border-border/60 bg-surface/40 py-16 sm:py-24">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
-          <div className="max-w-3xl mx-auto text-center mb-16">
+          <div className="mx-auto text-center mb-16">
             <p className="text-xs uppercase tracking-[0.2em] text-primary mb-2">Loved on the pitch</p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
               Proof from the <span className="text-gradient-pitch">pitch</span>

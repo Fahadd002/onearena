@@ -20,6 +20,7 @@ import { useAuth } from "@/lib/auth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { logout } from "@/services/auth.services";
 import { getDefaultDashboardRoute, UserRole } from "@/lib/authUtils";
+import { motion } from "framer-motion";
 
 type NavItem = {
   name: string;
@@ -299,8 +300,8 @@ const AppSidebar: React.FC = () => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className={`flex h-16 items-center justify-between gap-2 ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}>
-          <Link href="/" aria-label="OneArena home" className="flex items-center gap-3 text-sidebar-foreground">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+          <Link href="/" aria-label="OneArena home" className="relative flex items-center gap-3 text-sidebar-foreground">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-glow text-primary-foreground shadow-sm">
               <Trophy className="h-5 w-5" aria-hidden="true" />
             </span>
 
@@ -309,6 +310,29 @@ const AppSidebar: React.FC = () => {
                 One<span className="text-primary">Arena</span>
               </span>
             )}
+            <span className="absolute top-[2px] -right-5 block">
+              <span className="relative flex items-center justify-center">
+                {/* Single flowing ripple — expands AND fades together */}
+                <motion.span
+                  className="absolute inset-0 block rotate-45 rounded-sm bg-amber-400 pointer-events-none"
+                  initial={{ scale: 1, opacity: 0.55 }}
+                  animate={{ scale: 2.2, opacity: 0 }}
+                  transition={{
+                    duration: 1.6,
+                    repeat: Infinity,
+                    repeatDelay: 0.4,
+                    ease: "easeOut",
+                  }}
+                />
+
+                {/* Solid Beta badge */}
+                <span className="relative rotate-45 whitespace-nowrap px-1 py-0.5 bg-gradient-to-br from-amber-300 to-amber-500 shadow-lg shadow-amber-500/40 rounded-sm">
+                  <span className="block text-[10px] font-bold uppercase tracking-wide text-white drop-shadow-sm leading-none">
+                    Beta
+                  </span>
+                </span>
+              </span>
+            </span>
           </Link>
 
           <button

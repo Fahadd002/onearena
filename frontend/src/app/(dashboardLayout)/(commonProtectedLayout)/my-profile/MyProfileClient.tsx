@@ -35,6 +35,7 @@ import { toast } from "sonner";
 import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
 import { getFileUrl } from "@/lib/utils"; // Import your helper
+import { validateBangladeshiMobile } from "@/lib/validators";
 
 export interface IAuthUserMe {
   id: string;
@@ -64,6 +65,7 @@ export default function MyProfileClient({ initialUser: user }: { initialUser: IA
     name: user?.name || "",
     phoneNumber: user?.phoneNumber || "",
   });
+  const [phoneError, setPhoneError] = useState<string | null>(null);
 
   const [passwordForm, setPasswordForm] = useState({
     otp: "",
@@ -244,10 +246,10 @@ export default function MyProfileClient({ initialUser: user }: { initialUser: IA
             </Button>
 
             <Button
-              variant="default"
+              variant="hero"
               size="sm"
               asChild
-              className="h-8 gap-1.5 text-xs shadow-2xs transition-all"
+              className="h-8 gap-1.5 text-xs shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5"
             >
               <Link href="/">
                 <Home className="h-3.5 w-3.5" />
@@ -277,7 +279,7 @@ export default function MyProfileClient({ initialUser: user }: { initialUser: IA
                 )}
               </div>
 
-              <label className="absolute bottom-1 right-1 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 ring-2 ring-background">
+              <label className="absolute bottom-1 right-1 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-glow text-primary-foreground shadow-lg transition-transform hover:scale-110 ring-2 ring-background">
                 <Camera className="h-4 w-4" />
                 <input
                   type="file"
@@ -351,15 +353,15 @@ export default function MyProfileClient({ initialUser: user }: { initialUser: IA
           </div>
         </div>
 
-        {/* Edit Profile & Security Sections */}
+        {/*  Update User Profile & Security Sections */}
         <div className="grid gap-8 lg:grid-cols-2">
           
-          {/* Edit Profile */}
+          {/*  Update User Profile */}
           <div className="rounded-2xl border border-border/60 bg-card p-6 shadow-sm space-y-6 flex flex-col justify-between">
             <div className="space-y-6">
               <div className="border-b border-border/40 pb-4">
                 <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                  <Edit3 className="h-5 w-5 text-primary" /> Edit Profile
+                  <Edit3 className="h-5 w-5 text-primary" /> Update User Profile
                 </h3>
                 <p className="text-xs text-muted-foreground">
                   Update your display details below.
@@ -394,13 +396,15 @@ export default function MyProfileClient({ initialUser: user }: { initialUser: IA
                     <Input
                       id="phoneNumber"
                       value={profileForm.phoneNumber}
-                      onChange={(e) =>
-                        setProfileForm((f) => ({ ...f, phoneNumber: e.target.value }))
-                      }
+                      onChange={(e) => {
+                        setProfileForm((f) => ({ ...f, phoneNumber: e.target.value }));
+                        setPhoneError(validateBangladeshiMobile(e.target.value));
+                      }}
                       className="pl-9 h-11"
                       placeholder="Enter phone number"
                     />
                   </div>
+                  {phoneError && <p className="mt-1 text-xs text-destructive">{phoneError}</p>}
                 </div>
 
                 <div className="space-y-1.5">
@@ -422,8 +426,9 @@ export default function MyProfileClient({ initialUser: user }: { initialUser: IA
             <div className="flex justify-end pt-4 border-t border-border/40">
               <Button
                 onClick={() => updateProfileMutation.mutate()}
-                disabled={updateProfileMutation.isPending || !profileForm.name.trim()}
-                className="gap-2 px-6 w-full sm:w-auto"
+                disabled={updateProfileMutation.isPending || !profileForm.name.trim() || !!phoneError}
+                variant="hero"
+                className="gap-2 px-6 w-full sm:w-auto shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5"
               >
                 {updateProfileMutation.isPending ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -477,21 +482,6 @@ export default function MyProfileClient({ initialUser: user }: { initialUser: IA
                       We'll send a 6-digit code to <span className="font-semibold">{user?.email}</span>
                     </p>
                   </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => sendCodeMutation.mutate()}
-                    disabled={sendCodeMutation.isPending}
-                    className="w-full gap-2 border-primary/30 hover:bg-primary/10"
-                  >
-                    {sendCodeMutation.isPending ? (
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <Send className="h-3.5 w-3.5 text-primary" />
-                    )}
-                    {sendCodeMutation.isPending ? "Sending..." : "Send OTP"}
-                  </Button>
                 </div>
               ) : (
                 /* Step 2: Enter OTP & New Password */
@@ -623,6 +613,7 @@ export default function MyProfileClient({ initialUser: user }: { initialUser: IA
                       passwordForm.newPassword.length < 6
                 }
                 className="gap-2 px-6"
+                variant="hero"
               >
                 {codeSent ? (
                   resetPasswordMutation.isPending ? (
@@ -634,7 +625,7 @@ export default function MyProfileClient({ initialUser: user }: { initialUser: IA
                   sendCodeMutation.isPending ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <Send className="h-4 w-4" />
+                    <Send className="h-4 w-4 text-black" />
                   )
                 )}
                 {codeSent ? "Update Password" : "Send OTP"}

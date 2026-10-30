@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { Badge } from "@/components/premium/Badge";
@@ -26,7 +25,6 @@ import {
   Check,
   AlertCircle,
   Clock,
-  DollarSign,
   Receipt,
   Smartphone,
   Hash,
@@ -75,22 +73,19 @@ function getPaymentStatusInfo(status: PaymentStatusValue | null | undefined) {
   if (!status) return { label: "Unknown", variant: "outline" as const, alert: null };
   const variant = paymentStatusVariant[status] ?? "outline";
 
-  let alert: { icon: typeof AlertCircle; message: string; type: "warning" | "info" } | null = null;
+  let alert: { message: string; type: "warning" | "info" } | null = null;
   if (status === "PROCESSING") {
     alert = {
-      icon: Clock,
       message: "Advance payment reported by customer. Verify and mark as received.",
       type: "warning",
     };
   } else if (status === "PARTIALLY_PAID") {
     alert = {
-      icon: DollarSign,
       message: "Partial payment received. Outstanding balance remains.",
       type: "info",
     };
   } else if (status === "UNPAID") {
     alert = {
-      icon: AlertCircle,
       message: "No payment received yet. Collect payment or mark as paid.",
       type: "warning",
     };
@@ -257,15 +252,6 @@ const BookingCofirmationDrawer = (props: BookingConfirmationProps) => {
                           : "border-blue-200 bg-blue-50 dark:border-blue-900/30 dark:bg-blue-950/30"
                       }`}
                     >
-                      <div className="mt-0.5 flex-shrink-0">
-                        <paymentStatusInfo.alert.icon
-                          className={`size-5 ${
-                            paymentStatusInfo.alert.type === "warning"
-                              ? "text-amber-600"
-                              : "text-blue-600"
-                          }`}
-                        />
-                      </div>
                       <div className="flex-1">
                         <p
                           className={`text-sm font-medium ${

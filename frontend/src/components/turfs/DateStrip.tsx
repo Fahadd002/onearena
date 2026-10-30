@@ -86,7 +86,7 @@ export function DateStrip({ range, value, onChange, today, className = "" }: Pro
               aria-label={`${DAY[d.getDay()]} ${d.getDate()} ${MONTH[d.getMonth()]}${todayCell ? ", today" : ""}${friday ? ", weekend" : ""}`}
               style={{ animationDelay: `${Math.min(idx, 10) * 20}ms` }}
               className={`group relative flex min-w-[2.75rem] shrink-0 flex-col items-center justify-center -space-y-0.5 rounded-lg border py-1 transition-all duration-200 animate-in fade-in slide-in-from-bottom-1 ${active
-                  ? "border-primary bg-primary text-primary-foreground"
+                  ? "border-primary bg-gradient-to-r from-primary to-primary-glow text-primary-foreground"
                   : friday
                     ? "border-amber-400/40 bg-amber-400/5 text-foreground hover:-translate-y-0.5 hover:border-amber-400/80 hover:bg-amber-400/15"
                     : "border-border/60 bg-card/60 text-muted-foreground hover:-translate-y-0.5 hover:border-neutral-400/60 hover:bg-neutral-500/10 hover:text-foreground"

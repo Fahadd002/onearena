@@ -44,7 +44,7 @@ export function HowItWorks() {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto w-full max-w-7xl px-4 sm:px-6 relative z-10"
       >
-        <div className="max-w-3xl mx-auto text-center">
+        <div className="mx-auto text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-primary mb-2">How it works</p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
             From search to <span className="text-gradient-pitch">kick-off</span> in four steps

@@ -183,7 +183,7 @@ const AppHeader: React.FC = () => {
 
                 <ThemeToggleButton className="border-border bg-card text-foreground shadow-theme-md backdrop-blur-none hover:bg-primary/10" />
 
-                <NotificationDropdown className="border-border bg-card text-foreground shadow-theme-md backdrop-blur-none hover:bg-primary/10" />
+                {/* <NotificationDropdown className="border-border bg-card text-foreground shadow-theme-md backdrop-blur-none hover:bg-primary/10" /> */}
               </div>
             </>
           ) : (
@@ -253,7 +253,7 @@ const AppHeader: React.FC = () => {
 
           <div className="flex items-center gap-3">
             <ThemeToggleButton className="border-border bg-card text-foreground shadow-theme-md backdrop-blur-none hover:bg-primary/10" />
-            <NotificationDropdown className="border-border bg-card text-foreground shadow-theme-md backdrop-blur-none hover:bg-primary/10" />
+            {/* <NotificationDropdown className="border-border bg-card text-foreground shadow-theme-md backdrop-blur-none hover:bg-primary/10" /> */}
 
             {!loading && session ? (
               <Popover open={userOpen} onOpenChange={setUserOpen}>
