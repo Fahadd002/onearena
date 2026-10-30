@@ -78,6 +78,7 @@ export interface StoredSlot {
   endMinute: number;
   price: string | number;
   active: boolean;
+  slotStatus: "AVAILABLE" | "WAITLIST" | "BOOKED" | "EXPIRED" | "PLAYED" | "ABANDONED" | "ABSENT";
   createdAt: string;
   updatedAt: string;
 }
@@ -278,6 +279,21 @@ export async function updateSlotAction(
     return {
       success: false,
       message: errorMessage(error, "Failed to update slot"),
+    };
+  }
+}
+
+export async function deleteAvailableSlotAction(
+  slotId: string,
+): Promise<ApiResponse<void> | ApiErrorResponse> {
+  try {
+    return await httpClient.delete<void>(
+      `${API_ENDPOINTS.marketplace.ownerSlots}/${slotId}`,
+    );
+  } catch (error: any) {
+    return {
+      success: false,
+      message: errorMessage(error, "Failed to delete slot"),
     };
   }
 }

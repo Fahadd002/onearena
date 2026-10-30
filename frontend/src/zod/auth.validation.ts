@@ -69,6 +69,11 @@ export const turfZodSchema = z.object({
   categoryId: z.string().min(1, "Please choose a sport"),
   description: z.string(),
   address: z.string().trim().min(5, "Address must be at least 5 characters"),
+  timezone: z.string().min(1, "Please choose a timezone"),
+  establishedSinceYear: z.string()
+    .regex(/^\d{4}$/, "Choose a valid year")
+    .refine((year) => Number(year) >= 1990 && Number(year) <= new Date().getFullYear(), "Choose a year from 1990 to the current year"),
+  establishedSinceMonth: z.string().regex(/^(0[1-9]|1[0-2])$/, "Choose a valid month"),
   defaultSlotPrice: z.string().refine((value) => Number(value) > 0, "Starting price must be greater than 0"),
   defaultSlotDuration: z.string().refine((value) => Number(value) >= 30, "Slot duration must be at least 30 minutes"),
   latitude: z.string().trim().min(1, "Latitude is required").refine((value) => Number.isFinite(Number(value)) && Number(value) >= -90 && Number(value) <= 90, "Enter a valid latitude"),

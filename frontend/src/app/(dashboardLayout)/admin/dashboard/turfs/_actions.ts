@@ -11,6 +11,8 @@ const turfActionSchema = z.object({
   categoryId: z.string().min(1, "Please choose a sport"),
   description: z.string().optional(),
   address: z.string().trim().min(5, "Address must be at least 5 characters"),
+  timezone: z.string().min(1, "Please choose a timezone"),
+  establishedSince: z.string().date(),
   defaultSlotPrice: z.number().positive("Default slot price must be greater than 0"),
   defaultSlotDuration: z.number().min(30, "Slot duration must be at least 30 minutes"),
   allowAdvancePayment: z.boolean().optional(),
@@ -74,6 +76,4 @@ export async function deleteTurfImageAction(id: string): Promise<ApiResponse<unk
     return { success: false, message: errorMessage(error, "Failed to remove turf image") };
   }
 }
-
-
 

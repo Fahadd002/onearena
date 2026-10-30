@@ -25,6 +25,25 @@ export function timeToMinutes(time: string): number {
     return (h || 0) * 60 + (m || 0);
 }
 
+export function formatDateTimeInTimezone(
+    value: string | Date,
+    timeZone = "Asia/Dhaka",
+    options: Intl.DateTimeFormatOptions = {
+        dateStyle: "medium",
+        timeStyle: "short",
+    },
+): string {
+    return new Intl.DateTimeFormat("en-US", { ...options, timeZone }).format(new Date(value));
+}
+
+export function formatTurfLocalDateTime(value: string | Date): string {
+    return new Intl.DateTimeFormat("en-US", {
+        dateStyle: "medium",
+        timeStyle: "short",
+        timeZone: "UTC",
+    }).format(new Date(value));
+}
+
 export function getDayOfWeekIndex(dateStr: string, timezone?: string): number {
     const dateObj = new Date(`${dateStr}T12:00:00.000Z`);
     if (timezone) {

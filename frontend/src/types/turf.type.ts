@@ -52,6 +52,8 @@ export interface Turf {
     address: string;
     area?: string | null;
     description?: string | null;
+    timezone?: string;
+    establishedSince?: string | null;
     defaultSlotPrice: number | string;
     defaultSlotDuration: number;
     allowAdvancePayment?: boolean;
@@ -127,4 +129,3 @@ export interface TurfImage {
     altText?: string | null;
     sortOrder: number;
 }
-

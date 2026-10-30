@@ -33,6 +33,9 @@ type TurfForm = {
   categoryId: string;
   description: string;
   address: string;
+  timezone: string;
+  establishedSinceYear: string;
+  establishedSinceMonth: string;
   defaultSlotPrice: string;
   defaultSlotDuration: string;
   latitude: string;
@@ -55,6 +58,8 @@ type EditTurf = {
   category?: { id?: string; name?: string };
   address: string;
   description?: string | null;
+  timezone?: string;
+  establishedSince?: string | null;
   defaultSlotPrice: string | number;
   defaultSlotDuration: number;
   allowAdvancePayment?: boolean;
@@ -67,6 +72,28 @@ type EditTurf = {
 };
 
 const steps = ["Turf details", "Facilities", "Turf images"];
+const timezoneOptions = [
+  { label: "(GMT+06:00) Asia/Dhaka", value: "Asia/Dhaka" },
+];
+const establishedSinceMonths = [
+  { value: "01", label: "January" },
+  { value: "02", label: "February" },
+  { value: "03", label: "March" },
+  { value: "04", label: "April" },
+  { value: "05", label: "May" },
+  { value: "06", label: "June" },
+  { value: "07", label: "July" },
+  { value: "08", label: "August" },
+  { value: "09", label: "September" },
+  { value: "10", label: "October" },
+  { value: "11", label: "November" },
+  { value: "12", label: "December" },
+];
+const currentYear = new Date().getFullYear();
+const establishedSinceYears = Array.from(
+  { length: currentYear - 1990 + 1 },
+  (_, index) => String(currentYear - index),
+);
 
 export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
   const router = useRouter();
@@ -125,6 +152,9 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
       categoryId: "",
       description: "",
       address: "",
+      timezone: "Asia/Dhaka",
+      establishedSinceYear: "",
+      establishedSinceMonth: "",
       defaultSlotPrice: "",
       defaultSlotDuration: "60",
       latitude: "",
@@ -167,11 +197,13 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
           throw new Error("Please fix invalid payment numbers");
         }
 
+        const { establishedSinceYear, establishedSinceMonth, ...turfValues } = value;
         const payload = {
-          ...value,
+          ...turfValues,
           name: value.name.trim(),
           address: value.address.trim(),
           description: value.description.trim() || undefined,
+          establishedSince: `${establishedSinceYear}-${establishedSinceMonth}-01`,
           defaultSlotPrice,
           defaultSlotDuration: Number(value.defaultSlotDuration),
           allowAdvancePayment,
@@ -212,12 +244,6 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
         toast.success(turfId ? "Turf updated successfully" : "Turf submitted for review");
         router.push("/admin/dashboard/turfs");
       } catch (error: unknown) {
-        if (createdTurfId) {
-          try {
-          } catch (cleanupError) {
-            console.error("Could not roll back turf creation", cleanupError);
-          }
-        }
         toast.error(error instanceof Error ? error.message : "Could not save turf");
       } finally {
         setSaving(false);
@@ -232,6 +258,9 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
     form.setFieldValue("name", current.name);
     form.setFieldValue("description", current.description || "");
     form.setFieldValue("address", current.address);
+    form.setFieldValue("timezone", current.timezone || "Asia/Dhaka");
+    form.setFieldValue("establishedSinceYear", current.establishedSince?.slice(0, 4) || "");
+    form.setFieldValue("establishedSinceMonth", current.establishedSince?.slice(5, 7) || "");
     form.setFieldValue("defaultSlotPrice", String(current.defaultSlotPrice));
     form.setFieldValue("defaultSlotDuration", String(current.defaultSlotDuration));
     form.setFieldValue("latitude", String(current.latitude));
@@ -384,9 +413,6 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
           </Link>
         </Button>
         <div className="leading-tight">
-          <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-            Venue management
-          </p>
           <h1 className="text-base font-semibold">
             {turfId ? "Edit turf" : "Add a new turf"}
           </h1>
@@ -436,12 +462,6 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
               {/* Step 0 */}
               {step === 0 && (
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
-                      <MapPin className="size-3.5" />
-                    </div>
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Location details</p>
-                  </div>
                   <div className="grid gap-2.5 sm:grid-cols-2">
                     {field("name", "Turf name")}
                     <form.Field
@@ -479,6 +499,84 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                       )}
                     </form.Field>
                     <div className="sm:col-span-2">{field("address", "Full address")}</div>
+                    <form.Field
+                      name="timezone"
+                      validators={{ onChange: turfZodSchema.shape.timezone }}
+                    >
+                      {(control) => (
+                        <div className="space-y-1">
+                          <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+                            Timezone
+                          </Label>
+                          <Select value={control.state.value} onValueChange={control.handleChange}>
+                            <SelectTrigger className="h-9 text-sm">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {timezoneOptions.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+                    </form.Field>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+                        Established since
+                      </Label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <form.Field
+                          name="establishedSinceMonth"
+                          validators={{ onChange: turfZodSchema.shape.establishedSinceMonth }}
+                        >
+                          {(control) => (
+                            <Select value={control.state.value} onValueChange={control.handleChange}>
+                              <SelectTrigger
+                                aria-label="Established since month"
+                                className="h-9 text-sm"
+                                aria-invalid={!!control.state.meta.errors.length}
+                              >
+                                <SelectValue placeholder="Month" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {establishedSinceMonths.map((month) => (
+                                  <SelectItem key={month.value} value={month.value}>
+                                    {month.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          )}
+                        </form.Field>
+                        <form.Field
+                          name="establishedSinceYear"
+                          validators={{ onChange: turfZodSchema.shape.establishedSinceYear }}
+                        >
+                          {(control) => (
+                            <Select value={control.state.value} onValueChange={control.handleChange}>
+                              <SelectTrigger
+                                aria-label="Established since year"
+                                className="h-9 text-sm"
+                                aria-invalid={!!control.state.meta.errors.length}
+                              >
+                                <SelectValue placeholder="Year" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {establishedSinceYears.map((year) => (
+                                  <SelectItem key={year} value={year}>
+                                    {year}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          )}
+                        </form.Field>
+                      </div>
+                     
+                    </div>
                     {field("defaultSlotPrice", "Default slot price (৳)", "number")}
                     {field("defaultSlotDuration", "Default slot duration (min)", "number")}
                     <div className="sm:col-span-2">{descriptionField}</div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -8,8 +8,6 @@ import {
   Clock3,
   Loader2,
   Trash2,
-  Power,
-  PowerOff,
   Calendar,
   Save,
   Filter,
@@ -74,6 +72,7 @@ import {
   listTurfSlotsAction,
   listSlotTimeSetupsAction,
   updateSlotAction,
+  deleteAvailableSlotAction,
   type PriceRulePayload,
   type PriceRuleBulkPayload,
   type StoredSlot,
@@ -90,9 +89,6 @@ type Turf = { id: string; name: string };
 type PriceRule = StoredPriceRule;
 type Tab = "pricing-rules" | "slots";
 
-const today = new Date();
-const todayISO = today.toISOString().split("T")[0];
-
 /* -------------------------------------------------------------------------- */
 /* Page                                                                       */
 /* -------------------------------------------------------------------------- */
@@ -101,6 +97,8 @@ export default function AdminPricingAndSlotsPage() {
   const queryClient = useQueryClient();
   const [selectedTurfId, setSelectedTurfId] = useState("");
   const [activeTab, setActiveTab] = useState<Tab>("pricing-rules");
+  const [todayISO, setTodayISO] = useState("");
+  const [todayDayOfWeek, setTodayDayOfWeek] = useState<number | null>(null);
 
   // ---------- Price rule form ----------
   const [dayOfWeek, setDayOfWeek] = useState(0);
@@ -110,12 +108,13 @@ export default function AdminPricingAndSlotsPage() {
   const [applyToAll, setApplyToAll] = useState(false);
   const [editingRuleId, setEditingRuleId] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<PriceRule | null>(null);
+  const [deleteSlotTarget, setDeleteSlotTarget] = useState<StoredSlot | null>(null);
 
   // Selected slot time filter tab (id or null = All)
   const [activeSetupFilter, setActiveSetupFilter] = useState<string | null>(null);
 
   // ---------- Slots ----------
-  const [slotDate, setSlotDate] = useState(todayISO);
+  const [slotDate, setSlotDate] = useState("");
   const [generatingSlots, setGeneratingSlots] = useState(false);
   const [draftPrices, setDraftPrices] = useState<Record<string, string>>({});
   const [timeFilter, setTimeFilter] = useState<{ start: string; end: string } | null>(
@@ -123,6 +122,19 @@ export default function AdminPricingAndSlotsPage() {
   );
   const [filterStartTime, setFilterStartTime] = useState("");
   const [filterEndTime, setFilterEndTime] = useState("");
+
+  useEffect(() => {
+    const now = new Date();
+    const localToday = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, "0"),
+      String(now.getDate()).padStart(2, "0"),
+    ].join("-");
+
+    setTodayISO(localToday);
+    setTodayDayOfWeek(now.getDay());
+    setSlotDate((currentDate) => currentDate || localToday);
+  }, []);
 
   /* -------------------------------------------------------------------------- */
   /* Queries                                                                    */
@@ -163,18 +175,14 @@ export default function AdminPricingAndSlotsPage() {
     refetch: refetchSlots,
   } = useQuery({
     queryKey: ["turf-slots", selectedTurfId, slotDate],
-    enabled: !!selectedTurfId,
+    enabled: !!selectedTurfId && !!slotDate,
     queryFn: async () => {
       const result = await listTurfSlotsAction(selectedTurfId, { date: slotDate });
       if (!result.success) throw new Error(result.message);
       return (result as ApiResponse<StoredSlot[]>).data;
     },
   });
-  const slots: StoredSlot[] = slotsData ?? [];
-
-  /* -------------------------------------------------------------------------- */
-  /* Mutations                                                                  */
-  /* -------------------------------------------------------------------------- */
+  const slots = useMemo<StoredSlot[]>(() => slotsData ?? [], [slotsData]);
 
   const createRule = useMutation({
     mutationFn: (payload: PriceRulePayload) =>
@@ -296,6 +304,23 @@ export default function AdminPricingAndSlotsPage() {
     },
     onError: (error) =>
       toast.error(error instanceof Error ? error.message : "Could not update slot"),
+  });
+
+  const deleteSlot = useMutation({
+    mutationFn: (slotId: string) => deleteAvailableSlotAction(slotId),
+    onSuccess: (result: { success: boolean; message?: string }) => {
+      if (!result.success) {
+        toast.error(result.message || "Could not delete slot");
+        return;
+      }
+      toast.success("Slot deleted");
+      setDeleteSlotTarget(null);
+      void queryClient.invalidateQueries({
+        queryKey: ["turf-slots", selectedTurfId, slotDate],
+      });
+    },
+    onError: (error) =>
+      toast.error(error instanceof Error ? error.message : "Could not delete slot"),
   });
 
   /* -------------------------------------------------------------------------- */
@@ -844,7 +869,7 @@ export default function AdminPricingAndSlotsPage() {
                                 <TableCell className="font-medium">
                                   <div className="flex items-center gap-2">
                                     <span>{dayName}</span>
-                                    {dayIndex === today.getDay() && (
+                                    {dayIndex === todayDayOfWeek && (
                                       <Badge className="h-5 px-1.5 text-[10px] bg-primary/10 text-primary border-primary/20">
                                         Today
                                       </Badge>
@@ -1074,11 +1099,16 @@ export default function AdminPricingAndSlotsPage() {
                         <TableHead>Slot Time</TableHead>
                         <TableHead className="w-40">Price (BDT)</TableHead>
                         <TableHead>Status</TableHead>
+                        <TableHead className="w-16 text-right">Action</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredSlots.map((slot) => {
-                        const dateObj = new Date(slot.slotDate);
+                        const [year, month, day] = slot.slotDate
+                          .slice(0, 10)
+                          .split("-")
+                          .map(Number);
+                        const dateObj = new Date(year, month - 1, day);
                         const dateStr = dateObj.toLocaleDateString("en-US", {
                           weekday: "short",
                           month: "short",
@@ -1091,8 +1121,7 @@ export default function AdminPricingAndSlotsPage() {
                             <TableCell className="font-medium">
                               <div className="flex items-center gap-2">
                                 <span className="text-sm">{dateStr}</span>
-                                {dateObj.toDateString() ===
-                                  today.toDateString() && (
+                                {slot.slotDate.slice(0, 10) === todayISO && (
                                   <Badge className="h-5 px-1.5 text-[10px] bg-primary/10 text-primary border-primary/20">
                                     Today
                                   </Badge>
@@ -1162,6 +1191,33 @@ export default function AdminPricingAndSlotsPage() {
                                   {slot.active ? "Active" : "Disabled"}
                                 </Badge>
                               </div>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              {slot.slotStatus === "AVAILABLE" && (
+                                <DeleteConfirmDialog
+                                  open={deleteSlotTarget?.id === slot.id}
+                                  onOpenChange={(open) =>
+                                    !open && setDeleteSlotTarget(null)
+                                  }
+                                  title="Delete available slot"
+                                  description="This will permanently delete this available slot. Only available slots can be deleted."
+                                  onConfirm={() => deleteSlot.mutate(slot.id)}
+                                  isPending={deleteSlot.isPending}
+                                  trigger={
+                                    <Button
+                                      type="button"
+                                      size="icon"
+                                      variant="ghost"
+                                      aria-label="Delete available slot"
+                                      className="size-8 text-destructive hover:bg-destructive/10"
+                                      disabled={deleteSlot.isPending}
+                                      onClick={() => setDeleteSlotTarget(slot)}
+                                    >
+                                      <Trash2 className="size-4" />
+                                    </Button>
+                                  }
+                                />
+                              )}
                             </TableCell>
                           </TableRow>
                         );
