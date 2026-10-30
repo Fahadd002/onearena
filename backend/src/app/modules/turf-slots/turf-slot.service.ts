@@ -6,11 +6,9 @@ import { TurfStatus, UserRole, SlotSatus } from '../../../generated/prisma/enums
 import AppError from '../../../config/errorHelpers/AppError';
 import prisma from '../../../shared/prisma';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
-import { getMinuteOfDayInTimezone, isDateToday, startOfDayInTimezone } from '../../utils/dateTimeUtils';
+import { addCalendarDays, getMinuteOfDayInTimezone, isDateToday, startOfDayInTimezone } from '../../utils/dateTimeUtils';
 
 type SlotTimeSetupLite = {
-  id: string;
-  timeName: string;
   startMinute: number;
   endMinute: number;
   slotDuration: number;
@@ -18,10 +16,9 @@ type SlotTimeSetupLite = {
 };
 
 type PriceRuleLite = {
-  slotTimeSetupId: string;
   dayOfWeek: number;
   price: Prisma.Decimal;
-  active: boolean;
+  slotTimeSetup: SlotTimeSetupLite;
 };
 
 @Injectable()
@@ -68,82 +65,63 @@ export class TurfSlotService {
   // }
 
 
-  private async getOwnerSlotTimeSetups(
-    ownerId: string,
-    defaultSlotDuration: number,
-  ): Promise<SlotTimeSetupLite[]> {
-    const setups = await prisma.slotTimeSetup.findMany({
-      where: { ownerId },
-      select: { id: true, timeName: true, startMinute: true, endMinute: true, slotDuration:true, isPeakTime:true },
-      orderBy: { startMinute: 'asc' },
-    });
-    if (setups.length > 0) return setups;
-
-    // No custom setup: fall back to a full 24-hour day using the turf defaults
-    return [
-      {
-        id: 'default',
-        timeName: 'Default',
-        startMinute: 0,
-        endMinute: 1440,
-        slotDuration: defaultSlotDuration,
-        isPeakTime: false,
-      },
-    ];
-  }
-
-  private resolvePrice(
-    rules: PriceRuleLite[],
-    dayOfWeek: number,
-    slotTimeSetupId: string,
-    defaultSlotPrice: Prisma.Decimal,
-  ): number {
-    const rule = rules.find(
-      (r) => r.dayOfWeek === dayOfWeek && r.slotTimeSetupId === slotTimeSetupId,
-    );
-    return Number(rule?.price ?? defaultSlotPrice);
-  }
-
   private buildSlotsForDate(
     turf: {
       id: string;
-      timezone: string;
       defaultSlotDuration: number;
       defaultSlotPrice: Prisma.Decimal;
       priceRules: PriceRuleLite[];
     },
-    setups: SlotTimeSetupLite[],
     slotDate: Date,
   ): { startMinute: number; endMinute: number; price: number; isPeakTime: boolean }[] {
-    if (setups.length === 0) return [];
-
-    const weekday = new Intl.DateTimeFormat('en-US', {
-      weekday: 'short',
-      timeZone: turf.timezone,
-    }).format(slotDate);
-    const dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(
-      weekday,
-    );
-
+    const dayOfWeek = slotDate.getUTCDay();
+    const rules = turf.priceRules
+      .filter((rule) => rule.dayOfWeek === dayOfWeek)
+      .sort((left, right) => left.slotTimeSetup.startMinute - right.slotTimeSetup.startMinute);
     const out: { startMinute: number; endMinute: number; price: number; isPeakTime: boolean }[] = [];
+    let cursor = 0;
 
-    for (const setup of setups) {
-      const price = this.resolvePrice(
-        turf.priceRules,
-        dayOfWeek,
-        setup.id,
-        turf.defaultSlotPrice,
-      );
-
-      for (
-        let start = setup.startMinute;
-        start < setup.endMinute;
-        start += setup.slotDuration
-      ) {
-        const end = Math.min(start + setup.slotDuration, setup.endMinute);
-        out.push({ startMinute: start, endMinute: end, price, isPeakTime: setup.isPeakTime });
+    const appendSlots = (
+      startMinute: number,
+      endMinute: number,
+      slotDuration: number,
+      price: number,
+      isPeakTime: boolean,
+    ) => {
+      for (let start = startMinute; start < endMinute; start += slotDuration) {
+        out.push({
+          startMinute: start,
+          endMinute: Math.min(start + slotDuration, endMinute),
+          price,
+          isPeakTime,
+        });
       }
+    };
+
+    for (const rule of rules) {
+      const { startMinute, endMinute, slotDuration, isPeakTime } = rule.slotTimeSetup;
+      const start = Math.max(cursor, startMinute);
+      const end = Math.min(1440, endMinute);
+      if (end <= start) continue;
+
+      appendSlots(
+        cursor,
+        start,
+        turf.defaultSlotDuration,
+        Number(turf.defaultSlotPrice),
+        false,
+      );
+      appendSlots(start, end, slotDuration, Number(rule.price), isPeakTime);
+      cursor = end;
     }
+
+    appendSlots(
+      cursor,
+      1440,
+      turf.defaultSlotDuration,
+      Number(turf.defaultSlotPrice),
+      false,
+    );
 
     return out;
   }
@@ -167,14 +145,7 @@ export class TurfSlotService {
     return result.count;
   }
 
-  // =========================
   // Manual generate (owner-triggered)
-  // =========================
-  //
-  // This is the DESTRUCTIVE path. Called from the UI. It wipes future
-  // AVAILABLE unbooked slots and rebuilds them from current setups + rules.
-  // Past dates, BOOKED slots, and WAITLIST slots are preserved.
-
   async generateSlots(
     owner: IRequestUser,
     turfId: string,
@@ -184,16 +155,18 @@ export class TurfSlotService {
 
     const turf = await prisma.turf.findUnique({
       where: { id: turfId },
-      include: { priceRules: { where: { active: true } } },
+      include: {
+        priceRules: {
+          where: { active: true },
+          include: { slotTimeSetup: true },
+        },
+      },
     });
 
     if (!turf) throw new AppError(status.NOT_FOUND, 'Turf not found');
 
-    const setups = await this.getOwnerSlotTimeSetups(turf.ownerId, turf.defaultSlotDuration);
-
     const days = options.days ?? 90;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = startOfDayInTimezone(new Date(), turf.timezone);
 
     // Destructive rebuild: wipe future AVAILABLE unbooked slots
     const deletedCount = await this.deleteFutureAvailableSlots(turfId, today);
@@ -201,10 +174,9 @@ export class TurfSlotService {
     const created: { slotDate: Date; count: number }[] = [];
 
     for (let d = 0; d < days; d++) {
-      const slotDate = new Date(today);
-      slotDate.setDate(today.getDate() + d);
+      const slotDate = addCalendarDays(today, d);
 
-      const desired = this.buildSlotsForDate(turf, setups, slotDate);
+      const desired = this.buildSlotsForDate(turf, slotDate);
       if (desired.length === 0) continue;
 
       const toCreate = desired.map((slot) => ({
@@ -350,34 +322,55 @@ export class TurfSlotService {
     });
   }
 
-  // =========================
-  // Cron — rolling window (NON-destructive)
-  // =========================
-  //
+  async deleteAvailableSlot(owner: IRequestUser, slotId: string) {
+    const slot = await prisma.turfSlot.findUnique({
+      where: { id: slotId },
+      select: { id: true, turfId: true, slotStatus: true },
+    });
+    if (!slot) throw new AppError(status.NOT_FOUND, 'Slot not found');
+
+    await this.assertOwner(owner, slot.turfId);
+    if (slot.slotStatus !== SlotSatus.AVAILABLE) {
+      throw new AppError(status.CONFLICT, 'Only available slots can be deleted');
+    }
+
+    const result = await prisma.turfSlot.deleteMany({
+      where: {
+        id: slotId,
+        turfId: slot.turfId,
+        slotStatus: SlotSatus.AVAILABLE,
+        bookingLinks: { none: {} },
+      },
+    });
+    if (result.count === 0) {
+      throw new AppError(status.CONFLICT, 'Slot is no longer available to delete');
+    }
+
+    return { id: slotId };
+  }
+
   // Runs daily. Only creates missing days in the rolling window.
   // Never deletes anything.
   //
-  // `timeZone` defaults to the cron timezone (Asia/Dhaka) so the rolling
-  // window's "today" matches the calendar day the cron fired on, even when
-  // the host process runs in a different local timezone.
-
-  async generateRollingSlots(timeZone: string = 'Asia/Dhaka') {
+  async generateRollingSlots() {
     const turfs = await prisma.turf.findMany({
       where: { status: TurfStatus.ACTIVE },
-      include: { priceRules: { where: { active: true } } },
+      include: {
+        priceRules: {
+          where: { active: true },
+          include: { slotTimeSetup: true },
+        },
+      },
     });
-
-    const today = startOfDayInTimezone(new Date(), timeZone);
-
-    const windowEnd = new Date(today);
-    windowEnd.setDate(today.getDate() + TurfSlotService.ROLLING_DAYS - 1);
 
     let totalSlots = 0;
     let totalTurfs = 0;
     let totalDays = 0;
 
     for (const turf of turfs) {
-      const setups = await this.getOwnerSlotTimeSetups(turf.ownerId, turf.defaultSlotDuration);
+      const turfNow = new Date();
+      const today = startOfDayInTimezone(turfNow, turf.timezone);
+      const windowEnd = addCalendarDays(today, TurfSlotService.ROLLING_DAYS - 1);
 
       const lastExisting = await prisma.turfSlot.findFirst({
         where: { turfId: turf.id },
@@ -387,8 +380,7 @@ export class TurfSlotService {
 
       let cursor = new Date(today);
       if (lastExisting) {
-        const next = new Date(lastExisting.slotDate);
-        next.setDate(next.getDate() + 1);
+        const next = addCalendarDays(lastExisting.slotDate, 1);
         if (next > cursor) cursor = next;
       }
 
@@ -397,7 +389,7 @@ export class TurfSlotService {
       while (cursor <= windowEnd) {
         const slotDate = new Date(cursor);
 
-        const desired = this.buildSlotsForDate(turf, setups, slotDate);
+        const desired = this.buildSlotsForDate(turf, slotDate);
         if (desired.length > 0) {
           const existing = await prisma.turfSlot.findMany({
             where: { turfId: turf.id, slotDate },
@@ -425,7 +417,7 @@ export class TurfSlotService {
           }
         }
 
-        cursor.setDate(cursor.getDate() + 1);
+        cursor = addCalendarDays(cursor, 1);
       }
 
       if (daysGeneratedForTurf > 0) {

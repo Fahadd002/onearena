@@ -12,6 +12,8 @@ export interface TurfPayload {
   categoryId: string;
   description?: string;
   address: string;
+  timezone?: string;
+  establishedSince?: string;
   latitude: number;
   longitude: number;
   defaultSlotPrice: number;
@@ -29,6 +31,31 @@ const ADVANCE_PAYMENT_METHODS = [
 type AdvancePaymentMethod = (typeof ADVANCE_PAYMENT_METHODS)[number];
 const MIN_SLOT_DURATION = 30;
 const BD_MOBILE = /^(?:\+8801|01)\d{9}$/;
+
+function parseEstablishedSince(value?: string) {
+  const year = value?.slice(0, 4);
+  if (
+    !value ||
+    !/^\d{4}-(0[1-9]|1[0-2])-01$/.test(value) ||
+    Number(year) < 1990 ||
+    Number(year) > new Date().getFullYear()
+  ) {
+    throw new AppError(status.BAD_REQUEST, 'Established since must be a valid month and year from 1990 to the current year');
+  }
+  return new Date(`${value}T00:00:00.000Z`);
+}
+
+function validateTimezone(timezone?: string) {
+  if (timezone === undefined) return;
+  try {
+    new Intl.DateTimeFormat('en-US', { timeZone: timezone });
+  } catch (error) {
+    if (error instanceof RangeError) {
+      throw new AppError(status.BAD_REQUEST, 'Invalid timezone');
+    }
+    throw error;
+  }
+}
 
 function normalizePaymentPhoneNumbers(
   allowAdvancePayment?: boolean,
@@ -433,6 +460,7 @@ export class TurfService {
 
     this.validateCoordinates(payload);
     validateSlotDefaults(payload.defaultSlotPrice, payload.defaultSlotDuration);
+    validateTimezone(payload.timezone);
 
     const phoneNumbers = normalizePaymentPhoneNumbers(
       payload.allowAdvancePayment,
@@ -446,6 +474,8 @@ export class TurfService {
         name: payload.name,
         description: payload.description,
         address: payload.address,
+        timezone: payload.timezone ?? 'Asia/Dhaka',
+        establishedSince: parseEstablishedSince(payload.establishedSince),
         allowAdvancePayment: payload.allowAdvancePayment ?? false,
         advancePaymentAmount: new Prisma.Decimal(payload.advancePaymentAmount ?? 0),
         latitude: new Prisma.Decimal(payload.latitude),
@@ -469,6 +499,7 @@ export class TurfService {
     }
 
     validateSlotDefaults(payload.defaultSlotPrice, payload.defaultSlotDuration);
+    validateTimezone(payload.timezone);
 
     return prisma.$transaction(async (tx) => {
       if (payload.allowAdvancePayment !== undefined || payload.paymentPhoneNumbers !== undefined) {
@@ -487,6 +518,10 @@ export class TurfService {
           categoryId: payload.categoryId,
           description: payload.description,
           address: payload.address,
+          timezone: payload.timezone,
+          ...(payload.establishedSince === undefined
+            ? {}
+            : { establishedSince: parseEstablishedSince(payload.establishedSince) }),
           allowAdvancePayment: payload.allowAdvancePayment,
           advancePaymentAmount: payload.advancePaymentAmount !== undefined ? new Prisma.Decimal(payload.advancePaymentAmount) : undefined,
           defaultSlotDuration: payload.defaultSlotDuration,

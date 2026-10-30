@@ -57,6 +57,7 @@ export type TurfMinAggregateOutputType = {
   defaultSlotDuration: number | null
   defaultSlotPrice: runtime.Decimal | null
   timezone: string | null
+  establishedSince: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -76,6 +77,7 @@ export type TurfMaxAggregateOutputType = {
   defaultSlotDuration: number | null
   defaultSlotPrice: runtime.Decimal | null
   timezone: string | null
+  establishedSince: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -95,6 +97,7 @@ export type TurfCountAggregateOutputType = {
   defaultSlotDuration: number
   defaultSlotPrice: number
   timezone: number
+  establishedSince: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -132,6 +135,7 @@ export type TurfMinAggregateInputType = {
   defaultSlotDuration?: true
   defaultSlotPrice?: true
   timezone?: true
+  establishedSince?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -151,6 +155,7 @@ export type TurfMaxAggregateInputType = {
   defaultSlotDuration?: true
   defaultSlotPrice?: true
   timezone?: true
+  establishedSince?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -170,6 +175,7 @@ export type TurfCountAggregateInputType = {
   defaultSlotDuration?: true
   defaultSlotPrice?: true
   timezone?: true
+  establishedSince?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -276,6 +282,7 @@ export type TurfGroupByOutputType = {
   defaultSlotDuration: number
   defaultSlotPrice: runtime.Decimal
   timezone: string
+  establishedSince: Date | null
   createdAt: Date
   updatedAt: Date
   _count: TurfCountAggregateOutputType | null
@@ -318,6 +325,7 @@ export type TurfWhereInput = {
   defaultSlotDuration?: Prisma.IntFilter<"Turf"> | number
   defaultSlotPrice?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFilter<"Turf"> | string
+  establishedSince?: Prisma.DateTimeNullableFilter<"Turf"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
   packages?: Prisma.PackageListRelationFilter
@@ -347,6 +355,7 @@ export type TurfOrderByWithRelationInput = {
   defaultSlotDuration?: Prisma.SortOrder
   defaultSlotPrice?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
+  establishedSince?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   packages?: Prisma.PackageOrderByRelationAggregateInput
@@ -379,6 +388,7 @@ export type TurfWhereUniqueInput = Prisma.AtLeast<{
   defaultSlotDuration?: Prisma.IntFilter<"Turf"> | number
   defaultSlotPrice?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFilter<"Turf"> | string
+  establishedSince?: Prisma.DateTimeNullableFilter<"Turf"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
   packages?: Prisma.PackageListRelationFilter
@@ -408,6 +418,7 @@ export type TurfOrderByWithAggregationInput = {
   defaultSlotDuration?: Prisma.SortOrder
   defaultSlotPrice?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
+  establishedSince?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TurfCountOrderByAggregateInput
@@ -435,6 +446,7 @@ export type TurfScalarWhereWithAggregatesInput = {
   defaultSlotDuration?: Prisma.IntWithAggregatesFilter<"Turf"> | number
   defaultSlotPrice?: Prisma.DecimalWithAggregatesFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringWithAggregatesFilter<"Turf"> | string
+  establishedSince?: Prisma.DateTimeNullableWithAggregatesFilter<"Turf"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Turf"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Turf"> | Date | string
 }
@@ -452,6 +464,7 @@ export type TurfCreateInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
@@ -481,6 +494,7 @@ export type TurfUncheckedCreateInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
@@ -506,6 +520,7 @@ export type TurfUpdateInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
@@ -535,6 +550,7 @@ export type TurfUncheckedUpdateInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
@@ -562,6 +578,7 @@ export type TurfCreateManyInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -579,6 +596,7 @@ export type TurfUpdateManyMutationInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -598,6 +616,7 @@ export type TurfUncheckedUpdateManyInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -632,6 +651,7 @@ export type TurfCountOrderByAggregateInput = {
   defaultSlotDuration?: Prisma.SortOrder
   defaultSlotPrice?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
+  establishedSince?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -659,6 +679,7 @@ export type TurfMaxOrderByAggregateInput = {
   defaultSlotDuration?: Prisma.SortOrder
   defaultSlotPrice?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
+  establishedSince?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -678,6 +699,7 @@ export type TurfMinOrderByAggregateInput = {
   defaultSlotDuration?: Prisma.SortOrder
   defaultSlotPrice?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
+  establishedSince?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -903,6 +925,7 @@ export type TurfCreateWithoutCategoryInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
@@ -930,6 +953,7 @@ export type TurfUncheckedCreateWithoutCategoryInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
@@ -986,6 +1010,7 @@ export type TurfScalarWhereInput = {
   defaultSlotDuration?: Prisma.IntFilter<"Turf"> | number
   defaultSlotPrice?: Prisma.DecimalFilter<"Turf"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFilter<"Turf"> | string
+  establishedSince?: Prisma.DateTimeNullableFilter<"Turf"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Turf"> | Date | string
 }
@@ -1003,6 +1028,7 @@ export type TurfCreateWithoutFacilitiesInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
@@ -1031,6 +1057,7 @@ export type TurfUncheckedCreateWithoutFacilitiesInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
@@ -1071,6 +1098,7 @@ export type TurfUpdateWithoutFacilitiesInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
@@ -1099,6 +1127,7 @@ export type TurfUncheckedUpdateWithoutFacilitiesInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
@@ -1123,6 +1152,7 @@ export type TurfCreateWithoutManagersInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
@@ -1151,6 +1181,7 @@ export type TurfUncheckedCreateWithoutManagersInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
@@ -1191,6 +1222,7 @@ export type TurfUpdateWithoutManagersInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
@@ -1219,6 +1251,7 @@ export type TurfUncheckedUpdateWithoutManagersInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
@@ -1243,6 +1276,7 @@ export type TurfCreateWithoutReviewsInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
@@ -1271,6 +1305,7 @@ export type TurfUncheckedCreateWithoutReviewsInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
@@ -1311,6 +1346,7 @@ export type TurfUpdateWithoutReviewsInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
@@ -1339,6 +1375,7 @@ export type TurfUncheckedUpdateWithoutReviewsInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
@@ -1363,6 +1400,7 @@ export type TurfCreateWithoutPaymentPhoneNumbersInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
@@ -1391,6 +1429,7 @@ export type TurfUncheckedCreateWithoutPaymentPhoneNumbersInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
@@ -1431,6 +1470,7 @@ export type TurfUpdateWithoutPaymentPhoneNumbersInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
@@ -1459,6 +1499,7 @@ export type TurfUncheckedUpdateWithoutPaymentPhoneNumbersInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
@@ -1483,6 +1524,7 @@ export type TurfCreateWithoutPriceRulesInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
@@ -1511,6 +1553,7 @@ export type TurfUncheckedCreateWithoutPriceRulesInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
@@ -1551,6 +1594,7 @@ export type TurfUpdateWithoutPriceRulesInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
@@ -1579,6 +1623,7 @@ export type TurfUncheckedUpdateWithoutPriceRulesInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
@@ -1603,6 +1648,7 @@ export type TurfCreateWithoutSlotsInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
@@ -1631,6 +1677,7 @@ export type TurfUncheckedCreateWithoutSlotsInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
@@ -1671,6 +1718,7 @@ export type TurfUpdateWithoutSlotsInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
@@ -1699,6 +1747,7 @@ export type TurfUncheckedUpdateWithoutSlotsInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
@@ -1723,6 +1772,7 @@ export type TurfCreateWithoutImagesInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
@@ -1751,6 +1801,7 @@ export type TurfUncheckedCreateWithoutImagesInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
@@ -1791,6 +1842,7 @@ export type TurfUpdateWithoutImagesInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
@@ -1819,6 +1871,7 @@ export type TurfUncheckedUpdateWithoutImagesInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
@@ -1843,6 +1896,7 @@ export type TurfCreateWithoutPackagesInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutTurfInput
@@ -1871,6 +1925,7 @@ export type TurfUncheckedCreateWithoutPackagesInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutTurfInput
@@ -1911,6 +1966,7 @@ export type TurfUpdateWithoutPackagesInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUpdateManyWithoutTurfNestedInput
@@ -1939,6 +1995,7 @@ export type TurfUncheckedUpdateWithoutPackagesInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutTurfNestedInput
@@ -1963,6 +2020,7 @@ export type TurfCreateWithoutOwnerInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageCreateNestedManyWithoutTurfInput
@@ -1990,6 +2048,7 @@ export type TurfUncheckedCreateWithoutOwnerInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   packages?: Prisma.PackageUncheckedCreateNestedManyWithoutTurfInput
@@ -2042,6 +2101,7 @@ export type TurfCreateManyCategoryInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -2059,6 +2119,7 @@ export type TurfUpdateWithoutCategoryInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
@@ -2086,6 +2147,7 @@ export type TurfUncheckedUpdateWithoutCategoryInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
@@ -2112,6 +2174,7 @@ export type TurfUncheckedUpdateManyWithoutCategoryInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2130,6 +2193,7 @@ export type TurfCreateManyOwnerInput = {
   defaultSlotDuration?: number
   defaultSlotPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: string
+  establishedSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -2147,6 +2211,7 @@ export type TurfUpdateWithoutOwnerInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUpdateManyWithoutTurfNestedInput
@@ -2174,6 +2239,7 @@ export type TurfUncheckedUpdateWithoutOwnerInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   packages?: Prisma.PackageUncheckedUpdateManyWithoutTurfNestedInput
@@ -2200,6 +2266,7 @@ export type TurfUncheckedUpdateManyWithoutOwnerInput = {
   defaultSlotDuration?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  establishedSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2313,6 +2380,7 @@ export type TurfSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   defaultSlotDuration?: boolean
   defaultSlotPrice?: boolean
   timezone?: boolean
+  establishedSince?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   packages?: boolean | Prisma.Turf$packagesArgs<ExtArgs>
@@ -2343,6 +2411,7 @@ export type TurfSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   defaultSlotDuration?: boolean
   defaultSlotPrice?: boolean
   timezone?: boolean
+  establishedSince?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   category?: boolean | Prisma.TurfCategoryDefaultArgs<ExtArgs>
@@ -2364,6 +2433,7 @@ export type TurfSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   defaultSlotDuration?: boolean
   defaultSlotPrice?: boolean
   timezone?: boolean
+  establishedSince?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   category?: boolean | Prisma.TurfCategoryDefaultArgs<ExtArgs>
@@ -2385,11 +2455,12 @@ export type TurfSelectScalar = {
   defaultSlotDuration?: boolean
   defaultSlotPrice?: boolean
   timezone?: boolean
+  establishedSince?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TurfOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "categoryId" | "name" | "description" | "address" | "allowAdvancePayment" | "advancePaymentAmount" | "latitude" | "longitude" | "status" | "defaultSlotDuration" | "defaultSlotPrice" | "timezone" | "createdAt" | "updatedAt", ExtArgs["result"]["turf"]>
+export type TurfOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "categoryId" | "name" | "description" | "address" | "allowAdvancePayment" | "advancePaymentAmount" | "latitude" | "longitude" | "status" | "defaultSlotDuration" | "defaultSlotPrice" | "timezone" | "establishedSince" | "createdAt" | "updatedAt", ExtArgs["result"]["turf"]>
 export type TurfInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   packages?: boolean | Prisma.Turf$packagesArgs<ExtArgs>
   reviews?: boolean | Prisma.Turf$reviewsArgs<ExtArgs>
@@ -2441,6 +2512,7 @@ export type $TurfPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     defaultSlotDuration: number
     defaultSlotPrice: runtime.Decimal
     timezone: string
+    establishedSince: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["turf"]>
@@ -2890,6 +2962,7 @@ export interface TurfFieldRefs {
   readonly defaultSlotDuration: Prisma.FieldRef<"Turf", 'Int'>
   readonly defaultSlotPrice: Prisma.FieldRef<"Turf", 'Decimal'>
   readonly timezone: Prisma.FieldRef<"Turf", 'String'>
+  readonly establishedSince: Prisma.FieldRef<"Turf", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Turf", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Turf", 'DateTime'>
 }

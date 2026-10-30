@@ -13,7 +13,10 @@ model Turf {
   defaultSlotDuration  Int        @default(90)
   defaultSlotPrice     Decimal    @db.Decimal(12, 2) @default(0)
   timezone             String     @default("Asia/Dhaka")
+  establishedSince     DateTime   @db.Date
+  /// Stored as the turf's local wall-clock value in the database.
   createdAt            DateTime   @default(now())
+  /// Stored as the turf's local wall-clock value in the database.
   updatedAt            DateTime   @updatedAt
 
   packages            Package[]
@@ -96,7 +99,9 @@ model TurfSlot {
   active       Boolean       @default(true)
   slotStatus   SlotSatus     @default(AVAILABLE)
   isPeakTime   Boolean       @default(false)
+  /// Stored as the related turf's local wall-clock value in the database.
   createdAt    DateTime      @default(now())
+  /// Stored as the related turf's local wall-clock value in the database.
   updatedAt    DateTime      @updatedAt
   turf         Turf          @relation(fields: [turfId], references: [id], onDelete: Cascade)
   bookingLinks BookingSlot[]

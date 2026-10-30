@@ -1,9 +1,6 @@
 // Load env before any module that reads process.env (Prisma pool, better-auth, etc.)
 import config from './config/index';
 
-// Force the whole process to Bangladesh time so every `new Date()`,
-// `setHours()` and bare `Intl` call across the app is Dhaka-consistent.
-process.env.TZ = config.timezone;
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { toNodeHandler } from 'better-auth/node';
@@ -19,14 +16,11 @@ import { TurfService } from './app/modules/turf/turf.service';
 import { TurfSlotService } from './app/modules/turf-slots/turf-slot.service';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 
-const CRON_TZ = config.timezone;
-
 // Every scheduled job in the app is registered here
 function registerCronJobs(app: NestExpressApplication) {
   const bookingService = app.get(BookingService, { strict: false });
   const turfService = app.get(TurfService, { strict: false });
   const turfSlotService = app.get(TurfSlotService, { strict: false });
-
   // Every 15 minutes: expire unpaid bookings, then release stale WAITLIST slots
   cron.schedule('*/15 * * * *', async () => {
     await bookingService.expireUnpaid().catch(() => undefined);
@@ -45,10 +39,8 @@ function registerCronJobs(app: NestExpressApplication) {
   //   timezone: CRON_TZ,
   // });
 
-  // Daily rolling slot generation (midnight, Dhaka)
-  cron.schedule('0 0 * * *', () => turfSlotService.generateRollingSlots(CRON_TZ).catch(() => undefined), {
-    timezone: CRON_TZ,
-  });
+  // Daily rolling slot generation; each turf's calendar date is resolved in its timezone.
+  cron.schedule('0 0 * * *', () => turfSlotService.generateRollingSlots().catch(() => undefined));
 }
 
 async function bootstrap() {
@@ -65,12 +57,9 @@ async function bootstrap() {
 
   const templatePath = config.env == 'production' ? 'dist/app/templates' : 'src/app/templates';
   app.setBaseViewsDir(path.resolve(process.cwd(), templatePath));
+  const betterAuthOrigin = new URL(config.betterAuthUrl).origin;
   app.enableCors({
-    origin: [
-      config.frontendUrl,
-      config.betterAuthUrl,
-      config.nonWWWUrl
-    ],
+    origin: [...new Set([...config.frontendOrigins, betterAuthOrigin])],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],

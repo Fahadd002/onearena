@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -112,6 +113,23 @@ export class TurfSlotController {
       statusCode: status.OK,
       success: true,
       message: 'Slot updated successfully',
+      data,
+    });
+  }
+
+  @Delete('owner/slots/:slotId')
+  @AuthRoles(UserRole.ADMIN)
+  @UseGuards(CheckAuthGuard)
+  async deleteAvailableSlot(
+    @CurrentUser() user: IRequestUser,
+    @Param('slotId') slotId: string,
+    @Res() res: Response,
+  ) {
+    const data = await this.turfService.deleteAvailableSlot(user, slotId);
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: 'Available slot deleted successfully',
       data,
     });
   }

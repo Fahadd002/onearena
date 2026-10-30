@@ -3,6 +3,28 @@ import path from 'path';
 
 dotenv.config({ path: path.join(process.cwd(), '.env') });
 
+const getFrontendOrigins = (...urls: Array<string | undefined>): string[] => {
+    const origins = new Set<string>();
+
+    for (const value of urls) {
+        if (!value?.trim()) continue;
+
+        try {
+            const url = new URL(value.trim());
+            origins.add(url.origin);
+        } catch {
+            throw new Error(`Invalid frontend origin URL: ${value}`);
+        }
+    }
+
+    return [...origins];
+};
+
+const frontendOrigins = getFrontendOrigins(
+    process.env.FRONTEND_URL,
+    process.env.NON_WWW_FRONTEND_URL,
+);
+
 export default {
     env: process.env.NODE_ENV,
     port: process.env.PORT,
@@ -13,6 +35,7 @@ export default {
     betterAuthUrl: process.env.BETTER_AUTH_URL as string,
     frontendUrl: process.env.FRONTEND_URL as string,
     nonWWWUrl: process.env.NON_WWW_FRONTEND_URL as string,
+    frontendOrigins,
     cookieSecure: process.env.COOKIE_SECURE === 'true',
     cookieSameSite: process.env.COOKIE_SAME_SITE === 'none' ? ('none' as const) : ('lax' as const),
     betterAuthtSecret: process.env.BETTER_AUTH_SECRET,

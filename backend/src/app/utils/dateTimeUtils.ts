@@ -24,10 +24,9 @@ export function isDateToday(dateStr: string, date: Date, timeZone?: string): boo
 }
 
 /**
- * Returns a Date set to 00:00:00 of the calendar day `date` is considered to be
- * in when viewed through `timeZone`. The returned Date is expressed in UTC
- * (i.e. its UTC fields match that midnight in the target timezone), so it lines
- * up with Prisma's `@db.Date` columns regardless of the server's local TZ.
+ * Returns a UTC-midnight Date whose calendar fields match `date` in `timeZone`.
+ * Use this for Prisma @db.Date fields, which store a calendar date, not a local
+ * midnight instant or timezone.
  */
 export function startOfDayInTimezone(date: Date, timeZone: string): Date {
   const parts = new Intl.DateTimeFormat('en-US', {
@@ -43,4 +42,10 @@ export function startOfDayInTimezone(date: Date, timeZone: string): Date {
   const month = Number(parts.find((p) => p.type === 'month')!.value);
   const day = Number(parts.find((p) => p.type === 'day')!.value);
   return new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
+}
+
+export function addCalendarDays(date: Date, days: number): Date {
+  const result = new Date(date);
+  result.setUTCDate(result.getUTCDate() + days);
+  return result;
 }
