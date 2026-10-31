@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import { formatDate as formatDisplayDate } from "@/lib/time-utils";
 import {
   ArrowRight,
   ExternalLink,
@@ -41,9 +42,12 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const NAV_OFFSET = 128;
 
 const formatDate = (iso: string) => {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return null;
-  return d.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
+  const formattedDate = formatDisplayDate(iso, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+  return formattedDate === "—" ? null : formattedDate;
 };
 
 /* ─── Reveal wrapper ─── */

@@ -5,6 +5,7 @@ import { SearchProvider } from "@/context/SearchContext";
 import AppHeader from "@/layout/AppHeader";
 import AppSidebar from "@/layout/AppSidebar";
 import Backdrop from "@/layout/Backdrop";
+import { AdminSubscriptionTicker } from "./_components/AdminSubscriptionTicker";
 import React from "react";
 
 function AdminDashboardContent({ children }: { children: React.ReactNode }) {
@@ -26,6 +27,7 @@ function AdminDashboardContent({ children }: { children: React.ReactNode }) {
           {children}
         </div>
       </div>
+      <AdminSubscriptionTicker />
     </div>
   );
 }

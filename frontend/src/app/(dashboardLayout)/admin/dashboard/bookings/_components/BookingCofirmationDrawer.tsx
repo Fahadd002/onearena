@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { formatTimeWithPeriod } from "@/lib/time-utils";
+import { formatDate, formatTimeWithPeriod } from "@/lib/time-utils";
 import {
   bookingSlots,
   bookingTurfNames,
@@ -444,7 +444,14 @@ const BookingCofirmationDrawer = (props: BookingConfirmationProps) => {
                             <p className="text-[10px] text-muted-foreground">
                               Date:{" "}
                               {invoice?.invoiceDate
-                                ? format(new Date(invoice.invoiceDate), "dd MMM yyyy, hh:mm a")
+                                ? formatDate(invoice.invoiceDate, {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    hour12: true,
+                                  })
                                 : "—"}
                             </p>
                           </div>

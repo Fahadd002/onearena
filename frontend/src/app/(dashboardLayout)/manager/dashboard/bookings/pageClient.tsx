@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
+import { formatBookingDate } from "@/lib/booking-utils";
 
 type BookingSlot = { slotDate: string; startMinute: number; endMinute: number; isPeakTime?: boolean; turf?: { name: string } };
 type Booking = { id: string; bookingNumber: string; numberOfSlot: number; totalAmount: string | number; status: string; paymentStatus: string; slot?: BookingSlot | null; slots?: BookingSlot[]; turf?: { name: string } };
@@ -33,7 +34,7 @@ export default function ManagerBookingsPage() {
               <CardContent>
                 {(booking.slots?.length ? booking.slots : booking.slot ? [booking.slot] : []).map((s, i) => (
                   <p key={i} className="text-sm">
-                    {new Date(s.slotDate).toLocaleDateString()} · {s.startMinute} - {s.endMinute}
+                    {formatBookingDate(s.slotDate)} · {s.startMinute} - {s.endMinute}
                   </p>
                 ))}
                 <p className="mt-2 font-medium">৳ {Number(booking.totalAmount).toLocaleString()} · {booking.paymentStatus}</p>

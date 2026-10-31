@@ -15,9 +15,10 @@ import {
   Sparkles,
   TriangleAlert,
 } from "lucide-react";
-import { format, parseISO } from "date-fns";
+import { formatDate as formatDisplayDate } from "@/lib/time-utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Badge } from "@/components/premium/Badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -154,14 +155,18 @@ function getStatusBadge(status: SubscriptionStatus) {
 
 /** Format ISO dates to "dd-MMM-yyyy" */
 function formatDateDisplay(dateStr?: string | null): string {
-  if (!dateStr) return "—";
-  try {
-    const date =
-      typeof dateStr === "string" ? parseISO(dateStr) : new Date(dateStr);
-    return format(date, "dd-MMM-yyyy");
-  } catch {
-    return "—";
-  }
+  return formatDisplayDate(dateStr, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function getTodayDateValue(): string {
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(
+    today.getDate(),
+  ).padStart(2, "0")}`;
 }
 
 /** Invoice Badge Styling */
@@ -787,16 +792,19 @@ export default function OwnerSubscriptionsPage() {
                             {/* End Date */}
                             <TableCell className="px-1 py-1">
                               {draft ? (
-                                <Input
-                                  className="h-8 w-36 text-xs rounded-lg"
-                                  type="date"
+                                <DatePicker
+                                  className="h-8 w-36 rounded-lg text-xs"
                                   value={draft.endDate}
-                                  onChange={(e) =>
+                                  min={getTodayDateValue() > sub.endDate.slice(0, 10)
+                                    ? getTodayDateValue()
+                                    : sub.endDate.slice(0, 10)}
+                                  ariaLabel={`Extend end date for ${sub.user.companyName || sub.user.name}`}
+                                  onChange={(value) =>
                                     setEditing((prev) => ({
                                       ...prev,
                                       [sub.id]: {
                                         ...draft,
-                                        endDate: e.target.value,
+                                        endDate: value,
                                       },
                                     }))
                                   }
@@ -815,7 +823,7 @@ export default function OwnerSubscriptionsPage() {
                                   <>
                                     <Button
                                       size="sm"
-                                      className="h-8 text-xs rounded-lg bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+                                      className="h-8 rounded-lg bg-gradient-to-r from-primary to-primary-glow text-xs text-primary-foreground shadow-glow transition hover:brightness-110"
                                       onClick={() =>
                                         updateMutation.mutate({
                                           id: sub.id,

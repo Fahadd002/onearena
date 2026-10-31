@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
 import { toast } from "sonner";
+import { formatDate } from "@/lib/time-utils";
 
 type Payout = { id: string; amount: string | number; status: string; createdAt: string; owner?: { name: string; email: string } | null };
 
@@ -36,7 +37,7 @@ export default function AdminPayoutsPage() {
               </CardHeader>
               <CardContent>
                 <p className="font-medium">৳ {Number(payout.amount).toLocaleString()}</p>
-                <p className="text-xs text-muted-foreground">{new Date(payout.createdAt).toLocaleDateString()}</p>
+                <p className="text-xs text-muted-foreground">{formatDate(payout.createdAt)}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {payout.status === "PENDING" && <Button size="sm" onClick={() => updateStatus.mutate({ id: payout.id, status: "PROCESSING" })} disabled={updateStatus.isPending}>Start processing</Button>}
                   {payout.status === "PROCESSING" && <Button size="sm" onClick={() => updateStatus.mutate({ id: payout.id, status: "PAID" })} disabled={updateStatus.isPending}>Mark paid</Button>}

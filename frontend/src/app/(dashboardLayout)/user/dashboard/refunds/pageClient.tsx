@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
+import { formatDate } from "@/lib/time-utils";
 import { toast } from "sonner";
 import { useState } from "react";
 
@@ -50,7 +51,7 @@ export default function UserRefundsPage() {
               </CardHeader>
               <CardContent>
                 <p className="font-medium">৳ {Number(refund.amount).toLocaleString()}</p>
-                <p className="text-xs text-muted-foreground">{refund.reason || "No reason provided"} · {new Date(refund.createdAt).toLocaleDateString()}</p>
+                <p className="text-xs text-muted-foreground">{refund.reason || "No reason provided"} · {formatDate(refund.createdAt)}</p>
               </CardContent>
             </Card>
           ))}

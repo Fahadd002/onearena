@@ -4,7 +4,7 @@ import { API_ENDPOINTS } from "@/lib/api/config";
 
 export async function getSubscriptionHistoryClient(): Promise<ApiResponse<unknown> | ApiErrorResponse> {
   try {
-    return await httpClient.get("/subscription/history");
+    return await httpClient.get(API_ENDPOINTS.subscription.subscriptionHistory);
   } catch (error: unknown) {
     return { success: false, message: error instanceof Error ? error.message : "Failed to fetch subscription history" };
   }

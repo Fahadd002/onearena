@@ -13,6 +13,8 @@ const turfActionSchema = z.object({
   address: z.string().trim().min(5, "Address must be at least 5 characters"),
   timezone: z.string().min(1, "Please choose a timezone"),
   establishedSince: z.string().date(),
+  openingTime: z.number().int().min(0).max(1439),
+  closingTime: z.number().int().min(0).max(1439),
   defaultSlotPrice: z.number().positive("Default slot price must be greater than 0"),
   defaultSlotDuration: z.number().min(30, "Slot duration must be at least 30 minutes"),
   allowAdvancePayment: z.boolean().optional(),
@@ -20,6 +22,14 @@ const turfActionSchema = z.object({
   paymentPhoneNumbers: z.array(z.object({ method: z.string(), number: z.string() })).optional(),
   latitude: z.number().finite().min(-90).max(90, "Enter a valid latitude"),
   longitude: z.number().finite().min(-180).max(180, "Enter a valid longitude"),
+}).superRefine((value, context) => {
+  if (value.closingTime <= value.openingTime) {
+    context.addIssue({
+      code: "custom",
+      message: "Closing time must be later than opening time",
+      path: ["closingTime"],
+    });
+  }
 });
 
 export type TurfActionPayload = z.infer<typeof turfActionSchema>;
@@ -76,4 +86,3 @@ export async function deleteTurfImageAction(id: string): Promise<ApiResponse<unk
     return { success: false, message: errorMessage(error, "Failed to remove turf image") };
   }
 }
-

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CalendarDays, CircleCheck, MapPinned, Clock } from "lucide-react";
 import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
+import { formatDate as formatDisplayDate } from "@/lib/time-utils";
 import { KpiCard } from "@/components/premium/KpiCard";
 import { Badge } from "@/components/premium/Badge";
 
@@ -35,8 +36,7 @@ function formatTime(minutes: number): string {
 }
 
 function formatDate(dateStr: string): string {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString("en-US", {
+    return formatDisplayDate(dateStr, {
         weekday: "short",
         month: "short",
         day: "numeric",

@@ -12,6 +12,7 @@ import {
   BarChart3,
   UserPlus,
   Sparkles,
+  Copy,
   Phone,
   Hash,
   Clock3,
@@ -24,6 +25,7 @@ import { Badge } from "@/components/premium/Badge";
 import { DataTable } from "@/components/premium/DataTable";
 import { ApiResponse } from "@/types/api.type";
 import { toast } from "sonner";
+import { formatDate as formatDisplayDate } from "@/lib/time-utils";
 import { validateBangladeshiMobile } from "@/lib/validators";
 import {
   getCurrentSubscriptionClient,
@@ -92,20 +94,20 @@ const planThemes = [
 ];
 
 function formatDate(dateString: string) {
-  const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = date.toLocaleString("en-US", { month: "short" });
-  const year = date.getFullYear();
-  return `${day} ${month}, ${year}`;
+  return formatDisplayDate(dateString, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 function formatDateShort(value?: string | null) {
-  if (!value) return "-";
-  return new Date(value).toLocaleDateString("en-US", {
+  const formattedDate = formatDisplayDate(value, {
     month: "short",
     day: "numeric",
     year: "numeric",
   });
+  return formattedDate === "—" ? "-" : formattedDate;
 }
 
 function formatAmount(value?: number | null) {
@@ -236,6 +238,15 @@ export default function AdminMySubscriptionPage() {
         return "Rocket";
       default:
         return "Pay Later";
+    }
+  };
+
+  const handleCopyPaymentNumber = async (method: Exclude<PaymentMethod, "CASH">) => {
+    try {
+      await navigator.clipboard.writeText(PAYMENT_NUMBERS[method]);
+      toast.success(`${getWalletName(method)} number copied to clipboard.`);
+    } catch {
+      toast.error("Could not copy the payment number. Please copy it manually.");
     }
   };
 
@@ -686,6 +697,29 @@ export default function AdminMySubscriptionPage() {
                       );
                     })}
                   </div>
+
+                  {!isCashPayment && (
+                    <div className="flex items-center justify-between gap-3 rounded-xl border border-purple-200 bg-purple-50/60 p-3.5 dark:border-purple-900/60 dark:bg-purple-950/30">
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-wider text-purple-900 dark:text-purple-300">
+                          Send payment to ({getWalletName(paymentMethod)})
+                        </p>
+                        <p className="mt-1 font-mono text-sm font-black tracking-widest text-slate-900 dark:text-white">
+                          {PAYMENT_NUMBERS[paymentMethod]}
+                        </p>
+                      </div>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleCopyPaymentNumber(paymentMethod)}
+                        className="h-8 shrink-0 px-2.5 text-xs font-bold text-purple-600 hover:bg-purple-100 dark:text-purple-400"
+                      >
+                        <Copy className="mr-1 h-3.5 w-3.5" />
+                        Copy
+                      </Button>
+                    </div>
+                  )}
 
                   {!isCashPayment && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">

@@ -56,6 +56,7 @@ export const API_ENDPOINTS = {
         // Public / Owner plans
         subsCriptionPlans: "/subscription-plans",
         mySubscription: "/my-subscription",
+        subscriptionHistory: "/subscription/history",
         planById: "/subscription-plans/:planId",
 
         // Super Admin — subscriptions

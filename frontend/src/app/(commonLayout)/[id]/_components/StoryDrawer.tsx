@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { CalendarDays, X } from "lucide-react";
+import { formatDate } from "@/lib/time-utils";
 
 import { getFileUrl } from "@/lib/utils";
 import type { OwnerLandingBlog } from "@/types/owner-landing.type";
@@ -32,9 +33,7 @@ export default function StoryDrawer({
 
   const cover = story ? getFileUrl(story.coverImage) : null;
   const published = story?.publishedAt
-    ? new Date(story.publishedAt).toLocaleDateString("en-US", {
-        day: "numeric", month: "long", year: "numeric",
-      })
+    ? formatDate(story.publishedAt, { day: "numeric", month: "long", year: "numeric" })
     : null;
 
   return (

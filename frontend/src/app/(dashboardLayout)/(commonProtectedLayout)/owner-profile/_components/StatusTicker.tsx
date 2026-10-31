@@ -7,7 +7,13 @@ import { OwnerProfile } from "../_types";
 import { AlertCircle, CheckCircle, XCircle, FileText } from "lucide-react";
 
 interface TickerMessage {
-  type: "pending" | "rejected" | "approved" | "update_required" | "created" | "submitted";
+  type:
+    | "pending"
+    | "rejected"
+    | "approved"
+    | "update_required"
+    | "created"
+    | "submitted";
   text: string;
   icon: React.ReactNode;
   className: string;

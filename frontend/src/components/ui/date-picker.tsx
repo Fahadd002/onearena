@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { format, parse } from "date-fns";
 import { CalendarDays } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import { formatDate } from "@/lib/time-utils";
 
 interface DatePickerProps {
     value: string;
@@ -28,11 +30,12 @@ export function DatePicker({
     id,
     ariaLabel,
 }: DatePickerProps) {
+    const [open, setOpen] = useState(false);
     const selectedDate = value ? parse(value, "yyyy-MM-dd", new Date()) : undefined;
-    const displayValue = value ? format(selectedDate!, "PP") : "";
+    const displayValue = value ? formatDate(value) : "";
 
     return (
-        <Popover>
+        <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <div className="relative cursor-pointer">
                     {showIcon && (
@@ -60,6 +63,7 @@ export function DatePicker({
                     onSelect={(selected) => {
                         if (selected) {
                             onChange(format(selected, "yyyy-MM-dd"));
+                            setOpen(false);
                         }
                     }}
                     disabled={min ? (d) => d < parse(min, "yyyy-MM-dd", new Date()) : undefined}

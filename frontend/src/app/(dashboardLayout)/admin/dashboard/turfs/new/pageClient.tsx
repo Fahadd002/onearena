@@ -18,6 +18,7 @@ import { validateBangladeshiMobile } from "@/lib/validators";
 import { API_ENDPOINTS } from "@/lib/api/config";
 import { formatFieldErrors } from "@/lib/form-errors";
 import { getFileUrl } from "@/lib/utils";
+import { formatTimeWithPeriod, minutesToTime, timeToMinutes } from "@/lib/time-utils";
 import { turfZodSchema } from "@/zod/auth.validation";
 import {
   assignTurfFacilitiesAction,
@@ -36,6 +37,8 @@ type TurfForm = {
   timezone: string;
   establishedSinceYear: string;
   establishedSinceMonth: string;
+  openingTime: string;
+  closingTime: string;
   defaultSlotPrice: string;
   defaultSlotDuration: string;
   latitude: string;
@@ -60,6 +63,8 @@ type EditTurf = {
   description?: string | null;
   timezone?: string;
   establishedSince?: string | null;
+  openingTime: number;
+  closingTime: number;
   defaultSlotPrice: string | number;
   defaultSlotDuration: number;
   allowAdvancePayment?: boolean;
@@ -155,6 +160,8 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
       timezone: "Asia/Dhaka",
       establishedSinceYear: "",
       establishedSinceMonth: "",
+      openingTime: "",
+      closingTime: "",
       defaultSlotPrice: "",
       defaultSlotDuration: "90",
       latitude: "",
@@ -204,6 +211,8 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
           address: value.address.trim(),
           description: value.description.trim() || undefined,
           establishedSince: `${establishedSinceYear}-${establishedSinceMonth}-01`,
+          openingTime: timeToMinutes(value.openingTime),
+          closingTime: timeToMinutes(value.closingTime),
           defaultSlotPrice,
           defaultSlotDuration: Number(value.defaultSlotDuration),
           allowAdvancePayment,
@@ -261,6 +270,8 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
     form.setFieldValue("timezone", current.timezone || "Asia/Dhaka");
     form.setFieldValue("establishedSinceYear", current.establishedSince?.slice(0, 4) || "");
     form.setFieldValue("establishedSinceMonth", current.establishedSince?.slice(5, 7) || "");
+    form.setFieldValue("openingTime", minutesToTime(current.openingTime));
+    form.setFieldValue("closingTime", minutesToTime(current.closingTime));
     form.setFieldValue("defaultSlotPrice", String(current.defaultSlotPrice));
     form.setFieldValue("defaultSlotDuration", String(current.defaultSlotDuration));
     form.setFieldValue("latitude", String(current.latitude));
@@ -318,7 +329,9 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
   }, [images]);
 
   const validLocation = useCallback(
-    (values: TurfForm) => turfZodSchema.safeParse(values).success,
+    (values: TurfForm) =>
+      turfZodSchema.safeParse(values).success &&
+      timeToMinutes(values.closingTime) > timeToMinutes(values.openingTime),
     []
   );
 
@@ -346,11 +359,17 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
           <Input
             id={control.name}
             type={type}
+            required={type === "time"}
             value={control.state.value}
             onChange={(event) => control.handleChange(event.target.value)}
             aria-invalid={!!control.state.meta.errors.length}
             className="h-8 text-sm sm:h-9"
           />
+          {type === "time" && control.state.value && (
+            <p className="text-[10px] text-muted-foreground">
+              {formatTimeWithPeriod(timeToMinutes(control.state.value))}
+            </p>
+          )}
           {control.state.meta.errors.length > 0 && (
             <p className="text-[10px] text-destructive">
               {formatFieldErrors(control.state.meta.errors)}
@@ -585,6 +604,21 @@ return (
                   )}
                     {field("defaultSlotPrice", "Default slot price (৳)", "number")}
                     {field("defaultSlotDuration", "Default slot duration (min)", "number")}
+                    {field("openingTime", "Open at", "time")}
+                    {field("closingTime", "Close at", "time")}
+                    <form.Subscribe
+                      selector={(state) => [state.values.openingTime, state.values.closingTime] as const}
+                    >
+                      {([openingTime, closingTime]) =>
+                        openingTime &&
+                        closingTime &&
+                        timeToMinutes(closingTime) <= timeToMinutes(openingTime) ? (
+                          <p className="text-[10px] text-destructive sm:col-span-2">
+                            Closing time must be later than opening time.
+                          </p>
+                        ) : null
+                      }
+                    </form.Subscribe>
                     <div className="sm:col-span-2">{descriptionField}</div>
 
                     {/* Advance payment */}

@@ -60,6 +60,7 @@ import { ApiResponse } from "@/types/api.type";
 import {
   DAY_NAMES,
   formatTimeWithPeriod,
+  formatDate,
   timeToMinutes,
 } from "@/lib/time-utils";
 import { validatePrice, sanitizePrice } from "@/lib/validations";
@@ -1093,9 +1094,7 @@ export default function AdminPricingAndSlotsPage() {
                     </TableHeader>
                     <TableBody>
                       {filteredSlots.map((slot) => {
-                        const [year, month, day] = slot.slotDate.slice(0, 10).split("-").map(Number);
-                        const dateObj = new Date(year, month - 1, day);
-                        const dateStr = dateObj.toLocaleDateString("en-US", {
+                        const dateStr = formatDate(slot.slotDate, {
                           weekday: "short",
                           month: "short",
                           day: "numeric",

@@ -18,6 +18,7 @@ import {
   Clock,
 } from "lucide-react";
 import { toast } from "sonner";
+import { formatDate as formatDisplayDate } from "@/lib/time-utils";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/premium/Badge";
@@ -84,16 +85,14 @@ const statusStyle: Record<User["status"], "default" | "secondary" | "destructive
 
 /** Helper to format join date with time */
 function formatJoinedDateTime(dateString: string) {
-  if (!dateString) return "—";
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("en-US", {
+  return formatDisplayDate(dateString, {
     month: "short",
     day: "numeric",
     year: "numeric",
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
-  }).format(date);
+  });
 }
 
 export default function SuperAdminUsersPage() {

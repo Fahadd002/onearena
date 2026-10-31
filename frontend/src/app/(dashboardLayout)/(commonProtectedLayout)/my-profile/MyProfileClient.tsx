@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { formatDate as formatDisplayDate } from "@/lib/time-utils";
 import {
   Loader2,
   Save,
@@ -200,20 +201,17 @@ export default function MyProfileClient({ initialUser: user }: { initialUser: IA
 
   const formatJoinedDateTime = (dateString?: string) => {
     if (!dateString) return "N/A";
-    const date = new Date(dateString);
-
-    const formattedDate = date.toLocaleDateString("en-US", {
+    const formattedDate = formatDisplayDate(dateString, {
       month: "short",
       day: "numeric",
       year: "numeric",
     });
-
-    const formattedTime = date.toLocaleTimeString("en-GB", {
+    const formattedTime = formatDisplayDate(dateString, {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
       hour12: false,
-    });
+    }, undefined, "en-GB");
 
     return `${formattedDate} at ${formattedTime}`;
   };

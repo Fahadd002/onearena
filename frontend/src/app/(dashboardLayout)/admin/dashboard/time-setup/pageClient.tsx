@@ -12,6 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { DataTable } from "@/components/premium/DataTable";
+import { formatTimeWithPeriod, minutesToTime, timeToMinutes } from "@/lib/time-utils";
 
 import { usePagination } from "@/hooks/usePagination";
 import { useSort } from "@/hooks/useSort";
@@ -53,28 +54,6 @@ export type UpdateSlotTimePayload = BaseUpdateSlotTimePayload & {
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
 /* -------------------------------------------------------------------------- */
-
-function formatTime(totalMinutes: number): string {
-  const norm = ((totalMinutes % 1440) + 1440) % 1440;
-  const h = Math.floor(norm / 60);
-  const m = norm % 60;
-  const period = h >= 12 ? "PM" : "AM";
-  const hour = h % 12 || 12;
-  return `${hour}:${String(m).padStart(2, "0")} ${period}`;
-}
-
-function timeToMinutes(value: string): number {
-  if (!value) return 0;
-  const [h, m] = value.split(":").map(Number);
-  return (h || 0) * 60 + (m || 0);
-}
-
-function minutesToTime(minutes: number): string {
-  const norm = ((minutes % 1440) + 1440) % 1440;
-  const h = Math.floor(norm / 60);
-  const m = norm % 60;
-  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
-}
 
 function formatDuration(start: number, end: number): string {
   const total = end - start;
@@ -346,7 +325,7 @@ export default function TimingPage() {
                   sortable: true,
                   render: (row) => (
                     <span className="text-sm text-muted-foreground font-mono">
-                      {formatTime(row.startMinute)} – {formatTime(row.endMinute)}
+                      {formatTimeWithPeriod(row.startMinute)} – {formatTimeWithPeriod(row.endMinute)}
                     </span>
                   ),
                 },
@@ -521,7 +500,7 @@ export default function TimingPage() {
                       <Clock3 className="size-3 text-primary" /> Calculated End Time:
                     </span>
                     <span className="font-semibold text-foreground font-mono">
-                      {formatTime(endMinute)} ({calculatedEndTime})
+                      {formatTimeWithPeriod(endMinute)} ({calculatedEndTime})
                     </span>
                   </div>
 
@@ -545,7 +524,7 @@ export default function TimingPage() {
                   <div>
                     <span className="font-semibold">Overlaps existing plan:</span>
                     <p className="mt-0.5">
-                      "{overlappingWindow.timeName}" ({formatTime(overlappingWindow.startMinute)} – {formatTime(overlappingWindow.endMinute)})
+                      "{overlappingWindow.timeName}" ({formatTimeWithPeriod(overlappingWindow.startMinute)} – {formatTimeWithPeriod(overlappingWindow.endMinute)})
                     </p>
                   </div>
                 </div>

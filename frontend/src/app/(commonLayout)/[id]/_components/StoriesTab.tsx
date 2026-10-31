@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, CalendarDays, FileText, Sparkles } from "lucide-react";
+import { formatDate } from "@/lib/time-utils";
 
 import { getFileUrl } from "@/lib/utils";
 import type { OwnerLandingBlog, OwnerLandingPage } from "@/types/owner-landing.type";
@@ -83,9 +84,7 @@ function StoryCarousel({
           const isActive = pos === 0;
           const cover = getFileUrl(blog.coverImage);
           const published = blog.publishedAt
-            ? new Date(blog.publishedAt).toLocaleDateString("en-US", {
-                day: "numeric", month: "short", year: "numeric",
-              })
+            ? formatDate(blog.publishedAt, { day: "numeric", month: "short", year: "numeric" })
             : null;
 
           return (

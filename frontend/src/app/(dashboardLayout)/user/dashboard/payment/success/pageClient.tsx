@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/premium/Badge";
 import { httpClient } from "@/lib/axios/httpClient";
 import { API_BASE_URL, API_ENDPOINTS } from "@/lib/api/config";
+import { formatDate as formatDisplayDate } from "@/lib/time-utils";
 import {
     CheckCircle,
     Calendar,
@@ -40,8 +41,7 @@ function formatTime(minutes: number): string {
 }
 
 function formatDate(dateStr: string): string {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString("en-US", {
+    return formatDisplayDate(dateStr, {
         weekday: "short",
         month: "short",
         day: "numeric",

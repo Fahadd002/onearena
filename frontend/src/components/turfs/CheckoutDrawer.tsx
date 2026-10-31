@@ -33,6 +33,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
 import { randomId } from "@/lib/compat";
+import { formatDate as formatDisplayDate } from "@/lib/time-utils";
 import type { CartSlot } from "./types";
 
 interface Props {
@@ -56,12 +57,11 @@ const formatTime = (minutes: number) => {
 };
 
 const formatDate = (date: string) => {
-  const value = new Date(`${date}T00:00:00.000Z`);
   return {
-    weekday: value.toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" }).toUpperCase(),
-    day: value.toLocaleDateString("en-US", { day: "2-digit", timeZone: "UTC" }),
-    month: value.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" }).toUpperCase(),
-    year: value.getUTCFullYear(),
+    weekday: formatDisplayDate(date, { weekday: "short" }).toUpperCase(),
+    day: formatDisplayDate(date, { day: "2-digit" }),
+    month: formatDisplayDate(date, { month: "short" }).toUpperCase(),
+    year: formatDisplayDate(date, { year: "numeric" }),
   };
 };
 

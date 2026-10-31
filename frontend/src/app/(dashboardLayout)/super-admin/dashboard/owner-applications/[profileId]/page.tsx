@@ -23,6 +23,7 @@ import {
   CreditCard,
   ShieldCheck,
 } from "lucide-react";
+import { formatDate } from "@/lib/time-utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -483,8 +484,8 @@ export default function OwnerApplicationDetailPage() {
       )}
 
       <p className="text-xs text-muted-foreground">
-        Created at: {new Date(owner.createdAt).toLocaleString()} · Updated at:{" "}
-        {new Date(owner.updatedAt).toLocaleString()}
+        Created at: {formatDate(owner.createdAt, { dateStyle: "medium", timeStyle: "medium" })} · Updated at:{" "}
+        {formatDate(owner.updatedAt, { dateStyle: "medium", timeStyle: "medium" })}
       </p>
 
       {/* Decision Dialog */}

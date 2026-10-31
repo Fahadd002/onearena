@@ -38,6 +38,7 @@ import {
 } from "../_client-api";
 import { OwnerProfile, SubscriptionPlan, OwnerSubscription } from "../_types";
 import OwnerProfileHeader from "../_components/OwnerProfileHeader";
+import { formatDate as formatDisplayDate } from "@/lib/time-utils";
 
 type PaymentMethod = "BKASH" | "NAGAD" | "ROKET" | "CASH";
 
@@ -196,11 +197,11 @@ export default function SubscriptionStepPage() {
   });
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = date.toLocaleString("en-US", { month: "short" });
-    const year = date.getFullYear();
-    return `${day} ${month}, ${year}`;
+    return formatDisplayDate(dateString, {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
   };
 
   const getStatusColor = (status: string) => {

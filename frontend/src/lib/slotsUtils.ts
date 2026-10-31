@@ -1,3 +1,5 @@
+import { formatTimeWithPeriod } from "./time-utils";
+
 export const DAY   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 export const MONTH = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 export const DAY_FULL   = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -43,13 +45,7 @@ export const isPastSlot = (
 ) => ymd(date) === ymd(now) && startMinute < currentMinuteOfDay(now);
 
 /** minutes → "7:30 AM" */
-export const timeLabel = (min: number) => {
-  const t = ((min % 1440) + 1440) % 1440;
-  const h = Math.floor(t / 60);
-  const m = t % 60;
-  const h12 = h % 12 === 0 ? 12 : h % 12;
-  return `${h12}:${String(m).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`;
-};
+export const timeLabel = formatTimeWithPeriod;
 
 /** N consecutive days starting today */
 export const dateStrip = (n = 60) => {

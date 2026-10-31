@@ -1,3 +1,5 @@
+import { formatDate } from "@/lib/time-utils";
+
 export type BookingSlotLike = {
   id: string;
   slotDate: string;
@@ -9,23 +11,16 @@ export type BookingSlotLike = {
   turf?: { id: string; name: string } | null;
 };
 
-const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
-
 /**
  * Formats a booking/slot date. `slotDate` is a date-only column, so it is
  * parsed as UTC midnight and rendered in UTC to avoid shifting a day in
  * timezones behind UTC.
  */
 export function formatBookingDate(dateStr?: string | null): string {
-  if (!dateStr) return "—";
-  const isDateOnly = DATE_ONLY.test(dateStr);
-  const d = new Date(isDateOnly ? `${dateStr}T00:00:00.000Z` : dateStr);
-  if (Number.isNaN(d.getTime())) return "—";
-  return d.toLocaleDateString("en-US", {
+  return formatDate(dateStr, {
     weekday: "short",
     month: "short",
     day: "numeric",
-    ...(isDateOnly ? { timeZone: "UTC" as const } : {}),
   });
 }
 

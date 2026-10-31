@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
+import { formatDate } from "@/lib/time-utils";
 
 type Invoice = { id: string; invoiceNumber: string; subtotal: string | number; totalAmount: string | number; paidAmount: string | number; remainingAmount?: string | number; status: string; issuedAt: string; booking: { bookingNumber: string; turf: { name: string } } };
 
@@ -38,7 +39,7 @@ export default function UserInvoicesPage() {
                    <div><p className="text-xs text-muted-foreground">Paid</p><p className="font-medium">৳ {Number(invoice.paidAmount).toLocaleString()}</p></div>
                    <div><p className="text-xs text-muted-foreground">Remaining</p><p className="font-medium">৳ {Number(invoice.remainingAmount ?? 0).toLocaleString()}</p></div>
                  </div>
-                 <p className="mt-3 text-xs text-muted-foreground">Status: {invoice.status} · Issued: {new Date(invoice.issuedAt).toLocaleDateString()}</p>
+                 <p className="mt-3 text-xs text-muted-foreground">Status: {invoice.status} · Issued: {formatDate(invoice.issuedAt)}</p>
                </CardContent>
             </Card>
           ))}

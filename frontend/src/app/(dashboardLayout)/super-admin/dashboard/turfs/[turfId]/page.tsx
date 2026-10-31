@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { httpClient } from "@/lib/axios/httpClient";
 import { API_ENDPOINTS } from "@/lib/api/config";
 import { getFileUrl } from "@/lib/utils";
+import { formatTimeWithPeriod } from "@/lib/time-utils";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -62,15 +63,6 @@ const statusColors: Record<string, string> = {
   REJECTED: "bg-destructive/10 text-destructive border-destructive/20",
 };
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-const formatRuleTime = (minutes: number) => {
-  const normalizedMinutes = ((minutes % 1440) + 1440) % 1440;
-  const hours = Math.floor(normalizedMinutes / 60);
-  const minutePart = String(normalizedMinutes % 60).padStart(2, "0");
-  const period = hours >= 12 ? "PM" : "AM";
-  const displayHour = hours % 12 || 12;
-  return `${displayHour}:${minutePart} ${period}`;
-};
 
 export default function SuperAdminTurfReviewPage() {
   const params = useParams<{ turfId: string }>();
@@ -382,7 +374,7 @@ export default function SuperAdminTurfReviewPage() {
                     >
                       <span>
                         {dayNames[rule.dayOfWeek]} ·{" "}
-                        {formatRuleTime(rule.startMinute)}-{formatRuleTime(rule.endMinute)}
+                        {formatTimeWithPeriod(rule.startMinute)}-{formatTimeWithPeriod(rule.endMinute)}
                       </span>
                       <div className="flex items-center gap-3">
                         <span className="font-semibold">
@@ -420,11 +412,11 @@ export default function SuperAdminTurfReviewPage() {
                         </div>
                         <div>
                           <p className="text-muted-foreground">Start time</p>
-                          <p className="mt-1 font-semibold">{formatRuleTime(rule.startMinute)}</p>
+                          <p className="mt-1 font-semibold">{formatTimeWithPeriod(rule.startMinute)}</p>
                         </div>
                         <div>
                           <p className="text-muted-foreground">End time</p>
-                          <p className="mt-1 font-semibold">{formatRuleTime(rule.endMinute)}</p>
+                          <p className="mt-1 font-semibold">{formatTimeWithPeriod(rule.endMinute)}</p>
                         </div>
                         <div className="sm:col-span-2">
                           <p className="text-muted-foreground">Price</p>
