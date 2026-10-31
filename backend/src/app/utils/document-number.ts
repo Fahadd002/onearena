@@ -15,5 +15,5 @@ export async function nextDocumentNumber(
     select: { currentValue: true },
   });
 
-  return `${prefix}-${year}-${String(counter.currentValue).padStart(4, '0')}`;
+  return `${prefix}-${year}-${String(counter.currentValue).padStart(5, '0')}`;
 }

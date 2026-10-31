@@ -71,7 +71,6 @@ export class PaymentController {
   }
 
   // Subscription Payment Starts
-
   @Post('subscription/payment/initiate')
   @AuthRoles(UserRole.ADMIN)
   @UseGuards(CheckAuthGuard)

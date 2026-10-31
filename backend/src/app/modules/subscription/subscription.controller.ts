@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import httpStatus from 'http-status';
-import { FixedPeriod, SubscriptionStatus, UserRole, FeatureType } from '../../../generated/prisma/enums';
+import { FixedPeriod, SubscriptionStatus, UserRole, FeatureType, PaymentMethod } from '../../../generated/prisma/enums';
 import { SubscriptionService } from './subscription.service';
 import { CurrentUser } from '../../../common/decorators/current-user.decorator';
 import { AuthRoles } from '../../../common/decorators/auth-roles.decorator';
@@ -210,49 +210,6 @@ export class SubscriptionController {
     });
   }
 
-
-  @Post('subscription/subscribe')
-  @AuthRoles(UserRole.ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async subscribe(
-    @CurrentUser() user: IRequestUser,
-    @Body() body: { planId: string; billingCycle: FixedPeriod },
-    @Res() res: Response,
-  ) {
-    const subscription = await this.subscriptionService.subscribeOrUpgrade(
-      user,
-      body.planId,
-      body.billingCycle,
-    );
-    sendResponse(res, {
-      statusCode: httpStatus.CREATED,
-      success: true,
-      message: 'Subscription process executed successfully',
-      data: subscription,
-    });
-  }
-
-  @Post('subscriptions/activate')
-  @AuthRoles(UserRole.ADMIN)
-  @UseGuards(CheckAuthGuard)
-  async activateSubscription(
-    @CurrentUser() user: IRequestUser,
-    @Body() body: { planId: string; billingPeriod: FixedPeriod },
-    @Res() res: Response,
-  ) {
-    const subscription = await this.subscriptionService.subscribeOrUpgrade(
-      user,
-      body.planId,
-      body.billingPeriod,
-    );
-    sendResponse(res, {
-      statusCode: httpStatus.CREATED,
-      success: true,
-      message: 'Subscription activated successfully',
-      data: subscription,
-    });
-  }
-
   @Patch('subscription/cancel')
   @AuthRoles(UserRole.ADMIN)
   @UseGuards(CheckAuthGuard)
@@ -302,7 +259,7 @@ export class SubscriptionController {
   @UseGuards(CheckAuthGuard)
   async updateSubscription(
     @Param('subscriptionId') subscriptionId: string,
-    @Body() body: { status?: SubscriptionStatus; endDate?: string; planId?: string },
+    @Body() body: { period: FixedPeriod; planId?: string; status?: SubscriptionStatus; paymentMethod?: PaymentMethod; providerTransactionId?: string; payerMobileNumber?: string },
     @Res() res: Response,
   ) {
     const subscription = await this.subscriptionService.updateSubscription(

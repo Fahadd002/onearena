@@ -6,16 +6,22 @@ import {
   SubscriptionStatus,
   FeatureType,
   PaymentStatus,
+  PaymentMethod,
+  PaymentType,
+  InvoiceFor,
+  InvoiceStatus,
 } from '../../../generated/prisma/enums';
 import { Prisma } from '../../../generated/prisma/client';
 import AppError from '../../../config/errorHelpers/AppError';
 import prisma from '../../../shared/prisma';
 import { startOfDay } from '../../utils/date';
+import { nextDocumentNumber } from '../../utils/document-number';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
+import { InvoiceService } from '../invoice/invoice.service';
 
 @Injectable()
 export class SubscriptionService {
-  constructor() { }
+  constructor(private readonly invoiceService: InvoiceService) { }
   // Get all active subscription plans ordered by tier level
   async getPlans() {
     return prisma.subscriptionPlan.findMany({
@@ -107,115 +113,6 @@ export class SubscriptionService {
     });
 
     return subscription;
-  }
-
-  // Explicit handler for Subscribe / Upgrade operations
-  async subscribeOrUpgrade(
-    user: IRequestUser,
-    planId: string,
-    billingPeriod: FixedPeriod = FixedPeriod.MONTHLY
-  ) {
-    const ownerProfile = await prisma.ownerProfile.findUnique({
-      where: { userId: user.userId },
-      select: { verificationStatus: true },
-    });
-
-    const targetPlan = await this.getPlanById(planId);
-
-    const existingSub = await prisma.subscription.findUnique({
-      where: { userId: user.userId },
-      include: { plan: true },
-    });
-
-    let action: SubscriptionAction = SubscriptionAction.SUBSCRIBED;
-
-    // Downgrade prevention ONLY applies if owner profile is APPROVED
-    if (ownerProfile?.verificationStatus === 'APPROVED') {
-      if (existingSub && existingSub.status === SubscriptionStatus.ACTIVE) {
-        if (targetPlan.tierLevel < existingSub.plan.tierLevel) {
-          throw new AppError(
-            httpStatus.BAD_REQUEST,
-            "Downgrading to a lower tier plan is not allowed"
-          );
-        }
-        if (targetPlan.tierLevel === existingSub.plan.tierLevel) {
-          action = SubscriptionAction.RENEWED;
-        } else {
-          action = SubscriptionAction.UPGRADED;
-        }
-      }
-    }
-
-    const now = startOfDay(new Date());
-    const trialEnd = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
-
-    // Compute Subscription Duration based on period
-    const endDate = new Date(now);
-    if (billingPeriod === FixedPeriod.YEARLY) {
-      endDate.setFullYear(now.getFullYear() + 1);
-    } else if (billingPeriod === FixedPeriod.HALF_YEARLY) {
-      endDate.setMonth(now.getMonth() + 6);
-    } else if (billingPeriod === FixedPeriod.QUARTERLY) {
-      endDate.setMonth(now.getMonth() + 3);
-    } else {
-      endDate.setMonth(now.getMonth() + 1);
-    }
-
-    return prisma.$transaction(async (tx) => {
-      const subscription = existingSub
-        ? await tx.subscription.update({
-          where: { userId: user.userId },
-          data: {
-            planId,
-            status: SubscriptionStatus.ACTIVE,
-            startDate: now,
-            endDate,
-            freeStart: existingSub.freeStart ?? now,
-            freeEnd: existingSub.freeEnd ?? trialEnd,
-            isFreeUsed: existingSub.isFreeUsed,
-          },
-          include: { plan: { include: { prices: true } } },
-        })
-        : await tx.subscription.create({
-          data: {
-            userId: user.userId,
-            planId,
-            status: SubscriptionStatus.FREE_TRIAL,
-            startDate: now,
-            endDate: trialEnd,
-            freeStart: now,
-            freeEnd: trialEnd,
-            isFreeUsed: true,
-          },
-          include: { plan: { include: { prices: true } } },
-        });
-
-      // Write Audit Log (skip if an identical log already exists for this exact period)
-      const duplicateLog = await tx.subscriptionLog.findFirst({
-        where: {
-          subscriptionId: subscription.id,
-          period: billingPeriod,
-          startDate: subscription.startDate,
-          endDate: subscription.endDate,
-          action: existingSub ? action : SubscriptionAction.TRIAL_STARTED,
-        },
-      });
-
-      if (!duplicateLog) {
-        await tx.subscriptionLog.create({
-          data: {
-            subscriptionId: subscription.id,
-            action: existingSub ? action : SubscriptionAction.TRIAL_STARTED,
-            status: subscription.status,
-            period: billingPeriod,
-            startDate: subscription.startDate,
-            endDate: subscription.endDate,
-          },
-        });
-      }
-
-      return subscription;
-    });
   }
 
   // Cron job status sync
@@ -662,7 +559,7 @@ export class SubscriptionService {
           startDate: true,
           endDate: true,
           user: {
-            select: { name: true, email: true, ownedTurfs:{ select: {name: true}}, ownerProfile: { select: { companyName: true } } },
+            select: { name: true, email: true, ownedTurfs: { select: { name: true } }, ownerProfile: { select: { companyName: true } } },
           },
           plan: {
             select: { name: true },
@@ -712,15 +609,15 @@ export class SubscriptionService {
       const paidTotal = (invoice?.payments ?? []).filter((payment) => payment.status === PaymentStatus.PAID || PaymentStatus.PROCESSING).reduce((sum, payment) => sum + Number(payment.amount), 0);
       const outstanding = invoice ? Math.max(0, Number(invoice.totalAmount) - paidTotal) : 0;
 
-       const { ownerProfile, ownedTurfs, ...userRest } = (sub.user ?? {}) as any;
-       return {
-         ...rest,
-         user: { ...userRest, companyName: ownerProfile?.companyName ?? null, ownedTurfs: (ownedTurfs ?? []).map((t: any) => t.name) },
-         latestLog,
-         invoice,
-         outstanding,
-         canAcceptPayment: !!invoice && outstanding > 0,
-       };
+      const { ownerProfile, ownedTurfs, ...userRest } = (sub.user ?? {}) as any;
+      return {
+        ...rest,
+        user: { ...userRest, companyName: ownerProfile?.companyName ?? null, ownedTurfs: (ownedTurfs ?? []).map((t: any) => t.name) },
+        latestLog,
+        invoice,
+        outstanding,
+        canAcceptPayment: !!invoice && outstanding > 0,
+      };
     });
 
     return {
@@ -766,48 +663,123 @@ export class SubscriptionService {
 
   async updateSubscription(
     subscriptionId: string,
-    data: { status?: SubscriptionStatus; endDate?: string; planId?: string }
+    data: { period: FixedPeriod; planId?: string; status?: SubscriptionStatus; paymentMethod?: PaymentMethod; providerTransactionId?: string; payerMobileNumber?: string }
   ) {
-    const existing = await prisma.subscription.findUnique({ where: { id: subscriptionId } });
+    const existing = await prisma.subscription.findUnique({
+      where: { id: subscriptionId },
+      include: {
+        plan: { include: { prices: true } },
+        subscriptionLogs: {
+          orderBy: { createdAt: 'desc' },
+          take: 2,
+        },
+      },
+    });
     if (!existing) throw new AppError(httpStatus.NOT_FOUND, 'Subscription not found');
 
-    if (data.planId) {
-      await this.getPlanById(data.planId);
+    // Admin Restriction Rule: Limit of 2 Active Logs
+    const logs = existing.subscriptionLogs;
+    if (logs.length >= 2) {
+      const now = new Date();
+      const allActive = logs.every((log) => new Date(log.endDate) > now);
+      if (allActive) {
+        throw new AppError(
+          httpStatus.BAD_REQUEST,
+          'Cannot update subscription: maximum of 2 active subscription logs allowed spanning the current time.'
+        );
+      }
+    }
+
+    // Validate plan if changing
+    let targetPlan = existing.plan;
+    if (data.planId && data.planId !== existing.planId) {
+      targetPlan = await this.getPlanById(data.planId);
+    }
+
+    const priceData = targetPlan.prices.find((p) => p.period === data.period);
+    if (!priceData) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Invalid billing period for this plan');
+    }
+
+    const price = new Prisma.Decimal(priceData.price.toString());
+    const isCash = data.paymentMethod === PaymentMethod.CASH;
+
+    const now = startOfDay(new Date());
+    const periodMonths =
+      data.period === FixedPeriod.YEARLY
+        ? 12
+        : data.period === FixedPeriod.HALF_YEARLY
+          ? 6
+          : data.period === FixedPeriod.QUARTERLY
+            ? 3
+            : 1;
+
+    // End Date Calculation
+    let newEndDate: Date;
+    if (now <= existing.endDate) {
+      // Active: start from day after current end date
+      newEndDate = new Date(existing.endDate);
+      newEndDate.setDate(newEndDate.getDate() + 1);
+      newEndDate.setMonth(newEndDate.getMonth() + periodMonths);
+    } else {
+      // Expired: start from current date
+      newEndDate = new Date(now);
+      newEndDate.setMonth(newEndDate.getMonth() + periodMonths);
     }
 
     return prisma.$transaction(async (tx) => {
-      const latestLog = await tx.subscriptionLog.findFirst({
-        where: { subscriptionId },
-        orderBy: { createdAt: 'desc' },
-        select: { period: true },
-      });
-
       const updated = await tx.subscription.update({
         where: { id: subscriptionId },
         data: {
-          status: data.status,
-          endDate: data.endDate ? new Date(data.endDate) : undefined,
+          endDate: newEndDate,
           planId: data.planId,
-        },
-        include: {
-          user: { select: { id: true, name: true, email: true, role: true } },
-          plan: { include: { prices: true } },
+          status: data.status ?? existing.status,
         },
       });
 
-      // Write Admin Audit Log Entry
-      await tx.subscriptionLog.create({
+      const log = await tx.subscriptionLog.create({
         data: {
           subscriptionId: updated.id,
-          period: latestLog?.period ?? FixedPeriod.MONTHLY,
-          action: SubscriptionAction.RENEWED,
+          action: data.planId && data.planId !== existing.planId ? SubscriptionAction.UPGRADED : SubscriptionAction.RENEWED,
           status: updated.status,
-          startDate: updated.startDate,
-          endDate: updated.endDate,
+          period: data.period,
+          startDate: now,
+          endDate: newEndDate,
         },
       });
 
-      return updated;
+      const invoice = await this.invoiceService.createInvoice(tx, {
+        subscriptionLogId: log.id,
+        userId: existing.userId,
+        invoiceFor: InvoiceFor.O,
+        subtotal: price,
+        discount: new Prisma.Decimal(0),
+        totalAmount: price,
+        paidAmount: new Prisma.Decimal(0),
+        status: InvoiceStatus.DRAFT,
+        isFullPaid: false,
+      });
+
+      if (isCash) {
+        return { subscription: updated, invoice, payment: null, subscriptionLog: log };
+      }
+
+      const paymentNumber = await nextDocumentNumber(tx, 'PAY');
+      const pendingPayment = await tx.payment.create({
+        data: {
+          paymentNumber,
+          invoiceId: invoice.id,
+          type: PaymentType.FULL,
+          method: data.paymentMethod!,
+          amount: price,
+          status: PaymentStatus.PROCESSING,
+          providerTransactionId: data.providerTransactionId ?? null,
+          payerMobileNumber: data.payerMobileNumber ?? null,
+          idempotencyKey: `sub_update_${subscriptionId}_${Date.now()}`,
+        },
+      });
+
+      return { subscription: updated, invoice, payment: pendingPayment, subscriptionLog: log };
     });
   }
 
