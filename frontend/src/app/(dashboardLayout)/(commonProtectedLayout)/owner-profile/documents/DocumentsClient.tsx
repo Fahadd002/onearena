@@ -177,7 +177,8 @@ export default function DocumentsStepPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["owner-profile"] });
-      toast.success("Documents uploaded successfully! Waiting for review...");
+      toast.success("Documents uploaded successfully!");
+      router.push("/owner-profile/subscription");
     },
     onError: (err: Error) =>
       toast.error(err.message || "Failed to upload documents"),

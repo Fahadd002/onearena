@@ -42,7 +42,7 @@ export const API_ENDPOINTS = {
         superAdminTurfs: "/super-admin/turfs",
         refunds: "/refunds",
         payouts: "/payouts",
-        
+
         bookings: "/bookings",
         adminBookings: "/admin/bookings",
         ownerContent: "/owner/content",
@@ -52,7 +52,6 @@ export const API_ENDPOINTS = {
         // Super Admin — plans
         plansPricing: "/plans-pricing",
         allSubscription: "/all-subscriptions",
-        
 
         // Public / Owner plans
         subsCriptionPlans: "/subscription-plans",
@@ -63,9 +62,10 @@ export const API_ENDPOINTS = {
         takeCashPaymentForSubscription: "/subscriptions/:subscriptionId/take-cash-payment",
         confirmOnlinePaymentForSubscription: "/subscriptions/:subscriptionId/confirm-online-payment",
         updateSubcriptionBySuperAdmin: "/subscriptions/super-admin/:subscriptionId",
-        
+
         // Subscription payment (owner-initiated)
-        paymentInitiate: "/subscription/payment/initiate",
+        subscriptionInitiate: "/subscription/payment/initiate",
+        subscriptionUpdate: "/subscriptions/:subscriptionId",
         paymentVerify: "/subscription/payment/verify",
 
     },

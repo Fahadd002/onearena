@@ -53,9 +53,7 @@ export default function SubscriptionStepPage() {
 
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
-  const [selectedPeriod, setSelectedPeriod] = useState<
-    "MONTHLY" | "QUARTERLY" | "HALF_YEARLY" | "YEARLY"
-  >("MONTHLY");
+  const [selectedPeriod, setSelectedPeriod] = useState<"MONTHLY" | "QUARTERLY" | "HALF_YEARLY" | "YEARLY">("MONTHLY");
   const [drawerPlan, setDrawerPlan] = useState<SubscriptionPlan | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("BKASH");
   const [providerTransactionId, setProviderTransactionId] = useState("");
@@ -463,36 +461,36 @@ export default function SubscriptionStepPage() {
                         </p>
                       </div>
 
-                       <div className="my-2.5">
-                          <div
-                            className={`inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-xl border border-current/10 ${theme.badgeBg} dark:bg-slate-800/80`}
-                          >
-                            <span className="text-[10px] sm:text-xs font-medium opacity-80">
-                              From
-                            </span>
-                            <span className="text-xl sm:text-2xl font-extrabold tracking-tight">
-                              ৳
-                            </span>
-                            <span className="text-base sm:text-lg font-extrabold tracking-tight">
-                              {monthlyPrice.toLocaleString()}
-                            </span>
-                            <span className="text-[10px] sm:text-xs font-semibold opacity-75">
-                              /mo
-                            </span>
-                          </div>
+                      <div className="my-2.5">
+                        <div
+                          className={`inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-xl border border-current/10 ${theme.badgeBg} dark:bg-slate-800/80`}
+                        >
+                          <span className="text-[10px] sm:text-xs font-medium opacity-80">
+                            From
+                          </span>
+                          <span className="text-xl sm:text-2xl font-extrabold tracking-tight">
+                            ৳
+                          </span>
+                          <span className="text-base sm:text-lg font-extrabold tracking-tight">
+                            {monthlyPrice.toLocaleString()}
+                          </span>
+                          <span className="text-[10px] sm:text-xs font-semibold opacity-75">
+                            /mo
+                          </span>
                         </div>
+                      </div>
 
                       <div className="flex-1 min-h-0 overflow-y-auto pr-1">
                         <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300 p-0 m-0 list-none">
-                           <li className="flex items-center gap-2 min-w-0">
-                             <span
-                               className={`w-1.5 h-1.5 rounded-full bg-gradient-to-br ${theme.gradientClass} border border-slate-200/60 dark:border-slate-700 shrink-0`}
-                             />
-                             <span className="font-bold text-slate-800 dark:text-slate-200 text-[11px] sm:text-xs">
-                               Up to {plan.maxTurfs}{" "}
-                               {plan.maxTurfs === 1 ? "Turf" : "Turfs"}
-                             </span>
-                           </li>
+                          <li className="flex items-center gap-2 min-w-0">
+                            <span
+                              className={`w-1.5 h-1.5 rounded-full bg-gradient-to-br ${theme.gradientClass} border border-slate-200/60 dark:border-slate-700 shrink-0`}
+                            />
+                            <span className="font-bold text-slate-800 dark:text-slate-200 text-[11px] sm:text-xs">
+                              Up to {plan.maxTurfs}{" "}
+                              {plan.maxTurfs === 1 ? "Turf" : "Turfs"}
+                            </span>
+                          </li>
 
                           {sortedFeatures.map((feat, i) => (
                             <li
@@ -521,7 +519,7 @@ export default function SubscriptionStepPage() {
                           : isFree
                             ? (plan.freeTrialDuration ?? 0) > 0
                               ? `Try ${plan.freeTrialDuration} ${plan.freeTrialDuration === 1 ? "day" : "days"} Free`
-                               : "Start Free"
+                              : "Start Free"
                             : isHighlighted
                               ? "Manage Plan"
                               : "Get Started"}
@@ -561,7 +559,7 @@ export default function SubscriptionStepPage() {
                   <h3 className="text-base font-bold text-slate-900 dark:text-white leading-tight">
                     {drawerPlan.name}
                   </h3>
-                   <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                  <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
                     {showPaymentStep
                       ? "Payment Details"
                       : "Billing Cycle"}
@@ -581,15 +579,15 @@ export default function SubscriptionStepPage() {
                 <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-5 dark:border-slate-800 dark:bg-slate-800/40 space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                   <div className="flex items-center justify-between gap-3 border-b border-slate-200/80 dark:border-slate-700/60 pb-3">
                     <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                      Summary
-                    </h4>
-                    <p className="text-sm sm:text-base font-black text-slate-900 dark:text-slate-100 mt-0.5">
-                      {periodLabels[selectedPeriod]} — ৳
-                      {drawerPlan.prices
-                        .find((p) => p.period === selectedPeriod)
-                        ?.price.toLocaleString() ?? "0"}
-                    </p>
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                        Summary
+                      </h4>
+                      <p className="text-sm sm:text-base font-black text-slate-900 dark:text-slate-100 mt-0.5">
+                        {periodLabels[selectedPeriod]} — ৳
+                        {drawerPlan.prices
+                          .find((p) => p.period === selectedPeriod)
+                          ?.price.toLocaleString() ?? "0"}
+                      </p>
                     </div>
                     <button
                       type="button"
@@ -643,7 +641,7 @@ export default function SubscriptionStepPage() {
                   {!isCashPayment && (
                     <div className="rounded-xl border border-purple-200 bg-purple-50/60 p-3.5 dark:border-purple-900/60 dark:bg-purple-950/30 transition-all">
                       <div className="flex items-center justify-between">
-                     <span className="text-xs font-bold text-purple-900 dark:text-purple-300 uppercase tracking-wider">
+                        <span className="text-xs font-bold text-purple-900 dark:text-purple-300 uppercase tracking-wider">
                           Pay ({getWalletName(paymentMethod)}):
                         </span>
                         <div className="flex items-center gap-2">
@@ -733,11 +731,11 @@ export default function SubscriptionStepPage() {
                   >
                     {paymentMutation.isPending ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      ) : isCashPayment ? (
-                        "Confirm Payment"
-                      ) : (
-                        `Confirm ${getWalletName(paymentMethod)} Payment`
-                      )}
+                    ) : isCashPayment ? (
+                      "Confirm Payment"
+                    ) : (
+                      `Confirm ${getWalletName(paymentMethod)} Payment`
+                    )}
                   </Button>
                 </div>
               )}
@@ -749,7 +747,7 @@ export default function SubscriptionStepPage() {
                     <p className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                       Billing Cycle
                     </p>
-                     <span className="text-[11px] text-purple-600 font-semibold dark:text-purple-400">
+                    <span className="text-[11px] text-purple-600 font-semibold dark:text-purple-400">
                       Select a period
                     </span>
                   </div>
@@ -899,9 +897,9 @@ export default function SubscriptionStepPage() {
 
               {/* FEATURES SUMMARY */}
               <div className="pt-3 border-t border-slate-100 dark:border-slate-800">
-                        <span className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2">
-                          Features
-                        </span>
+                <span className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2">
+                  Features
+                </span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs max-h-48 overflow-y-auto pr-1">
                   <div className="flex items-center gap-2 font-semibold text-slate-700 dark:text-slate-300">
                     <Check className="h-4 w-4 text-emerald-500 stroke-[3] shrink-0" />

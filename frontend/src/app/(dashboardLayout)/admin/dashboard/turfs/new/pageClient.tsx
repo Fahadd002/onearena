@@ -156,7 +156,7 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
       establishedSinceYear: "",
       establishedSinceMonth: "",
       defaultSlotPrice: "",
-      defaultSlotDuration: "60",
+      defaultSlotDuration: "90",
       latitude: "",
       longitude: "",
     },
@@ -339,8 +339,8 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
       }}
     >
       {(control) => (
-        <div className="space-y-1">
-          <Label htmlFor={control.name} className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+        <div className="space-y-0.5">
+          <Label htmlFor={control.name} className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold">
             {label}
           </Label>
           <Input
@@ -349,10 +349,10 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
             value={control.state.value}
             onChange={(event) => control.handleChange(event.target.value)}
             aria-invalid={!!control.state.meta.errors.length}
-            className="h-9 text-sm"
+            className="h-8 text-sm sm:h-9"
           />
           {control.state.meta.errors.length > 0 && (
-            <p className="text-[11px] text-destructive">
+            <p className="text-[10px] text-destructive">
               {formatFieldErrors(control.state.meta.errors)}
             </p>
           )}
@@ -364,15 +364,15 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
   const descriptionField = (
     <form.Field name="description" validators={{ onChange: turfZodSchema.shape.description }}>
       {(control) => (
-        <div className="space-y-1">
-          <Label htmlFor={control.name} className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+        <div className="space-y-0.5">
+          <Label htmlFor={control.name} className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold">
             About the venue <span className="font-normal opacity-70">(optional)</span>
           </Label>
           <textarea
             id={control.name}
             value={control.state.value}
             onChange={(event) => control.handleChange(event.target.value)}
-            className="min-h-16 w-full rounded-md border border-input bg-background/60 px-3 py-1.5 text-sm resize-y"
+            className="min-h-14 w-full rounded-md border border-input bg-background/60 px-3 py-1.5 text-sm resize-y sm:min-h-16"
           />
         </div>
       )}
@@ -395,55 +395,59 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
     );
   }
 
-  return (
-    <section className="dashboard-section space-y-3">
-      {/* Header */}
-      <div className="flex items-center gap-2.5">
-        <Button
-          variant="glass"
-          size="icon"
-          className="size-8 rounded-lg border-primary/20 shadow-sm transition-transform hover:-translate-y-0.5"
-          asChild
-        >
-          <Link
-            href={turfId ? `/admin/dashboard/turfs/${turfId}` : "/admin/dashboard/turfs"}
-            aria-label="Back"
-          >
-            <ArrowLeft className="size-3.5" />
-          </Link>
-        </Button>
-        <div className="leading-tight">
+return (
+    <section className="dashboard-section space-y-2 sm:space-y-3">
+      <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="shrink-0">
           <h1 className="text-base font-semibold">
             {turfId ? "Edit turf" : "Add a new turf"}
           </h1>
         </div>
-      </div>
 
-      {/* Compact stepper */}
-      <div className="flex items-center gap-1">
-        {steps.map((label, index) => (
-          <div key={label} className="flex flex-1 items-center gap-1">
-            <div
-              className={`flex size-5 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold transition-colors ${index < step
-                ? "bg-primary text-primary-foreground"
-                : index === step
-                  ? "bg-primary text-primary-foreground ring-2 ring-primary/30"
-                  : "bg-muted text-muted-foreground"
-                }`}
-            >
-              {index < step ? <Check className="size-2.5" /> : index + 1}
-            </div>
-            <span
-              className={`hidden text-[11px] font-medium sm:block ${index === step ? "text-foreground" : "text-muted-foreground"
-                }`}
-            >
-              {label}
-            </span>
-            {index < steps.length - 1 && (
-              <div className={`h-px flex-1 ${index < step ? "bg-primary" : "bg-border"}`} />
-            )}
+        <div className="flex flex-1 justify-center">
+          <div className="flex items-center gap-0.5 sm:gap-1">
+            {steps.map((label, index) => (
+              <div key={label} className="flex items-center gap-0.5 sm:gap-1">
+                <div
+                  className={`flex size-4 shrink-0 items-center justify-center rounded-full text-[9px] font-semibold transition-colors sm:size-5 sm:text-[10px] ${index < step
+                    ? "bg-primary text-primary-foreground"
+                    : index === step
+                      ? "bg-primary text-primary-foreground ring-2 ring-primary/30"
+                      : "bg-muted text-muted-foreground"
+                    }`}
+                >
+                  {index < step ? <Check className="size-2 sm:size-2.5" /> : index + 1}
+                </div>
+                <span
+                  className={`hidden text-[10px] font-medium sm:block sm:text-[11px] ${index === step ? "text-foreground" : "text-muted-foreground"
+                    }`}
+                >
+                  {label}
+                </span>
+                {index < steps.length - 1 && (
+                  <div className={`h-px w-4 sm:w-6 ${index < step ? "bg-primary" : "bg-border"}`} />
+                )}
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        <div className="w-24 sm:w-28 shrink-0 flex justify-end">
+          <Button
+            variant="hero"
+            size="sm"
+            className="h-7 px-2 text-[11px] sm:h-8 sm:px-3 sm:text-xs shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5"
+            asChild
+          >
+            <Link
+              href={turfId ? `/admin/dashboard/turfs/${turfId}` : "/admin/dashboard/turfs"}
+              aria-label="Back"
+            >
+              <ChevronLeft className="mr-0.5 size-3 sm:mr-1" />
+              <span className="hidden sm:inline">Back</span>
+            </Link>
+          </Button>
+        </div>
       </div>
 
       {/* Form */}
@@ -458,11 +462,11 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
       >
         <Card className="surface-card overflow-hidden">
           <CardContent className="p-0">
-            <div className="space-y-3 p-4">
+            <div className="space-y-2 p-3 sm:space-y-3 sm:p-4">
               {/* Step 0 */}
               {step === 0 && (
-                <div className="space-y-3">
-                  <div className="grid gap-2.5 sm:grid-cols-2">
+                <div className="space-y-2 sm:space-y-3">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     {field("name", "Turf name")}
                     <form.Field
                       name="categoryId"
@@ -479,7 +483,7 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                             }}
                             disabled={categoriesLoading}
                           >
-                            <SelectTrigger className="h-9 text-sm" aria-invalid={!!control.state.meta.errors.length}>
+                            <SelectTrigger className="h-8 text-sm sm:h-9" aria-invalid={!!control.state.meta.errors.length}>
                               <SelectValue placeholder="Choose a sport" />
                             </SelectTrigger>
                             <SelectContent>
@@ -504,12 +508,12 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                       validators={{ onChange: turfZodSchema.shape.timezone }}
                     >
                       {(control) => (
-                        <div className="space-y-1">
-                          <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+                        <div className="space-y-0.5">
+                          <Label className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold">
                             Timezone
                           </Label>
                           <Select value={control.state.value} onValueChange={control.handleChange}>
-                            <SelectTrigger className="h-9 text-sm">
+                            <SelectTrigger className="h-8 text-sm sm:h-9">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -523,11 +527,12 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                         </div>
                       )}
                     </form.Field>
-                    <div className="space-y-1">
-                      <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+{!turfId && (
+                    <div className="space-y-0.5">
+                      <Label className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold">
                         Established since
                       </Label>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-2 gap-1.5">
                         <form.Field
                           name="establishedSinceMonth"
                           validators={{ onChange: turfZodSchema.shape.establishedSinceMonth }}
@@ -536,7 +541,7 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                             <Select value={control.state.value} onValueChange={control.handleChange}>
                               <SelectTrigger
                                 aria-label="Established since month"
-                                className="h-9 text-sm"
+                                className="h-8 text-sm sm:h-9"
                                 aria-invalid={!!control.state.meta.errors.length}
                               >
                                 <SelectValue placeholder="Month" />
@@ -559,7 +564,7 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                             <Select value={control.state.value} onValueChange={control.handleChange}>
                               <SelectTrigger
                                 aria-label="Established since year"
-                                className="h-9 text-sm"
+                                className="h-8 text-sm sm:h-9"
                                 aria-invalid={!!control.state.meta.errors.length}
                               >
                                 <SelectValue placeholder="Year" />
@@ -575,15 +580,16 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                           )}
                         </form.Field>
                       </div>
-                     
+                      
                     </div>
+                  )}
                     {field("defaultSlotPrice", "Default slot price (৳)", "number")}
                     {field("defaultSlotDuration", "Default slot duration (min)", "number")}
                     <div className="sm:col-span-2">{descriptionField}</div>
 
                     {/* Advance payment */}
-                    <div className="sm:col-span-2 rounded-md border border-border/60 bg-muted/20 p-2.5">
-                      <div className="flex items-center gap-2">
+                    <div className="sm:col-span-2 rounded-md border border-border/60 bg-muted/20 p-2 sm:p-2.5">
+                      <div className="flex items-center gap-1.5">
                         <input
                           id="allow-advance-payment"
                           type="checkbox"
@@ -599,9 +605,9 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                         </Label>
                       </div>
                       {allowAdvancePayment && (
-                        <div className="mt-2.5 space-y-2.5">
-                          <div className="space-y-1">
-                            <Label className="text-[11px] font-medium text-muted-foreground">Advance payment amount (৳)</Label>
+                        <div className="mt-2 space-y-2 sm:space-y-2.5">
+                          <div className="space-y-0.5">
+                            <Label className="text-[10px] sm:text-[11px] font-medium text-muted-foreground">Advance payment amount (৳)</Label>
                             <Input
                               type="number"
                               value={advancePaymentAmount}
@@ -621,10 +627,10 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                               className="h-8 text-sm"
                             />
                             {advancePaymentError && (
-                              <p className="text-[11px] text-destructive mt-0.5">{advancePaymentError}</p>
+                              <p className="text-[10px] sm:text-[11px] text-destructive mt-0.5">{advancePaymentError}</p>
                             )}
                           </div>
-                          <div className="flex flex-wrap items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                             {paymentOptions.map((opt) => {
                               const isSelected = paymentRows.some((row) => row.method === opt.id);
                               return (
@@ -648,7 +654,7 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                                   <img
                                     src={opt.icon}
                                     alt={opt.name}
-                                    className={`h-9 w-20 shrink-0 rounded-md transition-all duration-200 bg-white ${isSelected
+                                    className={`h-7 w-16 shrink-0 rounded-md transition-all duration-200 bg-white sm:h-9 sm:w-20 ${isSelected
                                       ? "drop-shadow-[0_0_8px_rgba(128,0,255,0.5)] scale-105"
                                       : "hover:scale-105"
                                       }`}
@@ -667,8 +673,8 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                             return (
                               <div key={opt.id}>
                                 <div className="relative">
-                                  <div className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground">
-                                    <Phone className="size-3.5" />
+                                  <div className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                    <Phone className="size-3" />
                                   </div>
                                   <Input
                                     type="tel"
@@ -683,24 +689,24 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                                       );
                                     }}
                                     aria-invalid={!!error}
-                                    className="h-8 pl-8 pr-8 text-sm"
+                                    className="h-7 pl-7 pr-7 text-sm sm:h-8 sm:pl-8 sm:pr-8"
                                   />
                                   <Button
                                     type="button"
                                     variant="ghost"
                                     size="icon"
-                                    className="absolute top-1/2 -translate-y-1/2 right-1 size-6 text-muted-foreground hover:text-destructive"
+                                    className="absolute top-1/2 -translate-y-1/2 right-0.5 size-5 text-muted-foreground hover:text-destructive sm:right-1 sm:size-6"
                                     onClick={() => {
                                       setPaymentRows((rows) => rows.filter((_, i) => i !== index));
                                       setPaymentMobileErrors((errors) => errors.filter((_, i) => i !== index));
                                     }}
                                     aria-label={`Remove ${opt.name}`}
                                   >
-                                    <X className="size-3" />
+                                    <X className="size-2.5" />
                                   </Button>
                                 </div>
                                 {error && (
-                                  <p className="text-[11px] text-destructive mt-0.5 pl-8">{error}</p>
+                                  <p className="text-[10px] text-destructive mt-0.5 pl-7">{error}</p>
                                 )}
                               </div>
                             );
@@ -709,12 +715,12 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                       )}
                     </div>
                   </div>
-                  <div className="space-y-2 border-t border-border/50 pt-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
-                        <MapPin className="size-3.5" />
+                  <div className="space-y-2 border-t border-border/50 pt-2 sm:pt-3">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <div className="p-1 rounded-lg bg-primary/10 text-primary">
+                        <MapPin className="size-3" />
                       </div>
-                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Exact location</p>
+                      <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Exact location</p>
                     </div>
                     <LocationPicker
                       value={location}
@@ -726,25 +732,25 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
 
               {/* Step 1 */}
               {step === 1 && (
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600">
-                      <ShieldCheck className="size-3.5" />
+                <div className="space-y-2 sm:space-y-3">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <div className="p-1 rounded-lg bg-emerald-500/10 text-emerald-600">
+                      <ShieldCheck className="size-3" />
                     </div>
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Facilities</p>
+                    <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Facilities</p>
                   </div>
                   {facilitiesLoading ? (
                     <p className="text-[11px] text-muted-foreground">Loading facilities...</p>
                   ) : facilities.length === 0 ? (
                     <p className="text-[11px] text-muted-foreground">No facilities have been created yet.</p>
                   ) : (
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5">
                       {facilities.map((facility) => {
                         const checked = selectedFacilities.includes(facility.id);
                         return (
                           <span
                             key={facility.id}
-                            className={`px-3 py-1.5 rounded-lg border text-xs font-medium transition-all cursor-pointer ${checked
+                            className={`px-2.5 py-1 rounded-lg border text-xs font-medium transition-all cursor-pointer ${checked
                               ? "border-primary bg-primary/10 text-primary"
                               : "border-border/50 text-foreground hover:border-primary/50"
                               }`}
@@ -767,13 +773,13 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
 
               {/* Step 2 */}
               {step === 2 && (
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   <label
                     htmlFor="turf-images"
-                    className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-md border border-dashed px-4 py-4 transition-colors hover:border-primary/50 hover:bg-primary/5"
+                    className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-md border border-dashed px-4 py-3 sm:py-4 transition-colors hover:border-primary/50 hover:bg-primary/5"
                   >
-                    <div className="flex size-6 items-center justify-center rounded-full bg-primary/10">
-                      <Plus className="size-3.5 text-primary" />
+                    <div className="flex size-5 items-center justify-center rounded-full bg-primary/10 sm:size-6">
+                      <Plus className="size-3 text-primary sm:size-3.5" />
                     </div>
                     <span className="text-xs font-medium">
                       Choose {turfId ? "additional" : "turf"} images
@@ -883,7 +889,7 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
         {/* Navigation buttons */}
         <form.Subscribe selector={(state) => [state.values, state.isSubmitting] as const}>
           {([values, isSubmitting]) => (
-            <div className="mt-3 flex justify-between gap-2">
+            <div className="mt-2 flex flex-col gap-2 sm:mt-3 sm:flex-row sm:justify-between sm:gap-3">
               <Button
                 type="button"
                 variant="glass"
@@ -920,7 +926,7 @@ export function AdminTurfFormPage({ turfId }: { turfId?: string }) {
                   type="submit"
                   variant="hero"
                   size="sm"
-                  className="h-8 min-w-32 px-3 text-xs shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5"
+                  className="h-8 min-w-28 px-3 text-xs shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5"
                   onClick={() => {
                     submitIntent.current = true;
                   }}

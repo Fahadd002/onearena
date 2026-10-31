@@ -545,11 +545,10 @@ export default function AdminPricingAndSlotsPage() {
               <button
                 type="button"
                 onClick={() => setActiveTab("pricing-rules")}
-                className={`inline-flex items-center gap-2 border-b-2 pb-3 pt-1 text-sm font-semibold transition-colors ${
-                  activeTab === "pricing-rules"
-                    ? "border-primary text-primary"
-                    : "border-transparent text-muted-foreground hover:border-border hover:text-foreground"
-                }`}
+                className={`inline-flex items-center gap-2 border-b-2 pb-3 pt-1 text-sm font-semibold transition-colors ${activeTab === "pricing-rules"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:border-border hover:text-foreground"
+                  }`}
               >
                 Pricing Rules
                 <Badge variant="secondary" className="px-1.5 py-0.2 text-[10px]">
@@ -559,11 +558,10 @@ export default function AdminPricingAndSlotsPage() {
               <button
                 type="button"
                 onClick={() => setActiveTab("slots")}
-                className={`inline-flex items-center gap-2 border-b-2 pb-3 pt-1 text-sm font-semibold transition-colors ${
-                  activeTab === "slots"
-                    ? "border-primary text-primary"
-                    : "border-transparent text-muted-foreground hover:border-border hover:text-foreground"
-                }`}
+                className={`inline-flex items-center gap-2 border-b-2 pb-3 pt-1 text-sm font-semibold transition-colors ${activeTab === "slots"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:border-border hover:text-foreground"
+                  }`}
               >
                 Slots Overview
                 <Badge variant="secondary" className="px-1.5 py-0.2 text-[10px]">
@@ -749,11 +747,10 @@ export default function AdminPricingAndSlotsPage() {
                         <button
                           type="button"
                           onClick={() => setActiveSetupFilter(null)}
-                          className={`rounded px-2.5 py-1 text-xs font-medium transition-colors ${
-                            activeSetupFilter === null
-                              ? "bg-primary text-primary-foreground"
-                              : "text-muted-foreground hover:text-foreground"
-                          }`}
+                          className={`rounded px-2.5 py-1 text-xs font-medium transition-colors ${activeSetupFilter === null
+                            ? "bg-primary text-primary-foreground"
+                            : "text-muted-foreground hover:text-foreground"
+                            }`}
                         >
                           All Windows
                         </button>
@@ -762,11 +759,10 @@ export default function AdminPricingAndSlotsPage() {
                             key={setup.id}
                             type="button"
                             onClick={() => setActiveSetupFilter(setup.id)}
-                            className={`rounded px-2.5 py-1 text-xs font-medium transition-colors ${
-                              activeSetupFilter === setup.id
-                                ? "bg-primary text-primary-foreground"
-                                : "text-muted-foreground hover:text-foreground"
-                            }`}
+                            className={`rounded px-2.5 py-1 text-xs font-medium transition-colors ${activeSetupFilter === setup.id
+                              ? "bg-primary text-primary-foreground"
+                              : "text-muted-foreground hover:text-foreground"
+                              }`}
                           >
                             {setup.timeName}
                           </button>
@@ -919,11 +915,10 @@ export default function AdminPricingAndSlotsPage() {
                                         disabled={updateRule.isPending}
                                       />
                                       <Badge
-                                        className={`h-6 px-2 text-[10px] ${
-                                          rule.active
-                                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                                            : "bg-muted text-muted-foreground"
-                                        }`}
+                                        className={`h-6 px-2 text-[10px] ${rule.active
+                                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                          : "bg-muted text-muted-foreground"
+                                          }`}
                                         variant="secondary"
                                       >
                                         {rule.active ? "Active" : "Disabled"}
@@ -994,13 +989,7 @@ export default function AdminPricingAndSlotsPage() {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-3">
-                    <DatePicker
-                      value={slotDate}
-                      onChange={setSlotDate}
-                      min={todayISO}
-                      placeholder="Select Date"
-                      className="h-9 text-xs"
-                    />
+                    <DatePicker value={slotDate} onChange={setSlotDate} min={todayISO} placeholder="Select Date" className="h-9 text-xs" />
 
                     {timeFilter ? (
                       <div className="flex items-center gap-2 rounded-md border bg-background px-2.5 py-1 text-xs">
@@ -1104,10 +1093,7 @@ export default function AdminPricingAndSlotsPage() {
                     </TableHeader>
                     <TableBody>
                       {filteredSlots.map((slot) => {
-                        const [year, month, day] = slot.slotDate
-                          .slice(0, 10)
-                          .split("-")
-                          .map(Number);
+                        const [year, month, day] = slot.slotDate.slice(0, 10).split("-").map(Number);
                         const dateObj = new Date(year, month - 1, day);
                         const dateStr = dateObj.toLocaleDateString("en-US", {
                           weekday: "short",
@@ -1181,11 +1167,10 @@ export default function AdminPricingAndSlotsPage() {
                                   disabled={updateSlot.isPending}
                                 />
                                 <Badge
-                                  className={`h-6 px-2 text-[10px] ${
-                                    slot.active
-                                      ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                                      : "bg-muted text-muted-foreground"
-                                  }`}
+                                  className={`h-6 px-2 text-[10px] ${slot.active
+                                    ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                    : "bg-muted text-muted-foreground"
+                                    }`}
                                   variant="secondary"
                                 >
                                   {slot.active ? "Active" : "Disabled"}

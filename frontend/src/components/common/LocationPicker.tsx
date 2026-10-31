@@ -232,11 +232,11 @@ export default function TurfLocationPicker({ value, onChange, onAddressChange }:
   }, [value, L, reverseGeocode]);
 
   return (
-    <div className="space-y-4 overflow-hidden rounded-lg border bg-card shadow-sm">
+    <div className="space-y-3 overflow-hidden rounded-lg border bg-card shadow-sm sm:space-y-4">
       {/* Address & Search - Combined */}
-      <div className="grid gap-3 lg:grid-cols-12 p-4">
+      <div className="grid gap-3 p-3 sm:grid-cols-12 sm:p-4">
         {/* Left: Address Fields */}
-        <div className="lg:col-span-5 space-y-3">
+        <div className="space-y-3 sm:col-span-5">
           <div className="relative">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
@@ -270,7 +270,7 @@ export default function TurfLocationPicker({ value, onChange, onAddressChange }:
             )}
           </div>
 
-          <div className="grid gap-3 grid-cols-2">
+          <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold block mb-1">Latitude</label>
               <div className="relative">
@@ -280,17 +280,17 @@ export default function TurfLocationPicker({ value, onChange, onAddressChange }:
                   value={manualLat}
                   onChange={(event) => setManualLat(event.target.value)}
                   onBlur={() => commitCoord("latitude")}
-                  className="h-9 pr-10"
+                  className="h-8 pr-9 sm:h-9 sm:pr-10"
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground sm:right-2"
                   onClick={() => resetCoord("latitude")}
                   aria-label="Reset latitude"
                 >
-                  <X className="size-3.5" />
+                  <X className="size-3" />
                 </Button>
               </div>
             </div>
@@ -303,46 +303,46 @@ export default function TurfLocationPicker({ value, onChange, onAddressChange }:
                   value={manualLng}
                   onChange={(event) => setManualLng(event.target.value)}
                   onBlur={() => commitCoord("longitude")}
-                  className="h-9 pr-10"
+                  className="h-8 pr-9 sm:h-9 sm:pr-10"
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground sm:right-2"
                   onClick={() => resetCoord("longitude")}
                   aria-label="Reset longitude"
                 >
-                  <X className="size-3.5" />
+                  <X className="size-3" />
                 </Button>
               </div>
             </div>
           </div>
 
-          <div className="grid gap-3 grid-cols-2">
+          <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold block mb-1">City</label>
-              <Input value={value?.city || ""} readOnly className="h-9 bg-muted" />
+              <Input value={value?.city || ""} readOnly className="h-8 bg-muted sm:h-9" />
             </div>
             <div>
               <label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold block mb-1">District</label>
-              <Input value={value?.district || ""} readOnly className="h-9 bg-muted" />
+              <Input value={value?.district || ""} readOnly className="h-8 bg-muted sm:h-9" />
             </div>
           </div>
         </div>
 
         {/* Right: Map */}
-        <div className="lg:col-span-7 space-y-3">
+        <div className="space-y-3 sm:col-span-7">
           {/* Current Location Button */}
-          <Button type="button" variant="outline" onClick={chooseCurrentLocation} disabled={locating} className="w-full sm:w-auto h-9 text-xs">
-            {locating ? <Loader2 className="mr-2 size-3.5 animate-spin" /> : <Navigation className="mr-2 size-3.5" />}
+          <Button type="button" variant="outline" onClick={chooseCurrentLocation} disabled={locating} className="w-full sm:w-auto h-8 text-xs sm:h-9">
+            {locating ? <Loader2 className="mr-2 size-3 animate-spin" /> : <Navigation className="mr-2 size-3" />}
             {locating ? "Locating..." : "Use my location"}
           </Button>
 
-          {error && <p className="flex items-center gap-2 text-[11px] text-destructive"><CircleAlert className="size-3.5" />{error}</p>}
+          {error && <p className="flex items-center gap-2 text-[10px] sm:text-[11px] text-destructive"><CircleAlert className="size-3" />{error}</p>}
 
           {/* Map */}
-          <div className="relative h-[340px]">
+          <div className="relative h-[260px] sm:h-[340px]">
             <div
               ref={mapRef}
               className="size-full rounded-lg border overflow-hidden"
@@ -350,8 +350,8 @@ export default function TurfLocationPicker({ value, onChange, onAddressChange }:
               aria-label="Interactive map for location selection"
             />
             <div className="absolute bottom-2 right-2 flex flex-col gap-1">
-              <Button type="button" variant="default" size="icon" className="shadow-md" onClick={() => mapInstanceRef.current?.zoomIn()} aria-label="Zoom in"><MapPinPlus className="size-3.5" /></Button>
-              <Button type="button" variant="default" size="icon" className="shadow-md" onClick={() => mapInstanceRef.current?.zoomOut()} aria-label="Zoom out"><MapPin className="size-3.5" /></Button>
+              <Button type="button" variant="default" size="icon" className="shadow-md h-7 w-7 sm:h-8 sm:w-8" onClick={() => mapInstanceRef.current?.zoomIn()} aria-label="Zoom in"><MapPinPlus className="size-3" /></Button>
+              <Button type="button" variant="default" size="icon" className="shadow-md h-7 w-7 sm:h-8 sm:w-8" onClick={() => mapInstanceRef.current?.zoomOut()} aria-label="Zoom out"><MapPin className="size-3" /></Button>
             </div>
           </div>
         </div>

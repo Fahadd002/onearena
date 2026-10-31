@@ -1,110 +1,105 @@
 "use client";
 
-import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2, Clock3, CreditCard, Loader2, Receipt, RefreshCw, Sparkles } from "lucide-react";
-import { toast } from "sonner";
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+  AlertCircle,
+  Loader2,
+  X,
+  Check,
+  ArrowRight,
+  BarChart3,
+  UserPlus,
+  Sparkles,
+  Phone,
+  Hash,
+  Clock3,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/premium/Badge";
+import { DataTable } from "@/components/premium/DataTable";
 import { ApiResponse } from "@/types/api.type";
+import { toast } from "sonner";
+import { validateBangladeshiMobile } from "@/lib/validators";
 import {
   getCurrentSubscriptionClient,
-  initiateSubscriptionPaymentClient
+  getSubscriptionPlansClient,
 } from "../../../(commonProtectedLayout)/owner-profile/_client-api";
-import { getSubscriptionHistoryClient } from "./_client-api";
+import { getSubscriptionHistoryClient, updateSubscriptionClient } from "./_client-api";
+import {
+  SubscriptionPlan,
+  OwnerSubscription,
+} from "../../../(commonProtectedLayout)/owner-profile/_types";
 
+type PaymentMethod = "BKASH" | "NAGAD" | "ROKET" | "CASH";
 type BillingPeriod = "MONTHLY" | "QUARTERLY" | "HALF_YEARLY" | "YEARLY";
-type PaymentMethod = "BKASH" | "ROKET" | "NAGAD" | "CASH" | "OTHERS";
-type SubscriptionStatus = "TRIAL" | "ACTIVE" | "EXPIRED" | "EXPIRING" | "CANCELLED";
-type SubscriptionAction =
-  "TRIAL_STARTED" | "SUBSCRIBED" | "UPGRADED" | "RENEWED" | "CANCELLED" | "EXPIRED";
 
-interface Price {
-  billingPeriod?: BillingPeriod;
-  amount?: number;
-  price?: number;
-}
-interface Plan {
-  id: string;
-  name: string;
-  tierLevel: number;
-  maxTurfs: number;
-  features: string[];
-  prices: Price[];
-}
-interface Payment {
-  id: string;
-  amount?: number;
-  status?: string;
-  paymentMethod?: PaymentMethod;
-  providerTransactionId?: string | null;
-}
-interface SubscriptionInvoice {
-  id: string;
-  invoiceNumber: string;
-  totalAmount: number;
-  paidAmount: number;
-  status: "UNPAID" | "PAID" | "PARTIALLY_PAID";
-  payments?: Payment[];
-}
+const PAYMENT_NUMBERS: Record<Exclude<PaymentMethod, "CASH">, string> = {
+  BKASH: "01700000000",
+  NAGAD: "01700000000",
+  ROKET: "01700000000",
+};
+
 interface SubscriptionLog {
   id: string;
-  action: SubscriptionAction;
-  status: SubscriptionStatus;
+  action: string;
+  status: string;
   startDate: string;
   endDate: string;
   createdAt: string;
-  invoice?: SubscriptionInvoice | null;
-}
-interface CurrentSubscription {
-  id: string;
-  plan: Plan;
-  status: SubscriptionStatus;
-  startDate: string;
-  endDate: string;
-  trialStart: string;
-  trialEnd: string;
-  isTrialUsed: boolean;
+  invoice?: {
+    id: string;
+    invoiceNumber: string;
+    totalAmount: number;
+    paidAmount: number;
+    status: string;
+  } | null;
 }
 
-const paymentMethods: { value: PaymentMethod; label: string }[] = [
-  { value: "BKASH", label: "bKash" },
-  { value: "NAGAD", label: "Nagad" },
-  { value: "ROKET", label: "Rocket" },
-  { value: "CASH", label: "Cash" },
-  { value: "OTHERS", label: "Others" },
+const paymentOptions = [
+  { id: "BKASH", name: "bKash", icon: "/marchent-icon/bKash.svg" },
+  { id: "NAGAD", name: "Nagad", icon: "/marchent-icon/nagad.svg" },
+  { id: "ROKET", name: "Rocket", icon: "/marchent-icon/rocket.svg" },
+  { id: "CASH", name: "Pay Later", icon: "/marchent-icon/pay-later.svg" },
+] as const;
+
+const planThemes = [
+  {
+    textClass: "text-[#6824d6]",
+    gradientClass: "from-violet-50 via-white to-purple-50",
+    borderClass: "border-[#6824d6]",
+    badgeBg: "bg-[#6824d6]/10 text-[#6824d6]",
+    icon: BarChart3,
+  },
+  {
+    textClass: "text-[#fe3258]",
+    gradientClass: "from-rose-50 via-white to-pink-50",
+    borderClass: "border-[#fe3258]",
+    badgeBg: "bg-[#fe3258]/10 text-[#fe3258]",
+    icon: UserPlus,
+  },
+  {
+    textClass: "text-[#4ccda7]",
+    gradientClass: "from-emerald-50 via-white to-teal-50",
+    borderClass: "border-[#4ccda7]",
+    badgeBg: "bg-[#4ccda7]/10 text-[#0d8261]",
+    icon: Sparkles,
+  },
 ];
-const statusVariant: Record<
-  SubscriptionStatus,
-  "default" | "secondary" | "destructive" | "outline"
-> = {
-  TRIAL: "secondary",
-  ACTIVE: "default",
-  EXPIRING: "outline",
-  EXPIRED: "destructive",
-  CANCELLED: "destructive",
-};
-const actionLabel: Record<SubscriptionAction, string> = {
-  TRIAL_STARTED: "Trial started",
-  SUBSCRIBED: "Subscribed",
-  UPGRADED: "Plan upgraded",
-  RENEWED: "Subscription renewed",
-  CANCELLED: "Subscription cancelled",
-  EXPIRED: "Subscription expired",
-};
 
-function formatDate(value?: string | null) {
+function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = date.toLocaleString("en-US", { month: "short" });
+  const year = date.getFullYear();
+  return `${day} ${month}, ${year}`;
+}
+
+function formatDateShort(value?: string | null) {
   if (!value) return "-";
   return new Date(value).toLocaleDateString("en-US", {
     month: "short",
@@ -112,42 +107,196 @@ function formatDate(value?: string | null) {
     year: "numeric",
   });
 }
+
 function formatAmount(value?: number | null) {
-  return new Intl.NumberFormat("en-BD", { style: "currency", currency: "BDT" }).format(value ?? 0);
-}
-function daysRemaining(endDate?: string | null) {
-  if (!endDate) return 0;
-  return Math.max(0, Math.ceil((new Date(endDate).getTime() - Date.now()) / 86400000));
-}
-function unwrapData<T>(
-  response: ApiResponse<unknown> | { success: boolean; message: string },
-): T | null {
-  if (!response.success) throw new Error(response.message);
-  return (response as ApiResponse<unknown>).data as T | null;
+  return new Intl.NumberFormat("en-BD", {
+    style: "currency",
+    currency: "BDT",
+  }).format(value ?? 0);
 }
 
+function daysRemaining(endDate?: string | null) {
+  if (!endDate) return 0;
+  return Math.max(
+    0,
+    Math.ceil((new Date(endDate).getTime() - Date.now()) / 86400000)
+  );
+}
+
+const statusVariant: Record<
+  string,
+  "default" | "secondary" | "destructive" | "outline"
+> = {
+  ACTIVE: "default",
+  EXPIRING: "outline",
+  EXPIRED: "destructive",
+  CANCELLED: "destructive",
+  FREE_TRIAL: "secondary",
+};
+
+const periodLabels = {
+  MONTHLY: "Monthly",
+  QUARTERLY: "Quarterly",
+  HALF_YEARLY: "Half-Yearly",
+  YEARLY: "Yearly",
+};
+
 export default function AdminMySubscriptionPage() {
+  const router = useRouter();
   const queryClient = useQueryClient();
-  const [paymentOpen, setPaymentOpen] = useState(false);
+
+  const [drawerPlan, setDrawerPlan] = useState<SubscriptionPlan | null>(null);
+  const [selectedPeriod, setSelectedPeriod] =
+    useState<BillingPeriod>("MONTHLY");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("BKASH");
   const [providerTransactionId, setProviderTransactionId] = useState("");
-  const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>("MONTHLY");
-  const subscriptionQuery = useQuery({
+  const [payerMobileNumber, setPayerMobileNumber] = useState("");
+  const [showPaymentStep, setShowPaymentStep] = useState(false);
+  const [mobileError, setMobileError] = useState<string | null>(null);
+
+  const handlePayerMobileChange = (value: string) => {
+    setPayerMobileNumber(value);
+    const isMobileNumberRequired = paymentMethod !== "CASH";
+    if (isMobileNumberRequired) {
+      setMobileError(validateBangladeshiMobile(value));
+    } else {
+      setMobileError(null);
+    }
+  };
+
+  const { data: subscriptionData, isLoading: subscriptionLoading } = useQuery({
     queryKey: ["admin-current-subscription"],
-    queryFn: async () => unwrapData<CurrentSubscription>(await getCurrentSubscriptionClient()),
+    queryFn: async () => {
+      const res = await getCurrentSubscriptionClient();
+      if (!res.success) throw new Error(res.message);
+      return (res as ApiResponse<OwnerSubscription | null>).data ?? null;
+    },
   });
-  const historyQuery = useQuery({
+
+  const { data: plansData, isLoading: plansLoading } = useQuery({
+    queryKey: ["subscription-plans"],
+    queryFn: async () => {
+      const res = await getSubscriptionPlansClient();
+      if (!res.success) throw new Error(res.message);
+      return (res as ApiResponse<SubscriptionPlan[]>).data ?? [];
+    },
+    staleTime: 60000,
+  });
+
+  const { data: historyData, isLoading: historyLoading } = useQuery({
     queryKey: ["admin-subscription-history"],
-    queryFn: async () => unwrapData<SubscriptionLog[]>(await getSubscriptionHistoryClient()) ?? [],
+    queryFn: async () => {
+      const res = await getSubscriptionHistoryClient();
+      if (!res.success) throw new Error(res.message);
+      return (res as ApiResponse<SubscriptionLog[]>).data ?? [];
+    },
   });
-  const subscription = subscriptionQuery.data;
-  const history = (() => {
+
+  useEffect(() => {
+    if (!subscriptionLoading && !subscriptionData) {
+      router.push("/admin/dashboard");
+    }
+  }, [subscriptionData, subscriptionLoading, router]);
+
+  const isLoading = subscriptionLoading || plansLoading || historyLoading;
+
+  const currentTier = subscriptionData?.plan?.tierLevel ?? 0;
+  const currentEndTime = subscriptionData?.endDate
+    ? new Date(subscriptionData.endDate).getTime()
+    : 0;
+
+  // Only one advance subscription allowed: a queued plan starting after current end
+  const hasAdvanceSubscription = useMemo(() => {
+    if (!subscriptionData || !historyData) return false;
+    return historyData.some(
+      (log) => new Date(log.startDate).getTime() > currentEndTime
+    );
+  }, [subscriptionData, historyData, currentEndTime]);
+
+  // Upgrade only: higher tier than current
+  const upgradePlans = useMemo(
+    () =>
+      (plansData || [])
+        .filter((plan) => plan.active && plan.tierLevel > currentTier)
+        .sort((a, b) => a.tierLevel - b.tierLevel),
+    [plansData, currentTier]
+  );
+
+  const isCashPayment = paymentMethod === "CASH";
+  const isTransactionIdRequired = !isCashPayment;
+  const isMobileNumberRequired = paymentMethod !== "CASH";
+
+  const getWalletName = (method: PaymentMethod) => {
+    switch (method) {
+      case "BKASH":
+        return "bKash";
+      case "NAGAD":
+        return "Nagad";
+      case "ROKET":
+        return "Rocket";
+      default:
+        return "Pay Later";
+    }
+  };
+
+  const paymentMutation = useMutation({
+    mutationFn: async (billingPeriod: BillingPeriod) => {
+      if (!drawerPlan) throw new Error("Please select a plan");
+      if (!subscriptionData) throw new Error("No subscription found");
+      if (isTransactionIdRequired && !providerTransactionId.trim()) {
+        throw new Error("Provider transaction ID is required");
+      }
+      if (isMobileNumberRequired && !payerMobileNumber.trim()) {
+        throw new Error("Your payment mobile number is required");
+      }
+      const mobileErr = isMobileNumberRequired   ? validateBangladeshiMobile(payerMobileNumber) : null;
+      if (mobileErr) {
+        setMobileError(mobileErr);
+        throw new Error(mobileErr);
+      }
+
+      const updated = await updateSubscriptionClient(subscriptionData.id, {
+        period: billingPeriod,
+        planId: drawerPlan.id,
+        paymentMethod,
+        ...(!isCashPayment &&
+          providerTransactionId.trim() && {
+          providerTransactionId: providerTransactionId.trim(),
+        }),
+        ...(isMobileNumberRequired &&
+          payerMobileNumber.trim() && {
+          payerMobileNumber: payerMobileNumber.trim(),
+        }),
+      });
+
+      return updated;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: ["admin-current-subscription"],
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ["admin-subscription-history"],
+      });
+      toast.success("Subscription updated successfully.");
+      setProviderTransactionId("");
+      setPayerMobileNumber("");
+      setMobileError(null);
+      setDrawerPlan(null);
+    },
+    onError: (error: Error) => toast.error(error.message || "Payment failed"),
+  });
+
+  const history = useMemo(() => {
     const dateKey = (d: string) => {
       const date = new Date(d);
-      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}-${String(date.getDate()).padStart(2, "0")}`;
     };
     const seen = new Map<string, SubscriptionLog>();
-    for (const log of historyQuery.data ?? []) {
+    for (const log of historyData ?? []) {
       const key = `${dateKey(log.startDate)}|${dateKey(log.endDate)}`;
       const existing = seen.get(key);
       if (!existing || (log.invoice && !existing.invoice)) {
@@ -155,341 +304,529 @@ export default function AdminMySubscriptionPage() {
       }
     }
     return Array.from(seen.values()).sort(
-      (left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime(),
+      (left, right) =>
+        new Date(right.createdAt).getTime() -
+        new Date(left.createdAt).getTime()
     );
-  })();
-  const latestLog = history[0];
-  const unpaidInvoice = latestLog?.invoice?.status !== "PAID" ? latestLog?.invoice : null;
-  const hasAnyInvoice = history.some((log) => log.invoice);
-  const isExpired = subscription?.status === "EXPIRED";
-  const isFreeTrial = subscription?.plan?.tierLevel === 0;
-  const needsPayment =
-    subscription && !isFreeTrial && (unpaidInvoice || !hasAnyInvoice || isExpired);
+  }, [historyData]);
 
-  const paymentMutation = useMutation({
-    mutationFn: async () => {
-      if (!subscription) throw new Error("No active subscription found");
-      if (paymentMethod !== "CASH" && !providerTransactionId.trim())
-        throw new Error("Provider transaction ID is required");
-      let invoiceId = unpaidInvoice?.id;
-      if (!invoiceId) {
-        const initiated = unwrapData<{ invoice: { id: string } }>(
-          await initiateSubscriptionPaymentClient({
-            planId: subscription.plan.id,
-            billingPeriod,
-            paymentMethod,
-            ...(providerTransactionId.trim() && {
-              providerTransactionId: providerTransactionId.trim(),
-            }),
-          }),
-        );
-        invoiceId = initiated?.invoice.id;
-      }
-      if (!invoiceId) throw new Error("Could not create or find an invoice");
-     
-    },
-    onSuccess: async (response) => {
-      // if (!response.success) throw new Error(response.message);
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["admin-current-subscription"] }),
-        queryClient.invalidateQueries({ queryKey: ["admin-subscription-history"] }),
-      ]);
-      setPaymentOpen(false);
-      setProviderTransactionId("");
-      toast.success("Payment verified and subscription updated");
-    },
-    onError: (error) =>
-      toast.error(error instanceof Error ? error.message : "Payment could not be completed"),
-  });
-  const isLoading = subscriptionQuery.isLoading || historyQuery.isLoading;
-  const error = subscriptionQuery.error ?? historyQuery.error;
+  const disabled = hasAdvanceSubscription;
 
-  if (isLoading)
+  const openDrawer = (plan: SubscriptionPlan) => {
+    if (disabled) return;
+    setDrawerPlan(plan);
+    setSelectedPeriod(plan.prices[0]?.period || "MONTHLY");
+    setShowPaymentStep(false);
+    setProviderTransactionId("");
+    setPayerMobileNumber("");
+    setPaymentMethod("BKASH");
+  };
+
+  const closeDrawer = () => {
+    setDrawerPlan(null);
+    setProviderTransactionId("");
+    setPayerMobileNumber("");
+    setMobileError(null);
+    setShowPaymentStep(false);
+  };
+
+  if (isLoading) {
     return (
       <section className="dashboard-section flex min-h-[420px] items-center justify-center">
         <Loader2 className="size-8 animate-spin text-primary" />
       </section>
     );
-  if (error)
+  }
+
+  if (!subscriptionData) {
     return (
-      <section className="dashboard-section">
-        <Card className="dashboard-panel">
-          <CardContent className="py-12 text-center text-destructive">{error.message}</CardContent>
-        </Card>
+      <section className="dashboard-section flex min-h-[420px] items-center justify-center">
+        <p className="text-muted-foreground">No subscription found.</p>
       </section>
     );
+  }
 
   return (
-    <section className="dashboard-section space-y-6">
-      <div>
-        <p className="dashboard-meta">Account billing</p>
-        <h1 className="dashboard-title">My subscription</h1>
-        <p className="mt-3 text-muted-foreground">
-          Review your plan, billing history, and outstanding payments.
-        </p>
+    <section className="dashboard-section space-y-2 sm:space-y-3">
+      <div className="flex items-center gap-1.5 sm:gap-2 justify-between">
+        <div>
+          <h1 className="text-base font-semibold">My Subscription</h1>
+        </div>
       </div>
-      <Card className="dashboard-panel overflow-hidden">
-        <CardHeader className="flex flex-col gap-4 border-b sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              <Sparkles className="size-5 text-primary" />
-              Current subscription
-            </CardTitle>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Your active turf capacity and subscription dates.
-            </p>
-          </div>
-          {subscription && (
-            <Badge variant={statusVariant[subscription.status]}>{subscription.status}</Badge>
-          )}
-        </CardHeader>
-        <CardContent className="grid gap-6 pt-6 sm:grid-cols-2 lg:grid-cols-4">
-          {subscription ? (
-            <>
-              <div>
-                <p className="text-sm text-muted-foreground">Plan</p>
-                <p className="mt-1 text-xl font-semibold">{subscription.plan.name}</p>
-                <p className="text-sm text-muted-foreground">Tier {subscription.plan.tierLevel}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Turf limit</p>
-                <p className="mt-1 text-xl font-semibold">{subscription.plan.maxTurfs}</p>
-                <p className="text-sm text-muted-foreground">maximum turfs</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Ends</p>
-                <p className="mt-1 text-xl font-semibold">{formatDate(subscription.endDate)}</p>
-                <p className="text-sm text-muted-foreground">
-                  {daysRemaining(subscription.endDate)} days remaining
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Trial period</p>
-                <p className="mt-1 text-xl font-semibold">{isFreeTrial ? "Free trial" : "-"}</p>
-                <p className="text-sm text-muted-foreground">
-                  {subscription.trialEnd
-                    ? `Ends ${formatDate(subscription.trialEnd)}`
-                    : "No trial dates"}
-                </p>
-              </div>
-            </>
-          ) : (
-            <p className="text-muted-foreground">No subscription found.</p>
-          )}
-        </CardContent>
-        {subscription && subscription.plan.features && subscription.plan.features.length > 0 && (
-          <div className="border-t px-6 py-4">
-            <p className="text-sm font-medium text-muted-foreground mb-2">Plan features</p>
-            <div className="flex flex-wrap gap-2">
-              {subscription.plan.features.map((feature) => (
-                <span
-                  key={feature}
-                  className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
-                >
-                  {feature}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-      </Card>
-      {needsPayment && (
-        <Card
-          className={
-            isExpired
-              ? "border-green-300 bg-green-50/60 dark:bg-green-950/20"
-              : "border-amber-300 bg-amber-50/60 dark:bg-amber-950/20"
-          }
-        >
-          <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-start gap-3">
-              {isExpired ? (
-                <RefreshCw className="mt-0.5 size-5 text-green-700" />
-              ) : (
-                <CreditCard className="mt-0.5 size-5 text-amber-700" />
-              )}
-              <div>
-                <p className="font-semibold">
-                  {isExpired
-                    ? "Subscription expired"
-                    : unpaidInvoice
-                      ? "Payment required"
-                      : "Complete your subscription"}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {isExpired
-                    ? "Your subscription has expired. Renew to continue."
-                    : unpaidInvoice
-                      ? `Invoice ${unpaidInvoice.invoiceNumber} has an outstanding balance of ${formatAmount(unpaidInvoice.totalAmount - unpaidInvoice.paidAmount)}.`
-                      : "You haven't completed your subscription yet. Pay to activate."}
-                </p>
-              </div>
-            </div>
-            <Button onClick={() => setPaymentOpen(true)}>
-              {isExpired ? (
-                <>
-                  <RefreshCw className="mr-2 size-4" />
-                  Renew now
-                </>
-              ) : (
-                <>
-                  <CreditCard className="mr-2 size-4" />
-                  {unpaidInvoice ? "Pay now" : "Subscribe"}
-                </>
-              )}
-            </Button>
-          </CardContent>
-        </Card>
+
+      {/* Advance subscription lock */}
+      {disabled && (
+        <Alert className="border-amber-500/30 bg-amber-500/10 rounded-xl border">
+          <AlertCircle className="h-5 w-5 text-amber-600" />
+          <AlertTitle className="text-amber-900 dark:text-amber-200 font-bold text-sm">
+            Advance Subscription Scheduled
+          </AlertTitle>
+          <AlertDescription className="text-amber-800 dark:text-amber-300 text-xs mt-0.5">
+            You already have an advance subscription queued after your current
+            plan. No further changes can be made until it activates.
+          </AlertDescription>
+        </Alert>
       )}
-      <Card className="dashboard-panel">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock3 className="size-5 text-primary" />
-            Subscription history
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {history.length === 0 ? (
-            <p className="py-8 text-center text-muted-foreground">No subscription activity yet.</p>
-          ) : (
-            <div className="space-y-0">
-              {history.map((log, index) => (
-                <div className="relative flex gap-4 pb-7 last:pb-0" key={log.id}>
-                  {index < history.length - 1 && (
-                    <div className="absolute left-[9px] top-6 h-full w-px bg-border" />
-                  )}
-                  <div className="relative mt-1 flex size-5 shrink-0 items-center justify-center rounded-full border-2 border-primary bg-background">
-                    <span className="size-2 rounded-full bg-primary" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div>
-                        <p className="font-semibold">{actionLabel[log.action]}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {formatDate(log.createdAt)} · {formatDate(log.startDate)} to{" "}
-                          {formatDate(log.endDate)}
-                        </p>
-                      </div>
-                      <Badge variant={statusVariant[log.status]}>{log.status}</Badge>
-                    </div>
-                    {log.invoice && (
-                      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-md border bg-muted/30 px-3 py-2 text-sm">
-                        <Receipt className="size-4 text-muted-foreground" />
-                        <a
-                          className="font-medium text-primary hover:underline"
-                          href={`/admin/dashboard/invoices?invoiceId=${log.invoice.id}`}
-                        >
-                          {log.invoice.invoiceNumber}
-                        </a>
-                        <span>{formatAmount(log.invoice.totalAmount)}</span>
-                        <span className="text-muted-foreground">
-                          {log.invoice.status.replace("_", " ")}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
+
+      {/* Current Plan Card */}
+      <Card className="surface-card overflow-hidden">
+        <CardContent className="p-0">
+          <div className="flex items-center justify-between min-w-max gap-6 sm:gap-8 p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+              <p className="font-bold text-slate-900 dark:text-white text-sm sm:text-base truncate">
+                {subscriptionData.plan.name}
+              </p>
+              <span className="text-[10px] text-slate-600 dark:text-slate-400 ml-1">
+                • {subscriptionData.plan.maxTurfs} Turf(s)
+              </span>
             </div>
-          )}
+            <div className="flex items-center gap-6 sm:gap-8 shrink-0 whitespace-nowrap">
+              <div className="text-center sm:text-left">
+                <Badge
+                  variant="secondary"
+                  className="h-8 text-[10px] uppercase tracking-wider font-bold bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 border border-violet-200 dark:border-violet-800"
+                >
+                  {subscriptionData.status}
+                </Badge>
+              </div>
+              <div className="text-center sm:text-left">
+                <p className="text-slate-900 dark:text-slate-100 font-semibold text-xs sm:text-sm">
+                  End date - {formatDate(subscriptionData.endDate)}
+                </p>
+              </div>
+              <div className="text-center sm:text-left">
+                <p className="text-violet-600 dark:text-violet-400 font-semibold text-xs sm:text-sm">
+                  {daysRemaining(subscriptionData.endDate)} days remaining
+                </p>
+              </div>
+              <Button
+                onClick={() => openDrawer(subscriptionData.plan)}
+                disabled={
+                  disabled || subscriptionData.status === "EXPIRED"
+                }
+                variant="hero"
+                size="sm"
+                className="h-8 text-xs shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5 whitespace-nowrap"
+              >
+                {disabled
+                  ? "Locked"
+                  : subscriptionData.status === "EXPIRED"
+                    ? "Renew"
+                    : "Extend"}
+              </Button>
+            </div>
+          </div>
         </CardContent>
       </Card>
-      <Dialog open={paymentOpen} onOpenChange={setPaymentOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {isExpired
-                ? "Renew subscription"
-                : unpaidInvoice
-                  ? "Complete payment"
-                  : "Subscribe now"}
-            </DialogTitle>
-            <DialogDescription>
-              {isExpired
-                ? "Renew your subscription to continue using the platform."
-                : unpaidInvoice
-                  ? "Submit your payment details to settle the outstanding invoice."
-                  : "Choose a billing period and payment method to activate your subscription."}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-5">
-            <div className="rounded-md bg-muted/40 p-4">
-              <p className="text-sm text-muted-foreground">Amount due</p>
-              <p className="mt-1 text-2xl font-semibold">
-                {formatAmount(
-                  unpaidInvoice?.totalAmount
-                    ? unpaidInvoice.totalAmount - unpaidInvoice.paidAmount
-                    : subscription?.plan?.prices?.[0]?.price ??
-                      subscription?.plan?.prices?.[0]?.amount ?? 0,
-                )}
-              </p>
-            </div>
-            {!unpaidInvoice && (
-              <label className="grid gap-2 text-sm font-medium">
-                Billing period
-                <select
-                  className="h-10 rounded-md border border-input bg-background px-3 font-normal"
-                  value={billingPeriod}
-                  onChange={(event) =>
-                    setBillingPeriod(event.target.value as BillingPeriod)
-                  }
-                >
-                  <option value="MONTHLY">Monthly</option>
-                  <option value="QUARTERLY">Quarterly</option>
-                  <option value="HALF_YEARLY">Half yearly</option>
-                  <option value="YEARLY">Yearly</option>
-                </select>
-              </label>
-            )}
-            <fieldset className="grid gap-3">
-              <legend className="text-sm font-medium">Payment method</legend>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {paymentMethods.map((method) => (
-                  <label
-                    className="flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/5"
-                    key={method.value}
-                  >
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value={method.value}
-                      checked={paymentMethod === method.value}
-                      onChange={() => setPaymentMethod(method.value)}
-                    />
-                    {method.label}
-                  </label>
+
+      {/* Upgrade Plans */}
+      <Card className="surface-card overflow-hidden">
+        <CardContent className="p-0">
+          <div className="space-y-3 sm:space-y-4 p-3 sm:p-4">
+            <CardTitle className="flex items-center gap-2 text-sm mb-3 sm:mb-4">
+              <ArrowRight className="size-4 text-primary" />
+              Upgrade Plan
+            </CardTitle>
+            {plansLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                {[...Array(3)].map((_, i) => (
+                  <Skeleton key={i} className="h-[20rem] w-full rounded-2xl" />
                 ))}
               </div>
-            </fieldset>
-            {paymentMethod !== "CASH" && (
-              <label className="grid gap-2 text-sm font-medium">
-                Provider transaction ID
-                <Input
-                  value={providerTransactionId}
-                  onChange={(event) => setProviderTransactionId(event.target.value)}
-                  placeholder="Enter the transaction reference"
-                />
-              </label>
+            ) : upgradePlans.length === 0 ? (
+              <p className="text-center text-[11px] text-muted-foreground py-6">
+                No upgrade plans available. You are on the highest tier.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                {upgradePlans.map((plan, index) => {
+                  const theme = planThemes[index % planThemes.length];
+                  const IconComponent = theme.icon;
+                  const monthlyPrice =
+                    plan.prices.find((p) => p.period === "MONTHLY")?.price ?? 0;
+
+                  return (
+                    <Card
+                      key={plan.id}
+                      className={`cursor-pointer h-full border border-border/60 bg-background/50 rounded-xl p-3 sm:p-4 transition-all hover:border-primary/50 hover:bg-primary/5 hover:-translate-y-0.5 hover:shadow-md ${disabled
+                        ? "opacity-60 cursor-not-allowed filter grayscale-[20%] hover:border-none hover:bg-transparent hover:shadow-none"
+                        : ""
+                        }`}
+                      onClick={() => openDrawer(plan)}
+                    >
+                      <div className="mb-3 sm:mb-4 flex items-start justify-between">
+                        <div className="flex items-center gap-2">
+                          <div
+                            className={`p-2 sm:p-2.5 rounded-lg ${theme.badgeBg}`}
+                          >
+                            <IconComponent className="w-5 h-5 sm:w-6 sm:h-6" />
+                          </div>
+                          <span
+                            className={`font-bold text-base sm:text-lg ${theme.textClass}`}
+                          >
+                            {plan.name}
+                          </span>
+                        </div>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground mb-3 sm:mb-4">
+                        Up to {plan.maxTurfs}{" "}
+                        {plan.maxTurfs === 1 ? "Turf" : "Turfs"} &middot;{" "}
+                        {plan.features.length} features
+                      </p>
+                      <div
+                        className={`mb-3 sm:mb-4 inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg border border-current/10 ${theme.badgeBg}`}
+                      >
+                        <span className="text-[9px] sm:text-[10px] font-medium opacity-80">
+                          From
+                        </span>
+                        <span className="text-lg sm:text-xl font-extrabold text-foreground">
+                          ৳{monthlyPrice.toLocaleString()}
+                        </span>
+                        <span className="text-[9px] sm:text-[10px] font-semibold opacity-75">
+                          /mo
+                        </span>
+                      </div>
+                      <ul className="mb-4 max-h-[140px] overflow-y-auto pr-1 space-y-1">
+                        {plan.features.map((f, i) => (
+                          <li
+                            key={i}
+                            className="flex items-center gap-1.5 truncate"
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full bg-border shrink-0" />
+                            <span className="text-[10px] truncate">
+                              {f.name}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openDrawer(plan);
+                        }}
+                        disabled={disabled}
+                        variant="hero"
+                        size="sm"
+                        className="w-full h-8 text-xs shadow-md shadow-primary/20 transition-transform hover:-translate-y-0.5"
+                      >
+                        {disabled ? "Locked" : "Upgrade"}
+                      </Button>
+                    </Card>
+                  );
+                })}
+              </div>
             )}
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setPaymentOpen(false)}>
-              Cancel
-            </Button>
-            <Button
-              onClick={() => paymentMutation.mutate()}
-              disabled={
-                paymentMutation.isPending ||
-                (paymentMethod !== "CASH" && !providerTransactionId.trim())
-              }
-            >
-              {paymentMutation.isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
-              <CheckCircle2 className="mr-2 size-4" />
-              {isExpired ? "Renew" : unpaidInvoice ? "Submit payment" : "Subscribe"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        </CardContent>
+      </Card>
+
+      {/* Subscription History */}
+      <Card className="surface-card overflow-hidden">
+        <CardContent className="p-0">
+          <div className="space-y-3 sm:space-y-4 p-3 sm:p-4">
+            <CardTitle className="flex items-center gap-2 text-sm mb-3 sm:mb-4">
+              <Clock3 className="size-4 text-primary" />
+              Subscription History
+            </CardTitle>
+            {history.length === 0 ? (
+              <p className="py-6 text-center text-[11px] text-muted-foreground">
+                No activity yet.
+              </p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border/70">
+                      <th className="px-1 py-1 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        Action
+                      </th>
+                      <th className="px-1 py-1 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        Period
+                      </th>
+                      <th className="px-1 py-1 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        Amount
+                      </th>
+                      <th className="px-1 py-1 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        Date
+                      </th>
+                      <th className="px-1 py-1 text-right text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        Status
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {history.map((log, i) => (
+                      <tr
+                        key={log.id}
+                        className="border-b border-border/40 last:border-0 transition-colors hover:bg-secondary/20"
+                      >
+                        <td className="px-1 py-1 text-sm text-foreground">
+                          <p className="font-medium">{log.action}</p>
+                        </td>
+                        <td className="px-1 py-1 text-sm text-foreground">
+                          <p className="text-muted-foreground">
+                            {formatDateShort(log.startDate)} to{" "}
+                            {formatDateShort(log.endDate)}
+                          </p>
+                        </td>
+                        <td className="px-1 py-1 text-sm text-foreground">
+                          {log.invoice ? (
+                            <p className="font-medium">
+                              ৳ {formatAmount(log.invoice.totalAmount)}
+                            </p>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
+                        </td>
+                        <td className="px-1 py-1 text-sm text-foreground">
+                          <p className="text-muted-foreground">
+                            {formatDateShort(log.createdAt)}
+                          </p>
+                        </td>
+                        <td className="px-1 py-1 text-sm text-right">
+                          <Badge
+                            variant={
+                              statusVariant[log.status] ?? "secondary"
+                            }
+                          >
+                            {log.status}
+                          </Badge>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Payment Side Drawer */}
+      {drawerPlan && (
+        <div className="fixed inset-0 z-50 flex items-center justify-end bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in">
+          <div className="fixed inset-0" onClick={closeDrawer} />
+
+          <div className="relative w-full max-w-lg h-full overflow-hidden border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl z-10 flex flex-col animate-in slide-in-from-right duration-400 ease-out">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-6 py-4 bg-slate-50/90 dark:bg-slate-800/90 backdrop-blur-xs shrink-0">
+              <div className="flex items-center gap-2">
+                <div>
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base">
+                    {drawerPlan.name}
+                  </h3>
+                </div>
+              </div>
+              <button
+                onClick={closeDrawer}
+                className="rounded-full p-2 text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors active:scale-90"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="p-5 overflow-y-auto flex-1 space-y-5">
+              {showPaymentStep && (
+                <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-800/40 space-y-4">
+                  <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-2 dark:border-slate-800">
+                    <div>
+                      <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                        Amount
+                      </span>
+                      <p className="text-sm sm:text-base font-black text-slate-900 dark:text-slate-100 mt-0.5">
+                        {periodLabels[selectedPeriod]} — ৳
+                        {drawerPlan.prices
+                          .find((p) => p.period === selectedPeriod)
+                          ?.price.toLocaleString() ?? "0"}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowPaymentStep(false)}
+                      className="text-xs font-bold text-purple-600 hover:text-purple-700 dark:text-purple-400 hover:underline transition-colors"
+                    >
+                      Change cycle
+                    </button>
+                  </div>
+
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                    Payment Gateway
+                  </p>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {paymentOptions.map((opt) => {
+                      const isSelected = paymentMethod === opt.id;
+                      return (
+                        <label
+                          key={opt.id}
+                          className="flex cursor-pointer items-center justify-center group"
+                        >
+                          <input
+                            type="radio"
+                            name="payment-method"
+                            value={opt.id}
+                            checked={isSelected}
+                            onChange={() => {
+                              setPaymentMethod(opt.id);
+                              if (opt.id === "CASH") {
+                                setProviderTransactionId("");
+                                setPayerMobileNumber("");
+                                setMobileError(null);
+                              }
+                            }}
+                            className="sr-only"
+                          />
+                          <img
+                            src={opt.icon}
+                            alt={opt.name}
+                            className={`h-10 w-20 shrink-0 rounded-md group-hover:scale-105 ${isSelected
+                              ? "drop-shadow-[0_0_6px_rgba(128,0,255,0.6)]"
+                              : ""
+                              }`}
+                          />
+                        </label>
+                      );
+                    })}
+                  </div>
+
+                  {!isCashPayment && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                          Mobile Number
+                        </label>
+                        <div className="relative">
+                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                          <input
+                            value={payerMobileNumber}
+                            onChange={(e) =>
+                              handlePayerMobileChange(e.target.value)
+                            }
+                            placeholder="01XXXXXXXXX"
+                            inputMode="tel"
+                            className="h-10 w-full rounded-xl border border-slate-300 pl-9 pr-3 text-xs outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                          />
+                        </div>
+                        {mobileError && (
+                          <p className="mt-1 text-xs text-destructive">
+                            {mobileError}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                          Transaction ID
+                        </label>
+                        <div className="relative">
+                          <Hash className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                          <input
+                            value={providerTransactionId}
+                            onChange={(e) =>
+                              setProviderTransactionId(e.target.value)
+                            }
+                            placeholder="e.g. TRX109283"
+                            className="h-10 w-full rounded-xl border border-slate-300 pl-9 pr-3 text-xs outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    className="w-full bg-purple-600 text-xs font-bold text-white hover:bg-purple-700 h-10 rounded-xl active:scale-98 mt-2 shadow-md shadow-purple-600/20"
+                    disabled={  paymentMutation.isPending ||  (isTransactionIdRequired &&  !providerTransactionId.trim()) || (isMobileNumberRequired && !payerMobileNumber.trim()) ||  !!mobileError   }
+                    onClick={() => paymentMutation.mutate(selectedPeriod)}
+                  >
+                    {paymentMutation.isPending ? (
+                      <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      `Confirm ${getWalletName(paymentMethod)} Payment`
+                    )}
+                  </Button>
+                </div>
+              )}
+
+              {!showPaymentStep && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                      Billing Cycle
+                    </p>
+                    <span className="text-[11px] text-purple-600 font-semibold dark:text-purple-400">
+                      Select a period
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {drawerPlan.prices.map((priceData) => {
+                      const isSelected = selectedPeriod === priceData.period;
+                      return (
+                        <div
+                          key={priceData.period}
+                          onClick={() => {
+                            setSelectedPeriod(priceData.period);
+                            setShowPaymentStep(true);
+                          }}
+                          className={`group relative flex flex-col justify-between p-3 rounded-xl border-2 cursor-pointer transition-all ${isSelected
+                            ? "border-purple-600 bg-purple-50/50 dark:bg-purple-950/30 ring-2 ring-purple-600/20"
+                            : "border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
+                            }`}
+                        >
+                          <div className="flex items-start justify-between gap-2 mb-2">
+                            <div className="flex items-center gap-2">
+                              <div
+                                className={`flex h-4 w-4 items-center justify-center rounded-full border transition-all ${isSelected
+                                  ? "border-purple-600 bg-purple-600 text-white"
+                                  : "border-slate-300 dark:border-slate-600"
+                                  }`}
+                              >
+                                {isSelected && (
+                                  <Check className="h-2.5 w-2.5 stroke-[3]" />
+                                )}
+                              </div>
+                              <div>
+                                <h4 className="text-sm font-black text-slate-900 dark:text-white">
+                                  {periodLabels[priceData.period]}
+                                </h4>
+                                <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+                                  {priceData.period === "MONTHLY" &&
+                                    "Monthly plan"}
+                                  {priceData.period === "QUARTERLY" &&
+                                    "3 months"}
+                                  {priceData.period === "HALF_YEARLY" &&
+                                    "6 months"}
+                                  {priceData.period === "YEARLY" &&
+                                    "Annual plan"}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between pt-1 border-t">
+                            <span className="text-lg font-black text-slate-900 dark:text-white">
+                              ৳{priceData.price.toLocaleString()}
+                            </span>
+                            <Button
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedPeriod(priceData.period);
+                                setShowPaymentStep(true);
+                              }}
+                              className={`h-7 text-xs font-bold px-2.5 rounded ${isSelected
+                                ? "bg-purple-600 text-white"
+                                : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                                }`}
+                            >
+                              Select
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

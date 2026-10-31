@@ -84,7 +84,7 @@ export async function initiateSubscriptionPaymentClient(
   data: InitiatePaymentRequest
 ): Promise<ApiResponse<InitiatePaymentResponse> | ApiErrorResponse> {
   try {
-    const response = await httpClient.post(API_ENDPOINTS.subscription.paymentInitiate, data);
+    const response = await httpClient.post(API_ENDPOINTS.subscription.subscriptionInitiate, data);
     return response;
   } catch (error: any) {
     const axiosError = error as any;
