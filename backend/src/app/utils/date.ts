@@ -1,6 +1,13 @@
-// Zeroes the time portion so same-day subscription periods compare equal.
+// Represents the local calendar day as a UTC date for date-only database fields.
 export function startOfDay(date: Date): Date {
   const normalized = new Date(date);
-  normalized.setHours(0, 0, 0, 0);
-  return normalized;
+  return new Date(
+    Date.UTC(normalized.getFullYear(), normalized.getMonth(), normalized.getDate())
+  );
+}
+
+export function toDateOnly(date: Date): Date {
+  return new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+  );
 }

@@ -12,6 +12,7 @@ import qs from 'qs';
 import { AppModule } from './app.module';
 import { auth } from './app/lib/auth';
 import { BookingService } from './app/modules/booking/booking.service';
+import { SubscriptionService } from './app/modules/subscription/subscription.service';
 import { TurfService } from './app/modules/turf/turf.service';
 import { TurfSlotService } from './app/modules/turf-slots/turf-slot.service';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
@@ -19,20 +20,31 @@ import { GlobalExceptionFilter } from './common/filters/global-exception.filter'
 // Every scheduled job in the app is registered here
 function registerCronJobs(app: NestExpressApplication) {
   const bookingService = app.get(BookingService, { strict: false });
+  const subscriptionService = app.get(SubscriptionService, { strict: false });
   const turfService = app.get(TurfService, { strict: false });
   const turfSlotService = app.get(TurfSlotService, { strict: false });
+  const cronTimezone = config.timezone || 'Asia/Dhaka';
+
   // Every 15 minutes: expire unpaid bookings, then release stale WAITLIST slots
   cron.schedule('*/15 * * * *', async () => {
     await bookingService.expireUnpaid().catch(() => undefined);
     await turfSlotService.cleanupPrebookedSlots().catch(() => undefined);
   });
 
-  // Deactivate turfs of inactive subscriptions: once on startup, then hourly
-  const deactivateTurfs = () =>turfService.deactivateTurfsForInactiveSubscriptions().catch(() => undefined);
-  
-  deactivateTurfs();
-  
-  cron.schedule('0 * * * *', deactivateTurfs);
+  // Expire subscriptions and deactivate their turfs at 6:00 a.m. after their end date.
+  cron.schedule(
+    '0 6 * * *',
+    async () => {
+      try {
+        await subscriptionService.expireEndedSubscriptions(cronTimezone);
+         await turfService.deactivateTurfsForInactiveSubscriptions(cronTimezone);
+      
+      } catch (error) {
+        console.error('Failed to expire subscriptions and deactivate their turfs:', error);
+      }
+    },
+    { timezone: cronTimezone },
+  );
 
   // Hourly: expire AVAILABLE slots whose end time has passed (Dhaka)
   // cron.schedule('0 * * * *', () => turfSlotService.UpdateExpireSlots().catch(() => undefined), {

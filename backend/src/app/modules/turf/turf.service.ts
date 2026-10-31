@@ -6,6 +6,7 @@ import { PaymentMethod, SlotSatus, SubscriptionStatus, TurfStatus, UserRole } fr
 import AppError from '../../../config/errorHelpers/AppError';
 import prisma from '../../../shared/prisma';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
+import { startOfDayInTimezone } from '../../utils/dateTimeUtils';
 
 export interface TurfPayload {
   name: string;
@@ -17,6 +18,8 @@ export interface TurfPayload {
   latitude: number;
   longitude: number;
   defaultSlotPrice: number;
+  openingTime: number;
+  closingTime: number;
   defaultSlotDuration?: number;
   allowAdvancePayment?: boolean;
   advancePaymentAmount?: number;
@@ -99,10 +102,27 @@ function validateSlotDefaults(price?: number, duration?: number) {
   }
 }
 
+function validateOperatingHours(openingTime?: number, closingTime?: number, required = false) {
+  if (openingTime === undefined && closingTime === undefined && !required) return;
+  if (
+    openingTime === undefined ||
+    closingTime === undefined ||
+    !Number.isInteger(openingTime) ||
+    openingTime < 0 ||
+    openingTime >= 1440 ||
+    !Number.isInteger(closingTime) ||
+    closingTime < 0 ||
+    closingTime >= 1440 ||
+    closingTime <= openingTime
+  ) {
+    throw new AppError(status.BAD_REQUEST, 'Choose valid opening and closing times; closing time must be later than opening time');
+  }
+}
+
 @Injectable()
 export class TurfService {
-  async deactivateTurfsForInactiveSubscriptions() {
-    const now = new Date();
+  async deactivateTurfsForInactiveSubscriptions(timezone: string) {
+    const today = startOfDayInTimezone(new Date(), timezone);
     const result = await prisma.turf.updateMany({
       where: {
         status: TurfStatus.ACTIVE,
@@ -112,9 +132,16 @@ export class TurfService {
               subscriptions: {
                 is: {
                   OR: [
-                    { status: SubscriptionStatus.EXPIRED },
-                    { status: SubscriptionStatus.CANCELLED },
-                    { endDate: { lte: now } },
+                    {
+                      status: {
+                        in: [
+                          SubscriptionStatus.EXPIRED,
+                          SubscriptionStatus.CANCELLED,
+                          SubscriptionStatus.INACTIVE,
+                        ],
+                      },
+                    },
+                    { endDate: { lt: today } },
                   ],
                 },
               },
@@ -461,6 +488,7 @@ export class TurfService {
     this.validateCoordinates(payload);
     validateSlotDefaults(payload.defaultSlotPrice, payload.defaultSlotDuration);
     validateTimezone(payload.timezone);
+    validateOperatingHours(payload.openingTime, payload.closingTime, true);
 
     const phoneNumbers = normalizePaymentPhoneNumbers(
       payload.allowAdvancePayment,
@@ -482,6 +510,8 @@ export class TurfService {
         longitude: new Prisma.Decimal(payload.longitude),
         defaultSlotDuration: payload.defaultSlotDuration ?? 90,
         defaultSlotPrice: new Prisma.Decimal(payload.defaultSlotPrice),
+        openingTime: payload.openingTime,
+        closingTime: payload.closingTime,
         paymentPhoneNumbers: phoneNumbers.length ? { create: phoneNumbers } : undefined,
       },
     });
@@ -500,6 +530,7 @@ export class TurfService {
 
     validateSlotDefaults(payload.defaultSlotPrice, payload.defaultSlotDuration);
     validateTimezone(payload.timezone);
+    validateOperatingHours(payload.openingTime, payload.closingTime);
 
     return prisma.$transaction(async (tx) => {
       if (payload.allowAdvancePayment !== undefined || payload.paymentPhoneNumbers !== undefined) {
@@ -526,6 +557,8 @@ export class TurfService {
           advancePaymentAmount: payload.advancePaymentAmount !== undefined ? new Prisma.Decimal(payload.advancePaymentAmount) : undefined,
           defaultSlotDuration: payload.defaultSlotDuration,
           defaultSlotPrice: payload.defaultSlotPrice !== undefined ? new Prisma.Decimal(payload.defaultSlotPrice) : undefined,
+          openingTime: payload.openingTime,
+          closingTime: payload.closingTime,
           ...(payload.latitude === undefined ? {} : { latitude: new Prisma.Decimal(payload.latitude) }),
           ...(payload.longitude === undefined ? {} : { longitude: new Prisma.Decimal(payload.longitude) }),
         },

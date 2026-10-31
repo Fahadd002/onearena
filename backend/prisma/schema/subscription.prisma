@@ -54,10 +54,10 @@ model Subscription {
   planId           String
   plan             SubscriptionPlan   @relation(fields: [planId], references: [id])
   status           SubscriptionStatus @default(FREE_TRIAL)
-  startDate        DateTime
-  endDate          DateTime
-  freeStart       DateTime?
-  freeEnd         DateTime?
+  startDate        DateTime   @db.Date
+  endDate          DateTime   @db.Date
+  freeStart        DateTime?  @db.Date
+  freeEnd          DateTime?  @db.Date
   isFreeUsed      Boolean            @default(false)
   isFreeActive    Boolean            @default(false)
   createdAt        DateTime           @default(now())
@@ -77,8 +77,8 @@ model SubscriptionLog {
   action         SubscriptionAction
   status         SubscriptionStatus
   period         FixedPeriod
-  startDate      DateTime
-  endDate        DateTime
+  startDate      DateTime           @db.Date
+  endDate        DateTime           @db.Date
   createdAt      DateTime           @default(now())
   updatedAt      DateTime?          @updatedAt
   invoice        Invoice?
@@ -87,5 +87,4 @@ model SubscriptionLog {
   @@index([endDate])
   @@map("subscription_log")
 }
-
 

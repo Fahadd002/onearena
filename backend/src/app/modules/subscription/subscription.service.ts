@@ -14,7 +14,8 @@ import {
 import { Prisma } from '../../../generated/prisma/client';
 import AppError from '../../../config/errorHelpers/AppError';
 import prisma from '../../../shared/prisma';
-import { startOfDay } from '../../utils/date';
+import { startOfDay, toDateOnly } from '../../utils/date';
+import { startOfDayInTimezone } from '../../utils/dateTimeUtils';
 import { nextDocumentNumber } from '../../utils/document-number';
 import { IRequestUser } from '../../interfaces/requestUser.interface';
 import { InvoiceService } from '../invoice/invoice.service';
@@ -124,7 +125,7 @@ export class SubscriptionService {
 
     if (!subscription) return null;
 
-    const now = new Date();
+    const now = startOfDay(new Date());
     const daysUntilExpiry = Math.ceil(
       (subscription.endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
     );
@@ -162,6 +163,62 @@ export class SubscriptionService {
     }
 
     return subscription;
+  }
+
+  async expireEndedSubscriptions(timezone: string) {
+    const today = startOfDayInTimezone(new Date(), timezone);
+
+    return prisma.$transaction(async (tx) => {
+      const endedSubscriptions = await tx.subscription.findMany({
+        where: {
+          status: {
+            in: [
+              SubscriptionStatus.ACTIVE,
+              SubscriptionStatus.EXPIRING,
+              SubscriptionStatus.FREE_TRIAL,
+              SubscriptionStatus.INACTIVE,
+            ],
+          },
+          endDate: { lt: today },
+        },
+        include: {
+          subscriptionLogs: {
+            orderBy: { createdAt: 'desc' },
+            take: 1,
+          },
+        },
+      });
+
+      let expiredCount = 0;
+      for (const subscription of endedSubscriptions) {
+        const result = await tx.subscription.updateMany({
+          where: {
+            id: subscription.id,
+            status: subscription.status,
+          },
+          data: {
+            status: SubscriptionStatus.EXPIRED,
+            isFreeActive: false,
+          },
+        });
+
+        if (result.count === 0) continue;
+
+        await tx.subscriptionLog.create({
+          data: {
+            subscriptionId: subscription.id,
+            action: SubscriptionAction.EXPIRED,
+            status: SubscriptionStatus.EXPIRED,
+            period: subscription.subscriptionLogs[0]?.period ?? FixedPeriod.MONTHLY,
+            startDate: subscription.startDate,
+            endDate: subscription.endDate,
+          },
+        });
+        expiredCount += 1;
+      }
+
+      return { count: expiredCount };
+    });
   }
 
   // Get turf limit for owner
@@ -480,10 +537,8 @@ export class SubscriptionService {
 
     const seen = new Map<string, typeof logs[0]>();
     for (const log of logs) {
-      const startDate = new Date(log.startDate);
-      const endDate = new Date(log.endDate);
-      startDate.setHours(0, 0, 0, 0);
-      endDate.setHours(0, 0, 0, 0);
+      const startDate = toDateOnly(log.startDate);
+      const endDate = toDateOnly(log.endDate);
       const key = `${startDate.toISOString()}|${endDate.toISOString()}`;
 
       const existing = seen.get(key);
@@ -493,10 +548,8 @@ export class SubscriptionService {
     }
 
     const result = Array.from(seen.values()).map((log) => {
-      const startDate = new Date(log.startDate);
-      startDate.setHours(0, 0, 0, 0);
-      const endDate = new Date(log.endDate);
-      endDate.setHours(0, 0, 0, 0);
+      const startDate = toDateOnly(log.startDate);
+      const endDate = toDateOnly(log.endDate);
       return {
         ...log,
         startDate,
@@ -680,7 +733,7 @@ export class SubscriptionService {
     // Admin Restriction Rule: Limit of 2 Active Logs
     const logs = existing.subscriptionLogs;
     if (logs.length >= 2) {
-      const now = new Date();
+      const now = startOfDay(new Date());
       const allActive = logs.every((log) => new Date(log.endDate) > now);
       if (allActive) {
         throw new AppError(
@@ -719,12 +772,12 @@ export class SubscriptionService {
     if (now <= existing.endDate) {
       // Active: start from day after current end date
       newEndDate = new Date(existing.endDate);
-      newEndDate.setDate(newEndDate.getDate() + 1);
-      newEndDate.setMonth(newEndDate.getMonth() + periodMonths);
+      newEndDate.setUTCDate(newEndDate.getUTCDate() + 1);
+      newEndDate.setUTCMonth(newEndDate.getUTCMonth() + periodMonths);
     } else {
       // Expired: start from current date
       newEndDate = new Date(now);
-      newEndDate.setMonth(newEndDate.getMonth() + periodMonths);
+      newEndDate.setUTCMonth(newEndDate.getUTCMonth() + periodMonths);
     }
 
     return prisma.$transaction(async (tx) => {

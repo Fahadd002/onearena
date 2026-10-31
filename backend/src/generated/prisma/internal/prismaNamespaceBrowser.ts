@@ -550,6 +550,8 @@ export const TurfScalarFieldEnum = {
   defaultSlotPrice: 'defaultSlotPrice',
   timezone: 'timezone',
   establishedSince: 'establishedSince',
+  openingTime: 'openingTime',
+  closingTime: 'closingTime',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

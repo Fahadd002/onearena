@@ -903,7 +903,13 @@ export type $TurfSlotPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     active: boolean
     slotStatus: $Enums.SlotSatus
     isPeakTime: boolean
+    /**
+     * Stored as the related turf's local wall-clock value in the database.
+     */
     createdAt: Date
+    /**
+     * Stored as the related turf's local wall-clock value in the database.
+     */
     updatedAt: Date
   }, ExtArgs["result"]["turfSlot"]>
   composites: {}

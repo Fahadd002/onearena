@@ -286,10 +286,10 @@ export class SubscriptionPaymentService {
     const now = startOfDay(new Date());
     const endDate = new Date(now);
 
-    if (period === FixedPeriod.YEARLY) endDate.setFullYear(now.getFullYear() + 1);
-    else if (period === FixedPeriod.HALF_YEARLY) endDate.setMonth(now.getMonth() + 6);
-    else if (period === FixedPeriod.QUARTERLY) endDate.setMonth(now.getMonth() + 3);
-    else endDate.setMonth(now.getMonth() + 1);
+    if (period === FixedPeriod.YEARLY) endDate.setUTCFullYear(now.getUTCFullYear() + 1);
+    else if (period === FixedPeriod.HALF_YEARLY) endDate.setUTCMonth(now.getUTCMonth() + 6);
+    else if (period === FixedPeriod.QUARTERLY) endDate.setUTCMonth(now.getUTCMonth() + 3);
+    else endDate.setUTCMonth(now.getUTCMonth() + 1);
 
     await tx.subscription.update({
       where: { id: subscriptionId },
